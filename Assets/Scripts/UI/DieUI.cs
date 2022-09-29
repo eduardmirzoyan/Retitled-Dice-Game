@@ -1,0 +1,184 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
+
+public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+{
+    public static float rollTime = 0.5f;
+
+    [Header("Components")]
+    [SerializeField] private CanvasGroup canvasGroup;
+    [SerializeField] private RectTransform rectTransform;
+    [SerializeField] private Image dieImage;
+    [SerializeField] private Transform parent;
+
+    [Header("Data")]
+    [SerializeField] private Die die;
+    [SerializeField] private Action action;
+    [SerializeField] private List<Sprite> diceSprites;
+    [SerializeField] private float travelRate = 0.1f;
+    [SerializeField] private float spinRate = 3f;
+
+    private bool isBeingDragged;
+    private int rotationDirection = 1;
+    private Coroutine rollRoutine;
+    
+    private void Awake()
+    {
+        rectTransform = GetComponent<RectTransform>();
+        canvasGroup = GetComponentInChildren<CanvasGroup>();
+        dieImage = GetComponentInChildren<Image>();
+    }
+
+    public void Initialize(Die die, Action action)
+    {
+        this.die = die;
+        this.action = action;
+
+        // Save parent
+        parent = transform.parent;
+
+        // Update visual
+        dieImage.sprite = diceSprites[die.value - 1];
+
+        // Sub to die events
+        GameEvents.instance.onDieRoll += Roll;
+        GameEvents.instance.onDieExhaust += Exhaust;
+        GameEvents.instance.onDieReplenish += Relpenish;
+    }
+
+    public void Uninitialize() {
+        // Unsub to die events
+        GameEvents.instance.onDieRoll -= Roll;
+        GameEvents.instance.onDieExhaust -= Exhaust;
+        GameEvents.instance.onDieReplenish -= Relpenish;
+    }
+
+    public void Roll(Die die)
+    {
+        // If this was not the rolled die, the dip
+        if (this.die != die) return;
+
+        if (rollRoutine != null) StopCoroutine(rollRoutine);
+
+        rollRoutine = StartCoroutine(RollVisuals(rollTime));
+    }
+
+    private IEnumerator RollVisuals(float duration)
+    {
+        float elapsedTime = 0;
+
+        // Smoothly move to target
+        while (elapsedTime < duration)
+        {
+            // Lerp target item to its spot
+            int random = Random.Range(1, die.maxValue + 1);
+
+            // Draw the die value
+            dieImage.sprite = diceSprites[random - 1];
+
+            elapsedTime += 0.1f;
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        // At the end draw the true number that was rolled
+        dieImage.sprite = diceSprites[die.value - 1];
+    }
+
+    private void Exhaust(Die die)
+    {
+        if (this.die == die)
+        {
+            canvasGroup.alpha = 0.6f;
+            canvasGroup.blocksRaycasts = false;
+        }
+    }
+
+    private void Relpenish(Die die)
+    {
+        if (this.die == die)
+        {
+            canvasGroup.alpha = 1f;
+            canvasGroup.blocksRaycasts = true;
+        }
+    }
+
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        // If die is not exhausted
+        if (!die.isExhausted)
+        {
+            // Update visually
+            canvasGroup.alpha = 0.6f;
+            canvasGroup.blocksRaycasts = false;
+
+            // Remove from parent
+            rectTransform.SetParent(transform.root);
+
+            // Randomize rotation direction
+            rotationDirection = Random.Range(0, 2) == 0 ? 1 : -1;
+
+            // Enable flag
+            isBeingDragged = true;
+
+            // Select this action
+            GameManager.instance.SelectAction(action);
+        }
+        
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        // Nothing
+    }
+
+    private void FixedUpdate()
+    {
+        if (isBeingDragged)
+        {
+            FollowAndRotate();
+        }
+    }
+
+    private void FollowAndRotate()
+    {
+        // Make Die smoothly travel towards mouse
+        var point = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        point.z = 0;
+        transform.position = Vector3.Lerp(transform.position, point, travelRate);
+
+        // Rotate Die
+        transform.Rotate(0, 0, rotationDirection * spinRate); //rotates 50 degrees per second around z axis
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        if (isBeingDragged)
+        {
+            if (!die.isExhausted) {
+                // Update visually
+                canvasGroup.alpha = 1f;
+                canvasGroup.blocksRaycasts = true;
+            }
+
+            // Return to parent
+            rectTransform.SetParent(parent);
+
+            // Reset rotation
+            transform.rotation = Quaternion.identity;
+
+            // Reset position
+            transform.localPosition = Vector3.zero;
+
+            // Stop dragging
+            isBeingDragged = false;
+
+            // Deselect action
+            GameManager.instance.SelectAction(null);
+        }
+        
+    }
+    
+}
