@@ -10,13 +10,13 @@ public class ActionsDisplayUI : MonoBehaviour
     private void Start()
     {
         // Sub
-        GameEvents.instance.onGenerateDungeon += DisplayPlayerActions;
+        GameEvents.instance.onEnterFloor += DisplayPlayerActions;
     }
 
     private void OnDestroy()
     {
         // Unsub
-        GameEvents.instance.onGenerateDungeon -= DisplayPlayerActions;
+        GameEvents.instance.onEnterFloor -= DisplayPlayerActions;
     }
 
     private void DisplayPlayerActions(Dungeon dungeon)

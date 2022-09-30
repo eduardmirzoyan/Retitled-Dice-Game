@@ -50,11 +50,6 @@ public class MoveAction : Action
         // Calculate direction
         Vector3Int direction = targetLocation - entity.location;
 
-        // Debuggin
-        // Debug.Log("Target " + targetLocation);
-        // Debug.Log("Start " + entity.location);
-        // Debug.Log("Move toward " + direction);
-
         if (direction.x > 0) // Move right
         {
             direction.x = 1;

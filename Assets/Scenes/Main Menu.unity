@@ -244,12 +244,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 11400000, guid: 9563230c5a59bdc4792dfe541ab67123, type: 2}
+  enemies: []
   dungeon: {fileID: 0}
+  enemyGenerator: {fileID: 11400000, guid: 5da444bc2db111644949e8c442188c9c, type: 2}
+  enemyAI: {fileID: 11400000, guid: 1bad9658d855af047b8e9141254e912d, type: 2}
   dungeonWidth: 12
   dungeonHeight: 12
   dungeonPadding: 8
-  numberOfEnemies: 0
+  numberOfEnemies: 1
   playerStartingHealth: 3
+  roundNumber: 0
 --- !u!4 &210875079
 Transform:
   m_ObjectHideFlags: 0
@@ -633,6 +637,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 0}
+  maskTransform: {fileID: 961961}
   transitionTime: 1
 --- !u!4 &680778909
 Transform:

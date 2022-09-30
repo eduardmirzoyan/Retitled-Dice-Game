@@ -7,6 +7,7 @@ public class ActionUI : MonoBehaviour
 {
     [Header("Components")]
     [SerializeField] private Image actionIcon;
+    [SerializeField] private Image actionBackground;
     [SerializeField] private DieUI diceUI;
     [SerializeField] private CanvasGroup canvasGroup;
 
@@ -17,8 +18,10 @@ public class ActionUI : MonoBehaviour
     {
         this.action = action;
 
-        // Update UI
-        actionIcon.sprite = action.sprite;
+        // Update Visuals
+        actionIcon.sprite = action.icon;
+        actionBackground.sprite = action.background;
+
         // Initialize die
         diceUI.Initialize(action.die, action);
 

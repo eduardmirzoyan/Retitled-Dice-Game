@@ -19,15 +19,14 @@ public class Dungeon : ScriptableObject
 
     public Player player;
 
-    public void Initialize(int width, int height, int padding, int numberOfEnemies, Player player)
+    public void Initialize(int width, int height, int padding)
     {
         // Save dimensions
         this.width = width;
         this.height = height;
         this.padding = padding;
 
-        // Save player
-        this.player = player;
+        enemies = new List<Entity>();
 
         // Generate floor
         GenerateFloor();
@@ -40,12 +39,64 @@ public class Dungeon : ScriptableObject
 
         // Generate exit
         GenerateExit();
+    }
+
+    public void Populate(Player player, List<Entity> enemies) {
+        // Save player
+        this.player = player;
+
+        // Save enemies
+        this.enemies = enemies;
 
         // Set the player's location to be at dungeon entrance
         player.SetDungeon(this, entranceLocation);
 
+        Vector3Int spawnLocation = new Vector3Int(padding + width / 2, padding + height / 2, 0);
         // Set enemies to this dungeon
-        // TODO
+        foreach (var enemy in enemies)
+        {
+            // Spawn location is random location that isn't wall, another enemy or within 3 tiles of entrance/exit
+            // To much work for now
+
+            // Just spawn in the middle of room for now
+            // Figure out spawn location?
+            enemy.SetDungeon(this, spawnLocation);
+
+            // Increment by 1 in y
+            spawnLocation += Vector3Int.up;
+        }
+    }
+
+    public void Populate(Entity entity) {
+        if (entity is Player) {
+            this.player = (Player) entity;
+            // Set the player's location to be at dungeon entrance
+            player.SetDungeon(this, entranceLocation);
+        }
+        else {
+            // Set spawn location
+            Vector3Int spawnLocation = new Vector3Int(padding + width / 2, padding + height / 2 + enemies.Count, 0);
+            
+            // Set dungeon to this
+            entity.SetDungeon(this, spawnLocation);
+            
+            // Save
+            enemies.Add(entity);
+
+            // Set enemies to this dungeon
+            // foreach (var enemy in enemies)
+            // {
+            //     // Spawn location is random location that isn't wall, another enemy or within 3 tiles of entrance/exit
+            //     // To much work for now
+
+            //     // Just spawn in the middle of room for now
+            //     // Figure out spawn location?
+            //     enemy.SetDungeon(this, spawnLocation);
+
+            //     // Increment by 1 in y
+            //     spawnLocation += Vector3Int.up;
+            // }
+        }
     }
 
     private void GenerateFloor()

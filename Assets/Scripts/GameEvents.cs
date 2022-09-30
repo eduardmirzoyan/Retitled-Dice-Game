@@ -5,7 +5,8 @@ using System;
 
 public class GameEvents : MonoBehaviour
 {
-    public event Action<Dungeon> onGenerateDungeon;
+    public event Action<Dungeon> onEnterFloor;
+    public event Action<Entity> onGenerateEntity;
 
     // Game state
     public event Action<Entity> onTurnStart;
@@ -42,11 +43,19 @@ public class GameEvents : MonoBehaviour
         DontDestroyOnLoad(this);
     }
 
-    public void TriggerOnGenerateDungeon(Dungeon dungeon)
+    public void TriggerOnEnterFloor(Dungeon dungeon)
     {
-        if (onGenerateDungeon != null)
+        if (onEnterFloor != null)
         {
-            onGenerateDungeon(dungeon);
+            onEnterFloor(dungeon);
+        }
+    }
+
+    public void TriggerOnGenerateEnity(Entity entity)
+    {
+        if (onGenerateEntity != null)
+        {
+            onGenerateEntity(entity);
         }
     }
 
@@ -119,6 +128,14 @@ public class GameEvents : MonoBehaviour
         if (onDieReplenish != null)
         {
             onDieReplenish(die);
+        }
+    }
+
+    public void TriggerOnEntityTakeDamage(Entity attacker, Entity target, int damage)
+    {
+        if (onEntityTakeDamage != null)
+        {
+            onEntityTakeDamage(attacker, target, damage);
         }
     }
 }

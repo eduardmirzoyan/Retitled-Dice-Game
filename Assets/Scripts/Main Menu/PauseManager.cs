@@ -68,7 +68,7 @@ public class PauseManager : MonoBehaviour
         GameManager.instance.ClearDungeon();
 
         // Load main menu
-        TransitionManager.instance.LoadMainMenu();
+        TransitionManager.instance.LoadMainMenuScene(Vector3.zero);
     }
 
     public void Quit()

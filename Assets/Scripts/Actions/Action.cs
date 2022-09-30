@@ -6,7 +6,9 @@ public abstract class Action : ScriptableObject
 {
     public new string name;
     public string description;
-    public Sprite sprite;
+    public Sprite icon;
+    public Sprite background;
+    public Color color;
     
     public Die die;
 

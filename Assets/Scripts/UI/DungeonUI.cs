@@ -31,12 +31,14 @@ public class DungeonUI : MonoBehaviour
 
     private void Start() {
         // Sub
-        GameEvents.instance.onGenerateDungeon += DrawDungeon;
+        GameEvents.instance.onEnterFloor += DrawDungeon;
+        GameEvents.instance.onGenerateEntity += SpawnEntity;
     }
 
     private void OnDestroy() {
         // Unsub
-        GameEvents.instance.onGenerateDungeon -= DrawDungeon;
+        GameEvents.instance.onEnterFloor -= DrawDungeon;
+        GameEvents.instance.onGenerateEntity -= SpawnEntity;
     }
 
     private void Update()
@@ -82,17 +84,11 @@ public class DungeonUI : MonoBehaviour
                 }
             }
 
-            // Draw entrance
+            // Draw entrance TODO
             // decorTilemap.SetTile(dungeon.entranceLocation, entranceTile);
 
             // Draw exit
             decorTilemap.SetTile(dungeon.exitLocation, exitTile);
-
-            // Spawn player model
-            Vector3 realWorldLocation = floorTilemap.GetCellCenterWorld(dungeon.player.location);
-            var model = Instantiate(dungeon.player.entityModel, realWorldLocation, Quaternion.identity).GetComponent<EntityModel>();
-            // Initialize
-            model.Initialize(dungeon.player);
 
             // Get center of dungeon
             Vector3 center = floorTilemap.CellToWorld(new Vector3Int(dungeon.width / 2 + dungeon.padding, dungeon.height / 2 + dungeon.padding, 0));
@@ -104,9 +100,18 @@ public class DungeonUI : MonoBehaviour
             // floorTilemap.ClearAllTiles();
             // wallsTilemap.ClearAllTiles();
 
-            // Unsub to event
-            GameEvents.instance.onGenerateDungeon -= DrawDungeon;
+            // Unsub to events
+            GameEvents.instance.onEnterFloor -= DrawDungeon;
+            GameEvents.instance.onGenerateEntity -= SpawnEntity;
         }
         
+    }
+
+    private void SpawnEntity(Entity entity) {
+        // Spawn entity model
+        Vector3 worldLocation = floorTilemap.GetCellCenterWorld(entity.location);
+        var model = Instantiate(entity.entityModel, worldLocation, Quaternion.identity).GetComponent<EntityModel>();
+        // Initialize
+        model.Initialize(entity);
     }
 }

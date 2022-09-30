@@ -19,7 +19,7 @@ public class LocationIndicatorUI : MonoBehaviour, IPointerEnterHandler, IPointer
         this.location = location;
 
         // Update icon
-        actionIcon.sprite = action.sprite;
+        actionIcon.sprite = action.icon;
 
         // Get world Position
         var worldSourceLocation = DungeonUI.instance.floorTilemap.GetCellCenterWorld(source);
@@ -28,6 +28,7 @@ public class LocationIndicatorUI : MonoBehaviour, IPointerEnterHandler, IPointer
         // Draw line from source to location
         lineRenderer.SetPosition(0, worldSourceLocation);
         lineRenderer.SetPosition(1, worldLocation);
+        lineRenderer.endColor = action.color;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -60,7 +61,7 @@ public class LocationIndicatorUI : MonoBehaviour, IPointerEnterHandler, IPointer
             actionIcon.color = defaultColor;
             
             // Select this location
-            GameManager.instance.SelectLocation(location);
+            GameManager.instance.ConfirmLocation(location);
         }
     }
 }

@@ -26,7 +26,7 @@ public class MainMenuManager : MonoBehaviour
         GameManager.instance.CreateNewPlayer();
 
         // Load next scene
-        TransitionManager.instance.LoadNextScene();
+        TransitionManager.instance.LoadNextScene(Vector3.zero);
     }
 
     public void HowToPlay() {

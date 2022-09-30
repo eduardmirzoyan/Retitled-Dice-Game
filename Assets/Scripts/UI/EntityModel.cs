@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(DamageFlash))]
 public class EntityModel : MonoBehaviour
 {
     public static float moveSpeed = 0.35f;
 
     [Header("Components")]
     [SerializeField] private Animator animator;
+    [SerializeField] private DamageFlash damageFlash;
 
     [Header("Data")]
     [SerializeField] private Entity entity;
@@ -16,6 +18,7 @@ public class EntityModel : MonoBehaviour
     private Coroutine coroutine;
 
     private void Awake() {
+        damageFlash = GetComponent<DamageFlash>();
         animator = GetComponentInChildren<Animator>();
         animator.Play("Idle");
     }
@@ -25,11 +28,13 @@ public class EntityModel : MonoBehaviour
 
         // Sub to events
         GameEvents.instance.onEntityMove += MoveEntity;
+        GameEvents.instance.onEntityTakeDamage += TakeDamage;
     }
 
     public void Uninitialize() {
         // Unsub to events
         GameEvents.instance.onEntityMove -= MoveEntity;
+        GameEvents.instance.onEntityTakeDamage -= TakeDamage;
     }
 
     private void OnDestroy() {
@@ -94,5 +99,10 @@ public class EntityModel : MonoBehaviour
 
         // Set to final destination
         transform.position = endPoint;
+    }
+
+    private void TakeDamage(Entity attacker, Entity target, int damage) {
+        // Display damage flash
+        damageFlash.Flash();
     }
 }
