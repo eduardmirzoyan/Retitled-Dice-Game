@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 [CreateAssetMenu]
 public class Entity : ScriptableObject
@@ -14,6 +15,7 @@ public class Entity : ScriptableObject
 
 
     [Header("Variable Stats")]
+    public AI AI;
     public List<Action> actions; // What the entity can do
     public Weapon weapon;
 
@@ -34,12 +36,28 @@ public class Entity : ScriptableObject
         this.location = spawnLocation;
     }
 
-    public void TakeDamage(int amount) {
+    public void TakeDamage(int amount)
+    {
         // Debug
         Debug.Log(name + " took " + amount + " damage.");
 
         // Reduce health until 0
         currentHealth = Mathf.Max(currentHealth - 1, 0);
+
+        // Trigger event
+        GameEvents.instance.TriggerOnEntityTakeDamage(this, 1);
+
+        // Check if dead
+        if (currentHealth == 0) {
+            // Remove self from dungeon
+            dungeon.Depopulate(this);
+        }
+    }
+
+    public void Heal(int amount)
+    {
+        // Heal up to max health
+        currentHealth = Mathf.Min(currentHealth + 1, maxHealth);
     }
 
     public void MoveToward(Vector3Int direction)
@@ -60,20 +78,28 @@ public class Entity : ScriptableObject
         if (dungeon.exitLocation == location)
         {
             // Go to next floor
-            GameManager.instance.TravelNextFloor();
+            GameManager.instance.TravelToNextFloor();
         }
     }
 
-    public void AttackCurrentLocation() {
-        // Check if any enemies are on the same tile, if so damage them
-        foreach (var enemy in dungeon.enemies) {
-            // if enemy shares the same tile, damage it
-            if (enemy.location == location) {
-                // Currently deal 1 damage, but this might change?
-                enemy.TakeDamage(1);
+    public void AttackCurrentLocation()
+    {
+        var targets = new List<Entity>();
 
+        targets.Add(dungeon.player);
+        targets.AddRange(dungeon.enemies);
+
+        // Check if any entities are on the same tile, if so damage them
+        foreach (var target in targets)
+        {
+            // If the target is not itself
+            if (target.location == location && target != this)
+            {
                 // Trigger event
-                GameEvents.instance.TriggerOnEntityTakeDamage(this, enemy, 1);
+                GameEvents.instance.TriggerOnEntityMeleeAttack(this);
+
+                // Currently deal 1 damage, but this might change?
+                target.TakeDamage(1);
             }
         }
     }
@@ -93,6 +119,9 @@ public class Entity : ScriptableObject
                 copy.actions[i] = actions[i].Copy();
             }
         }
+
+        // Make copy of weapon
+        copy.weapon = weapon.Copy();
 
         return copy;
     }

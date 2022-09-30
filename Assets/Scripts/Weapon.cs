@@ -10,4 +10,12 @@ public class Weapon : ScriptableObject
     public Sprite sprite;
 
     // Does nothing for now...
+
+    public Weapon Copy() {
+        var copy = Instantiate(this);
+
+        // Fill in as class expands...
+
+        return copy;
+    }
 }

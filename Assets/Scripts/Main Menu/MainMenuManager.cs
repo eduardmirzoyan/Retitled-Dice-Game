@@ -18,12 +18,17 @@ public class MainMenuManager : MonoBehaviour
         instance = this;
     }
 
+    private void Start() {
+        // Open scene in center
+        TransitionManager.instance.OpenScene(Vector3.zero);
+    }
+
     public void StartGame() {
         // Debug
         print("Start Game");
 
         // Create new player
-        GameManager.instance.CreateNewPlayer();
+        DataManager.instance.CreateNewPlayer();
 
         // Load next scene
         TransitionManager.instance.LoadNextScene(Vector3.zero);

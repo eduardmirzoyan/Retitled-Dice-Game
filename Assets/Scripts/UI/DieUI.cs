@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
     public static float rollTime = 0.5f;
 
@@ -12,7 +12,9 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private RectTransform rectTransform;
     [SerializeField] private Image dieImage;
-    [SerializeField] private Transform parent;
+    [SerializeField] private Outline outline;
+    [SerializeField] private Outline shadow;
+    
 
     [Header("Data")]
     [SerializeField] private Die die;
@@ -21,6 +23,7 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
     [SerializeField] private float travelRate = 0.1f;
     [SerializeField] private float spinRate = 3f;
 
+    private Transform parent;
     private bool isBeingDragged;
     private int rotationDirection = 1;
     private Coroutine rollRoutine;
@@ -29,7 +32,6 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
     {
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponentInChildren<CanvasGroup>();
-        dieImage = GetComponentInChildren<Image>();
     }
 
     public void Initialize(Die die, Action action)
@@ -83,7 +85,7 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
             yield return new WaitForSeconds(0.1f);
         }
 
-        // At the end draw the true number that was rolled
+        // At the end, draw the true number that was rolled
         dieImage.sprite = diceSprites[die.value - 1];
     }
 
@@ -113,6 +115,9 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
             // Update visually
             canvasGroup.alpha = 0.6f;
             canvasGroup.blocksRaycasts = false;
+
+            // Enable shadow
+            shadow.enabled = true;
 
             // Remove from parent
             rectTransform.SetParent(transform.root);
@@ -147,8 +152,15 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
         // Make Die smoothly travel towards mouse
         var point = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         point.z = 0;
-        transform.position = Vector3.Lerp(transform.position, point, travelRate);
 
+        // If rate is set to 0, then make it immediate
+        if (travelRate == 0) {
+            transform.position = point;
+        }
+        else {
+            transform.position = Vector3.Lerp(transform.position, point, travelRate);
+        }
+        
         // Rotate Die
         transform.Rotate(0, 0, rotationDirection * spinRate); //rotates 50 degrees per second around z axis
     }
@@ -161,6 +173,9 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
                 // Update visually
                 canvasGroup.alpha = 1f;
                 canvasGroup.blocksRaycasts = true;
+
+                // Disable shadow
+                shadow.enabled = false;
             }
 
             // Return to parent
@@ -180,5 +195,16 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
         }
         
     }
-    
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        // Enable outline
+        outline.enabled = true;
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        // Disable outline
+        outline.enabled = false;
+    }
 }

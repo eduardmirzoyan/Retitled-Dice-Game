@@ -8,6 +8,7 @@ public class TransitionManager : MonoBehaviour
     [Header("Components")]
     [SerializeField] private Animator animator;
     [SerializeField] private Transform maskTransform;
+    [SerializeField] private Transform backgroundTransform;
 
     [Header("Data")]
     [SerializeField] private float transitionTime = 1f;
@@ -26,6 +27,23 @@ public class TransitionManager : MonoBehaviour
         instance = this;
 
         animator = GetComponentInChildren<Animator>();
+    }
+
+    public void OpenScene(Vector3 location) {
+        // Save child location
+        var temp = backgroundTransform.position;
+
+        // Center tranform on location
+        if (location != Vector3.zero)
+            maskTransform.position = Camera.main.WorldToScreenPoint(location);
+        else
+            maskTransform.localPosition = Vector3.zero;
+
+        // Restore child location
+        backgroundTransform.position = temp;
+
+        // Play animation
+        animator.Play("Transition In");
     }
 
     public void LoadNextScene(Vector3 location)
@@ -62,9 +80,17 @@ public class TransitionManager : MonoBehaviour
 
     private IEnumerator LoadScene(int index, Vector3 location)
     {
+        // Save child location
+        var temp = backgroundTransform.position;
+
         // Move transform
         if (location != Vector3.zero)
-            maskTransform.position = location;
+            maskTransform.position = Camera.main.WorldToScreenPoint(location);
+        else
+            maskTransform.localPosition = Vector3.zero;
+        
+        // Restore child location
+        backgroundTransform.position = temp;
 
         // Play animation
         animator.Play("Transition Out");

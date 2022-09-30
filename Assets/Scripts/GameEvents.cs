@@ -7,6 +7,8 @@ public class GameEvents : MonoBehaviour
 {
     public event Action<Dungeon> onEnterFloor;
     public event Action<Entity> onGenerateEntity;
+    public event Action<Entity> onRemoveEntity;
+    public event Action<Dungeon> onExitFloor;
 
     // Game state
     public event Action<Entity> onTurnStart;
@@ -25,8 +27,11 @@ public class GameEvents : MonoBehaviour
     public event Action<Die> onDieReplenish;
 
     // Visuals
-    public event Action<Entity, Vector3Int, Vector3Int> onEntityMove;
-    public event Action<Entity, Entity, int> onEntityTakeDamage; // TODO
+    public event Action<Entity, bool> onEntityMove;
+    public event Action<Entity, bool> onEntityReadyWeapon;
+    public event Action<Entity> onEntityMeleeAttack;
+    public event Action<Entity, int> onEntityTakeDamage;
+    
 
 
     public static GameEvents instance;
@@ -40,7 +45,6 @@ public class GameEvents : MonoBehaviour
         }
 
         instance = this;
-        DontDestroyOnLoad(this);
     }
 
     public void TriggerOnEnterFloor(Dungeon dungeon)
@@ -51,11 +55,27 @@ public class GameEvents : MonoBehaviour
         }
     }
 
+    public void TriggerOnExitFloor(Dungeon dungeon)
+    {
+        if (onExitFloor != null)
+        {
+            onExitFloor(dungeon);
+        }
+    }
+
     public void TriggerOnGenerateEnity(Entity entity)
     {
         if (onGenerateEntity != null)
         {
             onGenerateEntity(entity);
+        }
+    }
+
+    public void TriggerOnRemoveEnity(Entity entity)
+    {
+        if (onRemoveEntity != null)
+        {
+            onRemoveEntity(entity);
         }
     }
 
@@ -99,11 +119,11 @@ public class GameEvents : MonoBehaviour
         }
     }
 
-    public void TriggerOnEntityMove(Entity entity, Vector3Int from, Vector3Int to)
+    public void TriggerOnEntityMove(Entity entity, bool state)
     {
         if (onEntityMove != null)
         {
-            onEntityMove(entity, from, to);
+            onEntityMove(entity, state);
         }
     }
 
@@ -131,11 +151,27 @@ public class GameEvents : MonoBehaviour
         }
     }
 
-    public void TriggerOnEntityTakeDamage(Entity attacker, Entity target, int damage)
+    public void TriggerOnEntityTakeDamage(Entity entity, int damage)
     {
         if (onEntityTakeDamage != null)
         {
-            onEntityTakeDamage(attacker, target, damage);
+            onEntityTakeDamage(entity, damage);
+        }
+    }
+
+    public void TriggerOnEntityMeleeAttack(Entity entity)
+    {
+        if (onEntityMeleeAttack != null)
+        {
+            onEntityMeleeAttack(entity);
+        }
+    }
+
+    public void TriggerOnEntityReadyWeapon(Entity entity, bool state)
+    {
+        if (onEntityReadyWeapon != null)
+        {
+            onEntityReadyWeapon(entity, state);
         }
     }
 }

@@ -15,29 +15,29 @@ public class MoveAction : Action
         // Check in 4 cardinal direction based on die value
 
         // North
-        Vector3Int pos = startLocation + new Vector3Int(0, reach, 0);
-        if (dungeon.walls[pos.x][pos.y] == 0)
+        Vector3Int endLocation = startLocation + new Vector3Int(0, reach, 0);
+        if (dungeon.IsValidPath(startLocation, endLocation))
         {
             result.Add(startLocation + new Vector3Int(0, reach, 0));
         }
 
         // South
-        pos = startLocation + new Vector3Int(0, -reach, 0);
-        if (dungeon.walls[pos.x][pos.y] == 0)
+        endLocation = startLocation + new Vector3Int(0, -reach, 0);
+        if (dungeon.IsValidPath(startLocation, endLocation))
         {
             result.Add(startLocation + new Vector3Int(0, -reach, 0));
         }
 
         // East
-        pos = startLocation + new Vector3Int(reach, 0, 0);
-        if (dungeon.walls[pos.x][pos.y] == 0)
+        endLocation = startLocation + new Vector3Int(reach, 0, 0);
+        if (dungeon.IsValidPath(startLocation, endLocation))
         {
             result.Add(startLocation + new Vector3Int(reach, 0, 0));
         }
 
         // West
-        pos = startLocation + new Vector3Int(-reach, 0, 0);
-        if (dungeon.walls[pos.x][pos.y] == 0)
+        endLocation = startLocation + new Vector3Int(-reach, 0, 0);
+        if (dungeon.IsValidPath(startLocation, endLocation))
         {
             result.Add(startLocation + new Vector3Int(-reach, 0, 0));
         }
@@ -74,18 +74,18 @@ public class MoveAction : Action
 
         // Keep looping until entiy makes it to its final location
         while (entity.location != targetLocation) {
+            // Move entity
+            entity.MoveToward(direction);
+
             // Trigger move event
-            GameEvents.instance.TriggerOnEntityMove(entity, entity.location, entity.location + direction);
+            GameEvents.instance.TriggerOnEntityMove(entity, true);
             
             // Wait for animation
             yield return new WaitForSeconds(EntityModel.moveSpeed);
-
-            // Move entity
-            entity.MoveToward(direction);
         }
 
         // Trigger stop event
-        GameEvents.instance.TriggerOnEntityMove(entity, entity.location, entity.location);
+        GameEvents.instance.TriggerOnEntityMove(entity, false);
 
         // Finnish!
     }

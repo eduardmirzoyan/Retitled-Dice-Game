@@ -31,13 +31,13 @@ public class DungeonUI : MonoBehaviour
 
     private void Start() {
         // Sub
-        GameEvents.instance.onEnterFloor += DrawDungeon;
+        GameEvents.instance.onEnterFloor += SpawnDungeon;
         GameEvents.instance.onGenerateEntity += SpawnEntity;
     }
 
     private void OnDestroy() {
         // Unsub
-        GameEvents.instance.onEnterFloor -= DrawDungeon;
+        GameEvents.instance.onEnterFloor -= SpawnDungeon;
         GameEvents.instance.onGenerateEntity -= SpawnEntity;
     }
 
@@ -56,7 +56,7 @@ public class DungeonUI : MonoBehaviour
         }
     }
 
-    private void DrawDungeon(Dungeon dungeon) {
+    private void SpawnDungeon(Dungeon dungeon) {
         this.dungeon = dungeon;
 
         // Draw dungeon
@@ -85,7 +85,7 @@ public class DungeonUI : MonoBehaviour
             }
 
             // Draw entrance TODO
-            // decorTilemap.SetTile(dungeon.entranceLocation, entranceTile);
+            decorTilemap.SetTile(dungeon.entranceLocation, entranceTile);
 
             // Draw exit
             decorTilemap.SetTile(dungeon.exitLocation, exitTile);
@@ -101,17 +101,23 @@ public class DungeonUI : MonoBehaviour
             // wallsTilemap.ClearAllTiles();
 
             // Unsub to events
-            GameEvents.instance.onEnterFloor -= DrawDungeon;
+            GameEvents.instance.onEnterFloor -= SpawnDungeon;
             GameEvents.instance.onGenerateEntity -= SpawnEntity;
         }
         
     }
 
     private void SpawnEntity(Entity entity) {
-        // Spawn entity model
+        // Get world position
         Vector3 worldLocation = floorTilemap.GetCellCenterWorld(entity.location);
+        // Spawn model
         var model = Instantiate(entity.entityModel, worldLocation, Quaternion.identity).GetComponent<EntityModel>();
         // Initialize
         model.Initialize(entity);
+    }
+
+    public Vector3 GetLocationCenter(Vector3Int location) {
+        // Temp convert function
+        return floorTilemap.GetCellCenterWorld(location);
     }
 }

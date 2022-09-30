@@ -46,14 +46,14 @@ public class HealthUI : MonoBehaviour
         }
     }
 
-    private void ChangeHearts(Entity attacker, Entity target, int damage) 
+    private void ChangeHearts(Entity entity, int damage) 
     {
         // If player was attacked
-        if (target is Player) {
+        if (entity is Player) {
             // Update UI?
             for (int i = 0; i < heartImages.Count; i++)
             {
-                if (i < target.currentHealth)
+                if (i < entity.currentHealth)
                 {
                     heartImages[i].sprite = fullHeart;
                 }

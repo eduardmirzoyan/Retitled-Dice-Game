@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 [CreateAssetMenu]
 public class Dungeon : ScriptableObject
@@ -15,8 +16,7 @@ public class Dungeon : ScriptableObject
     public Vector3Int entranceLocation;
     public Vector3Int exitLocation;
 
-    public List<Entity> enemies; // TODO
-
+    public List<Entity> enemies; // ?
     public Player player;
 
     public void Initialize(int width, int height, int padding)
@@ -41,62 +41,56 @@ public class Dungeon : ScriptableObject
         GenerateExit();
     }
 
-    public void Populate(Player player, List<Entity> enemies) {
-        // Save player
-        this.player = player;
-
-        // Save enemies
-        this.enemies = enemies;
-
-        // Set the player's location to be at dungeon entrance
-        player.SetDungeon(this, entranceLocation);
-
-        Vector3Int spawnLocation = new Vector3Int(padding + width / 2, padding + height / 2, 0);
-        // Set enemies to this dungeon
-        foreach (var enemy in enemies)
+    public void Populate(Entity entity)
+    {
+        if (entity is Player)
         {
-            // Spawn location is random location that isn't wall, another enemy or within 3 tiles of entrance/exit
-            // To much work for now
-
-            // Just spawn in the middle of room for now
-            // Figure out spawn location?
-            enemy.SetDungeon(this, spawnLocation);
-
-            // Increment by 1 in y
-            spawnLocation += Vector3Int.up;
-        }
-    }
-
-    public void Populate(Entity entity) {
-        if (entity is Player) {
-            this.player = (Player) entity;
+            this.player = (Player)entity;
             // Set the player's location to be at dungeon entrance
             player.SetDungeon(this, entranceLocation);
         }
-        else {
+        else
+        {
             // Set spawn location
             Vector3Int spawnLocation = new Vector3Int(padding + width / 2, padding + height / 2 + enemies.Count, 0);
-            
+
             // Set dungeon to this
             entity.SetDungeon(this, spawnLocation);
-            
+
             // Save
             enemies.Add(entity);
-
-            // Set enemies to this dungeon
-            // foreach (var enemy in enemies)
-            // {
-            //     // Spawn location is random location that isn't wall, another enemy or within 3 tiles of entrance/exit
-            //     // To much work for now
-
-            //     // Just spawn in the middle of room for now
-            //     // Figure out spawn location?
-            //     enemy.SetDungeon(this, spawnLocation);
-
-            //     // Increment by 1 in y
-            //     spawnLocation += Vector3Int.up;
-            // }
         }
+
+        // Trigger event
+        GameEvents.instance.TriggerOnGenerateEnity(entity);
+    }
+
+    public void Depopulate(Entity entity)
+    {
+        // Check if entity is the player
+        if (entity == player)
+        {
+            // Debug
+            Debug.Log("GAME OVER!");
+
+            // Remove player
+            // player = null;
+
+            // Gameover!
+        }
+        // Else attempt to remove it from enemies
+        else if (enemies.Remove(entity))
+        {
+            // Enemy was removed
+        }
+        else
+        {
+            // Debug
+            Debug.Log(entity.name + " was attempted to be removed but didn't exist in dungeon.");
+        }
+
+        // Trigger event
+        GameEvents.instance.TriggerOnRemoveEnity(entity);
     }
 
     private void GenerateFloor()
@@ -159,15 +153,70 @@ public class Dungeon : ScriptableObject
     private void GenerateExit()
     {
         // Current algorithm: Choose the corner opposite of the entrance
-
         exitLocation = new Vector3Int(2 * padding + width - entranceLocation.x - 1, 2 * padding + height - entranceLocation.y - 1);
     }
 
-    private void GenerateEnemies(int numberOfEnemies)
+    public bool IsValidLocation(Vector3Int location, bool ignoreEntity = false)
     {
-        // Initialize enemies
-        enemies = new List<Entity>(numberOfEnemies);
+        // Make sure there is no wall
+        if (walls[location.x][location.y] != 0)
+        {
+            return false;
+        }
 
-        // TODO
+        // Make sure there is no player or ANY enemy there
+        if (!ignoreEntity)
+        {
+            if (player.location == location || enemies.Any((enemy) => (enemy.location == location)))
+            {
+                return false;
+            }
+        }
+
+
+        // Else you're good to go :)
+        return true;
+    }
+
+    public bool IsValidPath(Vector3Int start, Vector3Int end, bool ignoreEntity = false) {
+        // Get direction
+        Vector3Int direction = end - start;
+        if (direction.x > 0) // Move right
+        {
+            direction.x = 1;
+        }
+        else if (direction.x < 0) // Move left
+        {
+            direction.x = -1;
+        }
+        else if (direction.y > 0) // Move up
+        {
+            direction.y = 1;
+        }
+        else if (direction.y < 0) // Move down
+        {
+            direction.y = -1;
+        }
+        else {  }
+
+        // Keep looping until start is at the end
+        while (start != end) {
+
+            // Check to see if the location is valid
+            if (!IsValidLocation(start + direction, ignoreEntity)) {
+                return false;
+            }
+
+            // Increment start
+            start += direction;
+        }
+
+        // // Make sure there is no enemy on the last tile regardless of conditions
+        if (!IsValidLocation(end)) {
+            return false;
+        }
+
+        // Else we good :)
+        return true;
     }
 }

@@ -40,6 +40,8 @@
      <Compile Include="Assets\Scripts\GameManager.cs" />
      <Compile Include="Assets\Scripts\Actions\RangedAction.cs" />
      <Compile Include="Assets\Scripts\GameEvents.cs" />
+     <Compile Include="Assets\Scripts\DamageFlash.cs" />
+     <Compile Include="Assets\Scripts\DataManager.cs" />
      <Compile Include="Assets\Scripts\UI\LocationIndicatorUI.cs" />
      <Compile Include="Assets\Scripts\Actions\WarpAction.cs" />
      <Compile Include="Assets\Scripts\UI\EndTurnUI.cs" />
@@ -64,7 +66,7 @@
      <Compile Include="Assets\Scripts\Player.cs" />
      <Compile Include="Assets\Scripts\UI\DungeonUI.cs" />
      <Compile Include="Assets\Scripts\AI.cs" />
-     <Compile Include="Assets\Scripts\DamageFlash.cs" />
+     <Compile Include="Assets\Scripts\DeathCloud.cs" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />

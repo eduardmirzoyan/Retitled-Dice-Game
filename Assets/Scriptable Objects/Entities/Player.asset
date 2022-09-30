@@ -17,9 +17,11 @@ MonoBehaviour:
   currentHealth: 3
   sprite: {fileID: 21300000, guid: fc47e8c8511ed0340ac0be548351fc95, type: 3}
   entityModel: {fileID: 4932847105634640177, guid: e103206a9a096d9438e0d55a66513512, type: 3}
+  AI: {fileID: 0}
   actions:
   - {fileID: 11400000, guid: 31fb65b37415e9042bc579f491dd2fa1, type: 2}
+  - {fileID: 11400000, guid: 31fb65b37415e9042bc579f491dd2fa1, type: 2}
   - {fileID: 11400000, guid: 3d0a5222516c54345861722ba677cba1, type: 2}
-  weapon: {fileID: 0}
+  weapon: {fileID: 11400000, guid: 2885f6d5977fa394298af86dca1e5922, type: 2}
   location: {x: 0, y: 0, z: 0}
   dungeon: {fileID: 0}

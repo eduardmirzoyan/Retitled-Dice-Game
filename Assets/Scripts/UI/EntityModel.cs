@@ -8,81 +8,143 @@ public class EntityModel : MonoBehaviour
     public static float moveSpeed = 0.35f;
 
     [Header("Components")]
-    [SerializeField] private Animator animator;
+    [SerializeField] private SpriteRenderer modelSpriteRenderer;
+    [SerializeField] private SpriteRenderer weaponSpriteRenderer;
+    [SerializeField] private Animator modelAnimator;
+    [SerializeField] private Animator weaponAnimator;
     [SerializeField] private DamageFlash damageFlash;
 
     [Header("Data")]
     [SerializeField] private Entity entity;
     [SerializeField] private bool isFacingRight = true;
+    [SerializeField] private GameObject deathCloud;
 
     private Coroutine coroutine;
 
-    private void Awake() {
+    private void Awake()
+    {
         damageFlash = GetComponent<DamageFlash>();
-        animator = GetComponentInChildren<Animator>();
-        animator.Play("Idle");
     }
 
-    public void Initialize(Entity entity) {
+    public void Initialize(Entity entity)
+    {
         this.entity = entity;
+
+        // Set model sprite
+        modelSpriteRenderer.sprite = entity.sprite;
+
+        // Set weapon sprite
+        if (entity.weapon != null)
+        {
+            weaponSpriteRenderer.sprite = entity.weapon.sprite;
+        }
 
         // Sub to events
         GameEvents.instance.onEntityMove += MoveEntity;
         GameEvents.instance.onEntityTakeDamage += TakeDamage;
+        GameEvents.instance.onEntityMeleeAttack += MeleeAttack;
+        GameEvents.instance.onEntityReadyWeapon += ReadyWeapon;
+        GameEvents.instance.onRemoveEntity += RemoveEntity;
     }
 
-    public void Uninitialize() {
+    public void Uninitialize()
+    {
         // Unsub to events
         GameEvents.instance.onEntityMove -= MoveEntity;
         GameEvents.instance.onEntityTakeDamage -= TakeDamage;
+        GameEvents.instance.onEntityMeleeAttack -= MeleeAttack;
+        GameEvents.instance.onEntityReadyWeapon -= ReadyWeapon;
+        GameEvents.instance.onRemoveEntity -= RemoveEntity;
     }
 
-    private void OnDestroy() {
+    private void OnDestroy()
+    {
         Uninitialize();
     }
 
-    private void MoveEntity(Entity entity, Vector3Int from, Vector3Int to) {
-        // If this entity moved, then move it
+    private void RemoveEntity(Entity entity) {
         if (this.entity == entity) {
-            // If from == to, this is a stop command
-            if (from == to) {
-                // Stop animation
-                animator.Play("Idle");
-                return;
-            }
+            // Spawn death cloud 
+            Instantiate(deathCloud, transform.position, Quaternion.identity);
 
-            if (coroutine != null) StopCoroutine(coroutine);
-
-            // Get world positions
-            Vector3 startPoint = DungeonUI.instance.floorTilemap.GetCellCenterWorld(from);
-            Vector3 endPoint = DungeonUI.instance.floorTilemap.GetCellCenterWorld(to);
-
-            // Check if sprite should be flipped
-            Vector3 dir = to - from;
-            FlipSprite(dir);
-
-            // Start animation
-            animator.Play("Run");
-
-            // Start moving routine
-            coroutine = StartCoroutine(Move(startPoint, endPoint, moveSpeed));
+            // Destroy self
+            Destroy(gameObject);
         }
     }
 
-    private void FlipSprite(Vector3 direction) {
+    private void MoveEntity(Entity entity, bool isMoving)
+    {
+        // If this entity moved, then move it
+        if (this.entity == entity)
+        {
+            if (isMoving)
+            {
+                // Play proper animation
+                modelAnimator.Play("Run");
+
+                // Get positions
+                Vector3 startPoint = transform.position; // DungeonUI.instance.floorTilemap.GetCellCenterWorld(transform.position);
+                Vector3 endPoint = DungeonUI.instance.floorTilemap.GetCellCenterWorld(entity.location);
+
+                // Check if sprite should be flipped
+                Vector3 dir = endPoint - startPoint;
+                FlipModel(dir);
+
+                // Start moving routine
+                if (coroutine != null) StopCoroutine(coroutine);
+                coroutine = StartCoroutine(Move(startPoint, endPoint, moveSpeed));
+            }
+            else
+            {
+                // Stop proper animation
+                modelAnimator.Play("Idle");
+
+                // Done :)
+            }
+            // // If from == to, this is a stop command
+            // if (from == to)
+            // {
+            //     // Stop animation
+            //     modelAnimator.Play("Idle");
+            //     return;
+            // }
+
+            // if (coroutine != null) StopCoroutine(coroutine);
+
+            // // Get world positions
+            // Vector3 startPoint = DungeonUI.instance.floorTilemap.GetCellCenterWorld(from);
+            // Vector3 endPoint = DungeonUI.instance.floorTilemap.GetCellCenterWorld(to);
+
+            // // Check if sprite should be flipped
+            // Vector3 dir = to - from;
+            // FlipSprite(dir);
+
+            // // Start animation
+            // modelAnimator.Play("Run");
+
+            // // Start moving routine
+            // coroutine = StartCoroutine(Move(startPoint, endPoint, moveSpeed));
+        }
+    }
+
+    private void FlipModel(Vector3 direction)
+    {
         // If you are moving right and facing left, then flip
-        if (direction.x > 0 && !isFacingRight) {
+        if (direction.x > 0 && !isFacingRight)
+        {
             isFacingRight = true;
             transform.Rotate(0f, 180f, 0f);
         }
         // Else if you are moving left and facing right, also flip
-        else if (direction.x < 0 && isFacingRight) {
+        else if (direction.x < 0 && isFacingRight)
+        {
             isFacingRight = false;
             transform.Rotate(0f, 180f, 0f);
         }
     }
 
-    private IEnumerator Move(Vector3 startPoint, Vector3 endPoint, float duration) {
+    private IEnumerator Move(Vector3 startPoint, Vector3 endPoint, float duration)
+    {
         // Start timer
         Vector3 position;
         float timer = 0;
@@ -101,8 +163,33 @@ public class EntityModel : MonoBehaviour
         transform.position = endPoint;
     }
 
-    private void TakeDamage(Entity attacker, Entity target, int damage) {
-        // Display damage flash
-        damageFlash.Flash();
+    private void TakeDamage(Entity entity, int damage)
+    {
+        // If this entity took damage
+        if (this.entity == entity)
+        {
+            // Display damage flash
+            damageFlash.Flash();
+        }
+    }
+
+    private void MeleeAttack(Entity entity)
+    {
+        // If this entity attacked
+        if (this.entity == entity)
+        {
+            // Play weapon animation
+            weaponAnimator.Play("Attack");
+        }
+    }
+
+    private void ReadyWeapon(Entity entity, bool state)
+    {
+        if (this.entity == entity)
+        {
+            // Play proper animation
+            if (state) weaponAnimator.Play("Active");
+            else weaponAnimator.Play("Idle");
+        }
     }
 }

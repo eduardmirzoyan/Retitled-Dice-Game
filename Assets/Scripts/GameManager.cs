@@ -4,24 +4,18 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private Player player;
-    [SerializeField] private List<Entity> enemies;
+    [Header("Entity Data")]
     [SerializeField] private Dungeon dungeon;
-
-    [Header("Temp Shit?")]
     [SerializeField] private EnemyGenerator enemyGenerator;
-    [SerializeField] private AI enemyAI;
 
     [Header("Data")]
+    [SerializeField] private int roundNumber;
     [SerializeField] private int dungeonWidth = 12;
     [SerializeField] private int dungeonHeight = 12;
     [SerializeField] private int dungeonPadding = 6;
     [SerializeField] private int numberOfEnemies = 0;
-    [SerializeField] private int playerStartingHealth = 3;
 
-    [SerializeField] private Queue<Entity> turnQueue;
-    [SerializeField] private int roundNumber;
-
+    private Queue<Entity> turnQueue;
     private Entity selectedEntity;
     private Action selectedAction;
     private Vector3Int selectedLocation;
@@ -39,35 +33,17 @@ public class GameManager : MonoBehaviour
         }
 
         instance = this;
-        DontDestroyOnLoad(this);
     }
 
-    public void CreateNewPlayer()
+    private void Start()
     {
-        // Create player SO
-        // This will be done in main menu?
+        // Start the game
+        coroutine = StartCoroutine(EnterFloor());
 
-        // Make a copy of the player
-        player = (Player) player.Copy();
-
-        // Initialize
-        player.Initialize(playerStartingHealth);
+        // Make sure opens on player?
     }
 
-    private void Update()
-    {
-        // // Debugging
-        if (Input.GetKeyDown(KeyCode.Space) && coroutine == null)
-        {
-            // Create player
-            // CreateNewPlayer();
-
-            // Start the game
-            coroutine = StartCoroutine(StartGame());
-        }
-    }
-
-    private IEnumerator StartGame()
+    private IEnumerator EnterFloor()
     {
         // Start the game
         roundNumber = 1;
@@ -87,6 +63,11 @@ public class GameManager : MonoBehaviour
         // Trigger event
         GameEvents.instance.TriggerOnEnterFloor(dungeon);
 
+        // Open scene on player
+        var location = DungeonUI.instance.GetLocationCenter(dungeon.player.location);
+        // print(location);
+        TransitionManager.instance.OpenScene(location);
+
         // Start the first turn
         yield return StartTurn();
     }
@@ -102,30 +83,27 @@ public class GameManager : MonoBehaviour
         yield return null;
     }
 
-    private IEnumerator GenerateEnemies() {
-        // Initialize list
-        enemies = new List<Entity>();
+    private IEnumerator GenerateEnemies()
+    {
         for (int i = 0; i < numberOfEnemies; i++)
         {
             // Generate a random enemy
             var enemy = enemyGenerator.GenerateEnemy();
 
-            // Save it
-            enemies.Add(enemy);
-
-            // Populate
+            // Populate the dungeon
             dungeon.Populate(enemy);
-
-            // Trigger event
-            GameEvents.instance.TriggerOnGenerateEnity(enemy);
         }
 
         // Finish
         yield return null;
     }
 
-    private IEnumerator GeneratePlayer() {
-        // Populate
+    private IEnumerator GeneratePlayer()
+    {
+        // Get player from data
+        var player = DataManager.instance.GetPlayer();
+
+        // Populate the dungeon
         dungeon.Populate(player);
 
         // Trigger event
@@ -135,26 +113,29 @@ public class GameManager : MonoBehaviour
         yield return null;
     }
 
-    private IEnumerator GenerateTurnQueue() {
+    private IEnumerator GenerateTurnQueue()
+    {
         // Initialize
         turnQueue = new Queue<Entity>();
 
         // First entity is always the player
-        turnQueue.Enqueue(player);
+        turnQueue.Enqueue(dungeon.player);
 
-        // Now add all the enemies
-        foreach (var enemy in enemies) {
+        // Now pull enemes from the dungeon
+        foreach (var enemy in dungeon.enemies)
+        {
             // Add enemy
             turnQueue.Enqueue(enemy);
         }
 
         // Debug
         string result = "Generated Queue: ";
-        foreach (var ent in turnQueue.ToArray()) {
+        foreach (var ent in turnQueue.ToArray())
+        {
             result += ent.name + " -> ";
         }
         print(result);
-        
+
 
         // Finish
         yield return null;
@@ -168,10 +149,31 @@ public class GameManager : MonoBehaviour
         // Debug
         print("Turn Start: " + selectedEntity.name);
 
-        // Check if the enity that taking it's turn is the player
-        if (selectedEntity is Player)
+        // Trigger event 
+        GameEvents.instance.TriggerOnTurnStart(selectedEntity);
+
+        // Check if the enity has an ai, if so, let them decide their action
+        if (selectedEntity.AI != null)
         {
-            // Relpenish and Roll all die
+            // Get best choice
+            (Action, Vector3Int) bestChoicePair = selectedEntity.AI.GenerateBestDecision(selectedEntity, dungeon);
+
+            // Debug
+            print("Entity: " + selectedEntity.name + " used: " + bestChoicePair.Item1.name + " on location: " + bestChoicePair.Item2);
+
+            // Select Action
+            SelectAction(bestChoicePair.Item1);
+
+            // Select Location
+            ConfirmLocation(bestChoicePair.Item2);
+
+            // End Turn
+            yield return EndTurn();
+        }
+        else
+        { // If it is a player 
+
+            // Relpenish and Roll all the unit's die
             foreach (var action in selectedEntity.actions)
             {
                 // Replenish die with event
@@ -183,27 +185,6 @@ public class GameManager : MonoBehaviour
                 GameEvents.instance.TriggerOnDieRoll(action.die);
             }
         }
-        else
-        {
-            // Get best choice
-            (Action, Vector3Int) bestChoicePair = enemyAI.GenerateBestDecision(selectedEntity, dungeon);
-
-            // Debug
-            print("Enemy: " + selectedEntity.name + " used: " + bestChoicePair.Item1.name + " on location: " + bestChoicePair.Item2);
-
-            // Select Action
-            SelectAction(bestChoicePair.Item1);
-
-            // Select Location
-            ConfirmLocation(bestChoicePair.Item2);
-
-            // End Turn
-            yield return EndTurn();
-        }
-
-
-        // Trigger event 
-        GameEvents.instance.TriggerOnTurnStart(selectedEntity);
 
         // Finish
         yield return null;
@@ -267,7 +248,8 @@ public class GameManager : MonoBehaviour
         selectedLocation = Vector3Int.zero;
     }
 
-    public void EndTurnNow() {
+    public void EndTurnNow()
+    {
         // End the current turn
         if (coroutine != null) StopCoroutine(coroutine);
 
@@ -280,7 +262,8 @@ public class GameManager : MonoBehaviour
         print("Turn End: " + selectedEntity.name);
 
         // Check if queue is empty
-        if (turnQueue.Count == 0) {
+        if (turnQueue.Count == 0)
+        {
             // Debug
             print("Empty queue, new round: " + roundNumber + 1);
 
@@ -295,28 +278,39 @@ public class GameManager : MonoBehaviour
         yield return StartTurn();
     }
 
-    public void ClearDungeon()
+    private void ExitFloor()
     {
-        // Stop co-routine
+        // Leave the current floor
+
+        // Stop any coroutine
         if (coroutine != null) StopCoroutine(coroutine);
         coroutine = null;
 
-        // Delete dungeon
-        dungeon = null;
-
         // Trigger event
-        GameEvents.instance.TriggerOnEnterFloor(null);
+        GameEvents.instance.TriggerOnExitFloor(dungeon);
     }
 
-    public void TravelNextFloor() {
-        // Clear current dungeon
-        ClearDungeon();
-
-        // Trigger event
+    public void GameOver() {
         // TODO
-
-        // Reload this scene
-        TransitionManager.instance.ReloadScene(player.location);
     }
-    
+
+    public void TravelToNextFloor()
+    {
+        // Exit current floor
+        ExitFloor();
+
+        // Reload this scene on player
+        var location = DungeonUI.instance.GetLocationCenter(dungeon.player.location);
+        TransitionManager.instance.ReloadScene(location);
+    }
+
+    public void ReturnToMainMenu()
+    {
+        // Exit current floor
+        ExitFloor();
+
+        // Load main menu on player
+        var location = DungeonUI.instance.GetLocationCenter(dungeon.player.location);
+        TransitionManager.instance.LoadMainMenuScene(location);
+    }
 }

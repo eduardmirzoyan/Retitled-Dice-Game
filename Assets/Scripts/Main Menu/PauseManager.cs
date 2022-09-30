@@ -64,11 +64,8 @@ public class PauseManager : MonoBehaviour
         // Resume first
         Resume();
 
-        // Clear floor
-        GameManager.instance.ClearDungeon();
-
-        // Load main menu
-        TransitionManager.instance.LoadMainMenuScene(Vector3.zero);
+        // Tell game to return to main menu
+        GameManager.instance.ReturnToMainMenu();
     }
 
     public void Quit()

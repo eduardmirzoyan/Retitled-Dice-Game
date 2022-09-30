@@ -5,8 +5,6 @@ using UnityEngine;
 [CreateAssetMenu]
 public class MeleeAction : Action
 {
-    // TODO THIS, after enemy tho lol
-
     public override List<Vector3Int> GetValidLocations(Vector3Int startLocation, Dungeon dungeon)
     {
         List<Vector3Int> result = new List<Vector3Int>();
@@ -17,29 +15,29 @@ public class MeleeAction : Action
         // Check in 4 cardinal direction based on die value
 
         // North
-        Vector3Int pos = startLocation + new Vector3Int(0, reach, 0);
-        if (dungeon.walls[pos.x][pos.y] == 0)
+        Vector3Int endLocation = startLocation + new Vector3Int(0, reach, 0);
+        if (dungeon.IsValidPath(startLocation, endLocation, true))
         {
             result.Add(startLocation + new Vector3Int(0, reach, 0));
         }
 
         // South
-        pos = startLocation + new Vector3Int(0, -reach, 0);
-        if (dungeon.walls[pos.x][pos.y] == 0)
+        endLocation = startLocation + new Vector3Int(0, -reach, 0);
+        if (dungeon.IsValidPath(startLocation, endLocation, true))
         {
             result.Add(startLocation + new Vector3Int(0, -reach, 0));
         }
 
         // East
-        pos = startLocation + new Vector3Int(reach, 0, 0);
-        if (dungeon.walls[pos.x][pos.y] == 0)
+        endLocation = startLocation + new Vector3Int(reach, 0, 0);
+        if (dungeon.IsValidPath(startLocation, endLocation, true))
         {
             result.Add(startLocation + new Vector3Int(reach, 0, 0));
         }
 
         // West
-        pos = startLocation + new Vector3Int(-reach, 0, 0);
-        if (dungeon.walls[pos.x][pos.y] == 0)
+        endLocation = startLocation + new Vector3Int(-reach, 0, 0);
+        if (dungeon.IsValidPath(startLocation, endLocation, true))
         {
             result.Add(startLocation + new Vector3Int(-reach, 0, 0));
         }
@@ -74,23 +72,32 @@ public class MeleeAction : Action
             throw new System.Exception("There was a problem with determining direction.");
         }
 
+        // Trigger move event
+        GameEvents.instance.TriggerOnEntityReadyWeapon(entity, true);
+
         // Keep looping until entiy makes it to its final location
         while (entity.location != targetLocation)
         {
+            // Move entity
+            entity.MoveToward(direction);
+
             // Trigger move event
-            GameEvents.instance.TriggerOnEntityMove(entity, entity.location, entity.location + direction);
+            GameEvents.instance.TriggerOnEntityMove(entity, true);
+            //GameEvents.instance.TriggerOnEntityMove(entity, entity.location, entity.location + direction);
+
+            // Attack location
+            entity.AttackCurrentLocation();
 
             // Wait for animation
             yield return new WaitForSeconds(EntityModel.moveSpeed);
-
-            // Move entity
-            entity.MoveToward(direction);
-            // Attack location
-            entity.AttackCurrentLocation();
         }
 
         // Trigger stop event
-        GameEvents.instance.TriggerOnEntityMove(entity, entity.location, entity.location);
+        GameEvents.instance.TriggerOnEntityMove(entity, false);
+
+        // Trigger move event
+        GameEvents.instance.TriggerOnEntityReadyWeapon(entity, false);
+        //GameEvents.instance.TriggerOnEntityMove(entity, entity.location, entity.location);
 
         // Finnish!
     }

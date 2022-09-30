@@ -154,7 +154,7 @@ TextureImporter:
         width: 96
         height: 96
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 10, y: 10, z: 10, w: 10}
       outline: []
       physicsShape: []
@@ -162,6 +162,69 @@ TextureImporter:
       bones: []
       spriteID: 5a4956e52e5f88545b9d455742bdb81a
       internalID: 513958350
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GUI p1_2
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 192
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 16, y: 16, z: 16, w: 16}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dd7aa0e13a0386344b5c0e1fe7ff9935
+      internalID: -557806640
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GUI p1_3
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 352
+        width: 96
+        height: 96
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 24, y: 24, z: 24, w: 24}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cc92758dfe95c2a4a8022df00812c218
+      internalID: 1502528633
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GUI p1_4
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 232
+        width: 80
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 25, y: 25, z: 25, w: 25}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 856b9a7cca4ab224d8e2e8c027f379dd
+      internalID: 387568199
       vertices: []
       indices: 
       edges: []
@@ -178,8 +241,11 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       GUI p1_0: -533628472
+      GUI p1_3: 1502528633
       GUI p1_1: 513958350
+      GUI p1_2: -557806640
       GUI_4x_0: -1086368509
+      GUI p1_4: 387568199
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
