@@ -15,12 +15,16 @@ MonoBehaviour:
   name: Goblin
   maxHealth: 1
   currentHealth: 1
+  level: 1
+  experience: 0
+  gold: 0
   sprite: {fileID: 21300000, guid: eb69d914fd8e0e0488086e8dae58e2e3, type: 3}
   entityModel: {fileID: 283647737362241191, guid: 66da48a646a5c264a9237a9364fc1e18, type: 3}
+  hitEffectPrefab: {fileID: 7270536486772163001, guid: 335c93a61b62ca84e9f26440c7f3ed0e, type: 3}
   AI: {fileID: 11400000, guid: 1bad9658d855af047b8e9141254e912d, type: 2}
   actions:
-  - {fileID: 11400000, guid: 3d0a5222516c54345861722ba677cba1, type: 2}
   - {fileID: 11400000, guid: 31fb65b37415e9042bc579f491dd2fa1, type: 2}
+  - {fileID: 11400000, guid: 3d0a5222516c54345861722ba677cba1, type: 2}
   weapon: {fileID: 11400000, guid: 1610aec8d0a5a934ebbd5015d4b681b8, type: 2}
   location: {x: 0, y: 0, z: 0}
   dungeon: {fileID: 0}

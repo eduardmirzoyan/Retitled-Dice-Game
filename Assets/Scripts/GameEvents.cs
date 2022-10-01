@@ -37,6 +37,7 @@ public class GameEvents : MonoBehaviour
     public event Action<Entity> onEntityGainLevel;
 
     public event Action<Entity, int> onPickup;
+    public event Action<Vector3Int> onUnlockExit;  
 
 
     public static GameEvents instance;
@@ -89,6 +90,14 @@ public class GameEvents : MonoBehaviour
         if (onTurnStart != null)
         {
             onTurnStart(entity);
+        }
+    }
+
+    public void TriggerOnTurnEnd(Entity entity)
+    {
+        if (onTurnEnd != null)
+        {
+            onTurnEnd(entity);
         }
     }
 
@@ -185,6 +194,14 @@ public class GameEvents : MonoBehaviour
         if (onPickup != null)
         {
             onPickup(entity, index);
+        }
+    }
+
+    public void TriggerUnlockExit(Vector3Int location)
+    {
+        if (onUnlockExit != null)
+        {
+            onUnlockExit(location);
         }
     }
 

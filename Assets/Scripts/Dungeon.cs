@@ -3,16 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public struct FloorTile {
-    public int gold;
-    public bool hasKey;
-
-    public FloorTile(int gold, bool hasKey) {
-        this.gold = gold;
-        this.hasKey = hasKey;
-    }
-}
-
 [CreateAssetMenu]
 public class Dungeon : ScriptableObject
 {
@@ -35,18 +25,21 @@ public class Dungeon : ScriptableObject
     /// </summary>
     public List<List<int>> pickups;
 
+    public int numKeys;
+
     public Vector3Int entranceLocation;
     public Vector3Int exitLocation;
 
     public List<Entity> enemies;
     public Player player;
 
-    public void Initialize(int width, int height, int padding)
+    public void Initialize(int width, int height, int padding, int numKeys = 2)
     {
         // Save dimensions
         this.width = width;
         this.height = height;
         this.padding = padding;
+        this.numKeys = numKeys;
 
         // Generate floor
         GenerateFloor();
@@ -74,8 +67,20 @@ public class Dungeon : ScriptableObject
         }
         else
         {
+            // Save location
+            Vector3Int spawnLocation;
+
+            do // Get random free point in dungeon
+            {
+                
+                int randX = Random.Range(padding, width + padding);
+                int randY = Random.Range(padding, height + padding);
+                spawnLocation = new Vector3Int(randX, randY);
+
+            } while (!IsValidLocation(spawnLocation));
+
             // Set spawn location
-            Vector3Int spawnLocation = new Vector3Int(padding + width / 2, padding + height / 2 + enemies.Count, 0);
+            // Vector3Int spawnLocation = new Vector3Int(padding + width / 2, padding + height / 2 + enemies.Count, 0);
 
             // Set dungeon to this
             entity.SetDungeon(this, spawnLocation);
@@ -111,6 +116,10 @@ public class Dungeon : ScriptableObject
 
         // Trigger event
         GameEvents.instance.TriggerOnRemoveEnity(entity);
+    }
+
+    public Entity[] GetAllEntities() {
+        return new Entity[] { player }.Concat(enemies).ToArray();
     }
 
     private void GenerateFloor()
@@ -193,22 +202,45 @@ public class Dungeon : ScriptableObject
 
                 // If tile is floor AND is not a wall, enemy, player or entrance/exit
                 if (floor[i][j] == 1 && walls[i][j] == 0 && enemies.All(enemy => enemy.location != pos) && player.location != pos && entranceLocation != pos && exitLocation != pos) {
-                    // Generate gold on tile by chance, 5%
-                    value = Random.Range(0, 100) <= 5 ? 2 : 0;
+                    // Generate gold on tile by chance, 3%
+                    value = Random.Range(0, 100) <= 3 ? 2 : 0;
                 }
 
                 // Add tile
                 pickups[i].Add(value);
             }
         }
+
+        // Randomly spawn keys at the end
+        for (int i = 0; i < numKeys; i++)
+        {
+            // Save location
+            Vector3Int location;
+
+            do {
+                // Generate random point in dungeon
+                int randX = Random.Range(padding, width + padding);
+                int randY = Random.Range(padding, height + padding);
+                location = new Vector3Int(randX, randY);
+
+            } while (!IsValidLocation(location));
+            
+            // Set key at this point
+            pickups[location.x][location.y] = 1;
+        }
     }
 
-    public bool IsValidLocation(Vector3Int location, bool ignoreEntity = false)
+    public bool IsValidLocation(Vector3Int location, bool ignoreEntity = false, bool ignorePickups = true)
     {
         // Make sure there is no wall
         if (walls[location.x][location.y] != 0)
         {
             return false;
+        }
+
+        // Check for pickups
+        if (!ignorePickups) {
+            // TODO?
         }
 
         // Make sure there is no player or ANY enemy there
@@ -264,5 +296,20 @@ public class Dungeon : ScriptableObject
 
         // Else we good :)
         return true;
+    }
+
+    public void UseKey() {
+        // Decrement keys
+        numKeys = Mathf.Max(numKeys - 1, 0);
+        
+        // If there are no more keys
+        if (numKeys == 0) {
+            // Open exit
+            GameEvents.instance.TriggerUnlockExit(exitLocation);
+        }
+    }
+
+    public bool ExitUnlocked() {
+        return numKeys == 0;
     }
 }

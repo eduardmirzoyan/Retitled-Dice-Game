@@ -13,6 +13,7 @@ public class EntityModel : MonoBehaviour
     [SerializeField] private Animator modelAnimator;
     [SerializeField] private Animator weaponAnimator;
     [SerializeField] private DamageFlash damageFlash;
+    [SerializeField] private DieUI dieUI;
 
     [Header("Data")]
     [SerializeField] private Entity entity;
@@ -24,6 +25,7 @@ public class EntityModel : MonoBehaviour
     private void Awake()
     {
         damageFlash = GetComponent<DamageFlash>();
+        dieUI = GetComponentInChildren<DieUI>();
     }
 
     public void Initialize(Entity entity)
@@ -37,6 +39,11 @@ public class EntityModel : MonoBehaviour
         if (entity.weapon != null)
         {
             weaponSpriteRenderer.sprite = entity.weapon.sprite;
+        }
+
+        // If entity is an AI, display it's die
+        if (entity.AI != null) {
+            dieUI.Initialize(entity.actions[0], false);
         }
 
         // Sub to events
@@ -55,6 +62,8 @@ public class EntityModel : MonoBehaviour
         GameEvents.instance.onEntityMeleeAttack -= MeleeAttack;
         GameEvents.instance.onEntityReadyWeapon -= ReadyWeapon;
         GameEvents.instance.onRemoveEntity -= RemoveEntity;
+
+        if (dieUI != null) dieUI.Uninitialize();
     }
 
     private void OnDestroy()
@@ -62,8 +71,10 @@ public class EntityModel : MonoBehaviour
         Uninitialize();
     }
 
-    private void RemoveEntity(Entity entity) {
-        if (this.entity == entity) {
+    private void RemoveEntity(Entity entity)
+    {
+        if (this.entity == entity)
+        {
             // Spawn death cloud 
             Instantiate(deathCloud, transform.position, Quaternion.identity);
 
@@ -145,8 +156,18 @@ public class EntityModel : MonoBehaviour
         // If this entity took damage
         if (this.entity == entity)
         {
+            // Play animation
+            modelAnimator.Play("Hurt");
+
             // Display damage flash
-            damageFlash.Flash();
+            if (GameManager.instance.isHitFlash)
+                damageFlash.Flash();
+
+            // Spawn particle
+            if (GameManager.instance.isHitEffect && entity.hitEffectPrefab != null)
+            {
+                Instantiate(entity.hitEffectPrefab, transform.position, transform.rotation);
+            }
         }
     }
 
@@ -158,11 +179,19 @@ public class EntityModel : MonoBehaviour
             // Play weapon animation
             weaponAnimator.Play("Attack");
 
+            // Spawn particle
+            if (GameManager.instance.isSlashEffect && entity.weapon.attackParticlePrefab != null)
+            {
+                Instantiate(entity.weapon.attackParticlePrefab, transform.position, transform.rotation);
+            }
+
             // Shake screen
-            CameraShake.instance.ScreenShake(0.15f);
+            if (GameManager.instance.isScreenShake)
+                CameraShake.instance.ScreenShake(0.15f);
 
             // Hit freeze
-            HitFreeze.instance.StartHitFreeze(0.1f);
+            if (GameManager.instance.isHitFreeze)
+                HitFreeze.instance.StartHitFreeze(0.1f);
         }
     }
 

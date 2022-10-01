@@ -22,6 +22,7 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
     [SerializeField] private List<Sprite> diceSprites;
     [SerializeField] private float travelRate = 0.1f;
     [SerializeField] private float spinRate = 3f;
+    [SerializeField] private bool isInteractable;
 
     private Transform parent;
     private bool isBeingDragged;
@@ -34,10 +35,11 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
         canvasGroup = GetComponentInChildren<CanvasGroup>();
     }
 
-    public void Initialize(Die die, Action action)
+    public void Initialize(Action action, bool isInteractable = true)
     {
-        this.die = die;
+        this.die = action.die;
         this.action = action;
+        this.isInteractable = isInteractable;
 
         // Save parent
         parent = transform.parent;
@@ -109,6 +111,8 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        if (!isInteractable) return;
+
         // If die is not exhausted
         if (!die.isExhausted)
         {
@@ -167,6 +171,8 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (!isInteractable) return;
+
         if (isBeingDragged)
         {
             if (!die.isExhausted) {
@@ -198,12 +204,16 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        if (!isInteractable) return;
+
         // Enable outline
         outline.enabled = true;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        if (!isInteractable) return;
+
         // Disable outline
         outline.enabled = false;
     }

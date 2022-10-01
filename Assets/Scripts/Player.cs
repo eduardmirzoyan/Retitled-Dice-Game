@@ -21,8 +21,8 @@ public class Player : Entity
         switch (pickUpIndex)
         {
             case 1:
-                // Pickup key
-                // TODO
+                // Use key
+                dungeon.UseKey();
                 break;
             case 2:
                 // Increment gold
@@ -34,16 +34,15 @@ public class Player : Entity
         }
 
         // Trigger event
-        GameEvents.instance.TriggerOnPickup(this, pickUpIndex); 
+        GameEvents.instance.TriggerOnPickup(this, pickUpIndex);
 
         // Set any pickup to 0
         dungeon.pickups[location.x][location.y] = 0;
-        
 
         // Take damage from any enemies?
 
         // If you are on the exit
-        if (dungeon.exitLocation == location)
+        if (dungeon.exitLocation == location && dungeon.ExitUnlocked())
         {
             // Go to next floor
             GameManager.instance.TravelToNextFloor();

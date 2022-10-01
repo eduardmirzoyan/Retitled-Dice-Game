@@ -73,13 +73,34 @@ public class TextTooltipUI : MonoBehaviour
         Vector2 adjustedPosition = Camera.main.ScreenToWorldPoint(position);
         transform.position = adjustedPosition;
 
-        // Update pivot
-        float pivotX = position.x / Screen.width;
-        float pivotY = position.y / Screen.height;
+        UpdatePivot(position);
+    }
 
+    private void UpdatePivot(Vector2 mousePosition) {
+        var width = rectTransform.rect.width;
+        var height = rectTransform.rect.height;
+
+        int pivotX = 0;
+        int pivotY = 0;
+
+        // Check if window goes off-screen on x-axis
+        // If so, 
+        if (mousePosition.x + width > Screen.width)
+        {
+            // Change pivot to right of window
+            pivotX = 1;
+        }
+
+        // Check if window goes off-screen on y-axis
+        // If so, flip vertically
+        if (mousePosition.y + height > Screen.height)
+        {
+            // Change pivot to top of window
+            pivotY = 1;
+        }
+
+        // Set updated pivot
         rectTransform.pivot = new Vector2(pivotX, pivotY);
-
-        
     }
 
 }

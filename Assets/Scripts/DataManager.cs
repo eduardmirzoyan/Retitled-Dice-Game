@@ -10,8 +10,9 @@ public class DataManager : MonoBehaviour
     // This is the template that should be copied when making a new player
     [Header("Dynamic Data")]
     [SerializeField] private Player player;
+    [SerializeField] private int floor = 1;
     [SerializeField] private int gold = 0;
-    
+
 
     public static DataManager instance;
     private void Awake()
@@ -27,22 +28,39 @@ public class DataManager : MonoBehaviour
         DontDestroyOnLoad(this);
     }
 
-    public void CreateNewPlayer() {
+    public void CreateNewPlayer()
+    {
         // Set player to a copy of the template
-        player = (Player) defaultPlayer.Copy();
+        player = (Player)defaultPlayer.Copy();
         // Initialize
         player.Initialize(defaultPlayer.maxHealth);
+
+        // Reset floor
+        floor = 1; 
     }
 
-    public Player GetPlayer() {
+    public Player GetPlayer()
+    {
         return player;
     }
 
-    public void Save() {
+    public void IncrementFloor()
+    {
+        floor++;
+    }
+
+    public int GetFloor()
+    {
+        return floor;
+    }
+
+    public void Save()
+    {
         // TODO
     }
 
-    public void Load() {
+    public void Load()
+    {
         // TODO
     }
 }

@@ -24,7 +24,7 @@ public class ActionUI : MonoBehaviour
         actionBackground.sprite = action.background;
 
         // Initialize die
-        diceUI.Initialize(action.die, action);
+        diceUI.Initialize(action);
 
         // Initalize tooltip
         tooltipTriggerUI.SetTooltip(action.name, action.description);

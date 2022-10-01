@@ -8,6 +8,7 @@ public class Weapon : ScriptableObject
     public new string name;
     public string description;
     public Sprite sprite;
+    public GameObject attackParticlePrefab;
 
     // Does nothing for now...
 

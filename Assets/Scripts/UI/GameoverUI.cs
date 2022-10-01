@@ -2,14 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class GameoverUI : MonoBehaviour
 {
     [Header("Components")]
     [SerializeField] private CanvasGroup canvasGroup;
+    [SerializeField] private TextMeshProUGUI scoreText;
 
     [Header("Data")]
     [SerializeField] private float delayDuration = 1f;
+    private Entity entity;
 
     public static GameoverUI instance;
     private void Awake() {
@@ -37,6 +40,7 @@ public class GameoverUI : MonoBehaviour
     private void ShowMenu(Entity entity) {
         // If player was killed, show menu
         if (entity is Player) {
+            this.entity = entity;
             StartCoroutine(DelayedDisplay(delayDuration));
         }
     }
@@ -49,6 +53,9 @@ public class GameoverUI : MonoBehaviour
         canvasGroup.alpha = 1f;
         canvasGroup.interactable = true;
         canvasGroup.blocksRaycasts = true;
+
+        // Update score
+        scoreText.text = "Score: " + entity.gold;
     }
 
     public void Restart() {

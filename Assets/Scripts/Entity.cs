@@ -10,11 +10,14 @@ public class Entity : ScriptableObject
     public new string name;
     public int maxHealth;
     public int currentHealth;
-    public Sprite sprite;
-    public GameObject entityModel;
     public int level = 1;
     public int experience = 0;
     public int gold = 0;
+
+    public Sprite sprite;
+    public GameObject entityModel;
+    public GameObject hitEffectPrefab;
+
 
     [Header("Variable Stats")]
     public AI AI;
@@ -50,7 +53,8 @@ public class Entity : ScriptableObject
         GameEvents.instance.TriggerOnEntityTakeDamage(this, 1);
 
         // Check if dead
-        if (currentHealth == 0) {
+        if (currentHealth == 0)
+        {
             // Remove self from dungeon
             dungeon.Depopulate(this);
         }
@@ -72,16 +76,11 @@ public class Entity : ScriptableObject
 
         // This is where interaction happens
 
-        // Only player should pick up any loot/coins?
+        // Only player, should pick up any loot/coins?
 
         // Take damage from any enemies?
 
-        // If you are on the exit
-        if (dungeon.exitLocation == location)
-        {
-            // Go to next floor
-            GameManager.instance.TravelToNextFloor();
-        }
+        // Only player, If you are on the exit
     }
 
     public void AttackCurrentLocation()
@@ -106,12 +105,14 @@ public class Entity : ScriptableObject
         }
     }
 
-    public void AddExperience(int amount) {
+    public void AddExperience(int amount)
+    {
         // Add amount
         experience += amount;
 
         // Check if more than threshold, which is 10
-        if (experience >= 10) {
+        if (experience >= 10)
+        {
             // Sub 10
             experience -= 10;
             // Increment level

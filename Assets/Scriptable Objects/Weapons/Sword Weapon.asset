@@ -15,3 +15,4 @@ MonoBehaviour:
   name: Sword
   description: Basic sword
   sprite: {fileID: -1956281420, guid: 20597968d5281954482d5d148d07fa12, type: 3}
+  attackParticlePrefab: {fileID: 2619012972811128830, guid: 7a8a1a3d35ad8cf47a78c6232b350d75, type: 3}

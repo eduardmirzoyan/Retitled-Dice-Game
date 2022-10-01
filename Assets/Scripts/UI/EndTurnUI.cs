@@ -4,9 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class EndTurnUI : MonoBehaviour, IPointerClickHandler
+public class EndTurnUI : MonoBehaviour
 {
     [SerializeField] private CanvasGroup canvasGroup;
+    [SerializeField] private Button button;
 
     private void Awake()
     {
@@ -17,21 +18,36 @@ public class EndTurnUI : MonoBehaviour, IPointerClickHandler
     {
         // Sub to events
         GameEvents.instance.onTurnStart += EnableButton;
+        GameEvents.instance.onActionPerformStart += DisableButton;
+        GameEvents.instance.onActionPerformEnd += EnableButton;
         GameEvents.instance.onTurnEnd += DisableButton;
     }
 
-    private void OnDestroy() {
+    private void OnDestroy()
+    {
         // Unsub to events
+        GameEvents.instance.onTurnStart -= EnableButton;
+        GameEvents.instance.onActionPerformStart -= DisableButton;
+        GameEvents.instance.onActionPerformEnd -= EnableButton;
+        GameEvents.instance.onTurnEnd -= DisableButton;
     }
 
     private void EnableButton(Entity entity)
     {
-        if (entity is Player) {
+        if (entity is Player)
+        {
             canvasGroup.alpha = 1f;
-            canvasGroup.interactable = true;
-            canvasGroup.blocksRaycasts = true;
+            button.interactable = true;
         }
-        
+    }
+
+    private void EnableButton(Entity entity, Action action, Vector3Int vector3Int, Dungeon dungeon) {
+        EnableButton(entity);
+    }
+
+    private void DisableButton(Entity entity, Action action, Vector3Int vector3Int, Dungeon dungeon)
+    {
+        DisableButton(entity);
     }
 
     private void DisableButton(Entity entity)
@@ -39,14 +55,7 @@ public class EndTurnUI : MonoBehaviour, IPointerClickHandler
         if (entity is Player)
         {
             canvasGroup.alpha = 0.6f;
-            canvasGroup.interactable = false;
-            canvasGroup.blocksRaycasts = false;
+            button.interactable = false;
         }
-    }
-
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        // End current turn
-        GameManager.instance.EndTurnNow();
     }
 }

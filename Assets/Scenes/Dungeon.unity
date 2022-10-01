@@ -777,7 +777,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
-  m_SortingLayerID: 0
+  m_SortingLayerID: 2021909147
   m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!224 &277073727
@@ -794,8 +794,8 @@ RectTransform:
   m_Children:
   - {fileID: 407585764}
   - {fileID: 1112841921}
-  - {fileID: 722064098}
   - {fileID: 1477862524}
+  - {fileID: 722064098}
   - {fileID: 559865070}
   - {fileID: 4308569112805680095}
   m_Father: {fileID: 0}
@@ -1390,7 +1390,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5580b13b35682546aa6316f7425531f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvasGroup: {fileID: 0}
+  canvasGroup: {fileID: 559865071}
+  scoreText: {fileID: 226846184}
   delayDuration: 1
 --- !u!1 &666034342
 GameObject:
@@ -1474,7 +1475,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 277073727}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -2070,6 +2071,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ef7f801cc3dcb447bd0e60bdcc2e648, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isHitFlash: 1
+  isHitFreeze: 1
+  isScreenShake: 1
+  isSlashEffect: 1
+  isHitEffect: 1
   dungeon: {fileID: 0}
   enemyGenerator: {fileID: 11400000, guid: 5da444bc2db111644949e8c442188c9c, type: 2}
   roundNumber: 0
@@ -2347,13 +2353,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
+  m_Maskable: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 513958350, guid: fd2f01005b1045a4da2836901e93b844, type: 3}
+  m_Sprite: {fileID: -2008185418, guid: 821c2032359591e4fb9ab701d46734dc, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2362,7 +2368,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 5
+  m_PixelsPerUnitMultiplier: 1
 --- !u!222 &1107941528
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2406,8 +2412,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -710, y: -100.00001}
-  m_SizeDelta: {x: 500, y: 680}
+  m_AnchoredPosition: {x: -703, y: -98}
+  m_SizeDelta: {x: 400, y: 680}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1112841922
 MonoBehaviour:
@@ -3180,7 +3186,9 @@ MonoBehaviour:
   wallTile: {fileID: 11400000, guid: 9b466e15bb56b7945830b1069f18a549, type: 2}
   entranceTile: {fileID: 11400000, guid: 900b815570871cf4d8aae9a6de27b4cf, type: 2}
   exitTile: {fileID: 11400000, guid: c06acb877b00c4e49a02f710e7e680fc, type: 2}
+  floorExitPrefab: {fileID: 908043782509341751, guid: 7cb50fb6c8411f940a556b4aad0006dc, type: 3}
   goldPickupPrefab: {fileID: 3206589310926085330, guid: b8a2790d6759d35448c12a8144bd4711, type: 3}
+  keyPickupPrefab: {fileID: 4200476590718619888, guid: 680070ea6f3b9474ca619c2453c9a2cf, type: 3}
 --- !u!1 &1477862523
 GameObject:
   m_ObjectHideFlags: 0
@@ -3215,12 +3223,12 @@ RectTransform:
   - {fileID: 1107941526}
   - {fileID: 1913505219}
   m_Father: {fileID: 277073727}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -710, y: -489.99997}
-  m_SizeDelta: {x: 500, y: 100}
+  m_AnchoredPosition: {x: -702.99994, y: -488}
+  m_SizeDelta: {x: 400, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1477862525
 MonoBehaviour:
@@ -3241,7 +3249,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 2
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -3251,10 +3259,10 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
+    m_HighlightedSprite: {fileID: -2008185418, guid: 821c2032359591e4fb9ab701d46734dc, type: 3}
+    m_PressedSprite: {fileID: -1251645001, guid: 821c2032359591e4fb9ab701d46734dc, type: 3}
+    m_SelectedSprite: {fileID: -2008185418, guid: 821c2032359591e4fb9ab701d46734dc, type: 3}
+    m_DisabledSprite: {fileID: 1536661297, guid: 821c2032359591e4fb9ab701d46734dc, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
@@ -3265,7 +3273,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1107941527}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 827315596}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: EndTurnNow
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!225 &1477862526
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -3275,8 +3295,8 @@ CanvasGroup:
   m_GameObject: {fileID: 1477862523}
   m_Enabled: 1
   m_Alpha: 0
-  m_Interactable: 0
-  m_BlocksRaycasts: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
 --- !u!114 &1477862527
 MonoBehaviour:
@@ -3290,7 +3310,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 810cc9a0591165649a2036ded0f27009, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvasGroup: {fileID: 0}
+  canvasGroup: {fileID: 1477862526}
+  button: {fileID: 1477862525}
 --- !u!1 &1513569505
 GameObject:
   m_ObjectHideFlags: 0
@@ -4720,9 +4741,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -108.66998}
   m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0, y: 1}
+  m_Pivot: {x: 0, y: 0}
 --- !u!114 &4308569113178651378
 MonoBehaviour:
   m_ObjectHideFlags: 0
