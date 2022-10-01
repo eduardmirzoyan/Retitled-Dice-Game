@@ -6,7 +6,7 @@ using System;
 public class GameEvents : MonoBehaviour
 {
     public event Action<Dungeon> onEnterFloor;
-    public event Action<Entity> onGenerateEntity;
+    public event Action<Entity> onSpawnEntity;
     public event Action<Entity> onRemoveEntity;
     public event Action<Dungeon> onExitFloor;
 
@@ -30,8 +30,13 @@ public class GameEvents : MonoBehaviour
     public event Action<Entity, bool> onEntityMove;
     public event Action<Entity, bool> onEntityReadyWeapon;
     public event Action<Entity> onEntityMeleeAttack;
+
+    // Stat changes
     public event Action<Entity, int> onEntityTakeDamage;
-    
+    public event Action<Entity> onEntityGainExperience;
+    public event Action<Entity> onEntityGainLevel;
+
+    public event Action<Entity, int> onPickup;
 
 
     public static GameEvents instance;
@@ -63,11 +68,11 @@ public class GameEvents : MonoBehaviour
         }
     }
 
-    public void TriggerOnGenerateEnity(Entity entity)
+    public void TriggerOnSpawnEnity(Entity entity)
     {
-        if (onGenerateEntity != null)
+        if (onSpawnEntity != null)
         {
-            onGenerateEntity(entity);
+            onSpawnEntity(entity);
         }
     }
 
@@ -172,6 +177,30 @@ public class GameEvents : MonoBehaviour
         if (onEntityReadyWeapon != null)
         {
             onEntityReadyWeapon(entity, state);
+        }
+    }
+
+    public void TriggerOnPickup(Entity entity, int index)
+    {
+        if (onPickup != null)
+        {
+            onPickup(entity, index);
+        }
+    }
+
+    public void TriggerOnGainExperience(Entity entity)
+    {
+        if (onEntityGainExperience != null)
+        {
+            onEntityGainExperience(entity);
+        }
+    }
+
+    public void TriggerOnGainLevel(Entity entity)
+    {
+        if (onEntityGainLevel != null)
+        {
+            onEntityGainLevel(entity);
         }
     }
 }

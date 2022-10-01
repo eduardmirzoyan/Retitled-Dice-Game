@@ -5,8 +5,6 @@ using UnityEngine.Tilemaps;
 
 public class DungeonUI : MonoBehaviour
 {
-    public static DungeonUI instance;
-
     [Header("Components")]
     [SerializeField] public Tilemap floorTilemap;
     [SerializeField] private Tilemap wallsTilemap;
@@ -18,7 +16,9 @@ public class DungeonUI : MonoBehaviour
     [SerializeField] private RuleTile wallTile;
     [SerializeField] private Tile entranceTile;
     [SerializeField] private Tile exitTile;
+    [SerializeField] private GameObject goldPickupPrefab;
 
+    public static DungeonUI instance;
     private void Awake() {
         // Singleton Logic
         if (DungeonUI.instance != null)
@@ -32,13 +32,13 @@ public class DungeonUI : MonoBehaviour
     private void Start() {
         // Sub
         GameEvents.instance.onEnterFloor += SpawnDungeon;
-        GameEvents.instance.onGenerateEntity += SpawnEntity;
+        GameEvents.instance.onSpawnEntity += SpawnEntity;
     }
 
     private void OnDestroy() {
         // Unsub
         GameEvents.instance.onEnterFloor -= SpawnDungeon;
-        GameEvents.instance.onGenerateEntity -= SpawnEntity;
+        GameEvents.instance.onSpawnEntity -= SpawnEntity;
     }
 
     private void Update()
@@ -61,30 +61,40 @@ public class DungeonUI : MonoBehaviour
 
         // Draw dungeon
         if (dungeon != null) {
-            // Sub to events
+            Vector3Int position;
 
             // Loop through all spaces in the dungeon
             for (int i = 0; i < dungeon.walls.Count; i++)
             {
                 for (int j = 0; j < dungeon.walls[i].Count; j++)
                 {
+                    // Set position being considered
+                    position = new Vector3Int(i, j, 0);
+
                     // Check if floor exists here
                     if (dungeon.floor[i][j] == 1)
                     {
                         // Set tile to floor
-                        floorTilemap.SetTile(new Vector3Int(i, j, 0), floorTile);
+                        floorTilemap.SetTile(position, floorTile);
                     }
 
                     // Check if wall exists here
                     if (dungeon.walls[i][j] == 1)
                     {
                         // Set tile to floor
-                        wallsTilemap.SetTile(new Vector3Int(i, j, 0), wallTile);
+                        wallsTilemap.SetTile(position, wallTile);
+                    }
+
+                    // Check if coin exits here
+                    if (dungeon.pickups[i][j] == 2) {
+                        // Spawn coin
+                        var gold = Instantiate(goldPickupPrefab, floorTilemap.GetCellCenterWorld(position), Quaternion.identity).GetComponent<GoldPickup>();
+                        gold.Initialize(position);
                     }
                 }
             }
 
-            // Draw entrance TODO
+            // Draw entrance
             decorTilemap.SetTile(dungeon.entranceLocation, entranceTile);
 
             // Draw exit
@@ -102,7 +112,7 @@ public class DungeonUI : MonoBehaviour
 
             // Unsub to events
             GameEvents.instance.onEnterFloor -= SpawnDungeon;
-            GameEvents.instance.onGenerateEntity -= SpawnEntity;
+            GameEvents.instance.onSpawnEntity -= SpawnEntity;
         }
         
     }

@@ -10,6 +10,7 @@ public class ActionUI : MonoBehaviour
     [SerializeField] private Image actionBackground;
     [SerializeField] private DieUI diceUI;
     [SerializeField] private CanvasGroup canvasGroup;
+    [SerializeField] private TooltipTriggerUI tooltipTriggerUI;
 
     [Header("Data")]
     [SerializeField] private Action action;
@@ -24,6 +25,9 @@ public class ActionUI : MonoBehaviour
 
         // Initialize die
         diceUI.Initialize(action.die, action);
+
+        // Initalize tooltip
+        tooltipTriggerUI.SetTooltip(action.name, action.description);
 
         // Sub to events
         GameEvents.instance.onTurnStart += AllowInteraction;

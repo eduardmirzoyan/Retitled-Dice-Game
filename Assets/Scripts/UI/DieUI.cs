@@ -93,7 +93,7 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
     {
         if (this.die == die)
         {
-            canvasGroup.alpha = 0.6f;
+            canvasGroup.alpha = 0.4f;
             canvasGroup.blocksRaycasts = false;
         }
     }
@@ -113,7 +113,7 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
         if (!die.isExhausted)
         {
             // Update visually
-            canvasGroup.alpha = 0.6f;
+            canvasGroup.alpha = 0.4f;
             canvasGroup.blocksRaycasts = false;
 
             // Enable shadow
@@ -173,10 +173,10 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
                 // Update visually
                 canvasGroup.alpha = 1f;
                 canvasGroup.blocksRaycasts = true;
-
-                // Disable shadow
-                shadow.enabled = false;
             }
+
+            // Disable shadow
+            shadow.enabled = false;
 
             // Return to parent
             rectTransform.SetParent(parent);

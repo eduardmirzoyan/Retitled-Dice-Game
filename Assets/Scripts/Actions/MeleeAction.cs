@@ -83,7 +83,6 @@ public class MeleeAction : Action
 
             // Trigger move event
             GameEvents.instance.TriggerOnEntityMove(entity, true);
-            //GameEvents.instance.TriggerOnEntityMove(entity, entity.location, entity.location + direction);
 
             // Attack location
             entity.AttackCurrentLocation();
@@ -97,8 +96,8 @@ public class MeleeAction : Action
 
         // Trigger move event
         GameEvents.instance.TriggerOnEntityReadyWeapon(entity, false);
-        //GameEvents.instance.TriggerOnEntityMove(entity, entity.location, entity.location);
 
         // Finnish!
+        yield return null;
     }
 }

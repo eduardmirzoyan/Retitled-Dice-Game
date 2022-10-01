@@ -4,16 +4,18 @@ using UnityEngine;
 
 public class PauseManager : MonoBehaviour
 {
-    public static PauseManager instance;
+    [Header("Components")]
     [SerializeField] private CanvasGroup canvasGroup;
 
+    [Header("Data")]
     [SerializeField] private KeyCode pauseKey = KeyCode.Escape;
     [SerializeField] private bool isPaused;
 
+    public static PauseManager instance;
     private void Awake()
     {
         // Singleton logic
-        if (instance != null)
+        if (PauseManager.instance != null)
         {
             Destroy(this);
             return;

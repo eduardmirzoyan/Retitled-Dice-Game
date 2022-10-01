@@ -8,11 +8,13 @@ public class Entity : ScriptableObject
 {
     [Header("Basic Stats")]
     public new string name;
-    public int maxHealth; // Max Health of this entity
-    public int currentHealth; // Current Health of this entity
+    public int maxHealth;
+    public int currentHealth;
     public Sprite sprite;
     public GameObject entityModel;
-
+    public int level = 1;
+    public int experience = 0;
+    public int gold = 0;
 
     [Header("Variable Stats")]
     public AI AI;
@@ -60,7 +62,7 @@ public class Entity : ScriptableObject
         currentHealth = Mathf.Min(currentHealth + 1, maxHealth);
     }
 
-    public void MoveToward(Vector3Int direction)
+    public virtual void MoveToward(Vector3Int direction)
     {
         // Make sure you are only moving 1 tile at a time
         if (direction.magnitude > 1) throw new System.Exception("DIRECTION MAG is NOT 1");
@@ -70,7 +72,7 @@ public class Entity : ScriptableObject
 
         // This is where interaction happens
 
-        // Pick up any loot/coins
+        // Only player should pick up any loot/coins?
 
         // Take damage from any enemies?
 
@@ -102,6 +104,25 @@ public class Entity : ScriptableObject
                 target.TakeDamage(1);
             }
         }
+    }
+
+    public void AddExperience(int amount) {
+        // Add amount
+        experience += amount;
+
+        // Check if more than threshold, which is 10
+        if (experience >= 10) {
+            // Sub 10
+            experience -= 10;
+            // Increment level
+            level++;
+
+            // Trigger event
+            GameEvents.instance.TriggerOnGainLevel(this);
+        }
+
+        // Trigger event
+        GameEvents.instance.TriggerOnGainExperience(this);
     }
 
     public Entity Copy()

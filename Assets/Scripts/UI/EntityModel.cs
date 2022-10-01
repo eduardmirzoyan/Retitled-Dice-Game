@@ -101,29 +101,6 @@ public class EntityModel : MonoBehaviour
 
                 // Done :)
             }
-            // // If from == to, this is a stop command
-            // if (from == to)
-            // {
-            //     // Stop animation
-            //     modelAnimator.Play("Idle");
-            //     return;
-            // }
-
-            // if (coroutine != null) StopCoroutine(coroutine);
-
-            // // Get world positions
-            // Vector3 startPoint = DungeonUI.instance.floorTilemap.GetCellCenterWorld(from);
-            // Vector3 endPoint = DungeonUI.instance.floorTilemap.GetCellCenterWorld(to);
-
-            // // Check if sprite should be flipped
-            // Vector3 dir = to - from;
-            // FlipSprite(dir);
-
-            // // Start animation
-            // modelAnimator.Play("Run");
-
-            // // Start moving routine
-            // coroutine = StartCoroutine(Move(startPoint, endPoint, moveSpeed));
         }
     }
 
@@ -180,6 +157,12 @@ public class EntityModel : MonoBehaviour
         {
             // Play weapon animation
             weaponAnimator.Play("Attack");
+
+            // Shake screen
+            CameraShake.instance.ScreenShake(0.15f);
+
+            // Hit freeze
+            HitFreeze.instance.StartHitFreeze(0.1f);
         }
     }
 

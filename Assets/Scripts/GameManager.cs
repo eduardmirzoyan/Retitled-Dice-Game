@@ -60,12 +60,14 @@ public class GameManager : MonoBehaviour
         // Need to make queue to decide enemy turn order
         yield return GenerateTurnQueue();
 
+        // Generate pickups
+        dungeon.GeneratePickups();
+
         // Trigger event
         GameEvents.instance.TriggerOnEnterFloor(dungeon);
 
         // Open scene on player
         var location = DungeonUI.instance.GetLocationCenter(dungeon.player.location);
-        // print(location);
         TransitionManager.instance.OpenScene(location);
 
         // Start the first turn
@@ -105,9 +107,6 @@ public class GameManager : MonoBehaviour
 
         // Populate the dungeon
         dungeon.Populate(player);
-
-        // Trigger event
-        GameEvents.instance.TriggerOnGenerateEnity(player);
 
         // Finish
         yield return null;
@@ -227,7 +226,7 @@ public class GameManager : MonoBehaviour
         GameEvents.instance.TriggerOnLocationSelect(location);
 
         // Perform the selected Action
-        if (coroutine != null) StopCoroutine(coroutine);
+        // if (coroutine != null) StopCoroutine(coroutine);
 
         coroutine = StartCoroutine(PerformSelectedAction());
     }
@@ -288,10 +287,6 @@ public class GameManager : MonoBehaviour
 
         // Trigger event
         GameEvents.instance.TriggerOnExitFloor(dungeon);
-    }
-
-    public void GameOver() {
-        // TODO
     }
 
     public void TravelToNextFloor()

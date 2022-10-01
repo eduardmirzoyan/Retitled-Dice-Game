@@ -3,6 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
+public struct FloorTile {
+    public int gold;
+    public bool hasKey;
+
+    public FloorTile(int gold, bool hasKey) {
+        this.gold = gold;
+        this.hasKey = hasKey;
+    }
+}
+
 [CreateAssetMenu]
 public class Dungeon : ScriptableObject
 {
@@ -10,13 +20,25 @@ public class Dungeon : ScriptableObject
     public int height;
     public int padding;
 
-    public List<List<int>> floor; // 0 = empty, 1 = exists, null is problem
-    public List<List<int>> walls; // 0 = empty, 1 = exists, null is problem
+    /// <summary>
+    /// 0 = empty; 1 = exists
+    /// </summary>
+    public List<List<int>> floor;
+
+    /// <summary>
+    /// 0 = empty; 1 = exists
+    /// </summary>
+    public List<List<int>> walls;
+
+    /// <summary>
+    /// 0 = empty; 1 = key; 2 = gold
+    /// </summary>
+    public List<List<int>> pickups;
 
     public Vector3Int entranceLocation;
     public Vector3Int exitLocation;
 
-    public List<Entity> enemies; // ?
+    public List<Entity> enemies;
     public Player player;
 
     public void Initialize(int width, int height, int padding)
@@ -25,8 +47,6 @@ public class Dungeon : ScriptableObject
         this.width = width;
         this.height = height;
         this.padding = padding;
-
-        enemies = new List<Entity>();
 
         // Generate floor
         GenerateFloor();
@@ -39,6 +59,9 @@ public class Dungeon : ScriptableObject
 
         // Generate exit
         GenerateExit();
+
+        // Initalize lists
+        enemies = new List<Entity>();
     }
 
     public void Populate(Entity entity)
@@ -62,7 +85,7 @@ public class Dungeon : ScriptableObject
         }
 
         // Trigger event
-        GameEvents.instance.TriggerOnGenerateEnity(entity);
+        GameEvents.instance.TriggerOnSpawnEnity(entity);
     }
 
     public void Depopulate(Entity entity)
@@ -73,10 +96,7 @@ public class Dungeon : ScriptableObject
             // Debug
             Debug.Log("GAME OVER!");
 
-            // Remove player
-            // player = null;
-
-            // Gameover!
+            // GAME OVER!
         }
         // Else attempt to remove it from enemies
         else if (enemies.Remove(entity))
@@ -156,6 +176,33 @@ public class Dungeon : ScriptableObject
         exitLocation = new Vector3Int(2 * padding + width - entranceLocation.x - 1, 2 * padding + height - entranceLocation.y - 1);
     }
 
+    public void GeneratePickups() {
+        // Initialize
+        pickups = new List<List<int>>();
+        
+        // Loop through all tiles
+        for (int i = 0; i < floor.Count; i++)
+        {
+            // Make new row
+            pickups.Add(new List<int>());
+            for (int j = 0; j < floor[i].Count; j++)
+            {
+                // Get vector
+                Vector3Int pos = new Vector3Int(i, j);
+                int value = 0;
+
+                // If tile is floor AND is not a wall, enemy, player or entrance/exit
+                if (floor[i][j] == 1 && walls[i][j] == 0 && enemies.All(enemy => enemy.location != pos) && player.location != pos && entranceLocation != pos && exitLocation != pos) {
+                    // Generate gold on tile by chance, 5%
+                    value = Random.Range(0, 100) <= 5 ? 2 : 0;
+                }
+
+                // Add tile
+                pickups[i].Add(value);
+            }
+        }
+    }
+
     public bool IsValidLocation(Vector3Int location, bool ignoreEntity = false)
     {
         // Make sure there is no wall
@@ -172,7 +219,6 @@ public class Dungeon : ScriptableObject
                 return false;
             }
         }
-
 
         // Else you're good to go :)
         return true;
