@@ -24,17 +24,17 @@ public class IndicatorDisplayUI : MonoBehaviour
         GameEvents.instance.onLocationSelect -= DespawnIndicators;
     }
 
-    private void SpawnIndicators(Entity entity, Action action, Dungeon dungeon)
+    private void SpawnIndicators(Entity entity, Action action, Room room)
     {
         if (action != null) {
             // Get a list of all valid locations by this action
-            var validLocations = action.GetValidLocations(entity.location, dungeon);
+            var validLocations = action.GetValidLocations(entity.location, room);
 
             // Display all of the action's valid locations
             foreach (var targetLocation in validLocations)
             {
                 // Get world position from UI
-                var worldLocation = DungeonUI.instance.floorTilemap.GetCellCenterWorld(targetLocation);
+                var worldLocation = RoomUI.instance.floorTilemap.GetCellCenterWorld(targetLocation);
                 // Instaniate as child
                 var indicatorUI = Instantiate(indicatorUIPrefab, worldLocation, Quaternion.identity, transform).GetComponent<LocationIndicatorUI>();
                 

@@ -22,8 +22,8 @@ public class LocationIndicatorUI : MonoBehaviour, IPointerEnterHandler, IPointer
         actionIcon.sprite = action.icon;
 
         // Get world Position
-        var worldSourceLocation = DungeonUI.instance.floorTilemap.GetCellCenterWorld(source);
-        var worldLocation = DungeonUI.instance.floorTilemap.GetCellCenterWorld(location);
+        var worldSourceLocation = RoomUI.instance.floorTilemap.GetCellCenterWorld(source);
+        var worldLocation = RoomUI.instance.floorTilemap.GetCellCenterWorld(location);
 
         // Draw line from source to location
         lineRenderer.SetPosition(0, worldSourceLocation);

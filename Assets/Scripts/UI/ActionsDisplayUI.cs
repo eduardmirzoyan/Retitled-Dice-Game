@@ -19,7 +19,7 @@ public class ActionsDisplayUI : MonoBehaviour
         GameEvents.instance.onEnterFloor -= DisplayPlayerActions;
     }
 
-    private void DisplayPlayerActions(Dungeon dungeon)
+    private void DisplayPlayerActions(Room dungeon)
     {
         if (dungeon != null)
         {

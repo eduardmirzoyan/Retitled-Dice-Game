@@ -6,7 +6,7 @@ using UnityEngine;
 public class AI : ScriptableObject
 {
     // Hard coded so far, but action 0 should be move, action 1 is attack
-    public (Action, Vector3Int) GenerateBestDecision(Entity entity, Dungeon dungeon)
+    public (Action, Vector3Int) GenerateBestDecision(Entity entity, Room dungeon)
     {
         // Only consider the first action of the entity
         var moveAction = entity.actions[0];
@@ -18,8 +18,11 @@ public class AI : ScriptableObject
         foreach (var location in meleeAction.GetValidLocations(entity.location, dungeon))
         {
             // If there is a location crosses the player
-            if (IsCBetweenAB(entity.location, location, dungeon.player.location))
+            if (IsBetween(entity.location, location, dungeon.player.location))
             {
+                // Debug
+                Debug.Log("Yielded true with the vectors, A: " + entity.location + " B: " + location + " C: " + dungeon.player.location);
+                
                 // Finish
                 return (meleeAction, location);
             }
@@ -62,5 +65,27 @@ public class AI : ScriptableObject
     private bool IsCBetweenAB(Vector3 A, Vector3 B, Vector3 C)
     {
         return Vector3.Dot((B - A).normalized, (C - B).normalized) < 0f && Vector3.Dot((A - B).normalized, (C - A).normalized) < 0f;
+    }
+
+    private bool IsBetween(Vector3Int point1, Vector3Int point2, Vector3Int currPoint) {
+        int dxc = currPoint.x - point1.x;
+        int dyc = currPoint.y - point1.y;
+
+        int dxl = point2.x - point1.x;
+        int dyl = point2.y - point1.y;
+
+        int cross = dxc * dyl - dyc * dxl;
+
+        if (cross != 0)
+            return false;
+
+        if (Mathf.Abs(dxl) >= Mathf.Abs(dyl))
+            return dxl > 0 ?
+              point1.x <= currPoint.x && currPoint.x <= point2.x :
+              point2.x <= currPoint.x && currPoint.x <= point1.x;
+        else
+            return dyl > 0 ?
+              point1.y <= currPoint.y && currPoint.y <= point2.y :
+              point2.y <= currPoint.y && currPoint.y <= point1.y;
     }
 }

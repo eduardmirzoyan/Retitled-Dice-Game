@@ -9,7 +9,6 @@ public class FloorExit : MonoBehaviour
 
     [Header("Data")]
     [SerializeField] private Vector3Int location;
-    [SerializeField] private bool isLocked;
 
     private void Awake() {
         animator = GetComponentInChildren<Animator>();
@@ -17,7 +16,6 @@ public class FloorExit : MonoBehaviour
 
     public void Initialize(Vector3Int location) {
         this.location = location;
-        isLocked = true;
 
         // Lock door
         animator.Play("Lock");
@@ -33,8 +31,6 @@ public class FloorExit : MonoBehaviour
 
     public void Unlock(Vector3Int location) {
         if (this.location == location) {
-            isLocked = false;
-
             // Unlock door
             animator.Play("Unlock");
         }

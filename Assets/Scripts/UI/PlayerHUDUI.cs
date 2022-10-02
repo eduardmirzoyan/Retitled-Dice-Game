@@ -13,6 +13,7 @@ public class PlayerHUDUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI goldText;
     [SerializeField] private TextMeshProUGUI levelText;
     [SerializeField] private Slider experienceSlider;
+    [SerializeField] private TextMeshProUGUI experienceText;
 
     [Header("Data")]
     [SerializeField] private Entity entity;
@@ -58,8 +59,8 @@ public class PlayerHUDUI : MonoBehaviour
             UpdateIcon();
             UpdateHealth(entity, 0);
             UpdateGold(entity, 2);
-            UpdateExperience(entity);
-            UpdateLevel(entity);
+            UpdateExperience(entity, 0);
+            UpdateLevel(entity, 0);
 
             // Display
             canvasGroup.alpha = 1f;
@@ -104,16 +105,18 @@ public class PlayerHUDUI : MonoBehaviour
         }
     }
 
-    public void UpdateExperience(Entity entity)
+    public void UpdateExperience(Entity entity, int amount)
     {
         if (this.entity == entity)
         {
             experienceSlider.value = entity.experience;
+            experienceText.text  = entity.experience + " / 10 XP";
+            
         }
 
     }
 
-    public void UpdateLevel(Entity entity)
+    public void UpdateLevel(Entity entity, int amount)
     {
         if (this.enabled == entity)
         {

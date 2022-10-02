@@ -11,7 +11,6 @@ public class DataManager : MonoBehaviour
     [Header("Dynamic Data")]
     [SerializeField] private Player player;
     [SerializeField] private int floor = 1;
-    [SerializeField] private int gold = 0;
 
 
     public static DataManager instance;
@@ -49,7 +48,7 @@ public class DataManager : MonoBehaviour
         floor++;
     }
 
-    public int GetFloor()
+    public int GetRoomNumber()
     {
         return floor;
     }

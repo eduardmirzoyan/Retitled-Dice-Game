@@ -6,6 +6,7 @@ using UnityEngine;
 public class EntityModel : MonoBehaviour
 {
     public static float moveSpeed = 0.35f;
+    public static float warpSpeed = 0.5f;
 
     [Header("Components")]
     [SerializeField] private SpriteRenderer modelSpriteRenderer;
@@ -14,6 +15,8 @@ public class EntityModel : MonoBehaviour
     [SerializeField] private Animator weaponAnimator;
     [SerializeField] private DamageFlash damageFlash;
     [SerializeField] private DieUI dieUI;
+    [SerializeField] private ParticleSystem warpGenerateParticles;
+    [SerializeField] private ParticleSystem warpDustParticles;
 
     [Header("Data")]
     [SerializeField] private Entity entity;
@@ -41,13 +44,15 @@ public class EntityModel : MonoBehaviour
             weaponSpriteRenderer.sprite = entity.weapon.sprite;
         }
 
-        // If entity is an AI, display it's die
-        if (entity.AI != null) {
+        // If entity is an AI, display it's first die
+        if (entity.AI != null)
+        {
             dieUI.Initialize(entity.actions[0], false);
         }
 
         // Sub to events
         GameEvents.instance.onEntityMove += MoveEntity;
+        GameEvents.instance.onEntityWarp += WarpEntity;
         GameEvents.instance.onEntityTakeDamage += TakeDamage;
         GameEvents.instance.onEntityMeleeAttack += MeleeAttack;
         GameEvents.instance.onEntityReadyWeapon += ReadyWeapon;
@@ -58,6 +63,7 @@ public class EntityModel : MonoBehaviour
     {
         // Unsub to events
         GameEvents.instance.onEntityMove -= MoveEntity;
+        GameEvents.instance.onEntityWarp -= WarpEntity;
         GameEvents.instance.onEntityTakeDamage -= TakeDamage;
         GameEvents.instance.onEntityMeleeAttack -= MeleeAttack;
         GameEvents.instance.onEntityReadyWeapon -= ReadyWeapon;
@@ -94,8 +100,8 @@ public class EntityModel : MonoBehaviour
                 modelAnimator.Play("Run");
 
                 // Get positions
-                Vector3 startPoint = transform.position; // DungeonUI.instance.floorTilemap.GetCellCenterWorld(transform.position);
-                Vector3 endPoint = DungeonUI.instance.floorTilemap.GetCellCenterWorld(entity.location);
+                Vector3 startPoint = transform.position;
+                Vector3 endPoint = RoomUI.instance.floorTilemap.GetCellCenterWorld(entity.location);
 
                 // Check if sprite should be flipped
                 Vector3 dir = endPoint - startPoint;
@@ -115,6 +121,60 @@ public class EntityModel : MonoBehaviour
         }
     }
 
+    private void WarpEntity(Entity entity)
+    {
+        if (this.entity == entity)
+        {
+
+            // Get world location
+            Vector3 newLocation = RoomUI.instance.floorTilemap.GetCellCenterWorld(entity.location);
+
+            // Start routine
+            if (coroutine != null) StopCoroutine(coroutine);
+            coroutine = StartCoroutine(Warp(newLocation, warpSpeed));
+        }
+    }
+
+    private IEnumerator Move(Vector3 startPoint, Vector3 endPoint, float duration)
+    {
+        // Start timer
+        Vector3 position;
+        float elapsed = 0;
+        while (elapsed < duration)
+        {
+            // Lerp model position
+            position = Vector3.Lerp(startPoint, endPoint, elapsed / duration);
+            transform.position = position;
+
+            // Increment time
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        // Set to final destination
+        transform.position = endPoint;
+    }
+
+    private IEnumerator Warp(Vector3 newLocation, float duration)
+    {
+        // Start particles
+        warpGenerateParticles.Play();
+
+        // Wait
+        yield return new WaitForSeconds(duration);
+
+        // Spawn dust
+        warpDustParticles.Play();
+
+        // Stop particles
+        warpGenerateParticles.Stop();
+
+        yield return null;
+
+        // Move transform
+        transform.position = newLocation;
+    }
+
     private void FlipModel(Vector3 direction)
     {
         // If you are moving right and facing left, then flip
@@ -131,30 +191,10 @@ public class EntityModel : MonoBehaviour
         }
     }
 
-    private IEnumerator Move(Vector3 startPoint, Vector3 endPoint, float duration)
-    {
-        // Start timer
-        Vector3 position;
-        float timer = 0;
-        while (timer < duration)
-        {
-            // Lerp model position
-            position = Vector3.Lerp(startPoint, endPoint, timer / duration);
-            transform.position = position;
-
-            // Increment time
-            timer += Time.deltaTime;
-            yield return null;
-        }
-
-        // Set to final destination
-        transform.position = endPoint;
-    }
-
     private void TakeDamage(Entity entity, int damage)
     {
         // If this entity took damage
-        if (this.entity == entity)
+        if (this.entity == entity && damage > 0)
         {
             // Play animation
             modelAnimator.Play("Hurt");

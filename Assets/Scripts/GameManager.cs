@@ -11,15 +11,12 @@ public class GameManager : MonoBehaviour
     public bool isHitEffect = true;
 
     [Header("Entity Data")]
-    [SerializeField] private Dungeon dungeon;
+    [SerializeField] private Room room;
+    [SerializeField] private RoomGenerator roomGenerator;
     [SerializeField] private EnemyGenerator enemyGenerator;
 
     [Header("Data")]
     [SerializeField] private int roundNumber = 0;
-    [SerializeField] private int dungeonWidth = 12;
-    [SerializeField] private int dungeonHeight = 12;
-    [SerializeField] private int dungeonPadding = 6;
-    [SerializeField] private int numberOfEnemies = 0;
 
     private Queue<Entity> turnQueue;
     private Entity selectedEntity;
@@ -52,35 +49,30 @@ public class GameManager : MonoBehaviour
         // Start the game
         roundNumber = 1;
 
-        // Generate the dungeon
-        yield return GenerateDungeon();
+        // Generate the room
+        yield return GenerateRoom();
 
-        // Generate player and add to dungeon
+        // Generate player and add to room
         yield return GeneratePlayer();
 
-        // Generate enemies and add to dungeon
+        // Generate enemies and add to room
         yield return GenerateEnemies();
 
-        // Generate pickups
-        dungeon.GeneratePickups();
-
         // Trigger event
-        GameEvents.instance.TriggerOnEnterFloor(dungeon);
+        GameEvents.instance.TriggerOnEnterFloor(room);
 
         // Open scene on player
-        var location = DungeonUI.instance.GetLocationCenter(dungeon.player.location);
+        var location = RoomUI.instance.GetLocationCenter(room.player.location);
         TransitionManager.instance.OpenScene(location);
 
         // Start the first round
         yield return StartRound();
     }
 
-    private IEnumerator GenerateDungeon()
+    private IEnumerator GenerateRoom()
     {
-        // Create Dungeon
-        dungeon = ScriptableObject.CreateInstance<Dungeon>();
-        // Initialize
-        dungeon.Initialize(dungeonWidth, dungeonHeight, dungeonPadding, DataManager.instance.GetFloor());
+        // Create a room
+        room = roomGenerator.GenerateRoom();
 
         // Finish
         yield return null;
@@ -89,13 +81,13 @@ public class GameManager : MonoBehaviour
     private IEnumerator GenerateEnemies()
     {
         // Spawn enemies equal to floor number
-        for (int i = 0; i < DataManager.instance.GetFloor(); i++)
+        for (int i = 0; i < DataManager.instance.GetRoomNumber(); i++)
         {
             // Generate a random enemy
             var enemy = enemyGenerator.GenerateEnemy();
 
-            // Populate the dungeon
-            dungeon.Populate(enemy);
+            // Populate the room
+            room.Populate(enemy);
         }
 
         // Finish
@@ -107,8 +99,8 @@ public class GameManager : MonoBehaviour
         // Get player from data
         var player = DataManager.instance.GetPlayer();
 
-        // Populate the dungeon
-        dungeon.Populate(player);
+        // Populate the room
+        room.Populate(player);
 
         // Finish
         yield return null;
@@ -120,10 +112,10 @@ public class GameManager : MonoBehaviour
         turnQueue = new Queue<Entity>();
 
         // First entity is always the player
-        turnQueue.Enqueue(dungeon.player);
+        turnQueue.Enqueue(room.player);
 
-        // Now pull enemes from the dungeon
-        foreach (var enemy in dungeon.enemies)
+        // Now pull enemes from the room
+        foreach (var enemy in room.enemies)
         {
             // Add enemy
             turnQueue.Enqueue(enemy);
@@ -158,8 +150,8 @@ public class GameManager : MonoBehaviour
     }
 
     private IEnumerator ResetAllDie() {
-        // Loop through all entities in dungeon
-        foreach (var entity in dungeon.GetAllEntities()) {
+        // Loop through all entities in room
+        foreach (var entity in room.GetAllEntities()) {
             // Loop through all actions
             foreach (var action in entity.actions)
             {
@@ -199,7 +191,7 @@ public class GameManager : MonoBehaviour
         if (selectedEntity.AI != null)
         {
             // Get best choice
-            (Action, Vector3Int) bestChoicePair = selectedEntity.AI.GenerateBestDecision(selectedEntity, dungeon);
+            (Action, Vector3Int) bestChoicePair = selectedEntity.AI.GenerateBestDecision(selectedEntity, room);
 
             if (bestChoicePair.Item2.z != -1) {
                 // Debug
@@ -242,7 +234,7 @@ public class GameManager : MonoBehaviour
         }
 
         // Trigger event
-        GameEvents.instance.TriggerOnActionSelect(selectedEntity, selectedAction, dungeon);
+        GameEvents.instance.TriggerOnActionSelect(selectedEntity, selectedAction, room);
     }
 
     public void ConfirmLocation(Vector3Int location)
@@ -291,13 +283,13 @@ public class GameManager : MonoBehaviour
     private IEnumerator PerformSelectedAction()
     {
         // Trigger event
-        GameEvents.instance.TriggerOnActionPerformStart(selectedEntity, selectedAction, selectedLocation, dungeon);
+        GameEvents.instance.TriggerOnActionPerformStart(selectedEntity, selectedAction, selectedLocation, room);
 
         // Perform the action and wait until it's finished
-        yield return selectedAction.Perform(selectedEntity, selectedLocation, dungeon);
+        yield return selectedAction.Perform(selectedEntity, selectedLocation, room);
 
         // After the action is performed, re-enable UI
-        GameEvents.instance.TriggerOnActionPerformEnd(selectedEntity, selectedAction, selectedLocation, dungeon);
+        GameEvents.instance.TriggerOnActionPerformEnd(selectedEntity, selectedAction, selectedLocation, room);
 
         // Reset selected values
         selectedAction = null;
@@ -344,7 +336,7 @@ public class GameManager : MonoBehaviour
         coroutine = null;
 
         // Trigger event
-        GameEvents.instance.TriggerOnExitFloor(dungeon);
+        GameEvents.instance.TriggerOnExitFloor(room);
     }
 
     public void TravelToNextFloor()
@@ -356,7 +348,7 @@ public class GameManager : MonoBehaviour
         DataManager.instance.IncrementFloor();
 
         // Reload this scene on player
-        var location = DungeonUI.instance.GetLocationCenter(dungeon.player.location);
+        var location = RoomUI.instance.GetLocationCenter(room.player.location);
         TransitionManager.instance.ReloadScene(location);
     }
 
@@ -366,7 +358,7 @@ public class GameManager : MonoBehaviour
         ExitFloor();
 
         // Load main menu on player
-        var location = DungeonUI.instance.GetLocationCenter(dungeon.player.location);
+        var location = RoomUI.instance.GetLocationCenter(room.player.location);
         TransitionManager.instance.LoadMainMenuScene(location);
     }
 }

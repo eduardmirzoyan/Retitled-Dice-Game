@@ -5,20 +5,20 @@ using System;
 
 public class GameEvents : MonoBehaviour
 {
-    public event Action<Dungeon> onEnterFloor;
+    public event Action<Room> onEnterFloor;
     public event Action<Entity> onSpawnEntity;
     public event Action<Entity> onRemoveEntity;
-    public event Action<Dungeon> onExitFloor;
+    public event Action<Room> onExitFloor;
 
     // Game state
     public event Action<Entity> onTurnStart;
     public event Action<Entity> onTurnEnd;
 
     // Action based
-    public event Action<Entity, Action, Dungeon> onActionSelect;
+    public event Action<Entity, Action, Room> onActionSelect;
     public event Action<Vector3Int> onLocationSelect;
-    public event Action<Entity, Action, Vector3Int, Dungeon> onActionPerformStart;
-    public event Action<Entity, Action, Vector3Int, Dungeon> onActionPerformEnd;
+    public event Action<Entity, Action, Vector3Int, Room> onActionPerformStart;
+    public event Action<Entity, Action, Vector3Int, Room> onActionPerformEnd;
 
 
     // Dice based
@@ -30,14 +30,15 @@ public class GameEvents : MonoBehaviour
     public event Action<Entity, bool> onEntityMove;
     public event Action<Entity, bool> onEntityReadyWeapon;
     public event Action<Entity> onEntityMeleeAttack;
+    public event Action<Entity> onEntityWarp;
 
     // Stat changes
     public event Action<Entity, int> onEntityTakeDamage;
-    public event Action<Entity> onEntityGainExperience;
-    public event Action<Entity> onEntityGainLevel;
+    public event Action<Entity, int> onEntityGainExperience;
+    public event Action<Entity, int> onEntityGainLevel;
 
     public event Action<Entity, int> onPickup;
-    public event Action<Vector3Int> onUnlockExit;  
+    public event Action<Vector3Int> onUnlockExit;
 
 
     public static GameEvents instance;
@@ -53,19 +54,19 @@ public class GameEvents : MonoBehaviour
         instance = this;
     }
 
-    public void TriggerOnEnterFloor(Dungeon dungeon)
+    public void TriggerOnEnterFloor(Room room)
     {
         if (onEnterFloor != null)
         {
-            onEnterFloor(dungeon);
+            onEnterFloor(room);
         }
     }
 
-    public void TriggerOnExitFloor(Dungeon dungeon)
+    public void TriggerOnExitFloor(Room room)
     {
         if (onExitFloor != null)
         {
-            onExitFloor(dungeon);
+            onExitFloor(room);
         }
     }
 
@@ -101,11 +102,11 @@ public class GameEvents : MonoBehaviour
         }
     }
 
-    public void TriggerOnActionSelect(Entity entity, Action action, Dungeon dungeon)
+    public void TriggerOnActionSelect(Entity entity, Action action, Room room)
     {
         if (onActionSelect != null)
         {
-            onActionSelect(entity, action, dungeon);
+            onActionSelect(entity, action, room);
         }
     }
 
@@ -117,19 +118,19 @@ public class GameEvents : MonoBehaviour
         }
     }
 
-    public void TriggerOnActionPerformStart(Entity entity, Action action, Vector3Int location, Dungeon dungeon)
+    public void TriggerOnActionPerformStart(Entity entity, Action action, Vector3Int location, Room room)
     {
         if (onActionPerformStart != null)
         {
-            onActionPerformStart(entity, action, location, dungeon);
+            onActionPerformStart(entity, action, location, room);
         }
     }
 
-    public void TriggerOnActionPerformEnd(Entity entity, Action action, Vector3Int location, Dungeon dungeon)
+    public void TriggerOnActionPerformEnd(Entity entity, Action action, Vector3Int location, Room room)
     {
         if (onActionPerformEnd != null)
         {
-            onActionPerformEnd(entity, action, location, dungeon);
+            onActionPerformEnd(entity, action, location, room);
         }
     }
 
@@ -138,6 +139,14 @@ public class GameEvents : MonoBehaviour
         if (onEntityMove != null)
         {
             onEntityMove(entity, state);
+        }
+    }
+
+    public void TriggerOnEnityWarp(Entity entity)
+    {
+        if (onEntityWarp != null)
+        {
+            onEntityWarp(entity);
         }
     }
 
@@ -205,19 +214,19 @@ public class GameEvents : MonoBehaviour
         }
     }
 
-    public void TriggerOnGainExperience(Entity entity)
+    public void TriggerOnGainExperience(Entity entity, int amount)
     {
         if (onEntityGainExperience != null)
         {
-            onEntityGainExperience(entity);
+            onEntityGainExperience(entity, amount);
         }
     }
 
-    public void TriggerOnGainLevel(Entity entity)
+    public void TriggerOnGainLevel(Entity entity, int amount)
     {
         if (onEntityGainLevel != null)
         {
-            onEntityGainLevel(entity);
+            onEntityGainLevel(entity, amount);
         }
     }
 }

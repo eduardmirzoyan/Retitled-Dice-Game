@@ -5,24 +5,16 @@ using UnityEngine;
 [CreateAssetMenu]
 public class Player : Entity
 {
-    public override void MoveToward(Vector3Int direction)
+    protected override void Interact()
     {
-        // Make sure you are only moving 1 tile at a time
-        if (direction.magnitude > 1) throw new System.Exception("DIRECTION MAG is NOT 1");
-
-        // Increment location
-        location += direction;
-
-        // ~~~~~ This is where interactions happen ~~~~~
-
-        int pickUpIndex = dungeon.pickups[location.x][location.y];
+        int pickUpIndex = room.pickups[location.x][location.y];
 
         // Pick up any loot/coins
         switch (pickUpIndex)
         {
             case 1:
                 // Use key
-                dungeon.UseKey();
+                room.UseKey();
                 break;
             case 2:
                 // Increment gold
@@ -37,15 +29,20 @@ public class Player : Entity
         GameEvents.instance.TriggerOnPickup(this, pickUpIndex);
 
         // Set any pickup to 0
-        dungeon.pickups[location.x][location.y] = 0;
+        room.pickups[location.x][location.y] = 0;
 
         // Take damage from any enemies?
 
         // If you are on the exit
-        if (dungeon.exitLocation == location && dungeon.ExitUnlocked())
+        if (room.exitLocation == location && room.ExitUnlocked())
         {
             // Go to next floor
             GameManager.instance.TravelToNextFloor();
         }
+    }
+
+    protected override void OnDeath()
+    {
+        // Does nothing
     }
 }

@@ -59,7 +59,7 @@ public class ActionUI : MonoBehaviour
         }
     }
 
-    private void AllowInteraction(Entity entity, Action action, Vector3Int location, Dungeon dungeon)
+    private void AllowInteraction(Entity entity, Action action, Vector3Int location, Room room)
     {
         // Prevent touching of dice
         if (entity is Player)
@@ -70,7 +70,7 @@ public class ActionUI : MonoBehaviour
         }
     }
 
-    private void PreventInteraction(Entity entity, Action action, Vector3Int location, Dungeon dungeon)
+    private void PreventInteraction(Entity entity, Action action, Vector3Int location, Room room)
     {
         // Prevent the touching of dice
         if (entity is Player)

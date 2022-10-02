@@ -12,9 +12,9 @@ public abstract class Action : ScriptableObject
     
     public Die die;
 
-    public abstract List<Vector3Int> GetValidLocations(Vector3Int startLocation, Dungeon dungeon);
+    public abstract List<Vector3Int> GetValidLocations(Vector3Int startLocation, Room dungeon);
 
-    public abstract IEnumerator Perform(Entity entity, Vector3Int targetLocation, Dungeon dungeon);
+    public abstract IEnumerator Perform(Entity entity, Vector3Int targetLocation, Room dungeon);
 
     public Action Copy() {
         // Make a copy

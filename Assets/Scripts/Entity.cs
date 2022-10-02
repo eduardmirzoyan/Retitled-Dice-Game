@@ -27,7 +27,7 @@ public class Entity : ScriptableObject
 
     [Header("Dungeon Dependant")]
     public Vector3Int location; // Location of this entity on the floor
-    public Dungeon dungeon;
+    public Room room;
 
     public virtual void Initialize(int maxHealth)
     {
@@ -35,9 +35,9 @@ public class Entity : ScriptableObject
         currentHealth = maxHealth;
     }
 
-    public void SetDungeon(Dungeon dungeon, Vector3Int spawnLocation)
+    public void SetRoom(Room dungeon, Vector3Int spawnLocation)
     {
-        this.dungeon = dungeon;
+        this.room = dungeon;
         this.location = spawnLocation;
     }
 
@@ -55,40 +55,64 @@ public class Entity : ScriptableObject
         // Check if dead
         if (currentHealth == 0)
         {
+            // Trigger death
+            OnDeath();
+
             // Remove self from dungeon
-            dungeon.Depopulate(this);
+            room.Depopulate(this);
         }
+    }
+
+    protected virtual void OnDeath() {
+        // Give this entity's experience to play
+        room.player.AddExperience(experience);
     }
 
     public void Heal(int amount)
     {
+        // Debug
+        Debug.Log(name + " healed " + amount + " hp.");
+
         // Heal up to max health
         currentHealth = Mathf.Min(currentHealth + 1, maxHealth);
+
+        // Trigger event
+        GameEvents.instance.TriggerOnEntityTakeDamage(this, -amount);
     }
 
-    public virtual void MoveToward(Vector3Int direction)
+    public void MoveToward(Vector3Int direction)
     {
-        // Make sure you are only moving 1 tile at a time
+        // Make sure you are only moving up to 1 tile at a time
         if (direction.magnitude > 1) throw new System.Exception("DIRECTION MAG is NOT 1");
 
         // Increment location
         location += direction;
 
-        // This is where interaction happens
+        // Interact with new location
+        Interact();
 
-        // Only player, should pick up any loot/coins?
+        // Trigger event?
+    }
 
-        // Take damage from any enemies?
+    public void WarpTo(Vector3Int location) {
+        // Set location to warp point
+        this.location = location;
 
-        // Only player, If you are on the exit
+        // Interact with new location
+        Interact();
+
+    }
+
+    protected virtual void Interact() {
+        // Does nothing
     }
 
     public void AttackCurrentLocation()
     {
         var targets = new List<Entity>();
 
-        targets.Add(dungeon.player);
-        targets.AddRange(dungeon.enemies);
+        targets.Add(room.player);
+        targets.AddRange(room.enemies);
 
         // Check if any entities are on the same tile, if so damage them
         foreach (var target in targets)
@@ -115,15 +139,24 @@ public class Entity : ScriptableObject
         {
             // Sub 10
             experience -= 10;
+
             // Increment level
             level++;
 
+            // Heal to max
+            Heal(maxHealth);
+
             // Trigger event
-            GameEvents.instance.TriggerOnGainLevel(this);
+            GameEvents.instance.TriggerOnGainLevel(this, 1);
         }
 
         // Trigger event
-        GameEvents.instance.TriggerOnGainExperience(this);
+        GameEvents.instance.TriggerOnGainExperience(this, amount);
+    }
+
+    public bool HasNoActionsLeft() {
+        // Returns true if ALL of your die are exhausted
+        return actions.All(action => action.die.isExhausted);
     }
 
     public Entity Copy()

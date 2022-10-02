@@ -29,7 +29,13 @@ public class TransitionManager : MonoBehaviour
         animator = GetComponentInChildren<Animator>();
     }
 
-    public void OpenScene(Vector3 location) {
+    public int GetSceneIndex()
+    {
+        return SceneManager.GetActiveScene().buildIndex;
+    }
+
+    public void OpenScene(Vector3 location)
+    {
         // Save child location
         var temp = backgroundTransform.position;
 
@@ -49,7 +55,7 @@ public class TransitionManager : MonoBehaviour
     public void LoadNextScene(Vector3 location)
     {
         // Stop any background music
-        // AudioManager.instance.Stop("Background " + GetSceneIndex());
+        AudioManager.instance.Stop("Background " + GetSceneIndex());
 
         // Stop any transition if one was happening
         if (coroutine != null) StopCoroutine(coroutine);
@@ -58,7 +64,11 @@ public class TransitionManager : MonoBehaviour
         coroutine = StartCoroutine(LoadScene(SceneManager.GetActiveScene().buildIndex + 1, location));
     }
 
-    public void ReloadScene(Vector3 location) {
+    public void ReloadScene(Vector3 location)
+    {
+        // Stop any background music
+        AudioManager.instance.Stop("Background " + GetSceneIndex());
+        
         // Stop any transition if one was happening
         if (coroutine != null) StopCoroutine(coroutine);
 
@@ -69,7 +79,7 @@ public class TransitionManager : MonoBehaviour
     public void LoadMainMenuScene(Vector3 location)
     {
         // Stop any background music
-        // AudioManager.instance.Stop("Background " + GetSceneIndex());
+        AudioManager.instance.Stop("Background " + GetSceneIndex());
 
         // Stop any transition if one was happening
         if (coroutine != null) StopCoroutine(coroutine);
@@ -88,7 +98,7 @@ public class TransitionManager : MonoBehaviour
             maskTransform.position = Camera.main.WorldToScreenPoint(location);
         else
             maskTransform.localPosition = Vector3.zero;
-        
+
         // Restore child location
         backgroundTransform.position = temp;
 

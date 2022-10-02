@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu]
 public class MeleeAction : Action
 {
-    public override List<Vector3Int> GetValidLocations(Vector3Int startLocation, Dungeon dungeon)
+    public override List<Vector3Int> GetValidLocations(Vector3Int startLocation, Room room)
     {
         List<Vector3Int> result = new List<Vector3Int>();
 
@@ -16,28 +16,28 @@ public class MeleeAction : Action
 
         // North
         Vector3Int endLocation = startLocation + new Vector3Int(0, reach, 0);
-        if (dungeon.IsValidPath(startLocation, endLocation, true))
+        if (room.IsValidPath(startLocation, endLocation, true))
         {
             result.Add(startLocation + new Vector3Int(0, reach, 0));
         }
 
         // South
         endLocation = startLocation + new Vector3Int(0, -reach, 0);
-        if (dungeon.IsValidPath(startLocation, endLocation, true))
+        if (room.IsValidPath(startLocation, endLocation, true))
         {
             result.Add(startLocation + new Vector3Int(0, -reach, 0));
         }
 
         // East
         endLocation = startLocation + new Vector3Int(reach, 0, 0);
-        if (dungeon.IsValidPath(startLocation, endLocation, true))
+        if (room.IsValidPath(startLocation, endLocation, true))
         {
             result.Add(startLocation + new Vector3Int(reach, 0, 0));
         }
 
         // West
         endLocation = startLocation + new Vector3Int(-reach, 0, 0);
-        if (dungeon.IsValidPath(startLocation, endLocation, true))
+        if (room.IsValidPath(startLocation, endLocation, true))
         {
             result.Add(startLocation + new Vector3Int(-reach, 0, 0));
         }
@@ -45,7 +45,7 @@ public class MeleeAction : Action
         return result;
     }
 
-    public override IEnumerator Perform(Entity entity, Vector3Int targetLocation, Dungeon dungeon)
+    public override IEnumerator Perform(Entity entity, Vector3Int targetLocation, Room room)
     {
         // Calculate direction
         Vector3Int direction = targetLocation - entity.location;
