@@ -9,9 +9,12 @@ public class RoomGenerator : ScriptableObject
     [SerializeField] private int roomHeight = 12;
     [SerializeField] private int roomPadding = 8;
     [SerializeField] private int goldSpawnChance = 3;
+    [SerializeField] private int barrelSpawnChance = 3;
     [SerializeField] private Vector2Int wallSpawnChanceDistribution = new Vector2Int(5, 10);
+    [SerializeField] private Barrel barrel;
 
-    public Room GenerateRoom() {
+    public Room GenerateRoom()
+    {
         // Create new room
         var room = ScriptableObject.CreateInstance<Room>();
 
@@ -22,7 +25,18 @@ public class RoomGenerator : ScriptableObject
         int wallSpawnChance = Random.Range(wallSpawnChanceDistribution.x, wallSpawnChanceDistribution.y + 1);
 
         // Initialize
-        room.Initialize(roomWidth, roomHeight, roomPadding, numKeys, goldSpawnChance, wallSpawnChance);
+        room.Initialize(roomWidth, roomHeight, roomPadding, numKeys, goldSpawnChance, wallSpawnChance, barrelSpawnChance, barrel);
+
+        return room;
+    }
+
+    public Room GenerateShop()
+    {
+        // Create new room
+        var room = ScriptableObject.CreateInstance<Room>();
+
+        // Initialize with no extra walls, barrels, gold or keys
+        room.Initialize(roomWidth, roomHeight, roomPadding, 0, 0, 0, 0, barrel);
 
         return room;
     }

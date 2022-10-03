@@ -30,6 +30,7 @@ public class FloatingTextManager : MonoBehaviour
         GameEvents.instance.onEntityTakeDamage += ShowDamageNumber;
         GameEvents.instance.onEntityGainExperience += ShowExperienceNumber;
         GameEvents.instance.onEntityGainLevel += ShowLevelUp;
+        GameEvents.instance.onEntityGainGold += ShowGoldNumber;
         GameEvents.instance.onPickup += ShowPickup;
 
     }
@@ -40,6 +41,7 @@ public class FloatingTextManager : MonoBehaviour
         GameEvents.instance.onEntityTakeDamage -= ShowDamageNumber;
         GameEvents.instance.onEntityGainExperience -= ShowExperienceNumber;
         GameEvents.instance.onEntityGainLevel -= ShowLevelUp;
+        GameEvents.instance.onEntityGainGold -= ShowGoldNumber;
         GameEvents.instance.onPickup -= ShowPickup;
     }
 
@@ -83,10 +85,12 @@ public class FloatingTextManager : MonoBehaviour
         if (pickupIndex == 1) { // Key
             SpawnFloatingText(entity, "+Key", Color.yellow, 0, 3f, 1f);
         }
-        else if (pickupIndex == 2) { // Gold
-            SpawnFloatingText(entity, "+1 G", Color.yellow, 0, 3f, 1f);
-        }
-        
+    }
+
+    private void ShowGoldNumber(Entity entity, int amount) 
+    {
+        string message = "+" + amount + " G";
+        SpawnFloatingText(entity, message, Color.yellow, 0, 3f, 1f);
     }
 
     private void SpawnFloatingText(Entity entity, string message, Color color, float xVel, float yVel, float duration)

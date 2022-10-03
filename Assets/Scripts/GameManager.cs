@@ -10,6 +10,10 @@ public class GameManager : MonoBehaviour
     public bool isSlashEffect = true;
     public bool isHitEffect = true;
 
+    [Header("Cursor")]
+    [SerializeField] private Texture2D cursorTexture;
+    [SerializeField] private CursorMode cursorMode = CursorMode.Auto;
+
     [Header("Entity Data")]
     [SerializeField] private Room room;
     [SerializeField] private RoomGenerator roomGenerator;
@@ -71,8 +75,13 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator GenerateRoom()
     {
-        // Create a room
-        room = roomGenerator.GenerateRoom();
+        // If you are on floor 1, make shop
+        if (DataManager.instance.GetRoomNumber() == 1) {
+            room = roomGenerator.GenerateShop();
+        }
+        else
+            // Create a room
+            room = roomGenerator.GenerateRoom();
 
         // Finish
         yield return null;
@@ -80,15 +89,29 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator GenerateEnemies()
     {
-        // Spawn enemies equal to floor number
-        for (int i = 0; i < DataManager.instance.GetRoomNumber(); i++)
-        {
-            // Generate a random enemy
-            var enemy = enemyGenerator.GenerateEnemy();
+        // TEMP!
+        // If room 1, then only spawn shop keeper
+        if (DataManager.instance.GetRoomNumber() == 1) {
+            // Generate a shopkeeper
+            var shopkeeper = enemyGenerator.GenerateShopkeeper();
 
             // Populate the room
-            room.Populate(enemy);
+            room.Populate(shopkeeper);
         }
+        else {
+            
+            // Spawn enemies equal to floor number
+            for (int i = 0; i < DataManager.instance.GetRoomNumber(); i++)
+            {
+                // Generate a random enemy
+                var enemy = enemyGenerator.GenerateEnemy();
+
+                // Populate the room
+                room.Populate(enemy);
+            }
+        }
+
+        
 
         // Finish
         yield return null;
@@ -134,7 +157,8 @@ public class GameManager : MonoBehaviour
         yield return null;
     }
 
-    private IEnumerator StartRound() {
+    private IEnumerator StartRound()
+    {
         // Increment round
         roundNumber++;
 
@@ -149,9 +173,11 @@ public class GameManager : MonoBehaviour
         yield return StartTurn();
     }
 
-    private IEnumerator ResetAllDie() {
+    private IEnumerator ResetAllDie()
+    {
         // Loop through all entities in room
-        foreach (var entity in room.GetAllEntities()) {
+        foreach (var entity in room.GetAllEntities())
+        {
             // Loop through all actions
             foreach (var action in entity.actions)
             {
@@ -174,7 +200,8 @@ public class GameManager : MonoBehaviour
         selectedEntity = turnQueue.Dequeue();
 
         // If the entity is dead, skip
-        if (selectedEntity.currentHealth == 0) {
+        if (selectedEntity.currentHealth == 0)
+        {
             print("Entity: " + selectedEntity.name + " is dead so skipping turn.");
 
             // End turn
@@ -193,7 +220,8 @@ public class GameManager : MonoBehaviour
             // Get best choice
             (Action, Vector3Int) bestChoicePair = selectedEntity.AI.GenerateBestDecision(selectedEntity, room);
 
-            if (bestChoicePair.Item2.z != -1) {
+            if (bestChoicePair.Item2.z != -1)
+            {
                 // Debug
                 print("Entity: " + selectedEntity.name + " used: " + bestChoicePair.Item1.name + " on location: " + bestChoicePair.Item2);
 
@@ -203,18 +231,20 @@ public class GameManager : MonoBehaviour
                 // Select Location
                 yield return ConfirmLocationAI(bestChoicePair.Item2);
             }
-            else {
+            else
+            {
                 print("Entity: " + selectedEntity.name + " did not perform an action.");
             }
 
             // End Turn
             yield return EndTurn();
         }
-        else {
+        else
+        {
             // Do nothing
             yield return null;
         }
-        
+
     }
 
     public void SelectAction(Action action)
@@ -259,7 +289,8 @@ public class GameManager : MonoBehaviour
         coroutine = StartCoroutine(PerformSelectedAction());
     }
 
-    private IEnumerator ConfirmLocationAI(Vector3Int location) {
+    private IEnumerator ConfirmLocationAI(Vector3Int location)
+    {
         this.selectedLocation = location;
 
         // Debug
@@ -321,7 +352,8 @@ public class GameManager : MonoBehaviour
             // Make new round
             yield return StartRound();
         }
-        else {
+        else
+        {
             // Start new turn
             yield return StartTurn();
         }
@@ -359,6 +391,18 @@ public class GameManager : MonoBehaviour
 
         // Load main menu on player
         var location = RoomUI.instance.GetLocationCenter(room.player.location);
-        TransitionManager.instance.LoadMainMenuScene(location);
+        TransitionManager.instance.LoadMainMenuScene(location); 
+    }
+
+
+    // TEMP CURSOR SHIT
+    public void SetGrabCursor()
+    {
+        Cursor.SetCursor(cursorTexture, Vector2.zero, cursorMode);
+    }
+
+    public void SetDefaultCursor()
+    {
+        Cursor.SetCursor(null, Vector2.zero, cursorMode);
     }
 }

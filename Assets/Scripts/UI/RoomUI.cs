@@ -9,6 +9,7 @@ public class RoomUI : MonoBehaviour
     [SerializeField] public Tilemap floorTilemap;
     [SerializeField] private Tilemap wallsTilemap;
     [SerializeField] private Tilemap decorTilemap;
+    [SerializeField] private Transform entityTransform;
 
     [Header("Data")]
     [SerializeField] private Room room;
@@ -18,6 +19,8 @@ public class RoomUI : MonoBehaviour
     [SerializeField] private GameObject floorExitPrefab;
     [SerializeField] private GameObject goldPickupPrefab;
     [SerializeField] private GameObject keyPickupPrefab;
+    [SerializeField] private GameObject entityModelPrefab;
+    [SerializeField] private Barrel barrel;
 
     public static RoomUI instance;
     private void Awake()
@@ -95,7 +98,7 @@ public class RoomUI : MonoBehaviour
                     if (room.pickups[i][j] == 2)
                     {
                         // Spawn coin
-                        var gold = Instantiate(goldPickupPrefab, floorTilemap.GetCellCenterWorld(position), Quaternion.identity).GetComponent<GoldPickup>();
+                        var gold = Instantiate(goldPickupPrefab, floorTilemap.GetCellCenterWorld(position), Quaternion.identity, decorTilemap.transform).GetComponent<GoldPickup>();
                         gold.Initialize(position);
                     }
 
@@ -103,17 +106,22 @@ public class RoomUI : MonoBehaviour
                     if (room.pickups[i][j] == 1)
                     {
                         // Spawn key
-                        var key = Instantiate(keyPickupPrefab, floorTilemap.GetCellCenterWorld(position), Quaternion.identity).GetComponent<KeyPickup>();
+                        var key = Instantiate(keyPickupPrefab, floorTilemap.GetCellCenterWorld(position), Quaternion.identity, decorTilemap.transform).GetComponent<KeyPickup>();
                         key.Initialize(position);
                     }
                 }
+            }
+
+            // Spawn all barrels
+            foreach (var barrel in room.barrels) {
+                SpawnEntity(barrel);
             }
 
             // Spawn entrance
             decorTilemap.SetTile(room.entranceLocation, entranceTile);
 
             // Spawn exit
-            var exit = Instantiate(floorExitPrefab, floorTilemap.GetCellCenterWorld(room.exitLocation), Quaternion.identity).GetComponent<FloorExit>();
+            var exit = Instantiate(floorExitPrefab, floorTilemap.GetCellCenterWorld(room.exitLocation), Quaternion.identity, floorTilemap.transform).GetComponent<FloorExit>();
             exit.Initialize(room.exitLocation);
 
             // Get center of dungeon
@@ -127,8 +135,8 @@ public class RoomUI : MonoBehaviour
     {
         // Get world position
         Vector3 worldLocation = floorTilemap.GetCellCenterWorld(entity.location);
-        // Spawn model
-        var model = Instantiate(entity.entityModel, worldLocation, Quaternion.identity).GetComponent<EntityModel>();
+        // Spawn model in container
+        var model = Instantiate(entityModelPrefab, worldLocation, Quaternion.identity, entityTransform).GetComponent<EntityModel>();
         // Initialize
         model.Initialize(entity);
     }

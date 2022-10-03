@@ -132,6 +132,9 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
             // Enable flag
             isBeingDragged = true;
 
+            // Set cursor to grab
+            GameManager.instance.SetGrabCursor();
+
             // Select this action
             GameManager.instance.SelectAction(action);
         }
@@ -195,6 +198,9 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
 
             // Stop dragging
             isBeingDragged = false;
+
+            // Reset cursor
+            GameManager.instance.SetDefaultCursor();
 
             // Deselect action
             GameManager.instance.SelectAction(null);

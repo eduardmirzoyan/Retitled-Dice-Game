@@ -512,7 +512,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -666006459, guid: 821c2032359591e4fb9ab701d46734dc, type: 3}
+  m_Sprite: {fileID: 513958350, guid: fd2f01005b1045a4da2836901e93b844, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -521,7 +521,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 3
+  m_PixelsPerUnitMultiplier: 5
 --- !u!1 &3650497550643736943
 GameObject:
   m_ObjectHideFlags: 0
@@ -871,11 +871,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6183724286850101007, guid: b1498a51a253ff44ba3383ed71fe15b8, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.000015259
+      value: 0.000022888
       objectReference: {fileID: 0}
     - target: {fileID: 6183724286850101007, guid: b1498a51a253ff44ba3383ed71fe15b8, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -0.000015259
       objectReference: {fileID: 0}
     - target: {fileID: 6183724286850101007, guid: b1498a51a253ff44ba3383ed71fe15b8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

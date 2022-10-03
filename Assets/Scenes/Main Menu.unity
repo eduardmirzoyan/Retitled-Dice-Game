@@ -4589,16 +4589,16 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'You only need a mouse for this game.
-
-    Use your mouse to drag your
-    dice into appropriate tiles in order to perform it''s respective action.
+  m_text: 'Use your <color=yellow>[DRAG]</color> and <color=yellow>[DROP]</color>
+    your dice into appropriate tiles to perform it''s respective action.
 
     Whenever
-    you are finished performing actions, Left click End Turn to allow enemies to
-    act.
+    you are finished performing actions,  <color=yellow>[Left Click]</color> or Press
+    <color=yellow>[Space]</color> to End Turn, allowing enemies to act.
 
-    Your goal is to reach the upward staircase.'
+    Your
+    goal is collect all the <color=yellow>KEYS</color> on the floor to unlock the
+    upward staircase to the next floor.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 10cfea84b506a884db4aae80039cbb28, type: 2}
   m_sharedMaterial: {fileID: -29032972246339055, guid: 10cfea84b506a884db4aae80039cbb28, type: 2}

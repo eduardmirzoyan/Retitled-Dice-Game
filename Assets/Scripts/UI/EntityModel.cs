@@ -8,46 +8,63 @@ public class EntityModel : MonoBehaviour
     public static float moveSpeed = 0.35f;
     public static float warpSpeed = 0.5f;
 
-    [Header("Components")]
+    [Header("Sprites")]
+    [SerializeField] private Transform offsetTransform;
     [SerializeField] private SpriteRenderer modelSpriteRenderer;
     [SerializeField] private SpriteRenderer weaponSpriteRenderer;
+    
+
+    [Header("Animation")]
     [SerializeField] private Animator modelAnimator;
     [SerializeField] private Animator weaponAnimator;
+
+    [Header("UI")]
     [SerializeField] private DamageFlash damageFlash;
     [SerializeField] private DieUI dieUI;
+
+    [Header("Particles")]
     [SerializeField] private ParticleSystem warpGenerateParticles;
     [SerializeField] private ParticleSystem warpDustParticles;
+    [SerializeField] private GameObject deathCloud;
 
     [Header("Data")]
     [SerializeField] private Entity entity;
     [SerializeField] private bool isFacingRight = true;
-    [SerializeField] private GameObject deathCloud;
-
+    
     private Coroutine coroutine;
-
-    private void Awake()
-    {
-        damageFlash = GetComponent<DamageFlash>();
-        dieUI = GetComponentInChildren<DieUI>();
-    }
 
     public void Initialize(Entity entity)
     {
         this.entity = entity;
 
         // Set model sprite
-        modelSpriteRenderer.sprite = entity.sprite;
+        modelSpriteRenderer.sprite = entity.modelSprite;
+
+        // Apply offset
+        offsetTransform.localPosition = entity.offsetDueToSize;
 
         // Set weapon sprite
         if (entity.weapon != null)
         {
             weaponSpriteRenderer.sprite = entity.weapon.sprite;
         }
+        else {
+            weaponSpriteRenderer.enabled = false;
+        }
+
+        // Set model animator
+        modelAnimator.runtimeAnimatorController = entity.modelController;
+
+        // Set weapon animator
+        weaponAnimator.runtimeAnimatorController = entity.weaponController;
 
         // If entity is an AI, display it's first die
         if (entity.AI != null)
         {
             dieUI.Initialize(entity.actions[0], false);
+        }
+        else {
+            dieUI.gameObject.SetActive(false);
         }
 
         // Sub to events
@@ -125,7 +142,6 @@ public class EntityModel : MonoBehaviour
     {
         if (this.entity == entity)
         {
-
             // Get world location
             Vector3 newLocation = RoomUI.instance.floorTilemap.GetCellCenterWorld(entity.location);
 

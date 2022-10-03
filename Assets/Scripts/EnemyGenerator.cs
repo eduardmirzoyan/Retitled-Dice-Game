@@ -6,8 +6,10 @@ using UnityEngine;
 public class EnemyGenerator : ScriptableObject
 {
     public List<Entity> possibleEnemies;
+    public Entity shopkeeper;
 
-    public Entity GenerateEnemy() {
+    public Entity GenerateEnemy()
+    {
         // If no possible enemies return null
         if (possibleEnemies.Count == 0) return null;
 
@@ -19,5 +21,11 @@ public class EnemyGenerator : ScriptableObject
         copy.actions[1].die = copy.actions[0].die;
 
         return copy;
+    }
+
+    public Entity GenerateShopkeeper()
+    {
+        
+        return shopkeeper.Copy();
     }
 }

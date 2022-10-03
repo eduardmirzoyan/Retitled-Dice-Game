@@ -31,8 +31,6 @@ public class DataManager : MonoBehaviour
     {
         // Set player to a copy of the template
         player = (Player)defaultPlayer.Copy();
-        // Initialize
-        player.Initialize(defaultPlayer.maxHealth);
 
         // Reset floor
         floor = 1; 

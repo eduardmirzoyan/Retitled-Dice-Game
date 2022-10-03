@@ -30,12 +30,17 @@ public class Room : ScriptableObject
     public Vector3Int entranceLocation;
     public Vector3Int exitLocation;
 
+    public List<Entity> barrels;
     public List<Entity> enemies;
     public Player player;
+
+    private Barrel barrel;
+
     private int goldSpawnChance;
     private int wallSpawnChance;
+    private int barrelSpawnChance;
 
-    public void Initialize(int width, int height, int padding, int numKeys, int goldSpawnChance, int wallSpawnChance)
+    public void Initialize(int width, int height, int padding, int numKeys, int goldSpawnChance, int wallSpawnChance, int barrelSpawnChance, Barrel barrel)
     {
         // Save dimensions
         this.width = width;
@@ -44,6 +49,8 @@ public class Room : ScriptableObject
         this.numKeys = numKeys;
         this.goldSpawnChance = goldSpawnChance;
         this.wallSpawnChance = wallSpawnChance;
+        this.barrelSpawnChance = barrelSpawnChance;
+        this.barrel = barrel;
 
         // Generate floor
         GenerateFloor();
@@ -56,6 +63,9 @@ public class Room : ScriptableObject
 
         // Generate exit
         GenerateExit();
+
+        // Generate barrels
+        GenerateBarrels();
 
         // Generate pickups
         GeneratePickups();
@@ -79,7 +89,7 @@ public class Room : ScriptableObject
 
             do // Get random free point in dungeon
             {
-                
+
                 int randX = Random.Range(padding, width + padding);
                 int randY = Random.Range(padding, height + padding);
                 spawnLocation = new Vector3Int(randX, randY);
@@ -122,7 +132,8 @@ public class Room : ScriptableObject
         GameEvents.instance.TriggerOnRemoveEnity(entity);
     }
 
-    public Entity[] GetAllEntities() {
+    public Entity[] GetAllEntities()
+    {
         return new Entity[] { player }.Concat(enemies).ToArray();
     }
 
@@ -165,7 +176,7 @@ public class Room : ScriptableObject
                 else
                 {
                     // Randomly assign wall, 5% or spawnchance
-                    int value = value = Random.Range(0, 100) <= wallSpawnChance ? 1 : 0;
+                    int value = value = Random.Range(0, 100) < wallSpawnChance ? 1 : 0;
                     // No wall
                     walls[i].Add(value);
                 }
@@ -197,10 +208,41 @@ public class Room : ScriptableObject
         walls[exitLocation.x][exitLocation.y] = 0;
     }
 
-    private void GeneratePickups() {
+    private void GenerateBarrels()
+    {
+        // Initialize
+        barrels = new List<Entity>();
+
+        // Loop through all tiles
+        for (int i = 0; i < floor.Count; i++)
+        {
+            for (int j = 0; j < floor[i].Count; j++)
+            {
+                // Get vector
+                Vector3Int position = new Vector3Int(i, j);
+
+                // If tile is floor AND is not a wall, or entrance/exit
+                if (floor[i][j] == 1 && walls[i][j] == 0 && entranceLocation != position && exitLocation != position)
+                {
+                    // Generate barrel on tile by chance
+                    if (Random.Range(0, 100) < barrelSpawnChance) {
+                        // Make copy
+                        var copy = barrel.Copy();
+                        // Set room
+                        copy.SetRoom(this, position);
+                        // Add barrel here
+                        barrels.Add(copy);
+                    }
+                }
+            }
+        }
+    }
+
+    private void GeneratePickups()
+    {
         // Initialize
         pickups = new List<List<int>>();
-        
+
         // Loop through all tiles
         for (int i = 0; i < floor.Count; i++)
         {
@@ -209,13 +251,17 @@ public class Room : ScriptableObject
             for (int j = 0; j < floor[i].Count; j++)
             {
                 // Get vector
-                Vector3Int pos = new Vector3Int(i, j);
+                Vector3Int position = new Vector3Int(i, j);
                 int value = 0;
 
-                // If tile is floor AND is not a wall, or entrance/exit
-                if (floor[i][j] == 1 && walls[i][j] == 0 && entranceLocation != pos && exitLocation != pos) {
-                    // Generate gold on tile by chance, 3%
-                    value = Random.Range(0, 100) <= goldSpawnChance ? 2 : 0;
+                // If tile is floor AND is not a wall or barrel or entrance/exit
+                if (floor[i][j] == 1 && walls[i][j] == 0 && entranceLocation != position && exitLocation != position)
+                {
+                    // Make sure no barrel is here
+                    if (barrels.All(barrel => barrel.location != position)) {
+                        // Generate gold on tile by chance
+                        value = Random.Range(0, 100) < goldSpawnChance ? 2 : 0;
+                    }
                 }
 
                 // Add tile
@@ -229,14 +275,15 @@ public class Room : ScriptableObject
             // Save location
             Vector3Int location;
 
-            do {
+            do
+            {
                 // Generate random point in dungeon
                 int randX = Random.Range(padding, width + padding);
                 int randY = Random.Range(padding, height + padding);
                 location = new Vector3Int(randX, randY);
 
             } while (!IsValidLocation(location, true));
-            
+
             // Set key at this point
             pickups[location.x][location.y] = 1;
         }
@@ -251,17 +298,19 @@ public class Room : ScriptableObject
         }
 
         // Check for pickups
-        if (!ignorePickups) {
+        if (!ignorePickups)
+        {
             // If there is ANY pickup there
-            if (pickups[location.x][location.y] != 0) {
+            if (pickups[location.x][location.y] != 0)
+            {
                 return false;
             }
         }
 
-        // Make sure there is no player or ANY enemy there
+        // Make sure there is no player or ANY enemy there or ANY barrel
         if (!ignoreEntity)
         {
-            if (player.location == location || enemies.Any((enemy) => (enemy.location == location)))
+            if (player.location == location || enemies.Any(enemy => enemy.location == location) || barrels.Any(barrel => barrel.location == location))
             {
                 return false;
             }
@@ -271,7 +320,8 @@ public class Room : ScriptableObject
         return true;
     }
 
-    public bool IsValidPath(Vector3Int start, Vector3Int end, bool ignoreEntity = false) {
+    public bool IsValidPath(Vector3Int start, Vector3Int end, bool ignoreEntity = false, bool ignorePickups = true, bool checkEnd = true)
+    {
         // Get direction
         Vector3Int direction = end - start;
         if (direction.x > 0) // Move right
@@ -290,13 +340,15 @@ public class Room : ScriptableObject
         {
             direction.y = -1;
         }
-        else {  }
+        else { }
 
         // Keep looping until start is at the end
-        while (start != end) {
+        while (start != end)
+        {
 
             // Check to see if the location is valid
-            if (!IsValidLocation(start + direction, ignoreEntity)) {
+            if (!IsValidLocation(start + direction, ignoreEntity, ignorePickups))
+            {
                 return false;
             }
 
@@ -304,27 +356,35 @@ public class Room : ScriptableObject
             start += direction;
         }
 
-        // // Make sure there is no enemy on the last tile regardless of conditions
-        if (!IsValidLocation(end)) {
-            return false;
+        // Check if you need to ignore the end
+        if (checkEnd) {
+            // Make sure there is no enemy on the last tile regardless of conditions
+            if (!IsValidLocation(end))
+            {
+                return false;
+            }
         }
+        
 
         // Else we good :)
         return true;
     }
 
-    public void UseKey() {
+    public void UseKey()
+    {
         // Decrement keys
         numKeys = Mathf.Max(numKeys - 1, 0);
-        
+
         // If there are no more keys
-        if (numKeys == 0) {
+        if (numKeys == 0)
+        {
             // Open exit
             GameEvents.instance.TriggerUnlockExit(exitLocation);
         }
     }
 
-    public bool ExitUnlocked() {
+    public bool ExitUnlocked()
+    {
         return numKeys == 0;
     }
 }

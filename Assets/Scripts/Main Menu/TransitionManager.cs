@@ -50,6 +50,9 @@ public class TransitionManager : MonoBehaviour
 
         // Play animation
         animator.Play("Transition In");
+
+        // Play background music
+        AudioManager.instance.Play("Background " + GetSceneIndex());
     }
 
     public void LoadNextScene(Vector3 location)
@@ -67,7 +70,7 @@ public class TransitionManager : MonoBehaviour
     public void ReloadScene(Vector3 location)
     {
         // Stop any background music
-        AudioManager.instance.Stop("Background " + GetSceneIndex());
+        // AudioManager.instance.Stop("Background " + GetSceneIndex());
         
         // Stop any transition if one was happening
         if (coroutine != null) StopCoroutine(coroutine);
@@ -84,7 +87,7 @@ public class TransitionManager : MonoBehaviour
         // Stop any transition if one was happening
         if (coroutine != null) StopCoroutine(coroutine);
 
-        // Transition to main menu
+        // Transition to main menu, scene 0
         coroutine = StartCoroutine(LoadScene(0, location));
     }
 
@@ -110,8 +113,5 @@ public class TransitionManager : MonoBehaviour
 
         // Load scene
         SceneManager.LoadScene(index);
-
-        // Reset transform
-        maskTransform.localPosition = Vector3.zero;
     }
 }

@@ -18,7 +18,7 @@ public class Player : Entity
                 break;
             case 2:
                 // Increment gold
-                gold++;
+                AddGold(1);
                 break;
             default:
                 // Nothing happened
@@ -30,8 +30,6 @@ public class Player : Entity
 
         // Set any pickup to 0
         room.pickups[location.x][location.y] = 0;
-
-        // Take damage from any enemies?
 
         // If you are on the exit
         if (room.exitLocation == location && room.ExitUnlocked())

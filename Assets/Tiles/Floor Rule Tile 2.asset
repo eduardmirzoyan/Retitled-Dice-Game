@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d1514134bc4fbd41bb739b1b9a49231, type: 3}
   m_Name: Floor Rule Tile 2
   m_EditorClassIdentifier: 
-  m_DefaultSprite: {fileID: 885234566, guid: 31d45807b577f39418bfdd3979157a7b, type: 3}
+  m_DefaultSprite: {fileID: 21300000, guid: fc8258a390bc62c46b7c4a16519767b3, type: 3}
   m_DefaultGameObject: {fileID: 0}
   m_DefaultColliderType: 1
   m_TilingRules:
   - m_Id: 0
     m_Sprites:
-    - {fileID: 885234566, guid: 31d45807b577f39418bfdd3979157a7b, type: 3}
+    - {fileID: 21300000, guid: fc8258a390bc62c46b7c4a16519767b3, type: 3}
     m_GameObject: {fileID: 0}
     m_MinAnimationSpeed: 1
     m_MaxAnimationSpeed: 1

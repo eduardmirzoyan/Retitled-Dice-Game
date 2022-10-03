@@ -36,6 +36,7 @@ public class GameEvents : MonoBehaviour
     public event Action<Entity, int> onEntityTakeDamage;
     public event Action<Entity, int> onEntityGainExperience;
     public event Action<Entity, int> onEntityGainLevel;
+    public event Action<Entity, int> onEntityGainGold;
 
     public event Action<Entity, int> onPickup;
     public event Action<Vector3Int> onUnlockExit;
@@ -227,6 +228,14 @@ public class GameEvents : MonoBehaviour
         if (onEntityGainLevel != null)
         {
             onEntityGainLevel(entity, amount);
+        }
+    }
+
+    public void TriggerOnGainGold(Entity entity, int amount)
+    {
+        if (onEntityGainGold != null)
+        {
+            onEntityGainGold(entity, amount);
         }
     }
 }

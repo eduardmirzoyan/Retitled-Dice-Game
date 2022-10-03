@@ -5,11 +5,13 @@ using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
 {
-    public static AudioManager instance;
+    
     [SerializeField] private List<Sound> sounds;
     [SerializeField] private float fadeTime = 1f;
     private Coroutine coroutine;
 
+    private string song;
+    public static AudioManager instance;
     private void Awake()
     {
         // Singleton logic
@@ -32,12 +34,15 @@ public class AudioManager : MonoBehaviour
 
             sound.audioSource.outputAudioMixerGroup = sound.audioMixerGroup;
         }
+
+        // Persist between scenes
+        DontDestroyOnLoad(this);
     }
 
     private void Start()
     {
         // Play background music based on which scene you are in
-        Play("Background " + TransitionManager.instance.GetSceneIndex());
+        // Play("Background " + TransitionManager.instance.GetSceneIndex());
     }
 
     private IEnumerator FadeInAudio(Sound sound)
@@ -89,9 +94,13 @@ public class AudioManager : MonoBehaviour
 
     public void Play(string name)
     {
+        // Don't replay same song
+        if (song == name) return;
+
         Sound sound = sounds.Find(sound => sound.name == name);
         if (sound != null)
         {
+            this.song = name;
             if (coroutine != null) StopCoroutine(coroutine);
 
             coroutine = StartCoroutine(FadeInAudio(sound));

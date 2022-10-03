@@ -18,12 +18,14 @@ MonoBehaviour:
   level: 1
   experience: 0
   gold: 0
-  sprite: {fileID: 21300000, guid: fc47e8c8511ed0340ac0be548351fc95, type: 3}
-  entityModel: {fileID: 4932847105634640177, guid: e103206a9a096d9438e0d55a66513512, type: 3}
+  modelSprite: {fileID: 21300000, guid: fc47e8c8511ed0340ac0be548351fc95, type: 3}
+  modelController: {fileID: 9100000, guid: f4299df67cca73d4ab3ef36e67af0816, type: 2}
+  weaponController: {fileID: 9100000, guid: f54ec5bca28b2b44295298bcdd372f80, type: 2}
   hitEffectPrefab: {fileID: 7270536486772163001, guid: 335c93a61b62ca84e9f26440c7f3ed0e, type: 3}
+  offsetDueToSize: {x: 0, y: 0, z: 0}
   AI: {fileID: 0}
   actions:
-  - {fileID: 11400000, guid: 31fb65b37415e9042bc579f491dd2fa1, type: 2}
+  - {fileID: 11400000, guid: 8497f836d6c463341a285a61e7e215e1, type: 2}
   - {fileID: 11400000, guid: 31fb65b37415e9042bc579f491dd2fa1, type: 2}
   - {fileID: 11400000, guid: 3d0a5222516c54345861722ba677cba1, type: 2}
   - {fileID: 11400000, guid: 71851c411d5bf9f49b8648deef40a4fb, type: 2}

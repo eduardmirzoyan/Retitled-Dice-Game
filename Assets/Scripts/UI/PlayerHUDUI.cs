@@ -14,6 +14,7 @@ public class PlayerHUDUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI levelText;
     [SerializeField] private Slider experienceSlider;
     [SerializeField] private TextMeshProUGUI experienceText;
+    [SerializeField] private TextMeshProUGUI floorNumberText;
 
     [Header("Data")]
     [SerializeField] private Entity entity;
@@ -31,6 +32,7 @@ public class PlayerHUDUI : MonoBehaviour
     {
         // Sub
         GameEvents.instance.onSpawnEntity += InitializePlayer;
+        GameEvents.instance.onEnterFloor += UpdateFloor;
         GameEvents.instance.onEntityTakeDamage += UpdateHealth;
         GameEvents.instance.onPickup += UpdateGold;
         GameEvents.instance.onEntityGainExperience += UpdateExperience;
@@ -41,13 +43,14 @@ public class PlayerHUDUI : MonoBehaviour
     {
         // Unsub
         GameEvents.instance.onSpawnEntity -= InitializePlayer;
+        GameEvents.instance.onEnterFloor -= UpdateFloor;
         GameEvents.instance.onEntityTakeDamage -= UpdateHealth;
         GameEvents.instance.onPickup -= UpdateGold;
         GameEvents.instance.onEntityGainExperience -= UpdateExperience;
-        GameEvents.instance.onEntityGainLevel -= UpdateLevel; 
+        GameEvents.instance.onEntityGainLevel -= UpdateLevel;
     }
 
-    public void InitializePlayer(Entity entity)
+    private void InitializePlayer(Entity entity)
     {
         // If player is spawned
         if (entity is Player)
@@ -61,6 +64,7 @@ public class PlayerHUDUI : MonoBehaviour
             UpdateGold(entity, 2);
             UpdateExperience(entity, 0);
             UpdateLevel(entity, 0);
+            UpdateFloor(null);
 
             // Display
             canvasGroup.alpha = 1f;
@@ -71,10 +75,10 @@ public class PlayerHUDUI : MonoBehaviour
 
     private void UpdateIcon()
     {
-        playerIcon.sprite = entity.sprite;
+        playerIcon.sprite = entity.modelSprite;
     }
 
-    public void UpdateHealth(Entity entity, int amount)
+    private void UpdateHealth(Entity entity, int amount)
     {
         if (this.entity == entity)
         {
@@ -93,7 +97,6 @@ public class PlayerHUDUI : MonoBehaviour
                 heartObjects.Add(Instantiate(heartPrefab, heartContainer));
             }
         }
-
     }
 
     private void UpdateGold(Entity entity, int index)
@@ -105,23 +108,26 @@ public class PlayerHUDUI : MonoBehaviour
         }
     }
 
-    public void UpdateExperience(Entity entity, int amount)
+    private void UpdateExperience(Entity entity, int amount)
     {
         if (this.entity == entity)
         {
             experienceSlider.value = entity.experience;
-            experienceText.text  = entity.experience + " / 10 XP";
-            
-        }
+            experienceText.text = entity.experience + " / 10 XP";
 
+        }
     }
 
-    public void UpdateLevel(Entity entity, int amount)
+    private void UpdateLevel(Entity entity, int amount)
     {
         if (this.enabled == entity)
         {
             levelText.text = "Lv. " + entity.level;
         }
+    }
 
+    private void UpdateFloor(Room room)
+    {
+        floorNumberText.text = "Floor " + DataManager.instance.GetRoomNumber();
     }
 }

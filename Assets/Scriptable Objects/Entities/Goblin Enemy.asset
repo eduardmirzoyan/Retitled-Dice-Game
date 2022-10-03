@@ -18,8 +18,9 @@ MonoBehaviour:
   level: 1
   experience: 2
   gold: 0
-  sprite: {fileID: 21300000, guid: eb69d914fd8e0e0488086e8dae58e2e3, type: 3}
-  entityModel: {fileID: 283647737362241191, guid: 66da48a646a5c264a9237a9364fc1e18, type: 3}
+  modelSprite: {fileID: 21300000, guid: eb69d914fd8e0e0488086e8dae58e2e3, type: 3}
+  modelController: {fileID: 9100000, guid: f094f2d8ff32d664e941cd1f7d3a3217, type: 2}
+  weaponController: {fileID: 9100000, guid: f54ec5bca28b2b44295298bcdd372f80, type: 2}
   hitEffectPrefab: {fileID: 7270536486772163001, guid: 335c93a61b62ca84e9f26440c7f3ed0e, type: 3}
   AI: {fileID: 11400000, guid: 1bad9658d855af047b8e9141254e912d, type: 2}
   actions:
@@ -27,4 +28,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3d0a5222516c54345861722ba677cba1, type: 2}
   weapon: {fileID: 11400000, guid: 1610aec8d0a5a934ebbd5015d4b681b8, type: 2}
   location: {x: 0, y: 0, z: 0}
-  dungeon: {fileID: 0}
+  room: {fileID: 0}

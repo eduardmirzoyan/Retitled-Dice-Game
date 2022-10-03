@@ -14,10 +14,12 @@ public class Entity : ScriptableObject
     public int experience = 0;
     public int gold = 0;
 
-    public Sprite sprite;
-    public GameObject entityModel;
+    [Header("Visuals")]
+    public Sprite modelSprite;
+    public RuntimeAnimatorController modelController;
+    public RuntimeAnimatorController weaponController;
     public GameObject hitEffectPrefab;
-
+    public Vector3 offsetDueToSize;
 
     [Header("Variable Stats")]
     public AI AI;
@@ -28,12 +30,6 @@ public class Entity : ScriptableObject
     [Header("Dungeon Dependant")]
     public Vector3Int location; // Location of this entity on the floor
     public Room room;
-
-    public virtual void Initialize(int maxHealth)
-    {
-        this.maxHealth = maxHealth;
-        currentHealth = maxHealth;
-    }
 
     public void SetRoom(Room dungeon, Vector3Int spawnLocation)
     {
@@ -64,8 +60,11 @@ public class Entity : ScriptableObject
     }
 
     protected virtual void OnDeath() {
-        // Give this entity's experience to play
+        // Give this entity's experience to player
         room.player.AddExperience(experience);
+
+        // Give this entity's gold to player
+        room.player.AddGold(gold);
     }
 
     public void Heal(int amount)
@@ -90,8 +89,6 @@ public class Entity : ScriptableObject
 
         // Interact with new location
         Interact();
-
-        // Trigger event?
     }
 
     public void WarpTo(Vector3Int location) {
@@ -100,7 +97,6 @@ public class Entity : ScriptableObject
 
         // Interact with new location
         Interact();
-
     }
 
     protected virtual void Interact() {
@@ -111,8 +107,10 @@ public class Entity : ScriptableObject
     {
         var targets = new List<Entity>();
 
+        // Conisder player, enemies and barrels
         targets.Add(room.player);
         targets.AddRange(room.enemies);
+        targets.AddRange(room.barrels);
 
         // Check if any entities are on the same tile, if so damage them
         foreach (var target in targets)
@@ -129,8 +127,21 @@ public class Entity : ScriptableObject
         }
     }
 
+    public void AddGold(int amount) {
+        // If you gain 0, do nothing
+        if (amount == 0) return;
+
+        gold += amount;
+        
+        // Trigger event
+        GameEvents.instance.TriggerOnGainGold(this, amount);
+    }
+
     public void AddExperience(int amount)
     {
+        // If you gain 0, do nothing
+        if (amount == 0) return;
+
         // Add amount
         experience += amount;
 
@@ -176,7 +187,8 @@ public class Entity : ScriptableObject
         }
 
         // Make copy of weapon
-        copy.weapon = weapon.Copy();
+        if (weapon != null)
+            copy.weapon = weapon.Copy();
 
         return copy;
     }
