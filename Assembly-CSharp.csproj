@@ -40,6 +40,7 @@
      <Compile Include="Assets\Scripts\GameManager.cs" />
      <Compile Include="Assets\Scripts\Actions\RangedAction.cs" />
      <Compile Include="Assets\Scripts\Room.cs" />
+     <Compile Include="Assets\Scripts\UI\InventoryUI.cs" />
      <Compile Include="Assets\Scripts\GameEvents.cs" />
      <Compile Include="Assets\Scripts\SettingsManager.cs" />
      <Compile Include="Assets\Scripts\DamageFlash.cs" />
@@ -65,6 +66,8 @@
      <Compile Include="Assets\Scripts\Die.cs" />
      <Compile Include="Assets\Scripts\HitFreeze.cs" />
      <Compile Include="Assets\Scripts\Barrel.cs" />
+     <Compile Include="Assets\Scripts\Inventory.cs" />
+     <Compile Include="Assets\Scripts\UI\ItemUI.cs" />
      <Compile Include="Assets\Scripts\GoldPickup.cs" />
      <Compile Include="Assets\Scripts\UI\EntityModel.cs" />
      <Compile Include="Assets\Scripts\TimedDestroy.cs" />
@@ -72,9 +75,12 @@
      <Compile Include="Assets\Scripts\Main Menu\TransitionManager.cs" />
      <Compile Include="Assets\Scripts\UI\PlayerHUDUI.cs" />
      <Compile Include="Assets\Scripts\UI\GameoverUI.cs" />
+     <Compile Include="Assets\Scripts\UI\ItemSlotUI.cs" />
      <Compile Include="Assets\Scripts\Entity.cs" />
      <Compile Include="Assets\Scripts\Actions\Action.cs" />
      <Compile Include="Assets\Scripts\Main Menu\PauseManager.cs" />
+     <Compile Include="Assets\Scripts\Item.cs" />
+     <Compile Include="Assets\Scripts\UI\EquipmentUI.cs" />
      <Compile Include="Assets\Scripts\UI\ActionsDisplayUI.cs" />
      <Compile Include="Assets\Scripts\DeathCloud.cs" />
      <Compile Include="Assets\Scripts\CameraShake.cs" />
@@ -88,12 +94,7 @@
      <Compile Include="Assets\Scripts\UI\FloatingText.cs" />
      <Compile Include="Assets\Scripts\AI\AI.cs" />
      <Compile Include="Assets\Scripts\Actions\ShopAction.cs" />
-     <Compile Include="Assets\Scripts\UI\ItemSlotUI.cs" />
-     <Compile Include="Assets\Scripts\Item.cs" />
-     <Compile Include="Assets\Scripts\UI\ItemUI.cs" />
-     <Compile Include="Assets\Scripts\UI\EquipmentUI.cs" />
-     <Compile Include="Assets\Scripts\UI\InventoryUI.cs" />
-     <Compile Include="Assets\Scripts\Inventory.cs" />
+     <Compile Include="Assets\Scripts\UI\ItemTooltipUI.cs" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />

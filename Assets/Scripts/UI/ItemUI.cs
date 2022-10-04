@@ -97,7 +97,7 @@ public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
         outline.effectColor = Color.white;
 
         // Show tooltip at this items location
-        // ItemTooltipUI.instance.Show(item, transform.position);
+        ItemTooltipUI.instance.Show(item);
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -106,7 +106,7 @@ public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
         outline.effectColor = Color.clear;
 
         // HIde item info
-        // ItemTooltipUI.instance.Hide();
+        ItemTooltipUI.instance.Hide();
     }
 
     public void OnBeginDrag(PointerEventData eventData)
