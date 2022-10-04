@@ -10,8 +10,9 @@ public class DataManager : MonoBehaviour
     // This is the template that should be copied when making a new player
     [Header("Dynamic Data")]
     [SerializeField] private Player player;
-    [SerializeField] private int floor = 1;
-
+    [SerializeField] private int roomNumber = 1;
+    [SerializeField] private int stageNumber = 1;
+    [SerializeField] private int currentRoomIndex = 1;
 
     public static DataManager instance;
     private void Awake()
@@ -32,8 +33,10 @@ public class DataManager : MonoBehaviour
         // Set player to a copy of the template
         player = (Player)defaultPlayer.Copy();
 
-        // Reset floor
-        floor = 1; 
+        // Reset progess
+        stageNumber = 1;
+        roomNumber = 1;
+        currentRoomIndex = 1;
     }
 
     public Player GetPlayer()
@@ -41,14 +44,70 @@ public class DataManager : MonoBehaviour
         return player;
     }
 
-    public void IncrementFloor()
+    public void SetNextRoom(int roomIndex)
     {
-        floor++;
+        // Check what to do
+        switch (roomIndex)
+        {
+            case 0:
+                throw new System.Exception("ROOM INDEX WAS 0");
+            case 1:
+                // load normal room
+                IncrementRoomNumber();
+                break;
+            case -1:
+                // Load shop
+                // Don't change floor, but load Shop room
+                break;
+            default:
+                throw new System.Exception("ROOM INDEX WAS UNKNOWN: " + roomIndex);
+        }
+
+        // Set room index
+        currentRoomIndex = roomIndex;
+    }
+
+    private void IncrementRoomNumber()
+    {
+        // Incrmenet floor
+        roomNumber = Mathf.Min(roomNumber + 1, 5);
+
+        // If you reach floor 5, then change the stage
+        if (roomNumber == 5)
+        {
+            stageNumber++;
+            roomNumber = 1;
+        }
+    }
+
+    public int GetRoomIndex() {
+        return currentRoomIndex;
     }
 
     public int GetRoomNumber()
     {
-        return floor;
+        return roomNumber;
+    }
+
+    public string GetRoomDescription() {
+        if (currentRoomIndex == 1) {
+            return "Stage " + stageNumber + "-" + roomNumber;
+        }
+
+        return "Stage " + stageNumber + "-" + "S";
+    }
+
+    public int GetNextRoomIndex() {
+        // If you are on stage x - 2
+        if (roomNumber == 2) {
+            // And you are in a combat room now
+            if (currentRoomIndex == 1) {
+                // Next room should be a shop
+                return -1;
+            }
+        }
+
+        return 1;
     }
 
     public void Save()

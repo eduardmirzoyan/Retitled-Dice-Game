@@ -11,17 +11,17 @@ public class IndicatorDisplayUI : MonoBehaviour
 
     private void Start()
     {
-        locationIndicatorUIs = new List<LocationIndicatorUI>();
+        // locationIndicatorUIs = new List<LocationIndicatorUI>();
 
         // Sub
         GameEvents.instance.onActionSelect += SpawnIndicators;
-        GameEvents.instance.onLocationSelect += DespawnIndicators;
+        //GameEvents.instance.onLocationSelect += DespawnIndicators;
     }
 
     private void OnDestroy() {
         // Unsub
         GameEvents.instance.onActionSelect -= SpawnIndicators;
-        GameEvents.instance.onLocationSelect -= DespawnIndicators;
+        //GameEvents.instance.onLocationSelect -= DespawnIndicators;
     }
 
     private void SpawnIndicators(Entity entity, Action action, Room room)
@@ -39,14 +39,15 @@ public class IndicatorDisplayUI : MonoBehaviour
                 var indicatorUI = Instantiate(indicatorUIPrefab, worldLocation, Quaternion.identity, transform).GetComponent<LocationIndicatorUI>();
                 
                 // Initialize
-                indicatorUI.Initialize(entity.location, targetLocation, action);
+                indicatorUI.Initialize(entity, targetLocation, action);
+                
                 // Save
-                locationIndicatorUIs.Add(indicatorUI);
+                // locationIndicatorUIs.Add(indicatorUI);
             }
         }
         else {
             // Despawn
-            DespawnIndicators(Vector3Int.zero);
+            // DespawnIndicators(Vector3Int.zero);
         }
     }
 

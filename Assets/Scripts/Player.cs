@@ -31,8 +31,8 @@ public class Player : Entity
         // Set any pickup to 0
         room.pickups[location.x][location.y] = 0;
 
-        // If you are on the exit
-        if (room.exitLocation == location && room.ExitUnlocked())
+        // If you are on an exit
+        if (location == room.roomExit.location && !room.roomExit.IsLocked())
         {
             // Go to next floor
             GameManager.instance.TravelToNextFloor();

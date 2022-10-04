@@ -75,13 +75,21 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator GenerateRoom()
     {
-        // If you are on floor 1, make shop
-        if (DataManager.instance.GetRoomNumber() == 1) {
-            room = roomGenerator.GenerateShop();
+        // Use the room index to decide what room to generate
+        int index = DataManager.instance.GetRoomIndex();
+        switch (index)
+        {
+            case 1:
+                // Generate a normal room
+                room = roomGenerator.GenerateRoom();
+                break;
+            case -1:
+                // Generate a shop
+                room = roomGenerator.GenerateShop();
+                break;
+            default:
+                throw new System.Exception("ERROR CREATING ROOM WITH ROOM INDEX: " + index);
         }
-        else
-            // Create a room
-            room = roomGenerator.GenerateRoom();
 
         // Finish
         yield return null;
@@ -89,29 +97,32 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator GenerateEnemies()
     {
-        // TEMP!
-        // If room 1, then only spawn shop keeper
-        if (DataManager.instance.GetRoomNumber() == 1) {
-            // Generate a shopkeeper
-            var shopkeeper = enemyGenerator.GenerateShopkeeper();
+        int index = DataManager.instance.GetRoomIndex();
+        switch (index)
+        {
+            case 1:
+                // Spawn enemies equal to floor number
+                for (int i = 0; i < DataManager.instance.GetRoomNumber(); i++)
+                {
+                    // Generate a random enemy
+                    var enemy = enemyGenerator.GenerateEnemy();
 
-            // Populate the room
-            room.Populate(shopkeeper);
-        }
-        else {
-            
-            // Spawn enemies equal to floor number
-            for (int i = 0; i < DataManager.instance.GetRoomNumber(); i++)
-            {
-                // Generate a random enemy
-                var enemy = enemyGenerator.GenerateEnemy();
+                    // Populate the room
+                    room.Populate(enemy);
+                }
+
+                break;
+            case -1:
+                // Generate a shopkeeper
+                var shopkeeper = enemyGenerator.GenerateShopkeeper();
 
                 // Populate the room
-                room.Populate(enemy);
-            }
-        }
+                room.Populate(shopkeeper);
 
-        
+                break;
+            default:
+                throw new System.Exception("ERROR CREATING ENEMIES WITH ROOM INDEX: " + index);
+        }
 
         // Finish
         yield return null;
@@ -140,6 +151,14 @@ public class GameManager : MonoBehaviour
         // Now pull enemes from the room
         foreach (var enemy in room.enemies)
         {
+
+            // If that enemy is an AI
+            if (enemy.AI != null)
+            {
+                // See if needs to display possible intent
+                enemy.AI.DisplayIntent(enemy, room);
+            }
+
             // Add enemy
             turnQueue.Enqueue(enemy);
         }
@@ -250,7 +269,7 @@ public class GameManager : MonoBehaviour
     public void SelectAction(Action action)
     {
         // Update selected action (could be null)
-        selectedAction = action;
+        this.selectedAction = action;
 
         if (action != null)
         {
@@ -281,7 +300,7 @@ public class GameManager : MonoBehaviour
         GameEvents.instance.TriggerOnDieExhaust(selectedAction.die);
 
         // Trigger event
-        GameEvents.instance.TriggerOnLocationSelect(location);
+        GameEvents.instance.TriggerOnLocationSelect(selectedEntity, location);
 
         // Perform the selected Action
         // if (coroutine != null) StopCoroutine(coroutine);
@@ -303,7 +322,7 @@ public class GameManager : MonoBehaviour
         GameEvents.instance.TriggerOnDieExhaust(selectedAction.die);
 
         // Trigger event
-        GameEvents.instance.TriggerOnLocationSelect(location);
+        GameEvents.instance.TriggerOnLocationSelect(selectedEntity, location);
 
         // Perform the selected Action
         // if (coroutine != null) StopCoroutine(coroutine);
@@ -376,8 +395,10 @@ public class GameManager : MonoBehaviour
         // Exit current floor
         ExitFloor();
 
-        // Increment floor number
-        DataManager.instance.IncrementFloor();
+        // We want to consider the exit we chose's number
+        var roomIndex = room.roomExit.destinationIndex;
+        // Set next room based on exit's index
+        DataManager.instance.SetNextRoom(roomIndex);
 
         // Reload this scene on player
         var location = RoomUI.instance.GetLocationCenter(room.player.location);
@@ -391,7 +412,7 @@ public class GameManager : MonoBehaviour
 
         // Load main menu on player
         var location = RoomUI.instance.GetLocationCenter(room.player.location);
-        TransitionManager.instance.LoadMainMenuScene(location); 
+        TransitionManager.instance.LoadMainMenuScene(location);
     }
 
 

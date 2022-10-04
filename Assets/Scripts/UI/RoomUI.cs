@@ -121,8 +121,8 @@ public class RoomUI : MonoBehaviour
             decorTilemap.SetTile(room.entranceLocation, entranceTile);
 
             // Spawn exit
-            var exit = Instantiate(floorExitPrefab, floorTilemap.GetCellCenterWorld(room.exitLocation), Quaternion.identity, floorTilemap.transform).GetComponent<FloorExit>();
-            exit.Initialize(room.exitLocation);
+            var exit = Instantiate(floorExitPrefab, floorTilemap.GetCellCenterWorld(room.roomExit.location), Quaternion.identity, floorTilemap.transform).GetComponent<RoomExitUI>();
+            exit.Initialize(room.roomExit);
 
             // Get center of dungeon
             Vector3 center = floorTilemap.CellToWorld(new Vector3Int(room.width / 2 + room.padding, room.height / 2 + room.padding, 0));

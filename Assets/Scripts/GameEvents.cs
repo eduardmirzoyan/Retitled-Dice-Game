@@ -16,7 +16,7 @@ public class GameEvents : MonoBehaviour
 
     // Action based
     public event Action<Entity, Action, Room> onActionSelect;
-    public event Action<Vector3Int> onLocationSelect;
+    public event Action<Entity, Vector3Int> onLocationSelect;
     public event Action<Entity, Action, Vector3Int, Room> onActionPerformStart;
     public event Action<Entity, Action, Vector3Int, Room> onActionPerformEnd;
 
@@ -39,8 +39,9 @@ public class GameEvents : MonoBehaviour
     public event Action<Entity, int> onEntityGainGold;
 
     public event Action<Entity, int> onPickup;
-    public event Action<Vector3Int> onUnlockExit;
+    public event Action<int> onUseKey;
 
+    public event Action<bool> onOpenShop;
 
     public static GameEvents instance;
     private void Awake()
@@ -53,6 +54,14 @@ public class GameEvents : MonoBehaviour
         }
 
         instance = this;
+    }
+
+    public void TriggerOnOpenShop(bool state)
+    {
+        if (onOpenShop != null)
+        {
+            onOpenShop(state);
+        }
     }
 
     public void TriggerOnEnterFloor(Room room)
@@ -111,11 +120,11 @@ public class GameEvents : MonoBehaviour
         }
     }
 
-    public void TriggerOnLocationSelect(Vector3Int location)
+    public void TriggerOnLocationSelect(Entity entity, Vector3Int location)
     {
         if (onLocationSelect != null)
         {
-            onLocationSelect(location);
+            onLocationSelect(entity, location);
         }
     }
 
@@ -207,11 +216,11 @@ public class GameEvents : MonoBehaviour
         }
     }
 
-    public void TriggerUnlockExit(Vector3Int location)
+    public void TriggerOnUseKey(int value)
     {
-        if (onUnlockExit != null)
+        if (onUseKey != null)
         {
-            onUnlockExit(location);
+            onUseKey(value);
         }
     }
 

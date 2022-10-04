@@ -128,6 +128,6 @@ public class PlayerHUDUI : MonoBehaviour
 
     private void UpdateFloor(Room room)
     {
-        floorNumberText.text = "Floor " + DataManager.instance.GetRoomNumber();
+        floorNumberText.text = DataManager.instance.GetRoomDescription();
     }
 }

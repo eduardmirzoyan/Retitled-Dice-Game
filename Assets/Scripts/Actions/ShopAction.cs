@@ -51,6 +51,7 @@ public class ShopAction : Action
         if (targetLocation == room.player.location)
         {
             // Open shop menu
+            GameEvents.instance.TriggerOnOpenShop(true);
         }
 
         // Done!

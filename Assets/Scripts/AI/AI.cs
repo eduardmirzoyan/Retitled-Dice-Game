@@ -5,6 +5,11 @@ using UnityEngine;
 [CreateAssetMenu]
 public class AI : ScriptableObject
 {
+    public virtual void DisplayIntent(Entity entity, Room room)
+    {
+        // Does nothing
+    }
+    
     // Hard coded so far, but action 0 should be move, action 1 is attack
     public virtual (Action, Vector3Int) GenerateBestDecision(Entity entity, Room dungeon)
     {

@@ -11,24 +11,58 @@ public class LocationIndicatorUI : MonoBehaviour, IPointerEnterHandler, IPointer
     [SerializeField] private LineRenderer lineRenderer;
 
     [Header("Data")]
+    [SerializeField] private Entity entity;
+    [SerializeField] private Action action;
     [SerializeField] private Vector3Int location;
     [SerializeField] private Color defaultColor = Color.white;
     [SerializeField] private Color highlightColor = Color.yellow;
 
-    public void Initialize(Vector3Int source, Vector3Int location, Action action) {
+    public void Initialize(Entity entity, Vector3Int location, Action action)
+    {
+        this.entity = entity;
         this.location = location;
+        this.action = action;
 
         // Update icon
         actionIcon.sprite = action.icon;
 
         // Get world Position
-        var worldSourceLocation = RoomUI.instance.floorTilemap.GetCellCenterWorld(source);
+        var worldSourceLocation = RoomUI.instance.floorTilemap.GetCellCenterWorld(entity.location);
         var worldLocation = RoomUI.instance.floorTilemap.GetCellCenterWorld(location);
 
         // Draw line from source to location
         lineRenderer.SetPosition(0, worldSourceLocation);
         lineRenderer.SetPosition(1, worldLocation);
         lineRenderer.endColor = action.color;
+
+        // Sub
+        GameEvents.instance.onActionSelect += Unintialize;
+        GameEvents.instance.onLocationSelect += Unintialize;
+    }
+
+    private void OnDestroy()
+    {
+        // Unsub
+        GameEvents.instance.onActionSelect -= Unintialize;
+        GameEvents.instance.onLocationSelect -= Unintialize;
+    }
+
+    private void Unintialize(Entity entity, Action action, Room roomD)
+    {
+        // If no action was selected, destroy this
+        if (this.entity == entity && action == null)
+        {
+            // Destroy self
+            Destroy(gameObject);
+        }
+    }
+
+    private void Unintialize(Entity entity, Vector3Int location)
+    {
+        if (this.entity == entity) {
+            // Destroy self
+            Destroy(gameObject);
+        }
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -59,7 +93,7 @@ public class LocationIndicatorUI : MonoBehaviour, IPointerEnterHandler, IPointer
         {
             // Un-highlgiht
             actionIcon.color = defaultColor;
-            
+
             // Select this location
             GameManager.instance.ConfirmLocation(location);
         }

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Shop
   description: Give me money
-  icon: {fileID: 0}
-  background: {fileID: 0}
-  color: {r: 0, g: 0, b: 0, a: 0}
+  icon: {fileID: 21300000, guid: 3be5eefb9fa439b4d8f1e121e91eaf64, type: 3}
+  background: {fileID: 21300000, guid: acd1e638089edba4aae74ade1eb270c5, type: 3}
+  color: {r: 0.9803922, g: 0.6392157, b: 0.10588236, a: 1}
   die: {fileID: 11400000, guid: dbb9355000ced3842846106e2dca7d3b, type: 2}

@@ -3598,14 +3598,14 @@ MonoBehaviour:
   sounds:
   - name: Background 0
     audioClip: {fileID: 8300000, guid: 6d6cd9986299212418cd1b2ea2267ea6, type: 3}
-    volume: 1
+    volume: 0.5
     pitch: 1
     loop: 1
     audioSource: {fileID: 0}
     audioMixerGroup: {fileID: -6432658396356169233, guid: 3f0fc48e3bb6ce84f87756c7cd05bd35, type: 2}
   - name: Background 1
-    audioClip: {fileID: 8300000, guid: b278caf61bf701f40b860a9195ad4798, type: 3}
-    volume: 1
+    audioClip: {fileID: 8300000, guid: 76860b828fcaf2041a48d2bff2c5a794, type: 3}
+    volume: 0.2
     pitch: 1
     loop: 1
     audioSource: {fileID: 0}
@@ -3923,7 +3923,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultPlayer: {fileID: 11400000, guid: 9563230c5a59bdc4792dfe541ab67123, type: 2}
   player: {fileID: 0}
-  floor: 1
+  roomNumber: 1
+  stageNumber: 1
+  currentRoomIndex: 1
 --- !u!1 &1459412077
 GameObject:
   m_ObjectHideFlags: 0

@@ -28,7 +28,7 @@ public class Room : ScriptableObject
     public int numKeys;
 
     public Vector3Int entranceLocation;
-    public Vector3Int exitLocation;
+    public RoomExit roomExit;
 
     public List<Entity> barrels;
     public List<Entity> enemies;
@@ -186,7 +186,7 @@ public class Room : ScriptableObject
 
     private void GenerateEntrance()
     {
-        // Current algorithm: Randomly choose a corner in the room
+        // Current algorithm: Randomly choose a corner in the room ?
 
         // Get all 4 corners
         Vector3Int[] corners = {new Vector3Int(padding + 1, padding + 1), new Vector3Int(padding + 1, padding + height - 2),
@@ -201,8 +201,17 @@ public class Room : ScriptableObject
 
     private void GenerateExit()
     {
+        // Create SO
+        roomExit = ScriptableObject.CreateInstance<RoomExit>();
+        
         // Current algorithm: Choose the corner opposite of the entrance
-        exitLocation = new Vector3Int(2 * padding + width - entranceLocation.x - 1, 2 * padding + height - entranceLocation.y - 1);
+        var exitLocation = new Vector3Int(2 * padding + width - entranceLocation.x - 1, 2 * padding + height - entranceLocation.y - 1);
+
+        // Get next room index
+        var nextRoomIndex = DataManager.instance.GetNextRoomIndex();
+
+        // Initalize exit
+        roomExit.Initialize(exitLocation, numKeys, nextRoomIndex);
 
         // Set any walls here to 0
         walls[exitLocation.x][exitLocation.y] = 0;
@@ -222,7 +231,7 @@ public class Room : ScriptableObject
                 Vector3Int position = new Vector3Int(i, j);
 
                 // If tile is floor AND is not a wall, or entrance/exit
-                if (floor[i][j] == 1 && walls[i][j] == 0 && entranceLocation != position && exitLocation != position)
+                if (floor[i][j] == 1 && walls[i][j] == 0 && entranceLocation != position && roomExit.location != position)
                 {
                     // Generate barrel on tile by chance
                     if (Random.Range(0, 100) < barrelSpawnChance) {
@@ -255,7 +264,7 @@ public class Room : ScriptableObject
                 int value = 0;
 
                 // If tile is floor AND is not a wall or barrel or entrance/exit
-                if (floor[i][j] == 1 && walls[i][j] == 0 && entranceLocation != position && exitLocation != position)
+                if (floor[i][j] == 1 && walls[i][j] == 0 && entranceLocation != position && roomExit.location != position)
                 {
                     // Make sure no barrel is here
                     if (barrels.All(barrel => barrel.location != position)) {
@@ -372,19 +381,7 @@ public class Room : ScriptableObject
 
     public void UseKey()
     {
-        // Decrement keys
-        numKeys = Mathf.Max(numKeys - 1, 0);
-
-        // If there are no more keys
-        if (numKeys == 0)
-        {
-            // Open exit
-            GameEvents.instance.TriggerUnlockExit(exitLocation);
-        }
-    }
-
-    public bool ExitUnlocked()
-    {
-        return numKeys == 0;
+        // For each exit, use key
+        roomExit.UseKey();
     }
 }
