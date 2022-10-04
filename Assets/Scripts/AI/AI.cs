@@ -14,8 +14,8 @@ public class AI : ScriptableObject
     public virtual (Action, Vector3Int) GenerateBestDecision(Entity entity, Room dungeon)
     {
         // Only consider the first action of the entity
-        var moveAction = entity.actions[0];
-        var meleeAction = entity.actions[1]; 
+        var moveAction = entity.innateActions[0];
+        var meleeAction = entity.innateActions[1]; 
 
         // ~~~~ First check to see if player can be attacked ~~~
 

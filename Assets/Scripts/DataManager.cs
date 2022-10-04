@@ -31,7 +31,11 @@ public class DataManager : MonoBehaviour
     public void CreateNewPlayer()
     {
         // Set player to a copy of the template
-        player = (Player)defaultPlayer.Copy();
+        player = (Player) defaultPlayer.Copy();
+
+        // Create inventory of size 9
+        player.inventory = ScriptableObject.CreateInstance<Inventory>();
+        player.inventory.Initialize(9);
 
         // Reset progess
         stageNumber = 1;

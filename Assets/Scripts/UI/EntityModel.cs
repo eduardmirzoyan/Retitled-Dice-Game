@@ -44,9 +44,9 @@ public class EntityModel : MonoBehaviour
         offsetTransform.localPosition = entity.offsetDueToSize;
 
         // Set weapon sprite
-        if (entity.weapon != null)
+        if (entity.primaryWeapon != null)
         {
-            weaponSpriteRenderer.sprite = entity.weapon.sprite;
+            weaponSpriteRenderer.sprite = entity.primaryWeapon.sprite;
         }
         else {
             weaponSpriteRenderer.enabled = false;
@@ -61,7 +61,7 @@ public class EntityModel : MonoBehaviour
         // If entity is an AI, display it's first die
         if (entity.AI != null)
         {
-            dieUI.Initialize(entity.actions[0], false);
+            dieUI.Initialize(entity.innateActions[0], false);
         }
         else {
             dieUI.gameObject.SetActive(false);
@@ -236,9 +236,9 @@ public class EntityModel : MonoBehaviour
             weaponAnimator.Play("Attack");
 
             // Spawn particle
-            if (GameManager.instance.isSlashEffect && entity.weapon.attackParticlePrefab != null)
+            if (GameManager.instance.isSlashEffect && entity.primaryWeapon.attackParticlePrefab != null)
             {
-                Instantiate(entity.weapon.attackParticlePrefab, transform.position, transform.rotation);
+                Instantiate(entity.primaryWeapon.attackParticlePrefab, transform.position, transform.rotation);
             }
 
             // Shake screen

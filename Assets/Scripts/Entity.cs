@@ -13,6 +13,7 @@ public class Entity : ScriptableObject
     public int level = 1;
     public int experience = 0;
     public int gold = 0;
+    public Inventory inventory;
 
     [Header("Visuals")]
     public Sprite modelSprite;
@@ -23,9 +24,9 @@ public class Entity : ScriptableObject
 
     [Header("Variable Stats")]
     public AI AI;
-    public List<Action> actions; // What the entity can do
-    public Weapon weapon;
-
+    public List<Action> innateActions; // What the entity can do
+    public Weapon primaryWeapon;
+    public Weapon secondaryWeapon;
 
     [Header("Dungeon Dependant")]
     public Vector3Int location; // Location of this entity on the floor
@@ -35,6 +36,36 @@ public class Entity : ScriptableObject
     {
         this.room = dungeon;
         this.location = spawnLocation;
+    }
+
+    public void EquipPrimary(Weapon weapon)
+    {
+        this.primaryWeapon = weapon;
+
+        // Update actions?
+    }
+
+    public void EquipSecondary(Weapon weapon)
+    {
+        this.secondaryWeapon = weapon;
+
+        // Update actions?
+    }
+
+    public List<Action> GetActions()
+    {
+        List<Action> result = new List<Action>();
+
+        // First add innate actions
+        result.AddRange(innateActions);
+
+        // Add actions from primay weapon
+        result.AddRange(primaryWeapon.actions);
+
+        // Add actions from secondary weapon
+        result.AddRange(secondaryWeapon.actions);
+
+        return result;
     }
 
     public void TakeDamage(int amount)
@@ -59,7 +90,8 @@ public class Entity : ScriptableObject
         }
     }
 
-    protected virtual void OnDeath() {
+    protected virtual void OnDeath()
+    {
         // Give this entity's experience to player
         room.player.AddExperience(experience);
 
@@ -91,7 +123,8 @@ public class Entity : ScriptableObject
         Interact();
     }
 
-    public void WarpTo(Vector3Int location) {
+    public void WarpTo(Vector3Int location)
+    {
         // Set location to warp point
         this.location = location;
 
@@ -99,7 +132,8 @@ public class Entity : ScriptableObject
         Interact();
     }
 
-    protected virtual void Interact() {
+    protected virtual void Interact()
+    {
         // Does nothing
     }
 
@@ -127,12 +161,13 @@ public class Entity : ScriptableObject
         }
     }
 
-    public void AddGold(int amount) {
+    public void AddGold(int amount)
+    {
         // If you gain 0, do nothing
         if (amount == 0) return;
 
         gold += amount;
-        
+
         // Trigger event
         GameEvents.instance.TriggerOnGainGold(this, amount);
     }
@@ -165,9 +200,10 @@ public class Entity : ScriptableObject
         GameEvents.instance.TriggerOnGainExperience(this, amount);
     }
 
-    public bool HasNoActionsLeft() {
+    public bool HasNoActionsLeft()
+    {
         // Returns true if ALL of your die are exhausted
-        return actions.All(action => action.die.isExhausted);
+        return innateActions.All(action => action.die.isExhausted);
     }
 
     public Entity Copy()
@@ -176,19 +212,22 @@ public class Entity : ScriptableObject
         var copy = Instantiate(this);
 
         // Make a copy of all of it's actions
-        for (int i = 0; i < actions.Count; i++)
+        for (int i = 0; i < innateActions.Count; i++)
         {
-            // If it's not null
-            if (actions[i] != null)
-            {
-                // Set each action to a copy of itself
-                copy.actions[i] = actions[i].Copy();
-            }
+            // Set each action to a copy of itself
+            copy.innateActions[i] = innateActions[i].Copy();
         }
 
-        // Make copy of weapon
-        if (weapon != null)
-            copy.weapon = weapon.Copy();
+        // Make copy of weapons
+        if (primaryWeapon != null)
+            copy.primaryWeapon = primaryWeapon.Copy();
+
+        if (secondaryWeapon != null)
+            copy.secondaryWeapon = secondaryWeapon.Copy();
+
+        // Copy inventory
+        if (inventory != null)
+            copy.inventory = inventory.Copy();
 
         return copy;
     }

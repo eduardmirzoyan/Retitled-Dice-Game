@@ -24,9 +24,10 @@ MonoBehaviour:
   hitEffectPrefab: {fileID: 7270536486772163001, guid: 335c93a61b62ca84e9f26440c7f3ed0e, type: 3}
   offsetDueToSize: {x: 0, y: 0.3, z: 0}
   AI: {fileID: 11400000, guid: 1bad9658d855af047b8e9141254e912d, type: 2}
-  actions:
+  innateActions:
   - {fileID: 11400000, guid: 31fb65b37415e9042bc579f491dd2fa1, type: 2}
   - {fileID: 11400000, guid: 3d0a5222516c54345861722ba677cba1, type: 2}
-  weapon: {fileID: 11400000, guid: 2885f6d5977fa394298af86dca1e5922, type: 2}
+  primaryWeapon: {fileID: 11400000, guid: 2885f6d5977fa394298af86dca1e5922, type: 2}
+  secondaryWeapon: {fileID: 0}
   location: {x: 0, y: 0, z: 0}
   room: {fileID: 0}

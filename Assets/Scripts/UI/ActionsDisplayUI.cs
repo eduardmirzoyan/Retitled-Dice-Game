@@ -27,7 +27,7 @@ public class ActionsDisplayUI : MonoBehaviour
             actionUIs = new List<ActionUI>();
 
             // Display all of the player's actions
-            foreach (var action in dungeon.player.actions)
+            foreach (var action in dungeon.player.innateActions)
             {
                 // Instaniate as child
                 var actionUI = Instantiate(actionUIPrefab, transform).GetComponent<ActionUI>();

@@ -198,7 +198,7 @@ public class GameManager : MonoBehaviour
         foreach (var entity in room.GetAllEntities())
         {
             // Loop through all actions
-            foreach (var action in entity.actions)
+            foreach (var action in entity.innateActions)
             {
                 // Replenish die with event
                 action.die.Replenish();

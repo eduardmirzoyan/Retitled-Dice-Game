@@ -43,6 +43,8 @@ public class GameEvents : MonoBehaviour
 
     public event Action<bool> onOpenShop;
 
+    public event Action<ItemUI, ItemSlotUI> onItemInsert;
+
     public static GameEvents instance;
     private void Awake()
     {
@@ -245,6 +247,14 @@ public class GameEvents : MonoBehaviour
         if (onEntityGainGold != null)
         {
             onEntityGainGold(entity, amount);
+        }
+    }
+
+    public void TriggerOnItemInsert(ItemUI itemUI, ItemSlotUI itemSlotUI)
+    {
+        if (onItemInsert != null)
+        {
+            onItemInsert(itemUI, itemSlotUI);
         }
     }
 }
