@@ -24,6 +24,8 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
     [SerializeField] private float spinRate = 3f;
     [SerializeField] private bool isInteractable;
 
+    [SerializeField] private List<Sprite> diceDisplaySprites;
+
     private Transform parent;
     private bool isBeingDragged;
     private int rotationDirection = 1;
@@ -35,7 +37,7 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
         canvasGroup = GetComponentInChildren<CanvasGroup>();
     }
 
-    public void Initialize(Action action, bool isInteractable = true)
+    public void Initialize(Action action, bool isInteractable = true, bool displayOnly = false)
     {
         this.die = action.die;
         this.action = action;
@@ -45,7 +47,16 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
         parent = transform.parent;
 
         // Update visual
-        dieImage.sprite = diceSprites[die.value - 1];
+        if (displayOnly) {
+            // Display image based on max value
+            dieImage.sprite = diceDisplaySprites[die.maxValue - 1];
+        }
+        else {
+            // Display image based on current value
+            dieImage.sprite = diceSprites[die.value - 1];
+        }
+
+        
 
         // Sub to die events
         GameEvents.instance.onDieRoll += Roll;

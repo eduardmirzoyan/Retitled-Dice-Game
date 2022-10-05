@@ -8,6 +8,7 @@ public class EquipmentUI : MonoBehaviour
     [Header("Components")]
     [SerializeField] private ItemSlotUI primaryWeaponSlotUI;
     [SerializeField] private ItemSlotUI secondaryWeaponSlotUI;
+    [SerializeField] private Image lockImage;
 
     [Header("Data")]
     [SerializeField] private Player player;
@@ -57,7 +58,7 @@ public class EquipmentUI : MonoBehaviour
         else if (itemSlotUI == secondaryWeaponSlotUI)
         {
             if (itemUI != null) player.EquipSecondary((Weapon)itemUI.GetItem());
-            else player.EquipSecondary(null); 
+            else player.EquipSecondary(null);
         }
     }
 

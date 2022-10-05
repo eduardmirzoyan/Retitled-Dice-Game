@@ -15,7 +15,11 @@ public class ItemSlotUI : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPo
     [SerializeField] private bool isActive = true;
 
     [Header("Settings")]
+    [SerializeField] private bool preventInsert = false;
+    [SerializeField] private bool preventRemove = false;
     [SerializeField] private bool weaponsOnly = false;
+
+    // TODO THISSSSSSSSSSS
 
     public void CreateItem(Item item)
     {

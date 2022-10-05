@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class ActionUI : MonoBehaviour
 {
@@ -11,11 +12,13 @@ public class ActionUI : MonoBehaviour
     [SerializeField] private DieUI diceUI;
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private TooltipTriggerUI tooltipTriggerUI;
+    [SerializeField] private CanvasGroup descriptionCanvasGroup;
+    [SerializeField] private TextMeshProUGUI actionDescriptionText;
 
     [Header("Data")]
     [SerializeField] private Action action;
 
-    public void Initialize(Action action)
+    public void Initialize(Action action, bool displayOnly = false)
     {
         this.action = action;
 
@@ -24,10 +27,17 @@ public class ActionUI : MonoBehaviour
         actionBackground.sprite = action.background;
 
         // Initialize die
-        diceUI.Initialize(action);
+        diceUI.Initialize(action, true, displayOnly);
 
         // Initalize tooltip
         tooltipTriggerUI.SetTooltip(action.name, action.description);
+
+        // Check if displayOnly
+        if (displayOnly)
+        {
+            descriptionCanvasGroup.alpha = 1f;
+            actionDescriptionText.text = action.description;
+        }
 
         // Sub to events
         GameEvents.instance.onTurnStart += AllowInteraction;
@@ -86,7 +96,6 @@ public class ActionUI : MonoBehaviour
         // Prevent the touching of dice
         if (entity is Player)
         {
-
             canvasGroup.alpha = 0.6f;
             canvasGroup.interactable = false;
             canvasGroup.blocksRaycasts = false;

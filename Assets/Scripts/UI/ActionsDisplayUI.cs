@@ -7,49 +7,78 @@ public class ActionsDisplayUI : MonoBehaviour
     [SerializeField] private GameObject actionUIPrefab;
     private List<ActionUI> actionUIs;
 
+    private Entity entity;
+
     private void Start()
     {
+        // Initialize list
+        actionUIs = new List<ActionUI>();
+
         // Sub
-        GameEvents.instance.onEnterFloor += DisplayPlayerActions;
+        GameEvents.instance.onEnterFloor += DisplayActions;
+        GameEvents.instance.onWeaponEquip += UpdateActions;
     }
 
     private void OnDestroy()
     {
         // Unsub
-        GameEvents.instance.onEnterFloor -= DisplayPlayerActions;
+        GameEvents.instance.onEnterFloor -= DisplayActions;
+        GameEvents.instance.onWeaponEquip -= UpdateActions;
     }
 
-    private void DisplayPlayerActions(Room dungeon)
+    private void DisplayActions(Room dungeon)
     {
         if (dungeon != null)
         {
-            // Initialize list
-            actionUIs = new List<ActionUI>();
-
-            // Display all of the player's actions
-            foreach (var action in dungeon.player.innateActions)
-            {
-                // Instaniate as child
-                var actionUI = Instantiate(actionUIPrefab, transform).GetComponent<ActionUI>();
-                // Initialize
-                actionUI.Initialize(action);
-                // Save
-                actionUIs.Add(actionUI);
-            }
+            // Save and create actions
+            this.entity = dungeon.player;
+            CreateActions(dungeon.player);
         }
         else
         {
-            foreach (var actionUI in actionUIs)
-            {
-                // Un-init
-                actionUI.Uninitialize();
-                // Destroy
-                Destroy(actionUI.gameObject);
-            }
+            // Clear actions
+            DestroyActions();
+        }
+    }
 
-            // Clear list
-            actionUIs.Clear();
+    private void UpdateActions(Entity entity, Weapon weapon)
+    {
+        // If this entity weapons changed
+        if (this.entity == entity)
+        {
+            // Clear current actions
+            DestroyActions();
+
+            // Create actions
+            CreateActions(entity);
+        }
+    }
+
+    private void DestroyActions()
+    {
+        foreach (var actionUI in actionUIs)
+        {
+            // Un-init
+            actionUI.Uninitialize();
+            // Destroy
+            Destroy(actionUI.gameObject);
         }
 
+        // Clear list
+        actionUIs.Clear();
+    }
+
+    private void CreateActions(Entity entity) 
+    {
+        // Display all of the player's actions
+        foreach (var action in entity.GetActions())
+        {
+            // Instaniate as child
+            var actionUI = Instantiate(actionUIPrefab, transform).GetComponent<ActionUI>();
+            // Initialize
+            actionUI.Initialize(action);
+            // Save
+            actionUIs.Add(actionUI);
+        }
     }
 }

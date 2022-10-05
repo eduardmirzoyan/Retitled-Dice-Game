@@ -44,6 +44,7 @@ public class GameEvents : MonoBehaviour
     public event Action<bool> onOpenShop;
 
     public event Action<ItemUI, ItemSlotUI> onItemInsert;
+    public event Action<Entity, Weapon> onWeaponEquip;
 
     public static GameEvents instance;
     private void Awake()
@@ -255,6 +256,14 @@ public class GameEvents : MonoBehaviour
         if (onItemInsert != null)
         {
             onItemInsert(itemUI, itemSlotUI);
+        }
+    }
+
+    public void TriggerOnWeaponEquip(Entity entity, Weapon weapon)
+    {
+        if (onWeaponEquip != null)
+        {
+            onWeaponEquip(entity, weapon);
         }
     }
 }

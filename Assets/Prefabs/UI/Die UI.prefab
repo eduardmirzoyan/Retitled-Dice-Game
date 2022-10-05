@@ -326,8 +326,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21269687e80ac6b4d845f523d29a1471, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvasGroup: {fileID: 0}
-  rectTransform: {fileID: 0}
+  canvasGroup: {fileID: 8591118944637497976}
+  rectTransform: {fileID: 6183724286850101007}
   dieImage: {fileID: 6183724286324399269}
   outline: {fileID: 4840696981420573758}
   shadow: {fileID: 3982274346765998491}
@@ -343,6 +343,15 @@ MonoBehaviour:
   travelRate: 0.2
   spinRate: 3
   isInteractable: 0
+  diceDisplaySprites:
+  - {fileID: 0}
+  - {fileID: 21300000, guid: 8fd5fb31afb814e48871585a9f01e368, type: 3}
+  - {fileID: 21300000, guid: 32830e93beabc634bb380f730d2b855f, type: 3}
+  - {fileID: 21300000, guid: dae3361908abb384e8f41fb889829a5e, type: 3}
+  - {fileID: 0}
+  - {fileID: 21300000, guid: fe3c7f1be9bd1cc45b4105f3aab367ef, type: 3}
+  - {fileID: 0}
+  - {fileID: 21300000, guid: 17c0e98669275924d869cfcc0558c2a4, type: 3}
 --- !u!1 &7394171522209391040
 GameObject:
   m_ObjectHideFlags: 0

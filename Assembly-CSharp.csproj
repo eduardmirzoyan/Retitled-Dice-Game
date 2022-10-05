@@ -75,6 +75,7 @@
      <Compile Include="Assets\Scripts\Main Menu\TransitionManager.cs" />
      <Compile Include="Assets\Scripts\UI\PlayerHUDUI.cs" />
      <Compile Include="Assets\Scripts\UI\GameoverUI.cs" />
+     <Compile Include="Assets\Scripts\UI\ItemTooltipUI.cs" />
      <Compile Include="Assets\Scripts\UI\ItemSlotUI.cs" />
      <Compile Include="Assets\Scripts\Entity.cs" />
      <Compile Include="Assets\Scripts\Actions\Action.cs" />
@@ -94,7 +95,6 @@
      <Compile Include="Assets\Scripts\UI\FloatingText.cs" />
      <Compile Include="Assets\Scripts\AI\AI.cs" />
      <Compile Include="Assets\Scripts\Actions\ShopAction.cs" />
-     <Compile Include="Assets\Scripts\UI\ItemTooltipUI.cs" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />

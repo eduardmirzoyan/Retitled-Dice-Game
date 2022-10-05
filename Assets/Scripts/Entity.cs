@@ -42,14 +42,16 @@ public class Entity : ScriptableObject
     {
         this.primaryWeapon = weapon;
 
-        // Update actions?
+        // Trigger event
+        GameEvents.instance.TriggerOnWeaponEquip(this, weapon);
     }
 
     public void EquipSecondary(Weapon weapon)
     {
         this.secondaryWeapon = weapon;
 
-        // Update actions?
+        // Trigger event
+        GameEvents.instance.TriggerOnWeaponEquip(this, weapon);
     }
 
     public List<Action> GetActions()
@@ -57,13 +59,16 @@ public class Entity : ScriptableObject
         List<Action> result = new List<Action>();
 
         // First add innate actions
-        result.AddRange(innateActions);
+        if (innateActions != null)
+            result.AddRange(innateActions);
 
         // Add actions from primay weapon
-        result.AddRange(primaryWeapon.actions);
+        if (primaryWeapon != null)
+            result.AddRange(primaryWeapon.actions);
 
         // Add actions from secondary weapon
-        result.AddRange(secondaryWeapon.actions);
+        if (secondaryWeapon != null)
+            result.AddRange(secondaryWeapon.actions);
 
         return result;
     }
@@ -203,7 +208,7 @@ public class Entity : ScriptableObject
     public bool HasNoActionsLeft()
     {
         // Returns true if ALL of your die are exhausted
-        return innateActions.All(action => action.die.isExhausted);
+        return GetActions().All(action => action.die.isExhausted);
     }
 
     public Entity Copy()

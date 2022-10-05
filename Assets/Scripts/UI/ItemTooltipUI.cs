@@ -97,8 +97,8 @@ public class ItemTooltipUI : MonoBehaviour
             {
                 // Spawn visuals of actions
                 var actionUI = Instantiate(actionUIPrefab, actionsLayoutGroup.transform).GetComponent<ActionUI>();
-                // Initialize
-                actionUI.Initialize(action);
+                // Initialize as display
+                actionUI.Initialize(action, true);
 
                 // Save
                 actionUIs.Add(actionUI);
@@ -117,6 +117,9 @@ public class ItemTooltipUI : MonoBehaviour
         // Destroy all the ui
         foreach (var ui in actionUIs)
         {
+            // Uninit
+            ui.Uninitialize();
+            // Destroy
             Destroy(ui.gameObject);
         }
         actionUIs.Clear();
