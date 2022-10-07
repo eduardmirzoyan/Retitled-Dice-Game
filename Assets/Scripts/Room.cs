@@ -122,6 +122,10 @@ public class Room : ScriptableObject
         {
             // Enemy was removed
         }
+        else if (barrels.Remove(entity))
+        {
+            // Barrel was removed
+        }
         else
         {
             // Debug
@@ -203,7 +207,7 @@ public class Room : ScriptableObject
     {
         // Create SO
         roomExit = ScriptableObject.CreateInstance<RoomExit>();
-        
+
         // Current algorithm: Choose the corner opposite of the entrance
         var exitLocation = new Vector3Int(2 * padding + width - entranceLocation.x - 1, 2 * padding + height - entranceLocation.y - 1);
 
@@ -234,7 +238,8 @@ public class Room : ScriptableObject
                 if (floor[i][j] == 1 && walls[i][j] == 0 && entranceLocation != position && roomExit.location != position)
                 {
                     // Generate barrel on tile by chance
-                    if (Random.Range(0, 100) < barrelSpawnChance) {
+                    if (Random.Range(0, 100) < barrelSpawnChance)
+                    {
                         // Make copy
                         var copy = barrel.Copy();
                         // Set room
@@ -267,7 +272,8 @@ public class Room : ScriptableObject
                 if (floor[i][j] == 1 && walls[i][j] == 0 && entranceLocation != position && roomExit.location != position)
                 {
                     // Make sure no barrel is here
-                    if (barrels.All(barrel => barrel.location != position)) {
+                    if (barrels.All(barrel => barrel.location != position))
+                    {
                         // Generate gold on tile by chance
                         value = Random.Range(0, 100) < goldSpawnChance ? 2 : 0;
                     }
@@ -298,22 +304,12 @@ public class Room : ScriptableObject
         }
     }
 
-    public bool IsValidLocation(Vector3Int location, bool ignoreEntity = false, bool ignorePickups = true)
+    public bool IsValidLocation(Vector3Int location, bool ignoreEntity = false)
     {
         // Make sure there is no wall
         if (walls[location.x][location.y] != 0)
         {
             return false;
-        }
-
-        // Check for pickups
-        if (!ignorePickups)
-        {
-            // If there is ANY pickup there
-            if (pickups[location.x][location.y] != 0)
-            {
-                return false;
-            }
         }
 
         // Make sure there is no player or ANY enemy there or ANY barrel
@@ -329,7 +325,7 @@ public class Room : ScriptableObject
         return true;
     }
 
-    public bool IsValidPath(Vector3Int start, Vector3Int end, bool ignoreEntity = false, bool ignorePickups = true, bool checkEnd = true)
+    public bool IsValidPath(Vector3Int start, Vector3Int end, bool ignoreEntity = false, bool endMustBeClear = true)
     {
         // Get direction
         Vector3Int direction = end - start;
@@ -349,14 +345,12 @@ public class Room : ScriptableObject
         {
             direction.y = -1;
         }
-        else { }
 
-        // Keep looping until start is at the end
-        while (start != end)
+        // Keep looping until start is at the end 
+        while (start != end - direction)
         {
-
             // Check to see if the location is valid
-            if (!IsValidLocation(start + direction, ignoreEntity, ignorePickups))
+            if (!IsValidLocation(start + direction, ignoreEntity))
             {
                 return false;
             }
@@ -366,14 +360,20 @@ public class Room : ScriptableObject
         }
 
         // Check if you need to ignore the end
-        if (checkEnd) {
+        if (endMustBeClear)
+        {
             // Make sure there is no enemy on the last tile regardless of conditions
             if (!IsValidLocation(end))
             {
                 return false;
             }
         }
-        
+        // Check end normally
+        else if (!IsValidLocation(end, ignoreEntity))
+        {
+            return false;
+        }
+
 
         // Else we good :)
         return true;

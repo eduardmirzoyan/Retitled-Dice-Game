@@ -7,7 +7,7 @@ public class ShopkeeperAI : AI
 {
     public override void DisplayIntent(Entity entity, Room room)
     {
-        var shopAction = entity.innateActions[1];
+        var shopAction = entity.GetActions()[1];
 
         // Trigger event to display targets
         GameEvents.instance.TriggerOnActionSelect(entity, shopAction, room);
@@ -16,8 +16,8 @@ public class ShopkeeperAI : AI
     public override (Action, Vector3Int) GenerateBestDecision(Entity entity, Room room)
     {
         // Only consider the first action of the entity
-        var moveAction = entity.innateActions[0];
-        var shopAction = entity.innateActions[1];
+        var moveAction = entity.GetActions()[0];
+        var shopAction = entity.GetActions()[1];
 
         // First use Shop action if player is in range
         foreach (var location in shopAction.GetValidLocations(entity.location, room))

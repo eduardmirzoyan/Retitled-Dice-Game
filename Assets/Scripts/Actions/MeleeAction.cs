@@ -72,32 +72,35 @@ public class MeleeAction : Action
             throw new System.Exception("There was a problem with determining direction.");
         }
 
-        // Trigger move event
-        GameEvents.instance.TriggerOnEntityReadyWeapon(entity, true);
+        // Draw weapon
+        GameEvents.instance.TriggerOnEntityDrawWeapon(entity, direction, weapon);
 
-        // Keep looping until entiy makes it to its final location
+        // Trigger start move event
+        GameEvents.instance.TriggerOnEntityStartMove(entity, direction);
+
+        // Keep looping until entity makes it to its final location
         while (entity.location != targetLocation)
         {
             // Move entity
             entity.MoveToward(direction);
 
-            // Trigger move event
-            GameEvents.instance.TriggerOnEntityMove(entity, true);
+            // Attack the location that you're at
+            bool res = entity.AttackLocation(entity.location, weapon);
 
-            // Attack location
-            entity.AttackCurrentLocation();
+            // Trigger event
+            if (res)
+                GameEvents.instance.TriggerOnEntityMeleeAttack(entity, weapon);
 
             // Wait for animation
             yield return new WaitForSeconds(EntityModel.moveSpeed);
         }
 
-        // Trigger stop event
-        GameEvents.instance.TriggerOnEntityMove(entity, false);
+        // Trigger stop move event
+        GameEvents.instance.TriggerOnEntityStopMove(entity);
 
-        // Trigger move event
-        GameEvents.instance.TriggerOnEntityReadyWeapon(entity, false);
+        // Sheathe weapon
+        GameEvents.instance.TriggerOnEntitySheatheWeapon(entity, weapon);
 
         // Finnish!
-        yield return null;
     }
 }

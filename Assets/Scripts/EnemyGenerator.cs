@@ -18,7 +18,7 @@ public class EnemyGenerator : ScriptableObject
 
         // TODO CHANGE THIS!
         // Make both actions take same die
-        copy.innateActions[1].die = copy.innateActions[0].die;
+        copy.GetActions()[1].die = copy.GetActions()[0].die;
 
         return copy;
     }

@@ -72,21 +72,21 @@ public class MoveAction : Action
             throw new System.Exception("There was a problem with determining direction.");
         }
 
+        // Trigger start move event
+        GameEvents.instance.TriggerOnEntityStartMove(entity, direction);
+
         // Keep looping until entiy makes it to its final location
         while (entity.location != targetLocation)
         {
             // Move entity
             entity.MoveToward(direction);
 
-            // Trigger move event
-            GameEvents.instance.TriggerOnEntityMove(entity, true);
-
             // Wait for animation
             yield return new WaitForSeconds(EntityModel.moveSpeed);
         }
 
-        // Trigger stop event
-        GameEvents.instance.TriggerOnEntityMove(entity, false);
+        // Trigger stop move event
+        GameEvents.instance.TriggerOnEntityStopMove(entity);
 
         // Finnish!
     }

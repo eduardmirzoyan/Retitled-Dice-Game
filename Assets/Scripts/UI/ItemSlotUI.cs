@@ -8,18 +8,19 @@ public class ItemSlotUI : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPo
 {
     [Header("Components")]
     [SerializeField] private Image highlightImage;
+    [SerializeField] private Color defaultColor;
+    [SerializeField] private Color highlightColor;
+    [SerializeField] private Color disabledColor;
 
     [Header("Data")]
     [SerializeField] private ItemUI itemUI;
     [SerializeField] private GameObject itemUIPrefab;
-    [SerializeField] private bool isActive = true;
 
     [Header("Settings")]
     [SerializeField] private bool preventInsert = false;
     [SerializeField] private bool preventRemove = false;
-    [SerializeField] private bool weaponsOnly = false;
-
-    // TODO THISSSSSSSSSSS
+    [SerializeField] private bool weaponsOnly = false;    
+    [SerializeField] private bool mustBuy = false;
 
     public void CreateItem(Item item)
     {
@@ -31,24 +32,51 @@ public class ItemSlotUI : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPo
         this.itemUI = itemUI;
     }
 
+    public void DisableRemove()
+    {
+        preventRemove = true;
+
+        // Change color
+        highlightImage.color = disabledColor;
+
+        // Set item inside to not interactable
+        if (itemUI != null)
+            itemUI.SetInteractable(false);
+    }
+
+    public void EnableRemove()
+    {
+        preventRemove = false;
+
+        // Change color
+        highlightImage.color = defaultColor;
+
+        // Set item inside to not interactable
+        if (itemUI != null)
+            itemUI.SetInteractable(true);
+    }
+
     public void OnDrop(PointerEventData eventData)
     {
-        // Make sure slot is active
-        if (!isActive) return;
-
         // Make sure there already isn't an item and it is an itemUI
         if (eventData.pointerDrag != null && eventData.pointerDrag.TryGetComponent(out ItemUI newItemUI))
         {
-            // Remove highlight
-            var color = highlightImage.color;
-            color.a = 0f;
-            highlightImage.color = color;
-
             // Make sure that the same item isn't added to the same slot
             if (newItemUI == itemUI) return;
 
-            // Check settings
-            if (weaponsOnly && itemUI.GetItem() is not Weapon) return;
+            // Check restrictions
+            if (preventInsert) return;
+
+            // Check restrictions
+            if (weaponsOnly && newItemUI.GetItem() is not Weapon) return;
+
+            // Attempt to buy
+            if (newItemUI.GetItemSlotUI() != null && newItemUI.GetItemSlotUI().mustBuy && !Buy(newItemUI.GetItem().value)) return;
+
+            // Remove highlight
+            highlightImage.color = defaultColor;
+
+            // Now we all good, do insertion...
 
             // If an item already exists, swap
             if (this.itemUI != null)
@@ -94,38 +122,50 @@ public class ItemSlotUI : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPo
         }
 
         this.itemUI = itemUI;
-        
+
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        // Make sure slot is active
-        if (!isActive) return;
+        if (preventInsert) return;
 
         if (eventData.pointerDrag != null && itemUI == null && eventData.pointerDrag.TryGetComponent(out ItemUI newItemUI))
         {
-            if (highlightImage != null)
-            {
-                var color = highlightImage.color;
-                color.a = 0.35f;
-                highlightImage.color = color;
-            }
+            highlightImage.color = highlightColor;
         }
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        // Make sure slot is active
-        if (!isActive) return;
+        if (preventInsert) return;
 
         if (eventData.pointerDrag != null && itemUI == null && eventData.pointerDrag.TryGetComponent(out ItemUI newItemUI))
         {
-            if (highlightImage != null)
-            {
-                var color = highlightImage.color;
-                color.a = 0f;
-                highlightImage.color = color;
-            }
+            highlightImage.color = defaultColor;
         }
+    }
+
+    private bool Buy(int cost) {
+        if (DataManager.instance.GetPlayer().gold >= cost) {
+            DataManager.instance.GetPlayer().AddGold(-cost);
+            return true;
+        }
+        
+        // If can't buy return false
+        return false;   
+    }
+
+    private bool PassesRestrictions() {
+
+
+        return true;
+    }
+
+    public bool MustBuy() {
+        return mustBuy;
+    }
+
+    public bool PreventRemove() {
+        return preventRemove;
     }
 }

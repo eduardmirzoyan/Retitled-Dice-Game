@@ -56,6 +56,15 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
             dieImage.sprite = diceSprites[die.value - 1];
         }
 
+        // Check exhaust state
+        if (die.isExhausted) {
+            canvasGroup.alpha = 0.4f;
+            canvasGroup.blocksRaycasts = false;
+        }
+        else {
+            canvasGroup.alpha = 1f;
+            canvasGroup.blocksRaycasts = true;
+        }
         
 
         // Sub to die events

@@ -4929,6 +4929,38 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!1 &2178159522061384211
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2720923180738980964}
+  m_Layer: 0
+  m_Name: Off Hand
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2720923180738980964
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2178159522061384211}
+  m_LocalRotation: {x: -0, y: -0, z: 0.9848078, w: 0.17364825}
+  m_LocalPosition: {x: -0.029, y: 0.113, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1112596003333491161}
+  m_Father: {fileID: 6048487393292599769}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2205721132330546254
 GameObject:
   m_ObjectHideFlags: 0
@@ -4941,7 +4973,7 @@ GameObject:
   - component: {fileID: 5041543948791362742}
   - component: {fileID: 7310614640320965906}
   m_Layer: 0
-  m_Name: Primary Weapon Sprite
+  m_Name: Main Weapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4959,8 +4991,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6048487393292599769}
-  m_RootOrder: 1
+  m_Father: {fileID: 5453179228924539968}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 160}
 --- !u!212 &5041543948791362742
 SpriteRenderer:
@@ -5003,7 +5035,7 @@ SpriteRenderer:
   m_SortingLayerID: 938315117
   m_SortingLayer: 2
   m_SortingOrder: -1
-  m_Sprite: {fileID: -1956281420, guid: 20597968d5281954482d5d148d07fa12, type: 3}
+  m_Sprite: {fileID: -1525420329, guid: 20597968d5281954482d5d148d07fa12, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.5882353}
   m_FlipX: 1
   m_FlipY: 0
@@ -5024,7 +5056,7 @@ Animator:
   m_GameObject: {fileID: 2205721132330546254}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c817ce2c79c60c0419dca06b46b5d3c0, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -5034,6 +5066,38 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!1 &2442237306565188021
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5453179228924539968}
+  m_Layer: 0
+  m_Name: Main Hand
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5453179228924539968
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2442237306565188021}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8369327091290646652}
+  m_Father: {fileID: 6048487393292599769}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3083670872425271295
 GameObject:
   m_ObjectHideFlags: 0
@@ -9950,9 +10014,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   offsetTransform: {fileID: 6048487393292599769}
   modelSpriteRenderer: {fileID: 6406055089092226309}
-  weaponSpriteRenderer: {fileID: 5041543948791362742}
   modelAnimator: {fileID: 6406055089092226310}
-  weaponAnimator: {fileID: 7310614640320965906}
+  mainWeaponSpriteRenderer: {fileID: 5041543948791362742}
+  mainWeaponAnimator: {fileID: 7310614640320965906}
+  mainWeaponHolder: {fileID: 5453179228924539968}
+  offWeaponSpriteRenderer: {fileID: 2738401007864941284}
+  offWeaponAnimator: {fileID: 3767253256742901552}
+  offWeaponHolder: {fileID: 2720923180738980964}
   damageFlash: {fileID: 3595615135183533191}
   dieUI: {fileID: 1335665218105487622}
   warpGenerateParticles: {fileID: 2482367346573516533}
@@ -9960,6 +10028,7 @@ MonoBehaviour:
   deathCloud: {fileID: 8511873745700599822, guid: d9adbf62e970a24408f3195a06e0e185, type: 3}
   entity: {fileID: 0}
   isFacingRight: 1
+  projectilePrefab: {fileID: 1604642143653277704, guid: 069bcacff1084724797d9b3a22e52b78, type: 3}
 --- !u!1 &6406055089092226427
 GameObject:
   m_ObjectHideFlags: 0
@@ -9972,7 +10041,7 @@ GameObject:
   - component: {fileID: 6406055089092226309}
   - component: {fileID: 6406055089092226310}
   m_Layer: 0
-  m_Name: Model Sprite
+  m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10094,8 +10163,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6406055089092226308}
-  - {fileID: 8369327091290646652}
-  - {fileID: 1112596003333491161}
+  - {fileID: 5453179228924539968}
+  - {fileID: 2720923180738980964}
   - {fileID: 7220064215932737947}
   - {fileID: 4418715973394445028}
   - {fileID: 902980427693991363}
@@ -10114,12 +10183,12 @@ GameObject:
   - component: {fileID: 2738401007864941284}
   - component: {fileID: 3767253256742901552}
   m_Layer: 0
-  m_Name: Secondary Weapon Sprite
+  m_Name: Off Weapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1112596003333491161
 Transform:
   m_ObjectHideFlags: 0
@@ -10127,13 +10196,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7690802178219887498}
-  m_LocalRotation: {x: -0, y: -0, z: 0.9848077, w: 0.17364824}
-  m_LocalPosition: {x: -0.029, y: 0.113, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6048487393292599769}
-  m_RootOrder: 2
+  m_Father: {fileID: 2720923180738980964}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 160}
 --- !u!212 &2738401007864941284
 SpriteRenderer:

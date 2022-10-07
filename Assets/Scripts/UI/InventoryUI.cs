@@ -110,7 +110,7 @@ public class InventoryUI : MonoBehaviour
         foreach (var itemSlot in itemSlots)
         {
             // Lock slot
-            // TODO
+            itemSlot.DisableRemove();
         } 
     }
 
@@ -123,7 +123,7 @@ public class InventoryUI : MonoBehaviour
         foreach (var itemSlot in itemSlots)
         {
             // Lock slot
-            // TODO
+            itemSlot.EnableRemove();
         }
     }
 }

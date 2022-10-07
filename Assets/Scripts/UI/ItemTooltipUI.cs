@@ -15,6 +15,7 @@ public class ItemTooltipUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI itemDescription;
     [SerializeField] private GameObject actionUIPrefab;
     [SerializeField] private LayoutGroup actionsLayoutGroup;
+    [SerializeField] private TextMeshProUGUI valueText;
 
     private List<ActionUI> actionUIs;
 
@@ -77,7 +78,7 @@ public class ItemTooltipUI : MonoBehaviour
         rectTransform.pivot = new Vector2(pivotX, pivotY);
     }
 
-    public void Show(Item item)
+    public void Show(Item item, bool showForSale = false)
     {
         // Display window
         canvasGroup.alpha = 1f;
@@ -85,6 +86,11 @@ public class ItemTooltipUI : MonoBehaviour
         // Update information
         itemName.text = item.name;
         itemDescription.text = item.description;
+        
+        // Update selling info, IMPROVE LATER?
+        valueText.text = "" + item.value;
+        valueText.transform.parent.gameObject.SetActive(showForSale);
+        
 
         // If the item is an equipment item
         if (item is Weapon)

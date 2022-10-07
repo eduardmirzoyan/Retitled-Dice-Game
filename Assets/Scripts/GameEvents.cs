@@ -27,9 +27,13 @@ public class GameEvents : MonoBehaviour
     public event Action<Die> onDieReplenish;
 
     // Visuals
-    public event Action<Entity, bool> onEntityMove;
-    public event Action<Entity, bool> onEntityReadyWeapon;
-    public event Action<Entity> onEntityMeleeAttack;
+    public event Action<Entity, Vector3Int> onEntityStartMove;
+    public event Action<Entity> onEntityMove;
+    public event Action<Entity> onEntityStopMove;
+    public event Action<Entity, Vector3, Weapon> onEntityDrawWeapon;
+    public event Action<Entity, Weapon> onEntitySheatheWeapon;
+    public event Action<Entity, Weapon> onEntityMeleeAttack;
+    public event Action<Entity, Vector3Int, Weapon> onEntityRangedAttack;
     public event Action<Entity> onEntityWarp;
 
     // Stat changes
@@ -147,11 +151,27 @@ public class GameEvents : MonoBehaviour
         }
     }
 
-    public void TriggerOnEntityMove(Entity entity, bool state)
+    public void TriggerOnEntityStartMove(Entity entity, Vector3Int direction)
+    {
+        if (onEntityStartMove != null)
+        {
+            onEntityStartMove(entity, direction);
+        }
+    }
+
+    public void TriggerOnEntityMove(Entity entity)
     {
         if (onEntityMove != null)
         {
-            onEntityMove(entity, state);
+            onEntityMove(entity);
+        }
+    }
+
+    public void TriggerOnEntityStopMove(Entity entity)
+    {
+        if (onEntityStopMove != null)
+        {
+            onEntityStopMove(entity);
         }
     }
 
@@ -195,19 +215,35 @@ public class GameEvents : MonoBehaviour
         }
     }
 
-    public void TriggerOnEntityMeleeAttack(Entity entity)
+    public void TriggerOnEntityMeleeAttack(Entity entity, Weapon weapon)
     {
         if (onEntityMeleeAttack != null)
         {
-            onEntityMeleeAttack(entity);
+            onEntityMeleeAttack(entity, weapon);
         }
     }
 
-    public void TriggerOnEntityReadyWeapon(Entity entity, bool state)
+    public void TriggerOnEntityRangedAttack(Entity entity, Vector3Int targetLocation, Weapon weapon)
     {
-        if (onEntityReadyWeapon != null)
+        if (onEntityRangedAttack != null)
         {
-            onEntityReadyWeapon(entity, state);
+            onEntityRangedAttack(entity, targetLocation, weapon);
+        }
+    }
+
+    public void TriggerOnEntityDrawWeapon(Entity entity, Vector3 direction, Weapon weapon)
+    {
+        if (onEntityDrawWeapon != null)
+        {
+            onEntityDrawWeapon(entity, direction, weapon);
+        }
+    }
+
+    public void TriggerOnEntitySheatheWeapon(Entity entity, Weapon weapon)
+    {
+        if (onEntitySheatheWeapon != null)
+        {
+            onEntitySheatheWeapon(entity, weapon);
         }
     }
 

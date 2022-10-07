@@ -18,15 +18,14 @@ public class Entity : ScriptableObject
     [Header("Visuals")]
     public Sprite modelSprite;
     public RuntimeAnimatorController modelController;
-    public RuntimeAnimatorController weaponController;
     public GameObject hitEffectPrefab;
     public Vector3 offsetDueToSize;
 
     [Header("Variable Stats")]
     public AI AI;
     public List<Action> innateActions; // What the entity can do
-    public Weapon primaryWeapon;
-    public Weapon secondaryWeapon;
+    public Weapon mainWeapon;
+    public Weapon offWeapon;
 
     [Header("Dungeon Dependant")]
     public Vector3Int location; // Location of this entity on the floor
@@ -40,7 +39,7 @@ public class Entity : ScriptableObject
 
     public void EquipPrimary(Weapon weapon)
     {
-        this.primaryWeapon = weapon;
+        this.mainWeapon = weapon;
 
         // Trigger event
         GameEvents.instance.TriggerOnWeaponEquip(this, weapon);
@@ -48,7 +47,7 @@ public class Entity : ScriptableObject
 
     public void EquipSecondary(Weapon weapon)
     {
-        this.secondaryWeapon = weapon;
+        this.offWeapon = weapon;
 
         // Trigger event
         GameEvents.instance.TriggerOnWeaponEquip(this, weapon);
@@ -63,12 +62,12 @@ public class Entity : ScriptableObject
             result.AddRange(innateActions);
 
         // Add actions from primay weapon
-        if (primaryWeapon != null)
-            result.AddRange(primaryWeapon.actions);
+        if (mainWeapon != null)
+            result.AddRange(mainWeapon.actions);
 
         // Add actions from secondary weapon
-        if (secondaryWeapon != null)
-            result.AddRange(secondaryWeapon.actions);
+        if (offWeapon != null)
+            result.AddRange(offWeapon.actions);
 
         return result;
     }
@@ -122,7 +121,10 @@ public class Entity : ScriptableObject
         if (direction.magnitude > 1) throw new System.Exception("DIRECTION MAG is NOT 1");
 
         // Increment location
-        location += direction;
+        this.location += direction;
+
+        // Trigger event
+        GameEvents.instance.TriggerOnEntityMove(this);
 
         // Interact with new location
         Interact();
@@ -142,11 +144,11 @@ public class Entity : ScriptableObject
         // Does nothing
     }
 
-    public void AttackCurrentLocation()
+    public void MeleeLocation(Weapon weapon)
     {
         var targets = new List<Entity>();
 
-        // Conisder player, enemies and barrels
+        // Consider player, enemies and barrels
         targets.Add(room.player);
         targets.AddRange(room.enemies);
         targets.AddRange(room.barrels);
@@ -157,13 +159,38 @@ public class Entity : ScriptableObject
             // If the target is not itself
             if (target.location == location && target != this)
             {
-                // Trigger event
-                GameEvents.instance.TriggerOnEntityMeleeAttack(this);
-
                 // Currently deal 1 damage, but this might change?
                 target.TakeDamage(1);
+
+                // Trigger event
+                GameEvents.instance.TriggerOnEntityMeleeAttack(this, weapon);
             }
         }
+    }
+
+    public bool AttackLocation(Vector3 location, Weapon weapon)
+    {
+        var targets = new List<Entity>();
+
+        // Consider player, enemies and barrels
+        targets.Add(room.player);
+        targets.AddRange(room.enemies);
+        targets.AddRange(room.barrels);
+
+        // Check if any entities are on the same tile, if so damage them
+        foreach (var target in targets)
+        {
+            // If the target is not itself
+            if (target.location == location && target != this)
+            {
+                // Currently deal 1 damage, but this might change?
+                target.TakeDamage(1);
+
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public void AddGold(int amount)
@@ -224,11 +251,11 @@ public class Entity : ScriptableObject
         }
 
         // Make copy of weapons
-        if (primaryWeapon != null)
-            copy.primaryWeapon = primaryWeapon.Copy();
+        if (mainWeapon != null)
+            copy.mainWeapon = mainWeapon.Copy();
 
-        if (secondaryWeapon != null)
-            copy.secondaryWeapon = secondaryWeapon.Copy();
+        if (offWeapon != null)
+            copy.offWeapon = offWeapon.Copy();
 
         // Copy inventory
         if (inventory != null)

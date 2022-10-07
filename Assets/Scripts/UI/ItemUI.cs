@@ -13,7 +13,6 @@ public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
     [SerializeField] private Image outlineSprite;
     [SerializeField] private Outline outline;
 
-
     [Header("Data")]
     [SerializeField] private Item item;
     [SerializeField] private ItemSlotUI itemSlotUI;
@@ -49,6 +48,11 @@ public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
         itemSprite.sprite = item.sprite;
         outlineSprite.sprite = item.sprite;
         isInteractable = true;
+    }
+
+    public void SetInteractable(bool state)
+    {
+        isInteractable = state;
     }
 
     public Item GetItem()
@@ -97,7 +101,7 @@ public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
         outline.effectColor = Color.white;
 
         // Show tooltip at this items location
-        ItemTooltipUI.instance.Show(item);
+        ItemTooltipUI.instance.Show(item, itemSlotUI.MustBuy());
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -113,6 +117,9 @@ public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
     {
         if (isInteractable && eventData.button == PointerEventData.InputButton.Left)
         {
+            // Check restrictions
+            if (itemSlotUI != null && itemSlotUI.PreventRemove()) return;
+
             // Toggle flag
             isBeingDragged = true;
 
@@ -133,7 +140,7 @@ public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
 
     public void OnDrag(PointerEventData eventData)
     {
-        // Nothing
+        // Does nothing
     }
 
     public void OnEndDrag(PointerEventData eventData)

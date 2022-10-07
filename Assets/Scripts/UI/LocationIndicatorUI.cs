@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.Tilemaps;
 
 public class LocationIndicatorUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IDropHandler
 {
@@ -17,7 +18,7 @@ public class LocationIndicatorUI : MonoBehaviour, IPointerEnterHandler, IPointer
     [SerializeField] private Color defaultColor = Color.white;
     [SerializeField] private Color highlightColor = Color.yellow;
 
-    public void Initialize(Entity entity, Vector3Int location, Action action)
+    public void Initialize(Entity entity, Vector3Int location, Vector3 sourceLocation, Vector3 targetLocation, Action action)
     {
         this.entity = entity;
         this.location = location;
@@ -26,13 +27,9 @@ public class LocationIndicatorUI : MonoBehaviour, IPointerEnterHandler, IPointer
         // Update icon
         actionIcon.sprite = action.icon;
 
-        // Get world Position
-        var worldSourceLocation = RoomUI.instance.floorTilemap.GetCellCenterWorld(entity.location);
-        var worldLocation = RoomUI.instance.floorTilemap.GetCellCenterWorld(location);
-
         // Draw line from source to location
-        lineRenderer.SetPosition(0, worldSourceLocation);
-        lineRenderer.SetPosition(1, worldLocation);
+        lineRenderer.SetPosition(0, sourceLocation);
+        lineRenderer.SetPosition(1, targetLocation);
         lineRenderer.endColor = action.color;
 
         // Sub

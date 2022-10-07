@@ -6,7 +6,7 @@ using UnityEngine.Tilemaps;
 public class RoomUI : MonoBehaviour
 {
     [Header("Components")]
-    [SerializeField] public Tilemap floorTilemap;
+    [SerializeField] private Tilemap floorTilemap;
     [SerializeField] private Tilemap wallsTilemap;
     [SerializeField] private Tilemap decorTilemap;
     [SerializeField] private Transform entityTransform;
@@ -20,7 +20,6 @@ public class RoomUI : MonoBehaviour
     [SerializeField] private GameObject goldPickupPrefab;
     [SerializeField] private GameObject keyPickupPrefab;
     [SerializeField] private GameObject entityModelPrefab;
-    [SerializeField] private Barrel barrel;
 
     public static RoomUI instance;
     private void Awake()
@@ -37,14 +36,14 @@ public class RoomUI : MonoBehaviour
     private void Start()
     {
         // Sub
-        GameEvents.instance.onEnterFloor += SpawnDungeon;
+        GameEvents.instance.onEnterFloor += SpawnRoom;
         GameEvents.instance.onSpawnEntity += SpawnEntity;
     }
 
     private void OnDestroy()
     {
         // Unsub
-        GameEvents.instance.onEnterFloor -= SpawnDungeon;
+        GameEvents.instance.onEnterFloor -= SpawnRoom;
         GameEvents.instance.onSpawnEntity -= SpawnEntity;
     }
 
@@ -63,7 +62,7 @@ public class RoomUI : MonoBehaviour
     //     }
     // }
 
-    private void SpawnDungeon(Room room)
+    private void SpawnRoom(Room room)
     {
         this.room = room;
 
@@ -113,7 +112,8 @@ public class RoomUI : MonoBehaviour
             }
 
             // Spawn all barrels
-            foreach (var barrel in room.barrels) {
+            foreach (var barrel in room.barrels)
+            {
                 SpawnEntity(barrel);
             }
 
@@ -138,7 +138,7 @@ public class RoomUI : MonoBehaviour
         // Spawn model in container
         var model = Instantiate(entityModelPrefab, worldLocation, Quaternion.identity, entityTransform).GetComponent<EntityModel>();
         // Initialize
-        model.Initialize(entity);
+        model.Initialize(entity, this);
     }
 
     public Vector3 GetLocationCenter(Vector3Int location)

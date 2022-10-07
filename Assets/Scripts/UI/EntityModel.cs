@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 [RequireComponent(typeof(DamageFlash))]
 public class EntityModel : MonoBehaviour
@@ -8,15 +9,21 @@ public class EntityModel : MonoBehaviour
     public static float moveSpeed = 0.35f;
     public static float warpSpeed = 0.5f;
 
-    [Header("Sprites")]
     [SerializeField] private Transform offsetTransform;
-    [SerializeField] private SpriteRenderer modelSpriteRenderer;
-    [SerializeField] private SpriteRenderer weaponSpriteRenderer;
-    
 
-    [Header("Animation")]
+    [Header("Model")]
+    [SerializeField] private SpriteRenderer modelSpriteRenderer;
     [SerializeField] private Animator modelAnimator;
-    [SerializeField] private Animator weaponAnimator;
+
+    [Header("Weapon 1")]
+    [SerializeField] private SpriteRenderer mainWeaponSpriteRenderer;
+    [SerializeField] private Animator mainWeaponAnimator;
+    [SerializeField] private Transform mainWeaponHolder;
+
+    [Header("Weapon 2")]
+    [SerializeField] private SpriteRenderer offWeaponSpriteRenderer;
+    [SerializeField] private Animator offWeaponAnimator;
+    [SerializeField] private Transform offWeaponHolder;
 
     [Header("UI")]
     [SerializeField] private DamageFlash damageFlash;
@@ -30,60 +37,82 @@ public class EntityModel : MonoBehaviour
     [Header("Data")]
     [SerializeField] private Entity entity;
     [SerializeField] private bool isFacingRight = true;
-    
+    [SerializeField] private GameObject projectilePrefab;
+
+    private RoomUI roomUI;
     private Coroutine coroutine;
 
-    public void Initialize(Entity entity)
+    public void Initialize(Entity entity, RoomUI roomUI)
     {
         this.entity = entity;
+        this.roomUI = roomUI;
 
-        // Set model sprite
+        // Set up model
         modelSpriteRenderer.sprite = entity.modelSprite;
-
-        // Apply offset
-        offsetTransform.localPosition = entity.offsetDueToSize;
-
-        // Set weapon sprite
-        if (entity.primaryWeapon != null)
-        {
-            weaponSpriteRenderer.sprite = entity.primaryWeapon.sprite;
-        }
-        else {
-            weaponSpriteRenderer.enabled = false;
-        }
-
-        // Set model animator
         modelAnimator.runtimeAnimatorController = entity.modelController;
 
-        // Set weapon animator
-        weaponAnimator.runtimeAnimatorController = entity.weaponController;
+        // Set up main weapon
+        if (entity.mainWeapon != null)
+        {
+            mainWeaponSpriteRenderer.sprite = entity.mainWeapon.sprite;
+            mainWeaponAnimator.runtimeAnimatorController = entity.mainWeapon.controller;
+        }
+        else
+        {
+            mainWeaponSpriteRenderer.enabled = false;
+        }
+
+        // Set up off weapon
+        if (entity.offWeapon != null)
+        {
+            offWeaponSpriteRenderer.sprite = entity.offWeapon.sprite;
+            offWeaponAnimator.runtimeAnimatorController = entity.offWeapon.controller;
+        }
+        else
+        {
+            offWeaponSpriteRenderer.enabled = false;
+        }
 
         // If entity is an AI, display it's first die
         if (entity.AI != null)
         {
-            dieUI.Initialize(entity.innateActions[0], false);
+            dieUI.Initialize(entity.GetActions()[0], false);
         }
-        else {
+        else
+        {
             dieUI.gameObject.SetActive(false);
         }
 
+        // Apply offset
+        offsetTransform.localPosition = entity.offsetDueToSize;
+
         // Sub to events
+        GameEvents.instance.onEntityStartMove += StartMove;
         GameEvents.instance.onEntityMove += MoveEntity;
+        GameEvents.instance.onEntityStopMove += StopMove;
+
         GameEvents.instance.onEntityWarp += WarpEntity;
         GameEvents.instance.onEntityTakeDamage += TakeDamage;
         GameEvents.instance.onEntityMeleeAttack += MeleeAttack;
-        GameEvents.instance.onEntityReadyWeapon += ReadyWeapon;
+        GameEvents.instance.onEntityRangedAttack += RangedAttack;
+        GameEvents.instance.onEntityDrawWeapon += DrawWeapon;
+        GameEvents.instance.onEntitySheatheWeapon += SheatheWeapon;
         GameEvents.instance.onRemoveEntity += RemoveEntity;
     }
 
     public void Uninitialize()
     {
         // Unsub to events
+        GameEvents.instance.onEntityStartMove -= StartMove;
         GameEvents.instance.onEntityMove -= MoveEntity;
+        GameEvents.instance.onEntityStopMove -= StopMove;
+
         GameEvents.instance.onEntityWarp -= WarpEntity;
         GameEvents.instance.onEntityTakeDamage -= TakeDamage;
         GameEvents.instance.onEntityMeleeAttack -= MeleeAttack;
-        GameEvents.instance.onEntityReadyWeapon -= ReadyWeapon;
+        GameEvents.instance.onEntityRangedAttack -= RangedAttack;
+        GameEvents.instance.onEntityDrawWeapon -= DrawWeapon;
+        GameEvents.instance.onEntitySheatheWeapon -= SheatheWeapon;
         GameEvents.instance.onRemoveEntity -= RemoveEntity;
 
         if (dieUI != null) dieUI.Uninitialize();
@@ -106,35 +135,38 @@ public class EntityModel : MonoBehaviour
         }
     }
 
-    private void MoveEntity(Entity entity, bool isMoving)
+    private void StartMove(Entity entity, Vector3Int direction)
+    {
+        if (this.entity == entity)
+        {
+            // Play proper animation
+            modelAnimator.Play("Run");
+
+            // Flip model if needed
+            FlipModel(direction);
+        }
+    }
+
+    private void MoveEntity(Entity entity)
     {
         // If this entity moved, then move it
         if (this.entity == entity)
         {
-            if (isMoving)
-            {
-                // Play proper animation
-                modelAnimator.Play("Run");
+            Vector3 currentPosition = transform.position;
+            Vector3 newPosition = roomUI.GetLocationCenter(entity.location);
 
-                // Get positions
-                Vector3 startPoint = transform.position;
-                Vector3 endPoint = RoomUI.instance.floorTilemap.GetCellCenterWorld(entity.location);
+            // Start moving routine
+            if (coroutine != null) StopCoroutine(coroutine);
+            coroutine = StartCoroutine(Move(currentPosition, newPosition, moveSpeed));
+        }
+    }
 
-                // Check if sprite should be flipped
-                Vector3 dir = endPoint - startPoint;
-                FlipModel(dir);
-
-                // Start moving routine
-                if (coroutine != null) StopCoroutine(coroutine);
-                coroutine = StartCoroutine(Move(startPoint, endPoint, moveSpeed));
-            }
-            else
-            {
-                // Stop proper animation
-                modelAnimator.Play("Idle");
-
-                // Done :)
-            }
+    private void StopMove(Entity entity)
+    {
+        if (this.entity == entity)
+        {
+            // Stop proper animation
+            modelAnimator.Play("Idle");
         }
     }
 
@@ -143,7 +175,7 @@ public class EntityModel : MonoBehaviour
         if (this.entity == entity)
         {
             // Get world location
-            Vector3 newLocation = RoomUI.instance.floorTilemap.GetCellCenterWorld(entity.location);
+            Vector3 newLocation = roomUI.GetLocationCenter(entity.location);
 
             // Start routine
             if (coroutine != null) StopCoroutine(coroutine);
@@ -191,6 +223,8 @@ public class EntityModel : MonoBehaviour
         transform.position = newLocation;
     }
 
+
+
     private void FlipModel(Vector3 direction)
     {
         // If you are moving right and facing left, then flip
@@ -227,18 +261,109 @@ public class EntityModel : MonoBehaviour
         }
     }
 
-    private void MeleeAttack(Entity entity)
+    private void DrawWeapon(Entity entity, Vector3 direction, Weapon weapon)
+    {
+        if (this.entity == entity)
+        {
+            // Debug
+            print("Attacking dir: " + direction);
+
+            // Flip model if needed
+            FlipModel(direction);
+
+            // Holder z = 90, attack up
+            // Holder z = 0, attack facing direction
+            // Holder z = -90, attack down
+
+            // Play proper animation
+            if (weapon.controller == mainWeaponAnimator.runtimeAnimatorController)
+            {
+                // Change attack orientation based which direction you are attacking
+                // If attacking upward
+                if (direction.y > 0)
+                {
+                    mainWeaponHolder.localEulerAngles = new Vector3(0, 0, 90);
+                }
+                // If attacking downward
+                else if (direction.y < 0)
+                {
+                    mainWeaponHolder.localEulerAngles = new Vector3(0, 0, -90);
+                }
+                // Else set to facing direction
+                else
+                {
+                    mainWeaponHolder.localEulerAngles = new Vector3(0, 0, 0);
+                }
+
+                // Randomly select a starting position
+                if (Random.Range(0, 1) == 0)
+                {
+                    mainWeaponAnimator.Play("Attack 2");
+                }
+                else
+                {
+                    mainWeaponAnimator.Play("Attack 3");
+                }
+            }
+            else if (weapon.controller == offWeaponAnimator.runtimeAnimatorController)
+            {
+                // If attacking upward
+                if (direction.y > 0)
+                {
+                    offWeaponHolder.localEulerAngles = new Vector3(0, 0, 90);
+                }
+                // If attacking downward
+                else if (direction.y < 0)
+                {
+                    offWeaponHolder.localEulerAngles = new Vector3(0, 0, -90);
+                }
+                // Else set to facing direction
+                else
+                {
+                    offWeaponHolder.localEulerAngles = new Vector3(0, 0, 0);
+                }
+
+                // Randomly select a starting position
+                if (Random.Range(0, 1) == 0)
+                {
+                    offWeaponAnimator.Play("Attack 2");
+                }
+                else
+                {
+                    offWeaponAnimator.Play("Attack 3");
+                }
+            }
+        }
+    }
+
+    private void MeleeAttack(Entity entity, Weapon weapon)
     {
         // If this entity attacked
         if (this.entity == entity)
         {
-            // Play weapon animation
-            weaponAnimator.Play("Attack");
-
-            // Spawn particle
-            if (GameManager.instance.isSlashEffect && entity.primaryWeapon.attackParticlePrefab != null)
+            // If attacking with primary weapon
+            if (weapon.controller == mainWeaponAnimator.runtimeAnimatorController)
             {
-                Instantiate(entity.primaryWeapon.attackParticlePrefab, transform.position, transform.rotation);
+                // Flip to other end position
+                mainWeaponAnimator.SetTrigger("Attack");
+
+                // Spawn particle in the same orientation as your attacking weapon
+                if (GameManager.instance.isSlashEffect && entity.mainWeapon.attackParticlePrefab != null)
+                {
+                    Instantiate(weapon.attackParticlePrefab, transform.position, mainWeaponHolder.rotation);
+                }
+            }
+            // Or attacking with secondary
+            else if (weapon.controller == offWeaponAnimator.runtimeAnimatorController)
+            {
+                // Flip to other end position
+                offWeaponAnimator.SetTrigger("Attack");
+
+                // Spawn particle in the same orientation as your attacking weapon
+                if (GameManager.instance.isSlashEffect && entity.mainWeapon.attackParticlePrefab != null)
+                {
+                    Instantiate(weapon.attackParticlePrefab, transform.position, offWeaponHolder.rotation);
+                }
             }
 
             // Shake screen
@@ -251,13 +376,43 @@ public class EntityModel : MonoBehaviour
         }
     }
 
-    private void ReadyWeapon(Entity entity, bool state)
+    private void RangedAttack(Entity entity, Vector3Int targetLocation, Weapon weapon)
     {
         if (this.entity == entity)
         {
-            // Play proper animation
-            if (state) weaponAnimator.Play("Active");
-            else weaponAnimator.Play("Idle");
+            var targetWorld = roomUI.GetLocationCenter(targetLocation);
+
+            // If attacking with primary weapon
+            if (weapon.controller == mainWeaponAnimator.runtimeAnimatorController)
+            {
+                // Spawn projectile
+                var projectile = Instantiate(projectilePrefab, transform.position, mainWeaponHolder.rotation).GetComponent<Projectile>();
+                projectile.Initialize(targetWorld, weapon);
+            }
+            // Or attacking with secondary
+            else if (weapon.controller == offWeaponAnimator.runtimeAnimatorController)
+            {
+                // Spawn projectile
+                var projectile = Instantiate(projectilePrefab, transform.position, offWeaponHolder.rotation).GetComponent<Projectile>();
+                projectile.Initialize(targetWorld, weapon);
+            }
+        }
+    }
+
+    private void SheatheWeapon(Entity entity, Weapon weapon)
+    {
+        // Play proper animation
+        if (weapon.controller == mainWeaponAnimator.runtimeAnimatorController)
+        {
+            mainWeaponAnimator.Play("Idle");
+            // Reset rotation
+            mainWeaponHolder.localEulerAngles = new Vector3(0, 0, 0);
+        }
+        else if (weapon.controller == offWeaponAnimator.runtimeAnimatorController)
+        {
+            offWeaponAnimator.Play("Idle");
+            // Reset rotation
+            offWeaponHolder.localEulerAngles = new Vector3(0, 0, 0);
         }
     }
 }

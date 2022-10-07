@@ -50,11 +50,11 @@ public class WarpAction : Action
         // Warp to location
         entity.WarpTo(targetLocation);
 
-        // Trigger event
-        GameEvents.instance.TriggerOnEnityWarp(entity);
-
         // Wait for animation
         yield return new WaitForSeconds(EntityModel.warpSpeed);
+
+        // Trigger event
+        GameEvents.instance.TriggerOnEnityWarp(entity);
 
         // Finnish!
     }

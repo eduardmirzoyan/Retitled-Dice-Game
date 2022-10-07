@@ -9,14 +9,15 @@ public abstract class Action : ScriptableObject
     public Sprite icon;
     public Sprite background;
     public Color color;
-    
+
     public Die die;
+    public Weapon weapon;
 
     public abstract List<Vector3Int> GetValidLocations(Vector3Int startLocation, Room room);
-
     public abstract IEnumerator Perform(Entity entity, Vector3Int targetLocation, Room room);
 
-    public Action Copy() {
+    public Action Copy()
+    {
         // Make a copy
         var copy = Instantiate(this);
 

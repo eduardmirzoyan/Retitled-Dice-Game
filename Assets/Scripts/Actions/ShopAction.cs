@@ -16,28 +16,28 @@ public class ShopAction : Action
 
         // North
         Vector3Int endLocation = startLocation + new Vector3Int(0, reach, 0);
-        if (room.IsValidPath(startLocation, endLocation, true, true, false))
+        if (room.IsValidPath(startLocation, endLocation, true, false))
         {
             result.Add(startLocation + new Vector3Int(0, reach, 0));
         }
 
         // South
         endLocation = startLocation + new Vector3Int(0, -reach, 0);
-        if (room.IsValidPath(startLocation, endLocation, true, true, false))
+        if (room.IsValidPath(startLocation, endLocation, true, false))
         {
             result.Add(startLocation + new Vector3Int(0, -reach, 0));
         }
 
         // East
         endLocation = startLocation + new Vector3Int(reach, 0, 0);
-        if (room.IsValidPath(startLocation, endLocation, true, true, false))
+        if (room.IsValidPath(startLocation, endLocation, true, false))
         {
             result.Add(startLocation + new Vector3Int(reach, 0, 0));
         }
 
         // West
         endLocation = startLocation + new Vector3Int(-reach, 0, 0);
-        if (room.IsValidPath(startLocation, endLocation, true, true, false))
+        if (room.IsValidPath(startLocation, endLocation, true, false))
         {
             result.Add(startLocation + new Vector3Int(-reach, 0, 0));
         }

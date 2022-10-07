@@ -34,7 +34,7 @@ public class PlayerHUDUI : MonoBehaviour
         GameEvents.instance.onSpawnEntity += InitializePlayer;
         GameEvents.instance.onEnterFloor += UpdateFloor;
         GameEvents.instance.onEntityTakeDamage += UpdateHealth;
-        GameEvents.instance.onPickup += UpdateGold;
+        GameEvents.instance.onEntityGainGold += UpdateGold;
         GameEvents.instance.onEntityGainExperience += UpdateExperience;
         GameEvents.instance.onEntityGainLevel += UpdateLevel;
     }
@@ -45,7 +45,7 @@ public class PlayerHUDUI : MonoBehaviour
         GameEvents.instance.onSpawnEntity -= InitializePlayer;
         GameEvents.instance.onEnterFloor -= UpdateFloor;
         GameEvents.instance.onEntityTakeDamage -= UpdateHealth;
-        GameEvents.instance.onPickup -= UpdateGold;
+        GameEvents.instance.onEntityGainGold -= UpdateGold;
         GameEvents.instance.onEntityGainExperience -= UpdateExperience;
         GameEvents.instance.onEntityGainLevel -= UpdateLevel;
     }
@@ -61,7 +61,7 @@ public class PlayerHUDUI : MonoBehaviour
             // Update visuals
             UpdateIcon();
             UpdateHealth(entity, 0);
-            UpdateGold(entity, 2);
+            UpdateGold(entity, 0);
             UpdateExperience(entity, 0);
             UpdateLevel(entity, 0);
             UpdateFloor(null);
@@ -99,10 +99,10 @@ public class PlayerHUDUI : MonoBehaviour
         }
     }
 
-    private void UpdateGold(Entity entity, int index)
+    private void UpdateGold(Entity entity, int amount)
     {
-        // If gold was picked up
-        if (this.entity == entity && index == 2)
+        // If non-zero gold was gained
+        if (this.entity == entity)
         {
             goldText.text = "" + entity.gold;
         }

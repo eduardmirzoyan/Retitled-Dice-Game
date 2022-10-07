@@ -398,9 +398,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlightImage: {fileID: 6863534369105332155}
+  defaultColor: {r: 1, g: 1, b: 1, a: 0}
+  highlightColor: {r: 1, g: 1, b: 1, a: 0.34901962}
+  disabledColor: {r: 0, g: 0, b: 0, a: 0.3529412}
   itemUI: {fileID: 0}
   itemUIPrefab: {fileID: 7123551506706943753, guid: 242cfb1f88527d746a439376e8d52fac, type: 3}
-  isActive: 1
+  preventInsert: 0
+  preventRemove: 0
+  weaponsOnly: 0
 --- !u!222 &6651125155758953418
 CanvasRenderer:
   m_ObjectHideFlags: 0

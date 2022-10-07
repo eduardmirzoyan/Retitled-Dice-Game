@@ -7,6 +7,7 @@ public class Weapon : Item
 {
     public GameObject attackParticlePrefab;
     public List<Action> actions;
+    public RuntimeAnimatorController controller;
 
     public Weapon Copy()
     {
@@ -15,7 +16,10 @@ public class Weapon : Item
         // Make a copy of each action
         for (int i = 0; i < actions.Count; i++)
         {
+            // Make copies
             copy.actions[i] = actions[i].Copy();
+            // Change owner
+            copy.actions[i].weapon = copy;
         }
 
         return copy;
