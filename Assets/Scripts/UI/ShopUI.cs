@@ -1,38 +1,62 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class ShopUI : MonoBehaviour
 {
     [SerializeField] private CanvasGroup canvasGroup;
+    [SerializeField] private GameObject itemSlotPrefab;
+    [SerializeField] private Transform gridTransform;
+
+    private List<ItemSlotUI> itemSlotUIs;
 
     private void Awake()
     {
         canvasGroup = GetComponentInChildren<CanvasGroup>();
+        itemSlotUIs = new List<ItemSlotUI>();
     }
 
-    private void Start() {
+    private void Start()
+    {
         GameEvents.instance.onOpenShop += Open;
     }
 
-    public void Initialize()
+    public void Initialize(Inventory inventory)
     {
-        // Should fill this UI with items
-        // TODO 
+        // Should fill this UI with items based on inventory
+        foreach (var item in inventory.GetItems())
+        {
+            if (item != null)
+            {
+                // Create slot
+                var itemSlot = Instantiate(itemSlotPrefab, gridTransform).GetComponent<ItemSlotUI>();
+                // Set item
+                itemSlot.CreateItem(item);
+                // Save
+                itemSlotUIs.Add(itemSlot);
+            }
+        }
     }
 
-    public void Open(bool state)
+    public void Open(Inventory inventory)
     {
         canvasGroup.alpha = 1f;
         canvasGroup.interactable = true;
         canvasGroup.blocksRaycasts = true;
 
-        // Initalize?
+        // Initalize
+        Initialize(inventory);
     }
 
     public void Close()
     {
+        // Delete items
+        foreach (var itemSlot in itemSlotUIs)
+        {
+            Destroy(itemSlot.gameObject);
+        }
+        itemSlotUIs.Clear();
+
         canvasGroup.alpha = 0f;
         canvasGroup.interactable = false;
         canvasGroup.blocksRaycasts = false;

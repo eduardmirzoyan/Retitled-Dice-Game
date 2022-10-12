@@ -18,16 +18,16 @@ MonoBehaviour:
   level: 1
   experience: 100
   gold: 100
+  inventory: {fileID: 0}
   modelSprite: {fileID: -78059454, guid: 54fd152cd68b96e49b08c757749bfaca, type: 3}
   modelController: {fileID: 9100000, guid: aa2170dd8bf815843a6fdb1827c6efd1, type: 2}
-  weaponController: {fileID: 0}
   hitEffectPrefab: {fileID: 7270536486772163001, guid: 335c93a61b62ca84e9f26440c7f3ed0e, type: 3}
   offsetDueToSize: {x: 0, y: 0, z: 0}
   AI: {fileID: 11400000, guid: 90770630671edf04fa9ee451023e6c78, type: 2}
   innateActions:
   - {fileID: 11400000, guid: 31fb65b37415e9042bc579f491dd2fa1, type: 2}
   - {fileID: 11400000, guid: 307532dd231d71d4ea6693091d8cb678, type: 2}
-  primaryWeapon: {fileID: 0}
-  secondaryWeapon: {fileID: 0}
+  mainWeapon: {fileID: 0}
+  offWeapon: {fileID: 0}
   location: {x: 0, y: 0, z: 0}
   room: {fileID: 0}

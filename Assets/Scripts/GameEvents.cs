@@ -45,7 +45,8 @@ public class GameEvents : MonoBehaviour
     public event Action<Entity, int> onPickup;
     public event Action<int> onUseKey;
 
-    public event Action<bool> onOpenShop;
+    public event Action<Inventory> onOpenShop;
+    public event System.Action onCloseShop;
 
     public event Action<ItemUI, ItemSlotUI> onItemInsert;
     public event Action<Entity, Weapon> onWeaponEquip;
@@ -63,11 +64,19 @@ public class GameEvents : MonoBehaviour
         instance = this;
     }
 
-    public void TriggerOnOpenShop(bool state)
+    public void TriggerOnOpenShop(Inventory inventory)
     {
         if (onOpenShop != null)
         {
-            onOpenShop(state);
+            onOpenShop(inventory);
+        }
+    }
+
+    public void TriggerOnCloseShop()
+    {
+        if (onCloseShop != null)
+        {
+            onCloseShop();
         }
     }
 

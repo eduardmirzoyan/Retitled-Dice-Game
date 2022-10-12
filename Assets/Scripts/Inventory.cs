@@ -25,6 +25,11 @@ public class Inventory : ScriptableObject
         currentSize = 0;
     }
 
+    public List<Item> GetItems()
+    {
+        return items;
+    }
+
     public Item this[int index]
     {
         get { return items[index]; }
@@ -67,7 +72,8 @@ public class Inventory : ScriptableObject
         currentSize--;
     }
 
-    public Inventory Copy() {
+    public Inventory Copy()
+    {
         var copy = Instantiate(this);
 
         return copy;

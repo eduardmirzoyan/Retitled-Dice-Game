@@ -8,4 +8,10 @@ public abstract class Item : ScriptableObject
     public string description;
     public Sprite sprite;
     public int value;
+
+    public virtual Item Copy()
+    {
+        // Return copy of self
+        return Instantiate(this);
+    }
 }

@@ -8,6 +8,8 @@ public class EnemyGenerator : ScriptableObject
     public List<Entity> possibleEnemies;
     public Entity shopkeeper;
 
+    public ItemGenerator shopItemGenerator;
+
     public Entity GenerateEnemy()
     {
         // If no possible enemies return null
@@ -25,7 +27,23 @@ public class EnemyGenerator : ScriptableObject
 
     public Entity GenerateShopkeeper()
     {
-        
-        return shopkeeper.Copy();
+        var copy = shopkeeper.Copy();
+
+        int shopSize = 4;
+
+        // Create inventory
+        var inventory = ScriptableObject.CreateInstance<Inventory>();
+        inventory.Initialize(shopSize);
+
+        // Fill inventory
+        for (int i = 0; i < shopSize; i++)
+        {
+            // Add a random item
+            inventory.AddItemToEnd(shopItemGenerator.GenerateItem());   
+        }
+        // Set inventory
+        copy.inventory = inventory;
+
+        return copy;
     }
 }

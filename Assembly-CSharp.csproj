@@ -55,6 +55,7 @@
      <Compile Include="Assets\Scripts\Weapon.cs" />
      <Compile Include="Assets\Scripts\UI\TooltipTriggerUI.cs" />
      <Compile Include="Assets\Scripts\RoomExit.cs" />
+     <Compile Include="Assets\Scripts\ItemGenerator.cs" />
      <Compile Include="Assets\Scripts\UI\TextTooltipUI.cs" />
      <Compile Include="Assets\Scripts\UI\ShopUI.cs" />
      <Compile Include="Assets\Scripts\UI\HowToPlayUI.cs" />

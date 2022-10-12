@@ -12,3 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e6e983863c04ee479f11ef2c8343c25, type: 3}
   m_Name: Shopkeeper AI
   m_EditorClassIdentifier: 
+  isHostile: 0

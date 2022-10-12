@@ -50,10 +50,14 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
         if (displayOnly) {
             // Display image based on max value
             dieImage.sprite = diceDisplaySprites[die.maxValue - 1];
+            // Change scale
+            dieImage.transform.localScale = Vector3.one * 1.2f;
         }
         else {
             // Display image based on current value
             dieImage.sprite = diceSprites[die.value - 1];
+            // Change scale
+            dieImage.transform.localScale = Vector3.one;
         }
 
         // Check exhaust state
@@ -141,7 +145,7 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
             canvasGroup.blocksRaycasts = false;
 
             // Enable shadow
-            shadow.enabled = true;
+            // shadow.enabled = true;
 
             // Remove from parent
             rectTransform.SetParent(transform.root);
@@ -205,7 +209,7 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
             }
 
             // Disable shadow
-            shadow.enabled = false;
+            // shadow.enabled = false;
 
             // Return to parent
             rectTransform.SetParent(parent);

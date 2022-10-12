@@ -5,6 +5,8 @@ using UnityEngine;
 [CreateAssetMenu]
 public class AI : ScriptableObject
 {
+    public bool isHostile = true;
+
     public virtual void DisplayIntent(Entity entity, Room room)
     {
         // Does nothing

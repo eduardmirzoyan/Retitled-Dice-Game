@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Spear Weapon
   m_EditorClassIdentifier: 
   name: Spear
-  description: lol
+  description: Basic Spear
   sprite: {fileID: -1525420329, guid: 20597968d5281954482d5d148d07fa12, type: 3}
   value: 1
   attackParticlePrefab: {fileID: 0}

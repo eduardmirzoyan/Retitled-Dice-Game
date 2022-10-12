@@ -40,7 +40,7 @@ public class DataManager : MonoBehaviour
         // Reset progess
         stageNumber = 1;
         roomNumber = 1;
-        currentRoomIndex = 1;
+        currentRoomIndex = -1;
     }
 
     public Player GetPlayer()

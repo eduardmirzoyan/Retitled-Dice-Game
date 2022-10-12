@@ -11,6 +11,7 @@ public class ItemSlotUI : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPo
     [SerializeField] private Color defaultColor;
     [SerializeField] private Color highlightColor;
     [SerializeField] private Color disabledColor;
+    [SerializeField] private Image lockIcon;
 
     [Header("Data")]
     [SerializeField] private ItemUI itemUI;
@@ -19,7 +20,7 @@ public class ItemSlotUI : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPo
     [Header("Settings")]
     [SerializeField] private bool preventInsert = false;
     [SerializeField] private bool preventRemove = false;
-    [SerializeField] private bool weaponsOnly = false;    
+    [SerializeField] private bool weaponsOnly = false;
     [SerializeField] private bool mustBuy = false;
 
     public void CreateItem(Item item)
@@ -37,7 +38,10 @@ public class ItemSlotUI : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPo
         preventRemove = true;
 
         // Change color
-        highlightImage.color = disabledColor;
+        // highlightImage.color = disabledColor;
+
+        // Show lock icon
+        lockIcon.enabled = true;
 
         // Set item inside to not interactable
         if (itemUI != null)
@@ -49,11 +53,19 @@ public class ItemSlotUI : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPo
         preventRemove = false;
 
         // Change color
-        highlightImage.color = defaultColor;
+        // highlightImage.color = defaultColor;
+
+        // Hide lock icon
+        lockIcon.enabled = false;
 
         // Set item inside to not interactable
         if (itemUI != null)
             itemUI.SetInteractable(true);
+    }
+
+    public bool PreventRemove()
+    {
+        return preventRemove;
     }
 
     public void OnDrop(PointerEventData eventData)
@@ -145,27 +157,20 @@ public class ItemSlotUI : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPo
         }
     }
 
-    private bool Buy(int cost) {
-        if (DataManager.instance.GetPlayer().gold >= cost) {
+    private bool Buy(int cost)
+    {
+        if (DataManager.instance.GetPlayer().gold >= cost)
+        {
             DataManager.instance.GetPlayer().AddGold(-cost);
             return true;
         }
-        
+
         // If can't buy return false
-        return false;   
+        return false;
     }
 
-    private bool PassesRestrictions() {
-
-
-        return true;
-    }
-
-    public bool MustBuy() {
+    public bool MustBuy()
+    {
         return mustBuy;
-    }
-
-    public bool PreventRemove() {
-        return preventRemove;
     }
 }

@@ -384,4 +384,16 @@ public class Room : ScriptableObject
         // For each exit, use key
         roomExit.UseKey();
     }
+
+    public bool HasHostileEntities()
+    {
+        // If there are any hostile enemies left, then return true
+        foreach (var enemy in enemies) {
+            if (enemy.AI.isHostile)
+                return true;
+        }
+
+        // Else there are no hostiles
+        return false;
+    }
 }

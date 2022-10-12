@@ -13,6 +13,7 @@ public class ActionUI : MonoBehaviour
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private TooltipTriggerUI tooltipTriggerUI;
     [SerializeField] private CanvasGroup descriptionCanvasGroup;
+    [SerializeField] private TextMeshProUGUI actionNameText;
     [SerializeField] private TextMeshProUGUI actionDescriptionText;
 
     [Header("Data")]
@@ -32,11 +33,17 @@ public class ActionUI : MonoBehaviour
         // Initalize tooltip
         tooltipTriggerUI.SetTooltip(action.name, action.description);
 
+        actionNameText.text = action.name;
+        actionDescriptionText.text = action.description;
+
         // Check if displayOnly
         if (displayOnly)
         {
             descriptionCanvasGroup.alpha = 1f;
-            actionDescriptionText.text = action.description;
+        }
+        else
+        {
+            descriptionCanvasGroup.alpha = 0f;
         }
 
         // Sub to events

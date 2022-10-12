@@ -48,6 +48,9 @@ public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
         itemSprite.sprite = item.sprite;
         outlineSprite.sprite = item.sprite;
         isInteractable = true;
+
+        // Move as second to last
+        transform.SetSiblingIndex(1);
     }
 
     public void SetInteractable(bool state)

@@ -296,7 +296,7 @@ public class EntityModel : MonoBehaviour
                 }
 
                 // Randomly select a starting position
-                if (Random.Range(0, 1) == 0)
+                if (Random.Range(0, 1) == 1)
                 {
                     mainWeaponAnimator.Play("Attack 2");
                 }
@@ -324,7 +324,7 @@ public class EntityModel : MonoBehaviour
                 }
 
                 // Randomly select a starting position
-                if (Random.Range(0, 1) == 0)
+                if (Random.Range(0, 1) == 1)
                 {
                     offWeaponAnimator.Play("Attack 2");
                 }

@@ -9,7 +9,7 @@ public class Weapon : Item
     public List<Action> actions;
     public RuntimeAnimatorController controller;
 
-    public Weapon Copy()
+    public override Item Copy()
     {
         var copy = Instantiate(this);
 

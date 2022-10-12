@@ -8,12 +8,11 @@ public class EquipmentUI : MonoBehaviour
     [Header("Components")]
     [SerializeField] private ItemSlotUI primaryWeaponSlotUI;
     [SerializeField] private ItemSlotUI secondaryWeaponSlotUI;
-    [SerializeField] private Image lockImage;
 
     [Header("Data")]
     [SerializeField] private Player player;
     [SerializeField] private Room room;
-    private bool isLocked;
+    [SerializeField] private bool isLocked;
 
     private void Start()
     {
@@ -50,18 +49,8 @@ public class EquipmentUI : MonoBehaviour
             secondaryWeaponSlotUI.CreateItem(room.player.offWeapon);
         }
 
-        // Set locked state
-        isLocked = room.enemies.Count > 0;
-
-        // Check how many enemies are there
-        if (isLocked)
-        {
-            Lock();
-        }
-        else
-        {
-            Unlock();
-        }
+        // Check clock state
+        CheckUnlock(player);
     }
 
     private void EquipWeapon(ItemUI itemUI, ItemSlotUI itemSlotUI)
@@ -82,13 +71,13 @@ public class EquipmentUI : MonoBehaviour
 
     private void CheckUnlock(Entity entity)
     {
-        // When an enemy dies, check if there are 0 left
-        if (isLocked && room.enemies.Count == 0)
+        // When an enemy dies, check if there are any hostiles left
+        if (isLocked && !room.HasHostileEntities())
         {
             // Unlock
             Unlock();
         }
-        else if (!isLocked && room.enemies.Count > 0)
+        else if (!isLocked && room.HasHostileEntities())
         {
             // Lock
             Lock();
@@ -97,22 +86,20 @@ public class EquipmentUI : MonoBehaviour
 
     private void Lock()
     {
-        // Show visuals
-        lockImage.enabled = true;
-
         // Lock slots
         primaryWeaponSlotUI.DisableRemove();
         secondaryWeaponSlotUI.DisableRemove();
+
+        isLocked = true;
     }
 
     private void Unlock()
     {
-        // Show visuals
-        lockImage.enabled = false;
-
-        // Lock slots
+        // Unlock slots
         primaryWeaponSlotUI.EnableRemove();
         secondaryWeaponSlotUI.EnableRemove();
+
+        isLocked = false;
     }
 
 }

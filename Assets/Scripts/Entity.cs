@@ -144,30 +144,6 @@ public class Entity : ScriptableObject
         // Does nothing
     }
 
-    public void MeleeLocation(Weapon weapon)
-    {
-        var targets = new List<Entity>();
-
-        // Consider player, enemies and barrels
-        targets.Add(room.player);
-        targets.AddRange(room.enemies);
-        targets.AddRange(room.barrels);
-
-        // Check if any entities are on the same tile, if so damage them
-        foreach (var target in targets)
-        {
-            // If the target is not itself
-            if (target.location == location && target != this)
-            {
-                // Currently deal 1 damage, but this might change?
-                target.TakeDamage(1);
-
-                // Trigger event
-                GameEvents.instance.TriggerOnEntityMeleeAttack(this, weapon);
-            }
-        }
-    }
-
     public bool AttackLocation(Vector3 location, Weapon weapon)
     {
         var targets = new List<Entity>();
@@ -252,10 +228,10 @@ public class Entity : ScriptableObject
 
         // Make copy of weapons
         if (mainWeapon != null)
-            copy.mainWeapon = mainWeapon.Copy();
+            copy.mainWeapon = (Weapon)mainWeapon.Copy();
 
         if (offWeapon != null)
-            copy.offWeapon = offWeapon.Copy();
+            copy.offWeapon = (Weapon)offWeapon.Copy();
 
         // Copy inventory
         if (inventory != null)
