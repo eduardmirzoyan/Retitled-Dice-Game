@@ -15,12 +15,12 @@ public class EntityModel : MonoBehaviour
     [SerializeField] private SpriteRenderer modelSpriteRenderer;
     [SerializeField] private Animator modelAnimator;
 
-    [Header("Weapon 1")]
+    [Header("Offahnd Weapon")]
     [SerializeField] private SpriteRenderer mainWeaponSpriteRenderer;
     [SerializeField] private Animator mainWeaponAnimator;
     [SerializeField] private Transform mainWeaponHolder;
 
-    [Header("Weapon 2")]
+    [Header("Mainhand Weapon")]
     [SerializeField] private SpriteRenderer offWeaponSpriteRenderer;
     [SerializeField] private Animator offWeaponAnimator;
     [SerializeField] private Transform offWeaponHolder;
@@ -94,7 +94,9 @@ public class EntityModel : MonoBehaviour
         GameEvents.instance.onEntityWarp += WarpEntity;
         GameEvents.instance.onEntityTakeDamage += TakeDamage;
         GameEvents.instance.onEntityMeleeAttack += MeleeAttack;
-        GameEvents.instance.onEntityRangedAttack += RangedAttack;
+        // GameEvents.instance.onEntityRangedAttack += RangedAttack;
+        GameEvents.instance.onEntityRangedAttackTimed += RangedAttackTimed;
+
         GameEvents.instance.onEntityDrawWeapon += DrawWeapon;
         GameEvents.instance.onEntitySheatheWeapon += SheatheWeapon;
         GameEvents.instance.onRemoveEntity += RemoveEntity;
@@ -110,7 +112,9 @@ public class EntityModel : MonoBehaviour
         GameEvents.instance.onEntityWarp -= WarpEntity;
         GameEvents.instance.onEntityTakeDamage -= TakeDamage;
         GameEvents.instance.onEntityMeleeAttack -= MeleeAttack;
-        GameEvents.instance.onEntityRangedAttack -= RangedAttack;
+        //GameEvents.instance.onEntityRangedAttack -= RangedAttack;
+        GameEvents.instance.onEntityRangedAttackTimed -= RangedAttackTimed;
+
         GameEvents.instance.onEntityDrawWeapon -= DrawWeapon;
         GameEvents.instance.onEntitySheatheWeapon -= SheatheWeapon;
         GameEvents.instance.onRemoveEntity -= RemoveEntity;
@@ -296,7 +300,7 @@ public class EntityModel : MonoBehaviour
                 }
 
                 // Randomly select a starting position
-                if (Random.Range(0, 1) == 1)
+                if (Random.Range(0, 1) == 0)
                 {
                     mainWeaponAnimator.Play("Attack 2");
                 }
@@ -324,7 +328,7 @@ public class EntityModel : MonoBehaviour
                 }
 
                 // Randomly select a starting position
-                if (Random.Range(0, 1) == 1)
+                if (Random.Range(0, 1) == 0)
                 {
                     offWeaponAnimator.Play("Attack 2");
                 }
@@ -387,14 +391,51 @@ public class EntityModel : MonoBehaviour
             {
                 // Spawn projectile
                 var projectile = Instantiate(projectilePrefab, transform.position, mainWeaponHolder.rotation).GetComponent<Projectile>();
-                projectile.Initialize(targetWorld, weapon);
+                projectile.Initialize(targetWorld, 25f, weapon);
             }
             // Or attacking with secondary
             else if (weapon.controller == offWeaponAnimator.runtimeAnimatorController)
             {
                 // Spawn projectile
                 var projectile = Instantiate(projectilePrefab, transform.position, offWeaponHolder.rotation).GetComponent<Projectile>();
-                projectile.Initialize(targetWorld, weapon);
+                projectile.Initialize(targetWorld, 25f, weapon);
+            }
+        }
+    }
+
+    private void RangedAttackTimed(Entity entity, Vector3Int targetLocation, Weapon weapon, ActionInfo info)
+    {
+        if (this.entity == entity)
+        {
+            var targetWorld = roomUI.GetLocationCenter(targetLocation);
+
+            // If attacking with primary weapon
+            if (weapon.controller == mainWeaponAnimator.runtimeAnimatorController)
+            {
+                // Spawn projectile
+                var projectile = Instantiate(projectilePrefab, transform.position, mainWeaponHolder.rotation).GetComponent<Projectile>();
+                print(mainWeaponHolder.localEulerAngles.z);
+                // Wait for projectile to travel
+                var travelTime = projectile.Initialize(targetWorld, 25f, weapon);
+                // Set action time
+                info.waitTime = travelTime;
+            }
+            // Or attacking with secondary
+            else if (weapon.controller == offWeaponAnimator.runtimeAnimatorController)
+            {
+                // Spawn projectile
+                var projectile = Instantiate(projectilePrefab, transform.position, offWeaponHolder.rotation).GetComponent<Projectile>();
+                // Wait for projectile to travel
+                var travelTime = projectile.Initialize(targetWorld, 25f, weapon);
+                // Set action time
+                info.waitTime = travelTime;
+            }
+            else
+            {
+                // Don't do anything
+                Debug.Log("Unknown weapon chosen: " + weapon.name);
+                // Set action time
+                info.waitTime = 0f;
             }
         }
     }

@@ -3,6 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+public class ActionInfo
+{
+    public float waitTime;
+
+    public ActionInfo()
+    {
+        this.waitTime = 0f;
+    }
+
+    public ActionInfo(float waitTime)
+    {
+        this.waitTime = waitTime;
+    }
+}
+
 public class GameEvents : MonoBehaviour
 {
     public event Action<Room> onEnterFloor;
@@ -34,6 +49,7 @@ public class GameEvents : MonoBehaviour
     public event Action<Entity, Weapon> onEntitySheatheWeapon;
     public event Action<Entity, Weapon> onEntityMeleeAttack;
     public event Action<Entity, Vector3Int, Weapon> onEntityRangedAttack;
+    public event Action<Entity, Vector3Int, Weapon, ActionInfo> onEntityRangedAttackTimed;
     public event Action<Entity> onEntityWarp;
 
     // Stat changes
@@ -237,6 +253,24 @@ public class GameEvents : MonoBehaviour
         if (onEntityRangedAttack != null)
         {
             onEntityRangedAttack(entity, targetLocation, weapon);
+        }
+    }
+
+    public IEnumerator TriggerOnEntityRangedAttack(Entity entity, Vector3Int targetLocation, Weapon weapon, ActionInfo info)
+    {
+        // If there are any subscribers
+        if (onEntityRangedAttackTimed != null)
+        {
+            // Invoke all the subscribers
+            foreach (var invocation in onEntityRangedAttackTimed.GetInvocationList())
+            {
+                // Call invokation and update info values
+                invocation.DynamicInvoke(entity, targetLocation, weapon, info);
+                // Wait an amount of time
+                yield return new WaitForSeconds(info.waitTime);
+                // Reset wait time
+                info.waitTime = 0f;
+            }
         }
     }
 

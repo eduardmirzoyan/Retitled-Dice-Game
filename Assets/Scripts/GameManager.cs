@@ -113,11 +113,13 @@ public class GameManager : MonoBehaviour
 
                 break;
             case -1:
+                // READD THIS LATER
+                
                 // Generate a shopkeeper
-                var shopkeeper = enemyGenerator.GenerateShopkeeper();
+                // var shopkeeper = enemyGenerator.GenerateShopkeeper();
 
                 // Populate the room
-                room.Populate(shopkeeper);
+                // room.Populate(shopkeeper);
 
                 break;
             default:

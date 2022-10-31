@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
 
 [CreateAssetMenu]
 public class Entity : ScriptableObject
@@ -206,12 +205,6 @@ public class Entity : ScriptableObject
 
         // Trigger event
         GameEvents.instance.TriggerOnGainExperience(this, amount);
-    }
-
-    public bool HasNoActionsLeft()
-    {
-        // Returns true if ALL of your die are exhausted
-        return GetActions().All(action => action.die.isExhausted);
     }
 
     public Entity Copy()

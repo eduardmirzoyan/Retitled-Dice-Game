@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
+using System.Linq;
 
 public class EndTurnUI : MonoBehaviour
 {
@@ -53,7 +53,7 @@ public class EndTurnUI : MonoBehaviour
             button.interactable = true;
 
             // Check if any possible moves are left, if not, then highlight
-            outline.enabled = entity.HasNoActionsLeft();
+            outline.enabled = entity.GetActions().All(action => action.die.isExhausted);
         }
     }
 

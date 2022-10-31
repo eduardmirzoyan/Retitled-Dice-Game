@@ -7,10 +7,13 @@ public class Die : ScriptableObject
 {
     public int maxValue = 6;
     public int value = 1;
-
     public bool isExhausted = false;
 
+    public bool hasCheats = false;
+
     public void Exhaust() {
+        if (hasCheats) return;
+        
         isExhausted = true;
     }
 
