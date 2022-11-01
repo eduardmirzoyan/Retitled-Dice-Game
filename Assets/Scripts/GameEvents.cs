@@ -66,6 +66,7 @@ public class GameEvents : MonoBehaviour
 
     public event Action<ItemUI, ItemSlotUI> onItemInsert;
     public event Action<Entity, Weapon> onWeaponEquip;
+    public event Action<Inventory, bool> onToggleInventory;
 
     public static GameEvents instance;
     private void Awake()
@@ -248,14 +249,6 @@ public class GameEvents : MonoBehaviour
         }
     }
 
-    public void TriggerOnEntityRangedAttack(Entity entity, Vector3Int targetLocation, Weapon weapon)
-    {
-        if (onEntityRangedAttack != null)
-        {
-            onEntityRangedAttack(entity, targetLocation, weapon);
-        }
-    }
-
     public IEnumerator TriggerOnEntityRangedAttack(Entity entity, Vector3Int targetLocation, Weapon weapon, ActionInfo info)
     {
         // If there are any subscribers
@@ -343,6 +336,14 @@ public class GameEvents : MonoBehaviour
         if (onWeaponEquip != null)
         {
             onWeaponEquip(entity, weapon);
+        }
+    }
+
+    public void TriggerOnToggleInventory(Inventory inventory, bool state)
+    {
+        if (onToggleInventory != null)
+        {
+            onToggleInventory(inventory, state);
         }
     }
 }

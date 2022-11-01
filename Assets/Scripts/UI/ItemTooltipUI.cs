@@ -78,7 +78,7 @@ public class ItemTooltipUI : MonoBehaviour
         rectTransform.pivot = new Vector2(pivotX, pivotY);
     }
 
-    public void Show(Item item, bool showForSale = false)
+    public void Show(Item item, bool showPrice = false)
     {
         // Display window
         canvasGroup.alpha = 1f;
@@ -88,8 +88,8 @@ public class ItemTooltipUI : MonoBehaviour
         itemDescription.text = item.description;
         
         // Update selling info, IMPROVE LATER?
-        valueText.text = "" + item.value;
-        valueText.transform.parent.gameObject.SetActive(showForSale);
+        valueText.text = "Price: " + item.GetValue();
+        valueText.transform.parent.gameObject.SetActive(showPrice);
         
 
         // If the item is an equipment item

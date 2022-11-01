@@ -40,7 +40,7 @@ public class DataManager : MonoBehaviour
         // Reset progess
         stageNumber = 1;
         roomNumber = 1;
-        currentRoomIndex = -1;
+        currentRoomIndex = 1;
     }
 
     public Player GetPlayer()
@@ -95,15 +95,15 @@ public class DataManager : MonoBehaviour
 
     public string GetRoomDescription() {
         if (currentRoomIndex == 1) {
-            return "Stage " + stageNumber + "-" + roomNumber;
+            return "Stage " + stageNumber + " - " + roomNumber;
         }
 
-        return "Stage " + stageNumber + "-" + "S";
+        return "Stage " + stageNumber + " - " + "Shop";
     }
 
     public int GetNextRoomIndex() {
-        // If you are on stage x - 2
-        if (roomNumber == 2) {
+        // If you are on stage x - 2 or x - 4
+        if (roomNumber == 2 || roomNumber == 4) {
             // And you are in a combat room now
             if (currentRoomIndex == 1) {
                 // Next room should be a shop

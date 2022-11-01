@@ -262,6 +262,14 @@ public class EntityModel : MonoBehaviour
             {
                 Instantiate(entity.hitEffectPrefab, transform.position, transform.rotation);
             }
+
+            // Shake screen
+            if (GameManager.instance.isScreenShake)
+                CameraShake.instance.ScreenShake(0.15f);
+
+            // Hit freeze
+            if (GameManager.instance.isHitFreeze)
+                HitFreeze.instance.StartHitFreeze(0.1f);
         }
     }
 
@@ -300,7 +308,7 @@ public class EntityModel : MonoBehaviour
                 }
 
                 // Randomly select a starting position
-                if (Random.Range(0, 1) == 0)
+                if (Random.Range(0, 1) == 1)
                 {
                     mainWeaponAnimator.Play("Attack 2");
                 }
@@ -328,7 +336,7 @@ public class EntityModel : MonoBehaviour
                 }
 
                 // Randomly select a starting position
-                if (Random.Range(0, 1) == 0)
+                if (Random.Range(0, 1) == 1)
                 {
                     offWeaponAnimator.Play("Attack 2");
                 }
@@ -369,14 +377,6 @@ public class EntityModel : MonoBehaviour
                     Instantiate(weapon.attackParticlePrefab, transform.position, offWeaponHolder.rotation);
                 }
             }
-
-            // Shake screen
-            if (GameManager.instance.isScreenShake)
-                CameraShake.instance.ScreenShake(0.15f);
-
-            // Hit freeze
-            if (GameManager.instance.isHitFreeze)
-                HitFreeze.instance.StartHitFreeze(0.1f);
         }
     }
 
@@ -414,7 +414,6 @@ public class EntityModel : MonoBehaviour
             {
                 // Spawn projectile
                 var projectile = Instantiate(projectilePrefab, transform.position, mainWeaponHolder.rotation).GetComponent<Projectile>();
-                print(mainWeaponHolder.localEulerAngles.z);
                 // Wait for projectile to travel
                 var travelTime = projectile.Initialize(targetWorld, 25f, weapon);
                 // Set action time
@@ -437,6 +436,9 @@ public class EntityModel : MonoBehaviour
                 // Set action time
                 info.waitTime = 0f;
             }
+
+            // Sheathe weapon
+            SheatheWeapon(entity, weapon);
         }
     }
 
@@ -447,13 +449,13 @@ public class EntityModel : MonoBehaviour
         {
             mainWeaponAnimator.Play("Idle");
             // Reset rotation
-            mainWeaponHolder.localEulerAngles = new Vector3(0, 0, 0);
+            mainWeaponHolder.localEulerAngles = Vector3.zero;
         }
         else if (weapon.controller == offWeaponAnimator.runtimeAnimatorController)
         {
             offWeaponAnimator.Play("Idle");
             // Reset rotation
-            offWeaponHolder.localEulerAngles = new Vector3(0, 0, 0);
+            offWeaponHolder.localEulerAngles = Vector3.zero;
         }
     }
 }

@@ -82,13 +82,7 @@ public class RangedAction : Action
         yield return GameEvents.instance.TriggerOnEntityRangedAttack(entity, targetLocation, weapon, new ActionInfo());
 
         // Sheathe weapon
-        GameEvents.instance.TriggerOnEntitySheatheWeapon(entity, weapon);
-        
-
-        // Wait for weapon to land
-        // yield return new WaitForSeconds(Projectile.travelSpeed);
-
-        
+        // GameEvents.instance.TriggerOnEntitySheatheWeapon(entity, weapon);
 
         // Damage location
         entity.AttackLocation(targetLocation, weapon);

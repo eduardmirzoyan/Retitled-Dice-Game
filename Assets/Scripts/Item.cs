@@ -9,6 +9,12 @@ public abstract class Item : ScriptableObject
     public Sprite sprite;
     public int value;
 
+    public int GetValue()
+    {
+        // Change this function as you add dynamic item generation
+        return value;
+    }
+
     public virtual Item Copy()
     {
         // Return copy of self

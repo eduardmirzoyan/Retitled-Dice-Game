@@ -87,8 +87,9 @@ public class EquipmentUI : MonoBehaviour
     private void Lock()
     {
         // Lock slots
-        primaryWeaponSlotUI.DisableRemove();
-        secondaryWeaponSlotUI.DisableRemove();
+        primaryWeaponSlotUI.Lock();
+        
+        secondaryWeaponSlotUI.Lock();
 
         isLocked = true;
     }
@@ -96,8 +97,8 @@ public class EquipmentUI : MonoBehaviour
     private void Unlock()
     {
         // Unlock slots
-        primaryWeaponSlotUI.EnableRemove();
-        secondaryWeaponSlotUI.EnableRemove();
+        primaryWeaponSlotUI.Unlock();
+        secondaryWeaponSlotUI.Unlock();
 
         isLocked = false;
     }

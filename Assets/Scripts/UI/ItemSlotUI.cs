@@ -21,7 +21,7 @@ public class ItemSlotUI : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPo
     [SerializeField] private bool preventInsert = false;
     [SerializeField] private bool preventRemove = false;
     [SerializeField] private bool weaponsOnly = false;
-    [SerializeField] private bool mustBuy = false;
+    [SerializeField] private bool mustPurchase = false;
 
     public void CreateItem(Item item)
     {
@@ -33,12 +33,20 @@ public class ItemSlotUI : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPo
         this.itemUI = itemUI;
     }
 
-    public void DisableRemove()
+    public void SetShopSlot(bool state) {
+        // Set this slot to a shop slot...
+
+        // Must pay price to remove items
+        mustPurchase = state;
+
+        // Prevent adding items
+        preventInsert = state;
+    }
+
+    public void Lock()
     {
         preventRemove = true;
-
-        // Change color
-        // highlightImage.color = disabledColor;
+        preventInsert = true;
 
         // Show lock icon
         lockIcon.enabled = true;
@@ -48,12 +56,10 @@ public class ItemSlotUI : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPo
             itemUI.SetInteractable(false);
     }
 
-    public void EnableRemove()
+    public void Unlock()
     {
         preventRemove = false;
-
-        // Change color
-        // highlightImage.color = defaultColor;
+        preventInsert = false;
 
         // Hide lock icon
         lockIcon.enabled = false;
@@ -70,6 +76,9 @@ public class ItemSlotUI : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPo
 
     public void OnDrop(PointerEventData eventData)
     {
+        // Remove highlight
+        highlightImage.color = defaultColor;
+
         // Make sure there already isn't an item and it is an itemUI
         if (eventData.pointerDrag != null && eventData.pointerDrag.TryGetComponent(out ItemUI newItemUI))
         {
@@ -83,10 +92,7 @@ public class ItemSlotUI : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPo
             if (weaponsOnly && newItemUI.GetItem() is not Weapon) return;
 
             // Attempt to buy
-            if (newItemUI.GetItemSlotUI() != null && newItemUI.GetItemSlotUI().mustBuy && !Buy(newItemUI.GetItem().value)) return;
-
-            // Remove highlight
-            highlightImage.color = defaultColor;
+            if (newItemUI.GetItemSlotUI() != null && newItemUI.GetItemSlotUI().mustPurchase && !Buy(newItemUI.GetItem().GetValue())) return;
 
             // Now we all good, do insertion...
 
@@ -118,6 +124,8 @@ public class ItemSlotUI : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPo
         {
             // Debugging
             print("Item " + itemUI.name + " has inserted into the slot: " + name);
+            
+            // Change slot
             itemUI.SetParent(gameObject.transform);
             itemUI.SetItemSlot(this);
 
@@ -171,6 +179,6 @@ public class ItemSlotUI : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPo
 
     public bool MustBuy()
     {
-        return mustBuy;
+        return mustPurchase;
     }
 }

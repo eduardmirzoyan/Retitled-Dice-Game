@@ -15,4 +15,4 @@ MonoBehaviour:
   maxValue: 6
   value: 1
   isExhausted: 0
-  hasCheats: 1
+  hasCheats: 0

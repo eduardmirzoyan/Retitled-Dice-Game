@@ -6,11 +6,12 @@ using UnityEngine.UI;
 public class InventoryUI : MonoBehaviour
 {
     [Header("Components")]
+    [SerializeField] private GridLayoutGroup gridLayoutGroup;
     [SerializeField] private List<ItemSlotUI> itemSlots;
 
     [Header("Header")]
-    [SerializeField] private Player player;
-    [SerializeField] private Room room;
+    [SerializeField] private GameObject itemSlotPrefab;
+    [SerializeField] private Inventory inventory;
 
     private bool isLocked;
     private void Start()
@@ -29,22 +30,34 @@ public class InventoryUI : MonoBehaviour
 
     private void Initialize(Room room)
     {
-        this.player = room.player;
-        this.room = room;
+        this.inventory = room.player.inventory;
 
-        // Fill item slots with player's inventory
-        for (int i = 0; i < player.inventory.maxSize; i++)
+        // Intialize slots
+        itemSlots = new List<ItemSlotUI>();
+
+        // Fill item slots with entity's inventory
+        for (int i = 0; i < inventory.maxSize; i++)
         {
-            if (player.inventory[i] != null)
+            // Create slot in grid
+            var itemSlot = Instantiate(itemSlotPrefab, gridLayoutGroup.transform).GetComponent<ItemSlotUI>();
+
+            // Save ref
+            itemSlots.Add(itemSlot);
+
+            // Set item
+            if (inventory[i] != null)
             {
                 // Create item here
-                itemSlots[i].CreateItem(player.inventory[i]);
+                itemSlots[i].CreateItem(inventory[i]);
             }
         }
     }
 
     private void SetItem(ItemUI itemUI, ItemSlotUI itemSlotUI)
     {
+        // If inventory is not set, then dip
+        if (inventory == null) return;
+
         // Check if item was added to any of this inventory's slots
         for (int i = 0; i < itemSlots.Count; i++)
         {
@@ -52,8 +65,8 @@ public class InventoryUI : MonoBehaviour
             if (itemSlots[i] == itemSlotUI)
             {
                 // Set item
-                if (itemUI != null) player.inventory.SetItem(itemUI.GetItem(), i);
-                else player.inventory.SetItem(null, i);
+                if (itemUI != null) inventory.SetItem(itemUI.GetItem(), i);
+                else inventory.SetItem(null, i);
             }
         }
     }
