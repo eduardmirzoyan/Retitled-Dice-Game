@@ -67,6 +67,7 @@ public class GameEvents : MonoBehaviour
     public event Action<ItemUI, ItemSlotUI> onItemInsert;
     public event Action<Entity, Weapon> onWeaponEquip;
     public event Action<Inventory, bool> onToggleInventory;
+    public event Action<Entity> onInspectEntity;
 
     public static GameEvents instance;
     private void Awake()
@@ -344,6 +345,14 @@ public class GameEvents : MonoBehaviour
         if (onToggleInventory != null)
         {
             onToggleInventory(inventory, state);
+        }
+    }
+
+    public void TriggerOnInspectEntity(Entity entity)
+    {
+        if (onInspectEntity != null)
+        {
+            onInspectEntity(entity);
         }
     }
 }
