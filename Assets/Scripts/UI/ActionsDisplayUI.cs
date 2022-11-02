@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class ActionsDisplayUI : MonoBehaviour
 {
+    [Header("Data")]
     [SerializeField] private GameObject actionUIPrefab;
-    private List<ActionUI> actionUIs;
-
-    private Entity entity;
+    [SerializeField] private List<ActionUI> actionUIs;
+    [SerializeField] private Entity entity;
 
     private void Start()
     {
@@ -76,7 +76,7 @@ public class ActionsDisplayUI : MonoBehaviour
             // Instaniate as child
             var actionUI = Instantiate(actionUIPrefab, transform).GetComponent<ActionUI>();
             // Initialize
-            actionUI.Initialize(action);
+            actionUI.Initialize(action, ActionMode.Interact);
             // Save
             actionUIs.Add(actionUI);
         }

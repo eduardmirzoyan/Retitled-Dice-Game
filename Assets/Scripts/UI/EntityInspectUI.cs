@@ -2,17 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class EntityInspectUI : MonoBehaviour
 {
     [Header("Components")]
+    [SerializeField] private CanvasGroup canvasGroup;
+    [SerializeField] private TextMeshProUGUI entityName;
     [SerializeField] private Image entityIcon;
-    [SerializeField] private HorizontalLayoutGroup heartsLayoutGroup;
+    [SerializeField] private HealthbarUI healthbarUI;
     [SerializeField] private HorizontalLayoutGroup actionsLayoutGroup;
 
     [Header("Data")]
     [SerializeField] private GameObject actionUIPrefab;
-    [SerializeField] private GameObject heartPrefab;
     [SerializeField] private Entity entity;
 
     private List<GameObject> heartObjects;
@@ -27,38 +29,76 @@ public class EntityInspectUI : MonoBehaviour
     private void Start()
     {
         // Sub
-        GameEvents.instance.onInspectEntity += Initialize;
+        GameEvents.instance.onEntityInspect += UpdateInspect;
     }
 
     private void OnDestroy()
     {
         // Unsub
-        GameEvents.instance.onInspectEntity -= Initialize;
+        GameEvents.instance.onEntityInspect -= UpdateInspect;
     }
 
-    public void Initialize(Entity entity)
+    public void UpdateInspect(Entity entity)
     {
+        // If entity is different, you need to make some change
+        if (this.entity != entity)
+        {
+            if (this.entity != null)
+            {
+                // Hide visuals
+                canvasGroup.alpha = 0;
+                canvasGroup.interactable = false;
+                canvasGroup.blocksRaycasts = false;
+
+                // Remove any visuals
+                healthbarUI.Uninitialize();
+                DestroyActions();
+            }
+            
+            if (entity != null)
+            {
+                // Show visuals
+                canvasGroup.alpha = 1f;
+                canvasGroup.interactable = true;
+                canvasGroup.blocksRaycasts = true;
+
+                // Update name
+                entityName.text = entity.name;
+
+                // Update icon
+                entityIcon.sprite = entity.modelSprite;
+
+                // Intialize healthbar
+                healthbarUI.Initialize(entity);
+
+                // Display all of the entity's actions
+                foreach (var action in entity.GetActions())
+                {
+                    // Instaniate as child
+                    var actionUI = Instantiate(actionUIPrefab, actionsLayoutGroup.transform).GetComponent<ActionUI>();
+                    // Initialize in inspect mode
+                    actionUI.Initialize(action, ActionMode.Inspect, entity);
+                    // Save
+                    actionUIs.Add(actionUI);
+                }
+            }
+        }
+
+        // Update field
         this.entity = entity;
+    }
 
-        // Update icon
-        entityIcon.sprite = entity.modelSprite;
-
-        // Update health
-        for (int i = 0; i < entity.currentHealth; i++)
+    private void DestroyActions()
+    {
+        foreach (var actionUI in actionUIs)
         {
-            // Create heart
-            heartObjects.Add(Instantiate(heartPrefab, heartsLayoutGroup.transform));
+            // Un-init
+            actionUI.Uninitialize();
+            // Destroy
+            Destroy(actionUI.gameObject);
         }
 
-        // Display all of the entity's actions
-        foreach (var action in entity.GetActions())
-        {
-            // Instaniate as child
-            var actionUI = Instantiate(actionUIPrefab, actionsLayoutGroup.transform).GetComponent<ActionUI>();
-            // Initialize
-            actionUI.Initialize(action);
-            // Save
-            actionUIs.Add(actionUI);
-        }
+        // Clear list
+        actionUIs.Clear();
     }
 }

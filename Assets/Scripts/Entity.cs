@@ -80,7 +80,7 @@ public class Entity : ScriptableObject
         currentHealth = Mathf.Max(currentHealth - 1, 0);
 
         // Trigger event
-        GameEvents.instance.TriggerOnEntityTakeDamage(this, 1);
+        GameEvents.instance.TriggerOnEntityTakeDamage(this, amount);
 
         // Check if dead
         if (currentHealth == 0)
@@ -205,6 +205,11 @@ public class Entity : ScriptableObject
 
         // Trigger event
         GameEvents.instance.TriggerOnGainExperience(this, amount);
+    }
+
+    public bool IsFullHealth()
+    {
+        return currentHealth >= maxHealth;
     }
 
     public Entity Copy()

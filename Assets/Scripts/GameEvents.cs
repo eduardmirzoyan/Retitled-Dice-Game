@@ -67,7 +67,8 @@ public class GameEvents : MonoBehaviour
     public event Action<ItemUI, ItemSlotUI> onItemInsert;
     public event Action<Entity, Weapon> onWeaponEquip;
     public event Action<Inventory, bool> onToggleInventory;
-    public event Action<Entity> onInspectEntity;
+    public event Action<Entity> onEntityInspect;
+    public event Action<Entity, Action, Room> onInspectAction;
 
     public static GameEvents instance;
     private void Awake()
@@ -348,11 +349,19 @@ public class GameEvents : MonoBehaviour
         }
     }
 
-    public void TriggerOnInspectEntity(Entity entity)
+    public void TriggerOnEntityInspect(Entity entity)
     {
-        if (onInspectEntity != null)
+        if (onEntityInspect != null)
         {
-            onInspectEntity(entity);
+            onEntityInspect(entity);
+        }
+    }
+
+    public void TriggerOnInspectAction(Entity entity, Action action, Room room)
+    {
+        if (onInspectAction != null)
+        {
+            onInspectAction(entity, action, room);
         }
     }
 }

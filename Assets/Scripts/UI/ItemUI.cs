@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
+public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IEndDragHandler, IDragHandler, IPointerClickHandler
 {
     [Header("Components")]
     [SerializeField] private RectTransform rectTransform;
@@ -38,6 +38,12 @@ public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
             point.z = 0;
             transform.position = point;
         }
+    }
+
+    private void OnDestroy()
+    {
+        // Hide tooltip if destroyed
+        ItemTooltipUI.instance.Hide();
     }
 
     public void Initialize(Item item, ItemSlotUI itemSlotUI)
@@ -114,6 +120,30 @@ public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
 
         // HIde item info
         ItemTooltipUI.instance.Hide();
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        // If this item is right clicked
+        if (eventData.button == PointerEventData.InputButton.Right && item != null)
+        {
+            // And the item is a consumable
+            if (item is Consumable)
+            {
+                // Use the consumable and store result
+                bool isSucessful = (item as Consumable).Use(DataManager.instance.GetPlayer());
+                
+                // Delete item if it was used
+                if (isSucessful) {
+                    // Remove item
+                    itemSlotUI.StoreItem(null);
+
+                    // Then delete it
+                    Destroy(gameObject);
+                }
+                
+            }
+        }
     }
 
     public void OnBeginDrag(PointerEventData eventData)

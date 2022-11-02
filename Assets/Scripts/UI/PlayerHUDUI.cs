@@ -9,7 +9,7 @@ public class PlayerHUDUI : MonoBehaviour
     [Header("Components")]
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private Image playerIcon;
-    [SerializeField] private Transform heartContainer;
+    [SerializeField] private HealthbarUI healthbarUI;
     [SerializeField] private TextMeshProUGUI goldText;
     [SerializeField] private TextMeshProUGUI levelText;
     [SerializeField] private Slider experienceSlider;
@@ -18,7 +18,6 @@ public class PlayerHUDUI : MonoBehaviour
 
     [Header("Data")]
     [SerializeField] private Entity entity;
-    [SerializeField] private GameObject heartPrefab;
 
     private List<GameObject> heartObjects;
 
@@ -33,7 +32,6 @@ public class PlayerHUDUI : MonoBehaviour
         // Sub
         GameEvents.instance.onSpawnEntity += InitializePlayer;
         GameEvents.instance.onEnterFloor += UpdateFloor;
-        GameEvents.instance.onEntityTakeDamage += UpdateHealth;
         GameEvents.instance.onEntityGainGold += UpdateGold;
         GameEvents.instance.onEntityGainExperience += UpdateExperience;
         GameEvents.instance.onEntityGainLevel += UpdateLevel;
@@ -44,7 +42,6 @@ public class PlayerHUDUI : MonoBehaviour
         // Unsub
         GameEvents.instance.onSpawnEntity -= InitializePlayer;
         GameEvents.instance.onEnterFloor -= UpdateFloor;
-        GameEvents.instance.onEntityTakeDamage -= UpdateHealth;
         GameEvents.instance.onEntityGainGold -= UpdateGold;
         GameEvents.instance.onEntityGainExperience -= UpdateExperience;
         GameEvents.instance.onEntityGainLevel -= UpdateLevel;
@@ -58,9 +55,11 @@ public class PlayerHUDUI : MonoBehaviour
             // Save
             this.entity = entity;
 
+            // Set healthbar
+            healthbarUI.Initialize(entity);
+
             // Update visuals
             UpdateIcon();
-            UpdateHealth(entity, 0);
             UpdateGold(entity, 0);
             UpdateExperience(entity, 0);
             UpdateLevel(entity, 0);
@@ -76,27 +75,6 @@ public class PlayerHUDUI : MonoBehaviour
     private void UpdateIcon()
     {
         playerIcon.sprite = entity.modelSprite;
-    }
-
-    private void UpdateHealth(Entity entity, int amount)
-    {
-        if (this.entity == entity)
-        {
-            // Destroy all hearts
-            foreach (var ob in heartObjects)
-            {
-                Destroy(ob);
-            }
-            // Clear
-            heartObjects.Clear();
-
-            // Spawn new hearts
-            for (int i = 0; i < entity.currentHealth; i++)
-            {
-                // Create heart
-                heartObjects.Add(Instantiate(heartPrefab, heartContainer));
-            }
-        }
     }
 
     private void UpdateGold(Entity entity, int amount)

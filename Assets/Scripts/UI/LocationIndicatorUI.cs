@@ -8,6 +8,7 @@ using UnityEngine.Tilemaps;
 public class LocationIndicatorUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IDropHandler
 {
     [Header("Components")]
+    [SerializeField] private Image outlineImage;
     [SerializeField] private Image actionIcon;
     [SerializeField] private LineRenderer lineRenderer;
 
@@ -18,11 +19,16 @@ public class LocationIndicatorUI : MonoBehaviour, IPointerEnterHandler, IPointer
     [SerializeField] private Color defaultColor = Color.white;
     [SerializeField] private Color highlightColor = Color.yellow;
 
-    public void Initialize(Entity entity, Vector3Int location, Vector3 sourceLocation, Vector3 targetLocation, Action action)
+    public void Initialize(Entity entity, Vector3Int location, Vector3 sourceLocation, Vector3 targetLocation, Action action, bool isPreview = false)
     {
         this.entity = entity;
         this.location = location;
         this.action = action;
+
+        // Hide outline if needed
+        if (isPreview) {
+            outlineImage.enabled = false;
+        }
 
         // Update icon
         actionIcon.sprite = action.icon;
@@ -35,6 +41,7 @@ public class LocationIndicatorUI : MonoBehaviour, IPointerEnterHandler, IPointer
         // Sub
         GameEvents.instance.onActionSelect += Unintialize;
         GameEvents.instance.onLocationSelect += Unintialize;
+        GameEvents.instance.onInspectAction += Unintialize;
     }
 
     private void OnDestroy()
@@ -42,6 +49,7 @@ public class LocationIndicatorUI : MonoBehaviour, IPointerEnterHandler, IPointer
         // Unsub
         GameEvents.instance.onActionSelect -= Unintialize;
         GameEvents.instance.onLocationSelect -= Unintialize;
+        GameEvents.instance.onInspectAction -= Unintialize;
     }
 
     private void Unintialize(Entity entity, Action action, Room roomD)

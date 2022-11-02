@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Shopkeeper
   m_EditorClassIdentifier: 
   name: Shopkeeper
-  maxHealth: 99
-  currentHealth: 99
+  maxHealth: 4
+  currentHealth: 4
   level: 1
-  experience: 100
-  gold: 100
+  experience: 8
+  gold: 5
   inventory: {fileID: 0}
   modelSprite: {fileID: -78059454, guid: 54fd152cd68b96e49b08c757749bfaca, type: 3}
   modelController: {fileID: 9100000, guid: aa2170dd8bf815843a6fdb1827c6efd1, type: 2}

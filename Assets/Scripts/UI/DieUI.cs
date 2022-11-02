@@ -11,26 +11,21 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
     [Header("Components")]
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private RectTransform rectTransform;
-    [SerializeField] private Image dieImage;
     [SerializeField] private Outline outline;
-    [SerializeField] private Outline shadow;
-    
+    [SerializeField] private Image[] pipImages;
 
     [Header("Data")]
     [SerializeField] private Die die;
     [SerializeField] private Action action;
-    [SerializeField] private List<Sprite> diceSprites;
     [SerializeField] private float travelRate = 0.1f;
     [SerializeField] private float spinRate = 3f;
     [SerializeField] private bool isInteractable;
-
-    [SerializeField] private List<Sprite> diceDisplaySprites;
 
     private Transform parent;
     private bool isBeingDragged;
     private int rotationDirection = 1;
     private Coroutine rollRoutine;
-    
+
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
@@ -46,30 +41,36 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
         // Save parent
         parent = transform.parent;
 
-        // Update visual
-        if (displayOnly) {
-            // Display image based on max value
-            dieImage.sprite = diceDisplaySprites[die.maxValue - 1];
-            // Change scale
-            dieImage.transform.localScale = Vector3.one * 1.2f;
+        // Set pip color based on action
+        foreach (var image in pipImages)
+        {
+            image.color = action.color;
         }
-        else {
+
+        // Update visual
+        if (displayOnly)
+        {
+            // Display image based on max value
+            DisplayValue(die.maxValue);
+        }
+        else
+        {
             // Display image based on current value
-            dieImage.sprite = diceSprites[die.value - 1];
-            // Change scale
-            dieImage.transform.localScale = Vector3.one;
+            DisplayValue(die.value);
         }
 
         // Check exhaust state
-        if (die.isExhausted) {
+        if (die.isExhausted)
+        {
             canvasGroup.alpha = 0.4f;
             canvasGroup.blocksRaycasts = false;
         }
-        else {
+        else
+        {
             canvasGroup.alpha = 1f;
             canvasGroup.blocksRaycasts = true;
         }
-        
+
 
         // Sub to die events
         GameEvents.instance.onDieRoll += Roll;
@@ -77,7 +78,8 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
         GameEvents.instance.onDieReplenish += Relpenish;
     }
 
-    public void Uninitialize() {
+    public void Uninitialize()
+    {
         // Unsub to die events
         GameEvents.instance.onDieRoll -= Roll;
         GameEvents.instance.onDieExhaust -= Exhaust;
@@ -104,15 +106,15 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
             // Lerp target item to its spot
             int random = Random.Range(1, die.maxValue + 1);
 
-            // Draw the die value
-            dieImage.sprite = diceSprites[random - 1];
+            // Draw the random die value
+            DisplayValue(random);
 
             elapsedTime += 0.1f;
             yield return new WaitForSeconds(0.1f);
         }
 
         // At the end, draw the true number that was rolled
-        dieImage.sprite = diceSprites[die.value - 1];
+        DisplayValue(die.value);
     }
 
     private void Exhaust(Die die)
@@ -162,7 +164,7 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
             // Select this action
             GameManager.instance.SelectAction(action);
         }
-        
+
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -185,13 +187,15 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
         point.z = 0;
 
         // If rate is set to 0, then make it immediate
-        if (travelRate == 0) {
+        if (travelRate == 0)
+        {
             transform.position = point;
         }
-        else {
+        else
+        {
             transform.position = Vector3.Lerp(transform.position, point, travelRate);
         }
-        
+
         // Rotate Die
         transform.Rotate(0, 0, rotationDirection * spinRate); //rotates 50 degrees per second around z axis
     }
@@ -202,7 +206,8 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
 
         if (isBeingDragged)
         {
-            if (!die.isExhausted) {
+            if (!die.isExhausted)
+            {
                 // Update visually
                 canvasGroup.alpha = 1f;
                 canvasGroup.blocksRaycasts = true;
@@ -229,7 +234,7 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
             // Deselect action
             GameManager.instance.SelectAction(null);
         }
-        
+
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -246,5 +251,91 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
 
         // Disable outline
         outline.enabled = false;
+    }
+
+    private void DisplayValue(int value)
+    {
+        // Disable all pips at first
+        foreach (var image in pipImages)
+        {
+            image.enabled = false;
+        }
+
+        // Enable certain pips based on value
+        switch (value)
+        {
+            case 1:
+                pipImages[4].enabled = true;
+                break;
+
+            case 2:
+                pipImages[0].enabled = true;
+                pipImages[8].enabled = true;
+                break;
+
+            case 3:
+                pipImages[0].enabled = true;
+                pipImages[4].enabled = true;
+                pipImages[8].enabled = true;
+                break;
+
+            case 4:
+                pipImages[0].enabled = true;
+                pipImages[2].enabled = true;
+                pipImages[6].enabled = true;
+                pipImages[8].enabled = true;
+                break;
+
+            case 5:
+                pipImages[0].enabled = true;
+                pipImages[2].enabled = true;
+                pipImages[4].enabled = true;
+                pipImages[6].enabled = true;
+                pipImages[8].enabled = true;
+                break;
+
+            case 6:
+                pipImages[0].enabled = true;
+                pipImages[2].enabled = true;
+                pipImages[3].enabled = true;
+                pipImages[5].enabled = true;
+                pipImages[6].enabled = true;
+                pipImages[8].enabled = true;
+                break;
+
+            case 7:
+                pipImages[0].enabled = true;
+                pipImages[2].enabled = true;
+                pipImages[3].enabled = true;
+                pipImages[4].enabled = true;
+                pipImages[5].enabled = true;
+                pipImages[6].enabled = true;
+                pipImages[8].enabled = true;
+                break;
+
+            case 8:
+                pipImages[0].enabled = true;
+                pipImages[1].enabled = true;
+                pipImages[2].enabled = true;
+                pipImages[3].enabled = true;
+                pipImages[5].enabled = true;
+                pipImages[6].enabled = true;
+                pipImages[7].enabled = true;
+                pipImages[8].enabled = true;
+                break;
+
+            case 9:
+                // Enable all the pips
+                foreach (var image in pipImages)
+                {
+                    image.enabled = true;
+                }
+                break;
+
+            default:
+                // Debug
+                print("ERROR displaying die value: " + value);
+                break;
+        }
     }
 }

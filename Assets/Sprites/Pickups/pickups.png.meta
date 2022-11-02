@@ -322,7 +322,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -330,6 +330,27 @@ TextureImporter:
       bones: []
       spriteID: 93c0e8316a44b6341ad9c72b7cfba50d
       internalID: 997713353
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pickups_0
+      rect:
+        serializedVersion: 2
+        x: 624
+        y: 208
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2ae8fc67ee42ee940bc14c17cc60f5ec
+      internalID: -688508376
       vertices: []
       indices: 
       edges: []
@@ -347,6 +368,7 @@ TextureImporter:
     nameFileIdTable:
       general_items_9: 849311118
       general_items_0: -15307944
+      pickups_0: -688508376
       general_items_1: 1949420827
       general_items_8: -220327979
       general_items_6: -2007715465

@@ -17,7 +17,7 @@ public class RoomUI : MonoBehaviour
     [SerializeField] private RuleTile floorTile;
     [SerializeField] private RuleTile wallTile;
     [SerializeField] private Tile entranceTile;
-    [SerializeField] private Tile selectionTile;
+    [SerializeField] private AnimatedTile selectionTile;
     [SerializeField] private GameObject floorExitPrefab;
     [SerializeField] private GameObject goldPickupPrefab;
     [SerializeField] private GameObject keyPickupPrefab;
@@ -95,7 +95,10 @@ public class RoomUI : MonoBehaviour
         }
         else
         {
+            // Remove selection
             selectionTilemap.SetTile(location, null);
+            // Deselect
+            InspectLocation(location);
         }
 
         // Set new location
@@ -183,17 +186,34 @@ public class RoomUI : MonoBehaviour
 
     private void InspectLocation(Vector3Int location)
     {
+        // Look for enemy on this tile
         foreach (var enemy in room.enemies)
         {
             // If an enemy exists at this location
             if (enemy.location == location)
             {
                 // Trigger inspect event
-                GameEvents.instance.TriggerOnInspectEntity(enemy);
-                // Stop looping
-                break;
+                GameEvents.instance.TriggerOnEntityInspect(enemy);
+                // Finish
+                return;
             }
         }
+
+        // Look at barrels
+        foreach (var barrel in room.barrels)
+        {
+            // If an enemy exists at this location
+            if (barrel.location == location)
+            {
+                // Trigger inspect event
+                GameEvents.instance.TriggerOnEntityInspect(barrel);
+                // Finish
+                return;
+            }
+        }
+
+        // Else if enemy was not found, then remove any previous inspect
+        GameEvents.instance.TriggerOnEntityInspect(null);
     }
 
     public Vector3 GetLocationCenter(Vector3Int location)

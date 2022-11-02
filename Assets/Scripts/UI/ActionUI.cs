@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
 
-public class ActionUI : MonoBehaviour
+public enum ActionMode { Interact, Display, Inspect }
+
+public class ActionUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [Header("Components")]
     [SerializeField] private Image actionIcon;
@@ -18,17 +21,21 @@ public class ActionUI : MonoBehaviour
 
     [Header("Data")]
     [SerializeField] private Action action;
+    [SerializeField] private ActionMode actionMode;
+    [SerializeField] private Entity entity;
+    
 
-    public void Initialize(Action action, bool displayOnly = false)
+    // 3 Modes, interactable, display, inspect
+
+    public void Initialize(Action action, ActionMode actionMode, Entity entity = null)
     {
         this.action = action;
+        this.actionMode = actionMode;
+        this.entity = entity;
 
         // Update Visuals
         actionIcon.sprite = action.icon;
         actionBackground.sprite = action.background;
-
-        // Initialize die
-        diceUI.Initialize(action, true, displayOnly);
 
         // Initalize tooltip
         tooltipTriggerUI.SetTooltip(action.name, action.description);
@@ -36,14 +43,26 @@ public class ActionUI : MonoBehaviour
         actionNameText.text = action.name;
         actionDescriptionText.text = action.description;
 
-        // Check if displayOnly
-        if (displayOnly)
+        switch (actionMode)
         {
-            descriptionCanvasGroup.alpha = 1f;
-        }
-        else
-        {
-            descriptionCanvasGroup.alpha = 0f;
+            case ActionMode.Interact:
+                // Initialize die
+                diceUI.Initialize(action, true, false);
+                // Hide description
+                descriptionCanvasGroup.alpha = 0f;
+                break;
+            case ActionMode.Display:
+                // Initialize die
+                diceUI.Initialize(action, false, true);
+                // Show description
+                descriptionCanvasGroup.alpha = 1f;
+                break;
+            case ActionMode.Inspect:
+                // Initialize die
+                diceUI.Initialize(action, false, false);
+                // Hide description
+                descriptionCanvasGroup.alpha = 0f;
+                break;
         }
 
         // Sub to events
@@ -51,6 +70,26 @@ public class ActionUI : MonoBehaviour
         GameEvents.instance.onActionPerformStart += PreventInteraction;
         GameEvents.instance.onActionPerformEnd += AllowInteraction;
         GameEvents.instance.onTurnEnd += PreventInteraction;
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        // If the action is in inspect mode
+        if (actionMode == ActionMode.Inspect && entity != null)
+        {
+            // Show preview
+            GameEvents.instance.TriggerOnInspectAction(entity, action, entity.room);
+        }
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        // If the action is in inspect mode
+        if (actionMode == ActionMode.Inspect && entity != null)
+        {
+            // Hide preview
+            GameEvents.instance.TriggerOnInspectAction(entity, null, entity.room);
+        }
     }
 
     public void Uninitialize()
@@ -107,7 +146,6 @@ public class ActionUI : MonoBehaviour
             canvasGroup.interactable = false;
             canvasGroup.blocksRaycasts = false;
         }
-
     }
 
 }

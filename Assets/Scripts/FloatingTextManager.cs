@@ -5,10 +5,6 @@ using UnityEngine;
 public class FloatingTextManager : MonoBehaviour
 {
     [SerializeField] private GameObject floatingTextPrefab;
-    [SerializeField] private float testXVel = 0f;
-    [SerializeField] private float testYVel = 0f;
-    [SerializeField] private float testDuration = 1f;
-
 
     // Handles the need to display any form of text in the game.
     public static FloatingTextManager instance;
@@ -45,16 +41,6 @@ public class FloatingTextManager : MonoBehaviour
         GameEvents.instance.onPickup -= ShowPickup;
     }
 
-    private void Update()
-    {
-        // Debugging
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            var ft = Instantiate(floatingTextPrefab, transform.position, Quaternion.identity).GetComponent<FloatingText>();
-            ft.Initialize("Test", Color.cyan, testXVel, testYVel, testDuration);
-        }
-    }
-
     private void ShowDamageNumber(Entity entity, int amount)
     {
         if (amount > 0)
@@ -65,7 +51,7 @@ public class FloatingTextManager : MonoBehaviour
         else
         {
             // Spawn as heal number
-            SpawnFloatingText(entity, "+" + amount + " HP", Color.green, 0.5f, 2f, 1f);
+            SpawnFloatingText(entity, "+" + -amount + " HP", Color.green, 0.5f, 2f, 1f);
         }
     }
 

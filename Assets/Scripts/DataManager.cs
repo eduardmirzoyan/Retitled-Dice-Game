@@ -34,8 +34,8 @@ public class DataManager : MonoBehaviour
         player = (Player) defaultPlayer.Copy();
 
         // Create inventory of size 9
-        player.inventory = ScriptableObject.CreateInstance<Inventory>();
-        player.inventory.Initialize(9);
+        // player.inventory = ScriptableObject.CreateInstance<Inventory>();
+        // player.inventory.Initialize(9);
 
         // Reset progess
         stageNumber = 1;

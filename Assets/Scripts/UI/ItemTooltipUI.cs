@@ -104,7 +104,7 @@ public class ItemTooltipUI : MonoBehaviour
                 // Spawn visuals of actions
                 var actionUI = Instantiate(actionUIPrefab, actionsLayoutGroup.transform).GetComponent<ActionUI>();
                 // Initialize as display
-                actionUI.Initialize(action, true);
+                actionUI.Initialize(action, ActionMode.Display);
 
                 // Save
                 actionUIs.Add(actionUI);
