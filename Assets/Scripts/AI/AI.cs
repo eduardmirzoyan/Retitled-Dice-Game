@@ -61,6 +61,8 @@ public class AI : ScriptableObject
 
     /// Returns whever current point is between point1 and point2
     private bool IsBetween(Vector3Int point1, Vector3Int point2, Vector3Int currPoint) {
+        if (point1 == point2) return false;
+
         int dxc = currPoint.x - point1.x;
         int dyc = currPoint.y - point1.y;
 
@@ -97,17 +99,6 @@ public class AI : ScriptableObject
         // For each permutation
         foreach (var permutation in permutations)
         {
-            // Debug
-            // string result = "Output: ";
-            // foreach (var item in permutation)
-            // {
-            //     result += item.name + ", ";
-            // }
-            // Debug.Log(result);
-
-            // Store starting value at 0
-            // float value = 0f;
-        
             // Generate pairs from first action (HARD CODED)
             var actionPairs = GenerateActionPairs(permutation[0], entity.location, room);
 
@@ -119,9 +110,6 @@ public class AI : ScriptableObject
                 
                 // If pair is a No-Action, then feed location back into entity
                 var start = pair.Item2 != Vector3Int.back ? pair.Item2 : entity.location;
-
-                // Add damage value
-                // float value = GetDamageHeuristic(entity.location, start, targetEntity.location);
 
                 // Now generate new pairs from that new location
                 var actionPairs2 = GenerateActionPairs(permutation[1], start, room);
@@ -155,12 +143,12 @@ public class AI : ScriptableObject
         }
 
         // Debug
-        Debug.Log("Best Value: " + bestValue);
+        // Debug.Log("Best Value: " + bestValue);
 
-        foreach (var choice in bestChoiceSquence)
-        {
-            Debug.Log(choice.Item1.name + " at " + choice.Item2 + "~~~~~~~~~~~~~~~~~~~~~~~");
-        }
+        // foreach (var choice in bestChoiceSquence)
+        // {
+        //     Debug.Log(choice.Item1.name + " at " + choice.Item2 + "~~~~~~~~~~~~~~~~~~~~~~~");
+        // }
 
         // Return best result
         return bestChoiceSquence;
@@ -175,7 +163,7 @@ public class AI : ScriptableObject
     {
         // If you attacked the player, return 1
         if (IsBetween(startLocation, endLocation, targetLocation)) {
-            Debug.Log("YES!");
+            // Debug.Log("YES!");
             return 10f;
         }
 

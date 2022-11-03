@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 39a6fb4f6443f174a9a8b271b6d7d365, type: 3}
-  m_Name: D6 Warp
+  m_Name: D1
   m_EditorClassIdentifier: 
-  maxValue: 6
+  maxValue: 1
   value: 1
   isExhausted: 0

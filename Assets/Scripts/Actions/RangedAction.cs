@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu]
+[CreateAssetMenu(menuName = "Actions/Ranged")]
 public class RangedAction : Action
 {
     public override List<Vector3Int> GetValidLocations(Vector3Int startLocation, Room room)

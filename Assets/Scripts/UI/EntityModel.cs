@@ -73,16 +73,6 @@ public class EntityModel : MonoBehaviour
             offWeaponSpriteRenderer.enabled = false;
         }
 
-        // If entity is an AI, display it's first die
-        if (entity.AI != null)
-        {
-            dieUI.Initialize(entity.GetActions()[0], false);
-        }
-        else
-        {
-            dieUI.gameObject.SetActive(false);
-        }
-
         // Apply offset
         offsetTransform.localPosition = entity.offsetDueToSize;
 
@@ -118,8 +108,6 @@ public class EntityModel : MonoBehaviour
         GameEvents.instance.onEntityDrawWeapon -= DrawWeapon;
         GameEvents.instance.onEntitySheatheWeapon -= SheatheWeapon;
         GameEvents.instance.onRemoveEntity -= RemoveEntity;
-
-        if (dieUI != null) dieUI.Uninitialize();
     }
 
     private void OnDestroy()

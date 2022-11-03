@@ -18,5 +18,6 @@ MonoBehaviour:
   value: 5
   attackParticlePrefab: {fileID: 0}
   actions:
+  - {fileID: 11400000, guid: 7eba09a60db35f04dba82e978a75c091, type: 2}
   - {fileID: 11400000, guid: 2a261ff5250b99d4d8a68c972398d2b0, type: 2}
   controller: {fileID: 9100000, guid: c817ce2c79c60c0419dca06b46b5d3c0, type: 2}

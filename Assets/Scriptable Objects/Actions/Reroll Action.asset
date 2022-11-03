@@ -9,12 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c602978d948f2d45a75a58171734440, type: 3}
-  m_Name: Shop Action
+  m_Script: {fileID: 11500000, guid: 464ce7c522919fb43ba06889f6f24b3f, type: 3}
+  m_Name: Reroll Action
   m_EditorClassIdentifier: 
-  name: Shop
-  description: End your turn next to this unit to Shop items
-  icon: {fileID: 21300000, guid: 3be5eefb9fa439b4d8f1e121e91eaf64, type: 3}
+  name: Reroll
+  description: Rerolls all of your unsued actions
+  icon: {fileID: 21300000, guid: f4bab609464368244b33b981300ffae5, type: 3}
   background: {fileID: 21300000, guid: acd1e638089edba4aae74ade1eb270c5, type: 3}
   color: {r: 0.9803922, g: 0.6392157, b: 0.10588236, a: 1}
   die: {fileID: 11400000, guid: dbb9355000ced3842846106e2dca7d3b, type: 2}

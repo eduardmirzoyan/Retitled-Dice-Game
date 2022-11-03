@@ -366,6 +366,8 @@ public class GameManager : MonoBehaviour
         selectedAction = null;
         selectedLocation = Vector3Int.zero;
 
+        // Done
+        yield return null;
     }
 
     public void EndTurnNow()
