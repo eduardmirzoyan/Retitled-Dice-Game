@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
     private Entity selectedEntity;
     private Action selectedAction;
     private Vector3Int selectedLocation;
+    List<(Action, Vector3Int)> bestChoiceSequence;
 
     private Coroutine coroutine;
 
@@ -40,6 +41,8 @@ public class GameManager : MonoBehaviour
         }
 
         instance = this;
+
+        bestChoiceSequence = new List<(Action, Vector3Int)>();
     }
 
     private void Start()
@@ -238,9 +241,30 @@ public class GameManager : MonoBehaviour
         // Check if the enity has an ai, if so, let them decide their action
         if (selectedEntity.AI != null)
         {
-            // Get best choice
-            (Action, Vector3Int) bestChoicePair = selectedEntity.AI.GenerateBestDecision(selectedEntity, room);
+            // Get best sequence of actions
+            bestChoiceSequence = selectedEntity.AI.GenerateNewBestDecision(selectedEntity, room, room.player);
 
+            // Then start performing those actions
+            yield return PerformEnemyTurn();
+        }
+        else
+        {
+            // Do nothing
+            yield return null;
+        }
+
+    }
+
+    private IEnumerator PerformEnemyTurn()
+    {
+        // Check to see if any AI sequences are chosen
+        if (bestChoiceSequence.Count > 0)
+        {
+            // Get best choice, then pop from sequence
+            var bestChoicePair = bestChoiceSequence[0];
+            bestChoiceSequence.RemoveAt(0);
+
+            // Make sure choice is a valid location
             if (bestChoicePair.Item2.z != -1)
             {
                 // Debug
@@ -252,20 +276,15 @@ public class GameManager : MonoBehaviour
                 // Select Location
                 yield return ConfirmLocationAI(bestChoicePair.Item2);
             }
-            else
-            {
-                print("Entity: " + selectedEntity.name + " did not perform an action.");
-            }
 
-            // End Turn
+            // Check another action
+            yield return PerformEnemyTurn();
+        }
+        else 
+        {
+            // End the turn
             yield return EndTurn();
         }
-        else
-        {
-            // Do nothing
-            yield return null;
-        }
-
     }
 
     public void SelectAction(Action action)
@@ -346,6 +365,7 @@ public class GameManager : MonoBehaviour
         // Reset selected values
         selectedAction = null;
         selectedLocation = Vector3Int.zero;
+
     }
 
     public void EndTurnNow()

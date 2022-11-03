@@ -65,7 +65,7 @@ public class RoomUI : MonoBehaviour
             // Select position
             SelectTile(selectedLocation);
             // Debug
-            print(selectedLocation);
+            // print(selectedLocation);
         }
         // Right click clears any selection
         else if (Input.GetMouseButtonDown(1))

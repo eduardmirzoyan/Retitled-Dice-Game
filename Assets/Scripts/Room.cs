@@ -306,6 +306,8 @@ public class Room : ScriptableObject
 
     public bool IsValidLocation(Vector3Int location, bool ignoreEntity = false)
     {
+        // Debug.Log(location);
+
         // Make sure there is no wall
         if (walls[location.x][location.y] != 0)
         {
