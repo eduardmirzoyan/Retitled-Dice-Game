@@ -156,14 +156,6 @@ public class GameManager : MonoBehaviour
         // Now pull enemes from the room
         foreach (var enemy in room.enemies)
         {
-
-            // If that enemy is an AI
-            if (enemy.AI != null)
-            {
-                // See if needs to display possible intent
-                enemy.AI.DisplayIntent(enemy, room);
-            }
-
             // Add enemy
             turnQueue.Enqueue(enemy);
         }

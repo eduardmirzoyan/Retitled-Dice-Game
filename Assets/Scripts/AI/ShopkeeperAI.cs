@@ -5,13 +5,13 @@ using UnityEngine;
 [CreateAssetMenu]
 public class ShopkeeperAI : AI
 {
-    public override void DisplayIntent(Entity entity, Room room)
-    {
-        var shopAction = entity.GetActions()[1];
+    // public override void DisplayIntent(Entity entity, Room room)
+    // {
+    //     var shopAction = entity.GetActions()[1];
 
-        // Trigger event to display targets
-        GameEvents.instance.TriggerOnActionSelect(entity, shopAction, room);
-    }
+    //     // Trigger event to display targets
+    //     GameEvents.instance.TriggerOnActionSelect(entity, shopAction, room);
+    // }
 
     public override (Action, Vector3Int) GenerateBestDecision(Entity entity, Room room)
     {

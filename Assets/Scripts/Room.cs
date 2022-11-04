@@ -398,4 +398,13 @@ public class Room : ScriptableObject
         // Else there are no hostiles
         return false;
     }
+
+    public Room Copy()
+    {
+        var copy = Instantiate(this);
+
+        // TODO FILL HERE
+
+        return copy; 
+    }
 }

@@ -7,10 +7,10 @@ public class AI : ScriptableObject
 {
     public bool isHostile = true;
 
-    public virtual void DisplayIntent(Entity entity, Room room)
-    {
-        // Does nothing
-    }
+    // public virtual void DisplayIntent(Entity entity, Room room)
+    // {
+    //     // Does nothing
+    // }
     
     // Hard coded so far, but action 0 should be move, action 1 is attack
     public virtual (Action, Vector3Int) GenerateBestDecision(Entity entity, Room room)
@@ -99,6 +99,14 @@ public class AI : ScriptableObject
         // For each permutation
         foreach (var permutation in permutations)
         {
+            // FIXME
+            List<List<(Action, Vector3Int)>> sequences = new List<List<(Action, Vector3Int)>>();
+            GenerateSequences(permutation, entity, room, 0, new List<(Action, Vector3Int)>(), sequences);
+            Debug.Log(sequences.Count);
+            
+            // REMOVE LATER
+            continue;
+
             // Generate pairs from first action (HARD CODED)
             var actionPairs = GenerateActionPairs(permutation[0], entity.location, room);
 
@@ -187,40 +195,40 @@ public class AI : ScriptableObject
         return result;
     }
 
-    private List<List<Action>> GeneratePermutations(List<Action> nums)
+    private List<List<Action>> GeneratePermutations(List<Action> actions)
     {
         var list = new List<List<Action>>();
-        return DoPermute(nums, 0, nums.Count - 1, list);
+        return DoPermute(actions, 0, actions.Count - 1, list);
     }
 
-    private List<List<Action>> DoPermute(List<Action> nums, int start, int end, List<List<Action>> list)
+    private List<List<Action>> DoPermute(List<Action> actions, int start, int end, List<List<Action>> list)
     {
         if (start == end)
         {
             // We have one of our possible n! solutions,
             // add it to the list.
-            list.Add(new List<Action>(nums));
+            list.Add(new List<Action>(actions));
         }
         else
         {
             for (var i = start; i <= end; i++)
             {
                 // Swap actions
-                Action action1 = nums[start];
-                Action action2 = nums[i];
+                Action action1 = actions[start];
+                Action action2 = actions[i];
                 Swap(ref action1, ref action2);
-                nums[start] = action1;
-                nums[i] = action2;
+                actions[start] = action1;
+                actions[i] = action2;
                 
                 // Recusively permute
-                DoPermute(nums, start + 1, end, list);
+                DoPermute(actions, start + 1, end, list);
 
                 // Swap again
-                action1 = nums[start];
-                action2 = nums[i];
+                action1 = actions[start];
+                action2 = actions[i];
                 Swap(ref action1, ref action2);
-                nums[start] = action1;
-                nums[i] = action2;
+                actions[start] = action1;
+                actions[i] = action2;
             }
         }
 
@@ -232,5 +240,78 @@ public class AI : ScriptableObject
         var temp = a;
         a = b;
         b = temp;
+    }
+
+
+    /// This is the copy paste version translated from python
+    private void GenerateSequences(List<Action> actions, int index, List<Action> path)
+    {
+        // TODO FINISH?
+
+        // If we reached the end, add the calculated path to result
+        if (index >= actions.Count) {
+            
+            
+            return;
+        }
+
+        foreach (var action in actions)
+        {
+            // Add action to path
+            path.Add(action);
+
+            // Recurse
+            GenerateSequences(actions, index + 1, path);
+        }
+    }
+
+    /// This is gonna be the ideal version
+    private void GenerateSequences(List<Action> actions, Entity entity, Room room, int index, List<(Action, Vector3Int)> path, List<List<(Action, Vector3Int)>> sequences)
+    {
+        // TODO FINISH!
+
+        // If we reached the end of our actions
+        if (index >= actions.Count)
+        {
+            // Here is where we should calculate final heuristic and store the best
+
+            // Add path to all sequences
+            sequences.Add(path);
+            
+            // Finish path
+            return;
+        }
+
+        // Manually add 'Do Perform this action' option
+        path.Add((actions[index], Vector3Int.back));
+
+        // Now check all valid locations
+        // TODO make sure valid locations takes the position of the current entity
+        foreach (var location in actions[index].GetValidLocations(entity.location, room))
+        {
+            // Add pair to path
+            path.Add((actions[index], location));
+
+            // TODO: Need to make copy of the room + entity, perform this action on the copy
+            // Then send copy into the recursive call
+
+            // Recurse 1 level deeper
+            GenerateSequences(actions, entity, room, index + 1, path, sequences);
+        }
+    }
+
+    private float GenerateHeuristic(Entity entity, Entity target)
+    {
+        float total = 0;
+
+        // Give points based on inverse distance to target
+        // (Should change to manhattan)
+        total += 1 / Vector3Int.Distance(entity.location, target.location);
+
+        // Give points based on percentage health of target
+        // With offset so that distance never is prefered over damage
+        total = 25 + 75 * (1 - target.currentHealth / target.maxHealth);
+
+        return total;
     }
 }
