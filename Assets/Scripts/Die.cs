@@ -15,6 +15,9 @@ public class Die : ScriptableObject
         if (hasCheats) return;
         
         isExhausted = true;
+
+        // Trigger event
+        GameEvents.instance.TriggerOnDieExhaust(this);
     }
 
     public void Replenish() {

@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum ActionSpeed { Fast, Slow }
+
 public abstract class Action : ScriptableObject
 {
     public new string name;
@@ -12,6 +14,7 @@ public abstract class Action : ScriptableObject
 
     public Die die;
     public Weapon weapon;
+    public ActionSpeed actionSpeed;
 
     public abstract List<Vector3Int> GetValidLocations(Vector3Int startLocation, Room room);
     public abstract IEnumerator Perform(Entity entity, Vector3Int targetLocation, Room room);

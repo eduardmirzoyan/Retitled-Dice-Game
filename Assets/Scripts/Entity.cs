@@ -29,6 +29,7 @@ public class Entity : ScriptableObject
     [Header("Dungeon Dependant")]
     public Vector3Int location; // Location of this entity on the floor
     public Room room;
+    public (Action, Vector3Int) preparedAction;
 
     public void SetRoom(Room dungeon, Vector3Int spawnLocation)
     {

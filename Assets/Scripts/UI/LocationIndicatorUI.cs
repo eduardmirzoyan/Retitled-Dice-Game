@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using UnityEngine.Tilemaps;
 
 public class LocationIndicatorUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IDropHandler
 {
@@ -11,6 +10,7 @@ public class LocationIndicatorUI : MonoBehaviour, IPointerEnterHandler, IPointer
     [SerializeField] private Image outlineImage;
     [SerializeField] private Image actionIcon;
     [SerializeField] private LineRenderer lineRenderer;
+    [SerializeField] private Color outlineColor;
 
     [Header("Data")]
     [SerializeField] private Entity entity;
@@ -19,28 +19,52 @@ public class LocationIndicatorUI : MonoBehaviour, IPointerEnterHandler, IPointer
     [SerializeField] private Color defaultColor = Color.white;
     [SerializeField] private Color highlightColor = Color.yellow;
 
+    [Header("Config")]
+    [SerializeField] private bool drawOnHover = false;
+
     public void Initialize(Entity entity, Vector3Int location, Vector3 sourceLocation, Vector3 targetLocation, Action action, bool isPreview = false)
     {
         this.entity = entity;
         this.location = location;
         this.action = action;
-
-        // Hide outline if needed
-        if (isPreview) {
-            outlineImage.enabled = false;
-        }
+        
+        // Update color
+        outlineImage.color = action.color;
 
         // Update icon
         actionIcon.sprite = action.icon;
 
-        // Draw line from source to location
+        // Draw path from source to location
         lineRenderer.SetPosition(0, sourceLocation);
         lineRenderer.SetPosition(1, targetLocation);
         lineRenderer.endColor = action.color;
+        
+        // var path = new List<Vector3Int>();
+        // lineRenderer.positionCount = path.Count;
+        // for (int i = 0; i < path.Count; i++)
+        // {
+        //     // Set each vertex
+        //     lineRenderer.SetPosition(i, path[i]);
+        // }
+
+        // Hide line if needed
+        if (drawOnHover) 
+        {
+            lineRenderer.enabled = false;
+            actionIcon.enabled = false;
+        }
+
+        // Hide outline if needed
+        if (isPreview)
+        {
+            outlineImage.enabled = false;
+        }
+        
 
         // Sub
         GameEvents.instance.onActionSelect += Unintialize;
-        GameEvents.instance.onLocationSelect += Unintialize;
+        GameEvents.instance.onLocationSelect += RemoveHighlight;
+        GameEvents.instance.onActionPerformEnd += Unintialize;
         GameEvents.instance.onInspectAction += Unintialize;
     }
 
@@ -48,11 +72,12 @@ public class LocationIndicatorUI : MonoBehaviour, IPointerEnterHandler, IPointer
     {
         // Unsub
         GameEvents.instance.onActionSelect -= Unintialize;
-        GameEvents.instance.onLocationSelect -= Unintialize;
+        GameEvents.instance.onLocationSelect -= RemoveHighlight;
+        GameEvents.instance.onActionPerformEnd -= Unintialize;
         GameEvents.instance.onInspectAction -= Unintialize;
     }
 
-    private void Unintialize(Entity entity, Action action, Room roomD)
+    private void Unintialize(Entity entity, Action action, Room room)
     {
         // If no action was selected, destroy this
         if (this.entity == entity && action == null)
@@ -62,11 +87,19 @@ public class LocationIndicatorUI : MonoBehaviour, IPointerEnterHandler, IPointer
         }
     }
 
-    private void Unintialize(Entity entity, Vector3Int location)
+    private void Unintialize(Entity entity, Action action, Vector3Int location, Room room)
     {
         if (this.entity == entity) {
             // Destroy self
             Destroy(gameObject);
+        }
+    }
+
+    private void RemoveHighlight(Entity entity, Vector3Int location)
+    {
+        if (this.entity == entity) {
+            // Remove highlight
+            outlineImage.enabled = false;
         }
     }
 
@@ -75,6 +108,23 @@ public class LocationIndicatorUI : MonoBehaviour, IPointerEnterHandler, IPointer
         // If you are dragging over a die
         if (eventData.pointerDrag != null && eventData.pointerDrag.TryGetComponent(out DieUI dieUI))
         {
+            if (drawOnHover)
+            {
+                // Get path
+                var path = entity.room.pathfinder.FindPath(entity.location, location, entity.room);
+
+                lineRenderer.positionCount = path.Count;
+                for (int i = 0; i < path.Count; i++)
+                {
+                    // Set each vertex
+                    lineRenderer.SetPosition(i, path[i] + Vector3.one * 0.5f);
+                }
+
+                // Show path
+                lineRenderer.enabled = true;
+                actionIcon.enabled = true;
+            }
+
             // Highlight
             actionIcon.color = highlightColor;
         }
@@ -85,6 +135,13 @@ public class LocationIndicatorUI : MonoBehaviour, IPointerEnterHandler, IPointer
         // If you are dragging over a die
         if (eventData.pointerDrag != null && eventData.pointerDrag.TryGetComponent(out DieUI dieUI))
         {
+            if (drawOnHover)
+            {
+                // Hide path
+                lineRenderer.enabled = false;
+                actionIcon.enabled = false;
+            }
+
             // Un-highlgiht
             actionIcon.color = defaultColor;
         }

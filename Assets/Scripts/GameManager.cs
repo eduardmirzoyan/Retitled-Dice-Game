@@ -105,14 +105,14 @@ public class GameManager : MonoBehaviour
         {
             case 1:
                 // Spawn enemies equal to floor number
-                for (int i = 0; i < DataManager.instance.GetRoomNumber(); i++)
-                {
-                    // Generate a random enemy
-                    var enemy = enemyGenerator.GenerateEnemy();
+                // for (int i = 0; i < DataManager.instance.GetRoomNumber(); i++)
+                // {
+                //     // Generate a random enemy
+                //     var enemy = enemyGenerator.GenerateEnemy();
 
-                    // Populate the room
-                    room.Populate(enemy);
-                }
+                //     // Populate the room
+                //     room.Populate(enemy);
+                // }
 
                 break;
             case -1:
@@ -230,6 +230,21 @@ public class GameManager : MonoBehaviour
         // Trigger event 
         GameEvents.instance.TriggerOnTurnStart(selectedEntity);
 
+        // Check if that entity has a prepared action
+        if (selectedEntity.preparedAction.Item1 != null)
+        {
+            // Debug
+            print("Forming Slow Action: " + selectedEntity.preparedAction.Item1.name);
+
+            // Perform that action
+            selectedAction = selectedEntity.preparedAction.Item1;
+            selectedLocation = selectedEntity.preparedAction.Item2;
+            yield return PerformSelectedAction();
+            
+            // Reset prepared action
+            selectedEntity.preparedAction = (null, Vector3Int.back);
+        }
+
         // Check if the enity has an ai, if so, let them decide their action
         if (selectedEntity.AI != null)
         {
@@ -306,19 +321,25 @@ public class GameManager : MonoBehaviour
         // Debug
         print("Location " + location + " was selected.");
 
-        // Exhaust selected die
-        selectedAction.die.Exhaust();
-
-        // Trigger event
-        GameEvents.instance.TriggerOnDieExhaust(selectedAction.die);
-
         // Trigger event
         GameEvents.instance.TriggerOnLocationSelect(selectedEntity, location);
 
-        // Perform the selected Action
-        // if (coroutine != null) StopCoroutine(coroutine);
+        // Check action type
+        if (selectedAction.actionSpeed is ActionSpeed.Slow) 
+        {
+            // Debug
+            print("Preparing Slow Action: " + selectedAction.name);
 
-        coroutine = StartCoroutine(PerformSelectedAction());
+            // Store action
+            selectedEntity.preparedAction = (selectedAction, selectedLocation);
+        }
+        else {
+            // Perform the action right away
+
+            // Start routine
+            coroutine = StartCoroutine(PerformSelectedAction());
+        }
+        
     }
 
     private IEnumerator ConfirmLocationAI(Vector3Int location)
@@ -329,17 +350,15 @@ public class GameManager : MonoBehaviour
         print("Location " + location + " was selected.");
 
         // Exhaust selected die
-        selectedAction.die.Exhaust();
+        // selectedAction.die.Exhaust();
 
         // Trigger event
-        GameEvents.instance.TriggerOnDieExhaust(selectedAction.die);
+        // GameEvents.instance.TriggerOnDieExhaust(selectedAction.die);
 
         // Trigger event
-        GameEvents.instance.TriggerOnLocationSelect(selectedEntity, location);
+        GameEvents.instance.TriggerOnLocationSelect(selectedEntity, location); 
 
-        // Perform the selected Action
-        // if (coroutine != null) StopCoroutine(coroutine);
-
+        // Perform action
         yield return PerformSelectedAction();
     }
 
@@ -347,6 +366,9 @@ public class GameManager : MonoBehaviour
     {
         // Trigger event
         GameEvents.instance.TriggerOnActionPerformStart(selectedEntity, selectedAction, selectedLocation, room);
+
+        // Exhaust selected die
+        selectedAction.die.Exhaust();
 
         // Perform the action and wait until it's finished
         yield return selectedAction.Perform(selectedEntity, selectedLocation, room);

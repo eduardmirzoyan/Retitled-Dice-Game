@@ -40,6 +40,8 @@ public class Room : ScriptableObject
     private int wallSpawnChance;
     private int barrelSpawnChance;
 
+    public Pathfinder pathfinder;
+
     public void Initialize(int width, int height, int padding, int numKeys, int goldSpawnChance, int wallSpawnChance, int barrelSpawnChance, Barrel barrel)
     {
         // Save dimensions
@@ -72,6 +74,9 @@ public class Room : ScriptableObject
 
         // Initalize lists
         enemies = new List<Entity>();
+
+        // Initalize pathfinder
+        pathfinder = new Pathfinder();
     }
 
     public void Populate(Entity entity)
@@ -304,6 +309,39 @@ public class Room : ScriptableObject
         }
     }
 
+
+    public List<Vector3Int> GetNeighbors(Vector3Int location)
+    {
+        var neighbors = new List<Vector3Int>();
+
+        // Check cardinal directions
+        var position = location + Vector3Int.up;
+        if (IsValidLocation(position))
+        {
+            neighbors.Add(position);
+        }
+
+        position = location + Vector3Int.right;
+        if (IsValidLocation(position))
+        {
+            neighbors.Add(position);
+        }
+
+        position = location + Vector3Int.down;
+        if (IsValidLocation(position))
+        {
+            neighbors.Add(position);
+        }
+
+        position = location + Vector3Int.left;
+        if (IsValidLocation(position))
+        {
+            neighbors.Add(position);
+        }
+
+        return neighbors;
+    }
+
     public bool IsValidLocation(Vector3Int location, bool ignoreEntity = false)
     {
         // Debug.Log(location);
@@ -390,7 +428,8 @@ public class Room : ScriptableObject
     public bool HasHostileEntities()
     {
         // If there are any hostile enemies left, then return true
-        foreach (var enemy in enemies) {
+        foreach (var enemy in enemies)
+        {
             if (enemy.AI.isHostile)
                 return true;
         }
@@ -405,6 +444,6 @@ public class Room : ScriptableObject
 
         // TODO FILL HERE
 
-        return copy; 
+        return copy;
     }
 }

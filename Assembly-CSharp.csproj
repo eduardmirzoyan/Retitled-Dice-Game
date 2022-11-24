@@ -65,6 +65,7 @@
      <Compile Include="Assets\Scripts\UI\HowToPlayUI.cs" />
      <Compile Include="Assets\Scripts\UI\ActionUI.cs" />
      <Compile Include="Assets\Scripts\Main Menu\MainMenuManager.cs" />
+     <Compile Include="Assets\Scripts\Actions\FreeMoveAction.cs" />
      <Compile Include="Assets\Scripts\RoomGenerator.cs" />
      <Compile Include="Assets\Scripts\Audio\AudioManager.cs" />
      <Compile Include="Assets\Scripts\FloatingTextManager.cs" />
@@ -90,6 +91,7 @@
      <Compile Include="Assets\Scripts\Items\Item.cs" />
      <Compile Include="Assets\Scripts\UI\EquipmentUI.cs" />
      <Compile Include="Assets\Scripts\UI\ActionsDisplayUI.cs" />
+     <Compile Include="Assets\Scripts\Pathfinder.cs" />
      <Compile Include="Assets\Scripts\DeathCloud.cs" />
      <Compile Include="Assets\Scripts\CameraShake.cs" />
      <Compile Include="Assets\Scripts\UI\EntityInspectUI.cs" />
@@ -103,6 +105,7 @@
      <Compile Include="Assets\Scripts\UI\FloatingText.cs" />
      <Compile Include="Assets\Scripts\AI\AI.cs" />
      <Compile Include="Assets\Scripts\Actions\ShopAction.cs" />
+     <Compile Include="Assets\Scripts\Actions\ProjectileAction.cs" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
