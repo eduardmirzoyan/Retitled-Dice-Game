@@ -27,7 +27,6 @@ public class EntityModel : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] private DamageFlash damageFlash;
-    [SerializeField] private DieUI dieUI;
 
     [Header("Particles")]
     [SerializeField] private ParticleSystem warpGenerateParticles;
@@ -133,9 +132,6 @@ public class EntityModel : MonoBehaviour
         {
             // Play proper animation
             modelAnimator.Play("Run");
-
-            // Flip model if needed
-            FlipModel(direction);
         }
     }
 
@@ -146,6 +142,9 @@ public class EntityModel : MonoBehaviour
         {
             Vector3 currentPosition = transform.position;
             Vector3 newPosition = roomUI.GetLocationCenter(entity.location);
+
+            // Flip model if needed
+            FlipModel(newPosition - currentPosition);
 
             // Start moving routine
             if (coroutine != null) StopCoroutine(coroutine);

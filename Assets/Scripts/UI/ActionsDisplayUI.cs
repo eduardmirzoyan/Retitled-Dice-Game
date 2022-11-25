@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+// Tile highlight -> Preview
+// Arrow Indicator -> Confirmed
+
 public class ActionsDisplayUI : MonoBehaviour
 {
     [Header("Data")]

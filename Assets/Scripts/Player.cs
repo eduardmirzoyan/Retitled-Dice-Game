@@ -36,6 +36,7 @@ public class Player : Entity
         {
             // Go to next floor
             GameManager.instance.TravelToNextFloor();
+            
         }
     }
 

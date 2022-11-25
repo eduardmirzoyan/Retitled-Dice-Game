@@ -17,8 +17,10 @@ public class Projectile : MonoBehaviour
     [SerializeField] private float gravity = 9.81f;
     [SerializeField] private GameObject impactDustPrefab;
 
-    public float Initialize(Vector3 targetPosition, float intialAngle, Weapon weapon)
+    public float Initialize(Vector3 targetPosition, float intialAngle, Weapon weapon, float gravity = 9.81f)
     {
+        this.gravity = gravity;
+
         // Set sprites
         spriteRenderer.sprite = weapon.sprite;
         shadowRenderer.sprite = weapon.sprite;
@@ -117,34 +119,5 @@ public class Projectile : MonoBehaviour
 
         // Destroy
         Destroy(gameObject);
-    }
-
-    private IEnumerator SimulateProjectile(Vector3 target)
-    {
-        float firingAngle = 15f;
-
-        // Calculate distance to target
-        float target_Distance = Vector3.Distance(transform.position, target);
-
-        // Calculate the velocity needed to throw the object to the target at specified angle.
-        float projectile_Velocity = target_Distance / (Mathf.Sin(2 * firingAngle * Mathf.Deg2Rad) / gravity);
-
-        // Extract the X  Y componenent of the velocity
-        float Vx = Mathf.Sqrt(projectile_Velocity) * Mathf.Cos(firingAngle * Mathf.Deg2Rad);
-        float Vy = Mathf.Sqrt(projectile_Velocity) * Mathf.Sin(firingAngle * Mathf.Deg2Rad);
-
-        // Calculate flight time.
-        float flightDuration = target_Distance / Vx;
-
-        float elapse_time = 0;
-
-        while (elapse_time < flightDuration)
-        {
-            transform.Translate(0, (Vy - (gravity * elapse_time)) * Time.deltaTime, Vx * Time.deltaTime);
-
-            elapse_time += Time.deltaTime;
-
-            yield return null;
-        }
     }
 }

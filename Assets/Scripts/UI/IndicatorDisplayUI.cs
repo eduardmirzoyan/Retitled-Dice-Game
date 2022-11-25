@@ -6,12 +6,11 @@ using UnityEngine.Tilemaps;
 public class IndicatorDisplayUI : MonoBehaviour
 {
     [Header("Components")]
-    [SerializeField] private Tilemap floorTilemap;
+    [SerializeField] private Tilemap selectTilemap;
 
     [Header("Data")]
     [SerializeField] private GameObject indicatorUIPrefab;
-
-    private List<LocationIndicatorUI> locationIndicatorUIs;
+    [SerializeField] private RuleTile highlightTile;
 
     private void Start()
     {
@@ -35,13 +34,15 @@ public class IndicatorDisplayUI : MonoBehaviour
             var validLocations = action.GetValidLocations(entity.location, room);
 
             // Get entity location
-            var entityWorldLocation = floorTilemap.GetCellCenterWorld(entity.location);
+            var entityWorldLocation = selectTilemap.GetCellCenterWorld(entity.location);
 
             // Display all of the action's valid locations
             foreach (var location in validLocations)
             {
+                // Set tile?
+
                 // Get world position
-                var targetWorldLocation = floorTilemap.GetCellCenterWorld(location);
+                var targetWorldLocation = selectTilemap.GetCellCenterWorld(location);
                 // Instaniate as child
                 var indicatorUI = Instantiate(indicatorUIPrefab, targetWorldLocation, Quaternion.identity, transform).GetComponent<LocationIndicatorUI>();
                 // Initialize
@@ -58,13 +59,13 @@ public class IndicatorDisplayUI : MonoBehaviour
             var validLocations = action.GetValidLocations(entity.location, room);
 
             // Get entity location
-            var entityWorldLocation = floorTilemap.GetCellCenterWorld(entity.location);
+            var entityWorldLocation = selectTilemap.GetCellCenterWorld(entity.location);
 
             // Display all of the action's valid locations
             foreach (var location in validLocations)
             {
                 // Get world position
-                var targetWorldLocation = floorTilemap.GetCellCenterWorld(location);
+                var targetWorldLocation = selectTilemap.GetCellCenterWorld(location);
                 // Instaniate as child
                 var indicatorUI = Instantiate(indicatorUIPrefab, targetWorldLocation, Quaternion.identity, transform).GetComponent<LocationIndicatorUI>();
                 // Initialize

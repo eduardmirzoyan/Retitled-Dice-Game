@@ -26,6 +26,7 @@ MonoBehaviour:
   AI: {fileID: 0}
   innateActions:
   - {fileID: 11400000, guid: a341cf06ac4c81749a4641bccae03916, type: 2}
+  - {fileID: 11400000, guid: 00fd713af0e62114d908e79d0d648b75, type: 2}
   mainWeapon: {fileID: 11400000, guid: 74bc2abe0129f6e4489f90c2d2bad8b2, type: 2}
   offWeapon: {fileID: 0}
   location: {x: 0, y: 0, z: 0}

@@ -69,6 +69,7 @@ public class GameEvents : MonoBehaviour
     public event Action<Inventory, bool> onToggleInventory;
     public event Action<Entity> onEntityInspect;
     public event Action<Entity, Action, Room> onInspectAction;
+    public event Action<Projectil> onProjectileMove;
 
     public static GameEvents instance;
     private void Awake()
@@ -362,6 +363,14 @@ public class GameEvents : MonoBehaviour
         if (onInspectAction != null)
         {
             onInspectAction(entity, action, room);
+        }
+    }
+
+    public void TriggerOnProjectileMove(Projectil projectil) 
+    {
+        if (onProjectileMove != null)
+        {
+            onProjectileMove(projectil);
         }
     }
 }

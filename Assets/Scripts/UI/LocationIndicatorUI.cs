@@ -39,14 +39,6 @@ public class LocationIndicatorUI : MonoBehaviour, IPointerEnterHandler, IPointer
         lineRenderer.SetPosition(1, targetLocation);
         lineRenderer.endColor = action.color;
         
-        // var path = new List<Vector3Int>();
-        // lineRenderer.positionCount = path.Count;
-        // for (int i = 0; i < path.Count; i++)
-        // {
-        //     // Set each vertex
-        //     lineRenderer.SetPosition(i, path[i]);
-        // }
-
         // Hide line if needed
         if (drawOnHover) 
         {
