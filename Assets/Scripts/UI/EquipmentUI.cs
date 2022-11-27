@@ -19,7 +19,7 @@ public class EquipmentUI : MonoBehaviour
         // Sub
         GameEvents.instance.onEnterFloor += Initialize;
         GameEvents.instance.onItemInsert += EquipWeapon;
-        GameEvents.instance.onRemoveEntity += CheckUnlock;
+        GameEvents.instance.onEnityDespawn += CheckUnlock;
     }
 
     private void OnDestroy()
@@ -27,7 +27,7 @@ public class EquipmentUI : MonoBehaviour
         // Unsub
         GameEvents.instance.onEnterFloor -= Initialize;
         GameEvents.instance.onItemInsert -= EquipWeapon;
-        GameEvents.instance.onRemoveEntity -= CheckUnlock;
+        GameEvents.instance.onEnityDespawn -= CheckUnlock;
     }
 
     private void Initialize(Room room)

@@ -51,30 +51,8 @@ public class MoveAction : Action
         Vector3Int direction = targetLocation - entity.location;
         direction.Clamp(-Vector3Int.one, Vector3Int.one);
 
-        // if (direction.x > 0) // Move right
-        // {
-        //     direction.x = 1;
-        // }
-        // else if (direction.x < 0) // Move left
-        // {
-        //     direction.x = -1;
-        // }
-        // else if (direction.y > 0) // Move up
-        // {
-        //     direction.y = 1;
-        // }
-        // else if (direction.y < 0) // Move down
-        // {
-        //     direction.y = -1;
-        // }
-        // else
-        // {
-        //     // Debug
-        //     throw new System.Exception("There was a problem with determining direction.");
-        // }
-
         // Trigger start move event
-        GameEvents.instance.TriggerOnEntityStartMove(entity, direction);
+        GameEvents.instance.TriggerOnEntityStartMove(entity);
 
         // Keep looping until entiy makes it to its final location
         while (entity.location != targetLocation)

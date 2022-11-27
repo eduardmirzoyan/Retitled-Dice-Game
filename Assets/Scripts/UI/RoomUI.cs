@@ -11,6 +11,7 @@ public class RoomUI : MonoBehaviour
     [SerializeField] private Tilemap decorTilemap;
     [SerializeField] private Tilemap selectionTilemap;
     [SerializeField] private Transform entityTransform;
+    [SerializeField] private Transform projectilesTransform;
 
     [Header("Data")]
     [SerializeField] private Room room;
@@ -22,6 +23,7 @@ public class RoomUI : MonoBehaviour
     [SerializeField] private GameObject goldPickupPrefab;
     [SerializeField] private GameObject keyPickupPrefab;
     [SerializeField] private GameObject entityModelPrefab;
+    [SerializeField] private GameObject projectileModelPrefab;
     [SerializeField] private Vector3Int selectedLocation;
 
     public static RoomUI instance;
@@ -43,14 +45,16 @@ public class RoomUI : MonoBehaviour
     {
         // Sub
         GameEvents.instance.onEnterFloor += SpawnRoom;
-        GameEvents.instance.onSpawnEntity += SpawnEntity;
+        GameEvents.instance.onEntitySpawn += SpawnEntity;
+        GameEvents.instance.onProjectileSpawn += SpawnProjectile;
     }
 
     private void OnDestroy()
     {
         // Unsub
         GameEvents.instance.onEnterFloor -= SpawnRoom;
-        GameEvents.instance.onSpawnEntity -= SpawnEntity;
+        GameEvents.instance.onEntitySpawn -= SpawnEntity;
+        GameEvents.instance.onProjectileSpawn -= SpawnProjectile;
     }
 
     private void Update()
@@ -179,9 +183,19 @@ public class RoomUI : MonoBehaviour
         // Get world position
         Vector3 worldLocation = floorTilemap.GetCellCenterWorld(entity.location);
         // Spawn model in container
-        var model = Instantiate(entityModelPrefab, worldLocation, Quaternion.identity, entityTransform).GetComponent<EntityModel>();
+        var entityModel = Instantiate(entityModelPrefab, worldLocation, Quaternion.identity, entityTransform).GetComponent<EntityModel>();
         // Initialize
-        model.Initialize(entity, this);
+        entityModel.Initialize(entity, this);
+    }
+
+    private void SpawnProjectile(Projectil projectil)
+    {
+        // Get world position
+        Vector3 worldLocation = floorTilemap.GetCellCenterWorld(projectil.location);
+        // Spawn model in container
+        var projModel = Instantiate(projectileModelPrefab, worldLocation, Quaternion.identity, projectilesTransform).GetComponent<ProjectileModel>();
+        // Initialize
+        projModel.Initialize(projectil, this); 
     }
 
     private void InspectLocation(Vector3Int location)

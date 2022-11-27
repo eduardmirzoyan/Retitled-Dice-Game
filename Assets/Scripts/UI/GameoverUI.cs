@@ -29,12 +29,12 @@ public class GameoverUI : MonoBehaviour
 
     private void Start() {
         // Sub to events
-        GameEvents.instance.onRemoveEntity += ShowMenu;
+        GameEvents.instance.onEnityDespawn += ShowMenu;
     }
 
     private void OnDestroy() {
         // Unsub
-        GameEvents.instance.onRemoveEntity -= ShowMenu;
+        GameEvents.instance.onEnityDespawn -= ShowMenu;
     }
 
     private void ShowMenu(Entity entity) {

@@ -19,11 +19,11 @@ MonoBehaviour:
   experience: 0
   gold: 0
   inventory: {fileID: 0}
-  modelSprite: {fileID: 21300000, guid: eb33eb92cbecd0c4292c1d48c5523e95, type: 3}
-  modelController: {fileID: 0}
+  modelSprite: {fileID: 2099367333, guid: 49a73d12c029e9e4895853cb5b593771, type: 3}
+  modelController: {fileID: 9100000, guid: 7eb74a2650a0d6a4980911bf4e038b1e, type: 2}
   hitEffectPrefab: {fileID: 7270536486772163001, guid: 335c93a61b62ca84e9f26440c7f3ed0e, type: 3}
   offsetDueToSize: {x: 0, y: 0, z: 0}
-  AI: {fileID: 0}
+  AI: {fileID: 11400000, guid: ad0cf96f6a9cc834aa2e9eb86c1807aa, type: 2}
   innateActions: []
   mainWeapon: {fileID: 0}
   offWeapon: {fileID: 0}

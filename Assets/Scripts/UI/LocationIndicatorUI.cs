@@ -10,7 +10,6 @@ public class LocationIndicatorUI : MonoBehaviour, IPointerEnterHandler, IPointer
     [SerializeField] private Image outlineImage;
     [SerializeField] private Image actionIcon;
     [SerializeField] private LineRenderer lineRenderer;
-    [SerializeField] private Color outlineColor;
 
     [Header("Data")]
     [SerializeField] private Entity entity;
@@ -27,35 +26,38 @@ public class LocationIndicatorUI : MonoBehaviour, IPointerEnterHandler, IPointer
         this.entity = entity;
         this.location = location;
         this.action = action;
-        
-        // Update color
-        outlineImage.color = action.color;
 
-        // Update icon
+        // Update color
+        outlineImage.color = Color.clear;
+
+        // Update action icon
+        actionIcon.enabled = false;
         actionIcon.sprite = action.icon;
 
+        // Hide line
+        lineRenderer.enabled = false;
+
         // Draw path from source to location
-        lineRenderer.SetPosition(0, sourceLocation);
-        lineRenderer.SetPosition(1, targetLocation);
-        lineRenderer.endColor = action.color;
-        
+        // lineRenderer.SetPosition(0, sourceLocation);
+        // lineRenderer.SetPosition(1, targetLocation);
+        // 
+
         // Hide line if needed
-        if (drawOnHover) 
-        {
-            lineRenderer.enabled = false;
-            actionIcon.enabled = false;
-        }
+        // if (drawOnHover)
+        // {
+        //     lineRenderer.enabled = false;
+        //     actionIcon.enabled = false;
+        // }
 
         // Hide outline if needed
-        if (isPreview)
-        {
-            outlineImage.enabled = false;
-        }
-        
+        // if (isPreview)
+        // {
+        //     outlineImage.enabled = false;
+        // }
+
 
         // Sub
         GameEvents.instance.onActionSelect += Unintialize;
-        GameEvents.instance.onLocationSelect += RemoveHighlight;
         GameEvents.instance.onActionPerformEnd += Unintialize;
         GameEvents.instance.onInspectAction += Unintialize;
     }
@@ -64,15 +66,14 @@ public class LocationIndicatorUI : MonoBehaviour, IPointerEnterHandler, IPointer
     {
         // Unsub
         GameEvents.instance.onActionSelect -= Unintialize;
-        GameEvents.instance.onLocationSelect -= RemoveHighlight;
         GameEvents.instance.onActionPerformEnd -= Unintialize;
         GameEvents.instance.onInspectAction -= Unintialize;
     }
 
-    private void Unintialize(Entity entity, Action action, Room room)
+    private void Unintialize(Entity entity, Action action)
     {
         // If no action was selected, destroy this
-        if (this.entity == entity && action == null)
+        if (this.entity == entity && action == null && !actionIcon.enabled)
         {
             // Destroy self
             Destroy(gameObject);
@@ -81,7 +82,9 @@ public class LocationIndicatorUI : MonoBehaviour, IPointerEnterHandler, IPointer
 
     private void Unintialize(Entity entity, Action action, Vector3Int location, Room room)
     {
-        if (this.entity == entity) {
+        // After this action is performed, delete outcome
+        if (this.entity == entity && this.action == action)
+        {
             // Destroy self
             Destroy(gameObject);
         }
@@ -89,10 +92,28 @@ public class LocationIndicatorUI : MonoBehaviour, IPointerEnterHandler, IPointer
 
     private void RemoveHighlight(Entity entity, Vector3Int location)
     {
-        if (this.entity == entity) {
+        if (this.entity == entity)
+        {
             // Remove highlight
             outlineImage.enabled = false;
         }
+    }
+
+    private void GeneratePath()
+    {
+        // Get path
+        var path = entity.room.pathfinder.FindPath(entity.location, location, entity.room);
+
+        lineRenderer.positionCount = path.Count;
+        for (int i = 0; i < path.Count; i++)
+        {
+            // Set each vertex
+            lineRenderer.SetPosition(i, path[i] + Vector3.one * 0.5f);
+        }
+
+        // Set color
+        lineRenderer.endColor = action.color;
+
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -100,22 +121,11 @@ public class LocationIndicatorUI : MonoBehaviour, IPointerEnterHandler, IPointer
         // If you are dragging over a die
         if (eventData.pointerDrag != null && eventData.pointerDrag.TryGetComponent(out DieUI dieUI))
         {
-            if (drawOnHover)
-            {
-                // Get path
-                var path = entity.room.pathfinder.FindPath(entity.location, location, entity.room);
+            GeneratePath();
 
-                lineRenderer.positionCount = path.Count;
-                for (int i = 0; i < path.Count; i++)
-                {
-                    // Set each vertex
-                    lineRenderer.SetPosition(i, path[i] + Vector3.one * 0.5f);
-                }
-
-                // Show path
-                lineRenderer.enabled = true;
-                actionIcon.enabled = true;
-            }
+            // Show path
+            lineRenderer.enabled = true;
+            actionIcon.enabled = true;
 
             // Highlight
             actionIcon.color = highlightColor;
@@ -127,12 +137,9 @@ public class LocationIndicatorUI : MonoBehaviour, IPointerEnterHandler, IPointer
         // If you are dragging over a die
         if (eventData.pointerDrag != null && eventData.pointerDrag.TryGetComponent(out DieUI dieUI))
         {
-            if (drawOnHover)
-            {
-                // Hide path
-                lineRenderer.enabled = false;
-                actionIcon.enabled = false;
-            }
+            // Hide path
+            lineRenderer.enabled = false;
+            actionIcon.enabled = false;
 
             // Un-highlgiht
             actionIcon.color = defaultColor;

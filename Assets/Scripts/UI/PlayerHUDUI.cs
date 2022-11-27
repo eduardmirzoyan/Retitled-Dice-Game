@@ -30,7 +30,7 @@ public class PlayerHUDUI : MonoBehaviour
     private void Start()
     {
         // Sub
-        GameEvents.instance.onSpawnEntity += InitializePlayer;
+        GameEvents.instance.onEntitySpawn += InitializePlayer;
         GameEvents.instance.onEnterFloor += UpdateFloor;
         GameEvents.instance.onEntityGainGold += UpdateGold;
         GameEvents.instance.onEntityGainExperience += UpdateExperience;
@@ -40,7 +40,7 @@ public class PlayerHUDUI : MonoBehaviour
     private void OnDestroy()
     {
         // Unsub
-        GameEvents.instance.onSpawnEntity -= InitializePlayer;
+        GameEvents.instance.onEntitySpawn -= InitializePlayer;
         GameEvents.instance.onEnterFloor -= UpdateFloor;
         GameEvents.instance.onEntityGainGold -= UpdateGold;
         GameEvents.instance.onEntityGainExperience -= UpdateExperience;

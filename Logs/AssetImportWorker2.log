@@ -15,7 +15,7 @@ C:/Users/eduar/Desktop/Unity Projects/Retitled-Dice-Game
 -logFile
 Logs/AssetImportWorker2.log
 -srvPort
-57250
+64943
 Successfully changed project path to: C:/Users/eduar/Desktop/Unity Projects/Retitled-Dice-Game
 C:/Users/eduar/Desktop/Unity Projects/Retitled-Dice-Game
 [UnityMemory] Configuration Parameters - Can be set up in boot.config
@@ -47,7 +47,7 @@ C:/Users/eduar/Desktop/Unity Projects/Retitled-Dice-Game
     "memorysetup-temp-allocator-size-cloud-worker=32768"
     "memorysetup-temp-allocator-size-gi-baking-worker=262144"
     "memorysetup-temp-allocator-size-gfx=262144"
-Refreshing native plugins compatible for Editor in 354.02 ms, found 4 plugins.
+Refreshing native plugins compatible for Editor in 298.13 ms, found 4 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Initialize engine version: 2021.3.1f1 (3b70a0754835)
 [Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2021.3.1f1/Editor/Data/Resources/UnitySubsystems
@@ -63,93 +63,93 @@ Initialize mono
 Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2021.3.1f1/Editor/Data/Managed'
 Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2021.3.1f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
 Mono config path = 'C:/Program Files/Unity/Hub/Editor/2021.3.1f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56712
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56400
 Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
 Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.1f1/Editor/Data/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll
 Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.1f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
-Registered in 0.018893 seconds.
+Registered in 0.013726 seconds.
 Native extension for WindowsStandalone target not found
 Native extension for OSXStandalone target not found
-Refreshing native plugins compatible for Editor in 230.80 ms, found 4 plugins.
+Refreshing native plugins compatible for Editor in 232.79 ms, found 4 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  1.990 seconds
+- Completed reload, in  1.931 seconds
 Domain Reload Profiling:
-	ReloadAssembly (1991ms)
-		BeginReloadAssembly (223ms)
+	ReloadAssembly (1933ms)
+		BeginReloadAssembly (181ms)
 			ExecutionOrderSort (0ms)
 			DisableScriptedObjects (0ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (2ms)
-		EndReloadAssembly (1424ms)
-			LoadAssemblies (217ms)
+			CreateAndSetChildDomain (4ms)
+		EndReloadAssembly (1491ms)
+			LoadAssemblies (169ms)
 			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (366ms)
+			SetupTypeCache (398ms)
 			ReleaseScriptCaches (0ms)
-			RebuildScriptCaches (94ms)
-			SetupLoadedEditorAssemblies (791ms)
+			RebuildScriptCaches (83ms)
+			SetupLoadedEditorAssemblies (809ms)
 				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (24ms)
-				SetLoadedEditorAssemblies (1ms)
-				RefreshPlugins (231ms)
-				BeforeProcessingInitializeOnLoad (3ms)
-				ProcessInitializeOnLoadAttributes (391ms)
-				ProcessInitializeOnLoadMethodAttributes (140ms)
+				InitializePlatformSupportModulesInManaged (29ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (233ms)
+				BeforeProcessingInitializeOnLoad (5ms)
+				ProcessInitializeOnLoadAttributes (377ms)
+				ProcessInitializeOnLoadMethodAttributes (164ms)
 				AfterProcessingInitializeOnLoad (0ms)
 				EditorAssembliesLoaded (0ms)
 			ExecutionOrderSort2 (0ms)
 			AwakeInstancesAfterBackupRestoration (0ms)
 Platform modules already initialized, skipping
 Registering precompiled user dll's ...
-Registered in 0.021818 seconds.
+Registered in 0.019438 seconds.
 Begin MonoManager ReloadAssembly
 Symbol file LoadedFromMemory doesn't match image C:\Users\eduar\Desktop\Unity Projects\Retitled-Dice-Game\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
 Symbol file LoadedFromMemory is not a mono symbol file
 Symbol file LoadedFromMemory doesn't match image C:\Users\eduar\Desktop\Unity Projects\Retitled-Dice-Game\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
 Native extension for WindowsStandalone target not found
 Native extension for OSXStandalone target not found
-Refreshing native plugins compatible for Editor in 194.01 ms, found 4 plugins.
+Refreshing native plugins compatible for Editor in 186.36 ms, found 4 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  2.719 seconds
+- Completed reload, in  2.449 seconds
 Domain Reload Profiling:
-	ReloadAssembly (2727ms)
-		BeginReloadAssembly (231ms)
+	ReloadAssembly (2451ms)
+		BeginReloadAssembly (230ms)
 			ExecutionOrderSort (0ms)
-			DisableScriptedObjects (17ms)
+			DisableScriptedObjects (11ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (32ms)
-		EndReloadAssembly (2180ms)
-			LoadAssemblies (207ms)
+			CreateAndSetChildDomain (40ms)
+		EndReloadAssembly (1979ms)
+			LoadAssemblies (251ms)
 			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (582ms)
+			SetupTypeCache (504ms)
 			ReleaseScriptCaches (1ms)
-			RebuildScriptCaches (157ms)
-			SetupLoadedEditorAssemblies (1095ms)
+			RebuildScriptCaches (126ms)
+			SetupLoadedEditorAssemblies (984ms)
 				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (22ms)
-				SetLoadedEditorAssemblies (1ms)
-				RefreshPlugins (194ms)
-				BeforeProcessingInitializeOnLoad (177ms)
-				ProcessInitializeOnLoadAttributes (589ms)
-				ProcessInitializeOnLoadMethodAttributes (97ms)
-				AfterProcessingInitializeOnLoad (14ms)
+				InitializePlatformSupportModulesInManaged (13ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (186ms)
+				BeforeProcessingInitializeOnLoad (170ms)
+				ProcessInitializeOnLoadAttributes (510ms)
+				ProcessInitializeOnLoadMethodAttributes (90ms)
+				AfterProcessingInitializeOnLoad (13ms)
 				EditorAssembliesLoaded (0ms)
 			ExecutionOrderSort2 (0ms)
-			AwakeInstancesAfterBackupRestoration (20ms)
+			AwakeInstancesAfterBackupRestoration (18ms)
 Platform modules already initialized, skipping
 ========================================================================
 Worker process is ready to serve import requests
 Launched and connected shader compiler UnityShaderCompiler.exe after 0.09 seconds
-Refreshing native plugins compatible for Editor in 1.40 ms, found 4 plugins.
+Refreshing native plugins compatible for Editor in 1.51 ms, found 4 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 4017 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 35 unused Assets / (55.9 KB). Loaded Objects now: 4478.
-Memory consumption went from 153.2 MB to 153.1 MB.
-Total: 6.611400 ms (FindLiveObjects: 0.649800 ms CreateObjectMapping: 0.934700 ms MarkObjects: 4.890900 ms  DeleteObjects: 0.132600 ms)
+Unloading 4021 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 34 unused Assets / (30.2 KB). Loaded Objects now: 4484.
+Memory consumption went from 153.5 MB to 153.5 MB.
+Total: 8.889600 ms (FindLiveObjects: 0.744000 ms CreateObjectMapping: 0.614200 ms MarkObjects: 7.473100 ms  DeleteObjects: 0.055300 ms)
 
 AssetImportParameters requested are different than current active one (requested -> active):
   custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
@@ -164,616 +164,196 @@ AssetImportParameters requested are different than current active one (requested
   custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
 ========================================================================
 Received Import Request.
-  Time since last request: 7152.455595 seconds.
-  path: Assets/Scriptable Objects/Actions/Projectile Action.asset
-  artifactKey: Guid(00fd713af0e62114d908e79d0d648b75) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Scriptable Objects/Actions/Projectile Action.asset using Guid(00fd713af0e62114d908e79d0d648b75) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '24f872d51f401e0ac6c948284094cac0') in 0.133836 seconds 
+  Time since last request: 179254.095474 seconds.
+  path: Assets/Prefabs/Projectile Model.prefab
+  artifactKey: Guid(9f731b1ce75bd4049850d3bec60e3c1d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Prefabs/Projectile Model.prefab using Guid(9f731b1ce75bd4049850d3bec60e3c1d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'bcc09d03b49bec9a5471af32445f5e3e') in 0.246169 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 19.332438 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/arrow_clockwise.png
-  artifactKey: Guid(6e907dd96c8ee52458bb92dae0c55308) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/arrow_clockwise.png using Guid(6e907dd96c8ee52458bb92dae0c55308) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'fcc381f15f3f49a91d661e77b9bc4d98') in 0.383998 seconds 
+  Time since last request: 5.327645 seconds.
+  path: Assets/Sprites/Dungeon Crawlers Sprites/enemies/flying creature/fly_anim_f0.png
+  artifactKey: Guid(c0eefd45f65e90a469c9730e40f0e212) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Dungeon Crawlers Sprites/enemies/flying creature/fly_anim_f0.png using Guid(c0eefd45f65e90a469c9730e40f0e212) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9a98731fd0875fec010b19bb78fc5490') in 0.178973 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000063 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/arrow_right.png
-  artifactKey: Guid(fae83a4bbc1c6e9458446f526c8759e0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/arrow_right.png using Guid(fae83a4bbc1c6e9458446f526c8759e0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7335d84277a9063ef9ed89f363401b0d') in 0.045350 seconds 
+  Time since last request: 150.322644 seconds.
+  path: Assets/Sprites/Dungeon Crawlers Sprites/enemies/goblin/goblin_idle_anim_f0.png
+  artifactKey: Guid(eb69d914fd8e0e0488086e8dae58e2e3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Dungeon Crawlers Sprites/enemies/goblin/goblin_idle_anim_f0.png using Guid(eb69d914fd8e0e0488086e8dae58e2e3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '048577fa9db77eec05ba296d4be42497') in 0.066328 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000057 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/arrow_cross.png
-  artifactKey: Guid(c6aa1b6b14c9ead479c8e9186db26833) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/arrow_cross.png using Guid(c6aa1b6b14c9ead479c8e9186db26833) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd0691ebea66649852beda0f8e7c6722a') in 0.048491 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000045 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/arrow_horizontal.png
-  artifactKey: Guid(5ac614776ef302346af0065d728f6e41) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/arrow_horizontal.png using Guid(5ac614776ef302346af0065d728f6e41) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f9def5465e785fae8b945a075752b103') in 0.050695 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000065 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Normal (128px)/arrow_right_curve.png
-  artifactKey: Guid(683d1a440a6ba694897fcc462e3c6a44) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Normal (128px)/arrow_right_curve.png using Guid(683d1a440a6ba694897fcc462e3c6a44) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f06740c7e74389a483309e256e66aa43') in 0.063756 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000058 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Normal (128px)/arrow_rotate.png
-  artifactKey: Guid(726f3bac402ecb942a80f807915640bb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Normal (128px)/arrow_rotate.png using Guid(726f3bac402ecb942a80f807915640bb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2e8cfb7396738e16ebfa13b93cabe8b8') in 0.054508 seconds 
+  Time since last request: 0.000068 seconds.
+  path: Assets/Sprites/Dungeon Crawlers Sprites/enemies/goblin/goblin_run_spritesheet.png
+  artifactKey: Guid(954ed22424b7588489a27c98875f344c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Dungeon Crawlers Sprites/enemies/goblin/goblin_run_spritesheet.png using Guid(954ed22424b7588489a27c98875f344c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1a40a391500effe3ac4daead9eb1bf5f') in 0.059457 seconds 
 ========================================================================
 Received Import Request.
   Time since last request: 0.000076 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/arrow_right_curve.png
-  artifactKey: Guid(5a0db5ab705381c419778e3757f6e8a2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/arrow_right_curve.png using Guid(5a0db5ab705381c419778e3757f6e8a2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f51e6c0b8ff1efe2c901b8e0a42812bb') in 0.056989 seconds 
+  path: Assets/Sprites/Dungeon Crawlers Sprites/enemies/goblin/goblin_run_anim_f1.png
+  artifactKey: Guid(13fbba6150527c0479a2e6da33b4a5ec) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Dungeon Crawlers Sprites/enemies/goblin/goblin_run_anim_f1.png using Guid(13fbba6150527c0479a2e6da33b4a5ec) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5158ddb9a2403aa76846e891eb2fa3e7') in 0.047494 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000037 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/arrow_diagonal_cross.png
-  artifactKey: Guid(e43b85b7eb63e74498af60c23fd70805) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/arrow_diagonal_cross.png using Guid(e43b85b7eb63e74498af60c23fd70805) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '77594efb85f8678edb26892c91859670') in 0.040985 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000035 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Normal (128px)/arrow_diagonal.png
-  artifactKey: Guid(be29a63f3e3073d408d920822de4a3dc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Normal (128px)/arrow_diagonal.png using Guid(be29a63f3e3073d408d920822de4a3dc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '025039244b0237cbdfbd65fea5a13b76') in 0.069081 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.922694 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/award.png
-  artifactKey: Guid(8acca4e0f8e03d441b7c1d518c8a3959) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/award.png using Guid(8acca4e0f8e03d441b7c1d518c8a3959) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd5028e279c586629974d75216cb85726') in 0.091617 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000055 seconds.
-  path: Assets/Sprites/UI/Full GUI/Bars/Bars_2x.png
-  artifactKey: Guid(b91f063bce89c6e4084d8a7114797fdc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Full GUI/Bars/Bars_2x.png using Guid(b91f063bce89c6e4084d8a7114797fdc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8fe58724dc28d3c076509fc8e424e5e0') in 0.059443 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.428633 seconds.
-  path: Assets/Sprites/UI/Full GUI/Bars/Bars_4x.png
-  artifactKey: Guid(bf0e5ecab8bb7c244b96c8c7d1b0c735) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Full GUI/Bars/Bars_4x.png using Guid(bf0e5ecab8bb7c244b96c8c7d1b0c735) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b701358ce7b230e54b09da5c1b3f3956') in 0.043726 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000053 seconds.
-  path: Assets/Sprites/Dungeon v2 Sprites/big_demon_idle_anim_f3.png
-  artifactKey: Guid(c9f0a1a4a963e3244b3bf478f83f9dd6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/Dungeon v2 Sprites/big_demon_idle_anim_f3.png using Guid(c9f0a1a4a963e3244b3bf478f83f9dd6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f8f5dcc7ea9a0ed8c8dcad89f26e3b78') in 0.161648 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.627108 seconds.
-  path: Assets/Sprites/Dungeon v2 Sprites/big_demon_run_anim_f1.png
-  artifactKey: Guid(002c308f6be6e86468760926a14925fb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/Dungeon v2 Sprites/big_demon_run_anim_f1.png using Guid(002c308f6be6e86468760926a14925fb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0474c5fdc5de2200fee68973c857070f') in 0.068413 seconds 
+  Time since last request: 0.000061 seconds.
+  path: Assets/Sprites/Dungeon Crawlers Sprites/enemies/goblin/goblin_run_anim_f4.png
+  artifactKey: Guid(5f19dd7b2d002ff4cac8b824d9551526) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Dungeon Crawlers Sprites/enemies/goblin/goblin_run_anim_f4.png using Guid(5f19dd7b2d002ff4cac8b824d9551526) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4d0bd6c671cac6e497a91def5a434a5b') in 0.050448 seconds 
 ========================================================================
 Received Import Request.
   Time since last request: 0.000030 seconds.
-  path: Assets/Sprites/Dungeon v2 Sprites/big_zombie_idle_anim_f1.png
-  artifactKey: Guid(e259ee6312c731c439386b0884df2e03) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/Dungeon v2 Sprites/big_zombie_idle_anim_f1.png using Guid(e259ee6312c731c439386b0884df2e03) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ab42937a40afb19839f8d20f21e6094e') in 0.057857 seconds 
+  path: Assets/Sprites/Dungeon Crawlers Sprites/enemies/goblin/goblin_idle_anim_f4.png
+  artifactKey: Guid(abf710be3b06188449327fe294bea6d9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Dungeon Crawlers Sprites/enemies/goblin/goblin_idle_anim_f4.png using Guid(abf710be3b06188449327fe294bea6d9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f51e8694dfaa50794249c29ae7dc383e') in 0.056118 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.047317 seconds.
-  path: Assets/Sprites/Dungeon v2 Sprites/big_zombie_idle_anim_f3.png
-  artifactKey: Guid(8ff10bcb00dcf0748b7ef0142898a741) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/Dungeon v2 Sprites/big_zombie_idle_anim_f3.png using Guid(8ff10bcb00dcf0748b7ef0142898a741) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f5b90ad1c5d0814f25d07baaec2f2f90') in 0.056454 seconds 
+  Time since last request: 0.000032 seconds.
+  path: Assets/Sprites/Dungeon Crawlers Sprites/enemies/goblin/goblin_idle_anim_f5.png
+  artifactKey: Guid(e22965c75c4107f4b932dae7f3cbeb5e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Dungeon Crawlers Sprites/enemies/goblin/goblin_idle_anim_f5.png using Guid(e22965c75c4107f4b932dae7f3cbeb5e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8abbfaf37e24a10e29a53d6a095b59f7') in 0.061859 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000042 seconds.
-  path: Assets/Sprites/Dungeon v2 Sprites/big_zombie_run_anim_f2.png
-  artifactKey: Guid(339fa5913bbd70646b31637e2a3a3628) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/Dungeon v2 Sprites/big_zombie_run_anim_f2.png using Guid(339fa5913bbd70646b31637e2a3a3628) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f303541415f2e5b349783e1d580b5e21') in 0.062832 seconds 
+  Time since last request: 0.000047 seconds.
+  path: Assets/Sprites/Dungeon Crawlers Sprites/enemies/goblin/goblin_idle_anim_f3.png
+  artifactKey: Guid(5632079647920b14b88c3f4088fc03b7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Dungeon Crawlers Sprites/enemies/goblin/goblin_idle_anim_f3.png using Guid(5632079647920b14b88c3f4088fc03b7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e2830bdf8d05170660d331459788b5e7') in 0.057380 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.127701 seconds.
-  path: Assets/Sprites/UI/Bubbles/Blank_Black.png
-  artifactKey: Guid(96f3bc7c793e00146875d62786a73c65) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Bubbles/Blank_Black.png using Guid(96f3bc7c793e00146875d62786a73c65) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '75661c4c81a2e0058eb5c8f685fd084f') in 0.093293 seconds 
+  Time since last request: 0.000061 seconds.
+  path: Assets/Sprites/Dungeon Crawlers Sprites/enemies/goblin/goblin_idle_anim_f2.png
+  artifactKey: Guid(77537d952dd96db49b515afbf312d68b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Dungeon Crawlers Sprites/enemies/goblin/goblin_idle_anim_f2.png using Guid(77537d952dd96db49b515afbf312d68b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c0addde6c6b12440ca1d32630029368e') in 0.038245 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000040 seconds.
-  path: Assets/Sprites/UI/Bubbles/Blank_White.png
-  artifactKey: Guid(f9db5e17c6d92eb4f90f3f1e23d8f5f6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Bubbles/Blank_White.png using Guid(f9db5e17c6d92eb4f90f3f1e23d8f5f6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8f0ea8addb89b201e0fada9fd7893530') in 0.063875 seconds 
+  Time since last request: 3.891537 seconds.
+  path: Assets/Sprites/Dungeon Crawlers Sprites/heroes
+  artifactKey: Guid(dcb4ea176a58bce4b8612920ab94b76b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Dungeon Crawlers Sprites/heroes using Guid(dcb4ea176a58bce4b8612920ab94b76b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '628533e6637ebcf85ac68bd1d4bb2eae') in 0.018924 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000050 seconds.
-  path: Assets/Sprites/Dungeon Crawlers Sprites/props_itens/bomb_anim_f1.png
-  artifactKey: Guid(568f2d126f70c02459a84ef882299369) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/Dungeon Crawlers Sprites/props_itens/bomb_anim_f1.png using Guid(568f2d126f70c02459a84ef882299369) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '084e8f1c13196f23837f7c72bc3c40f0') in 0.057044 seconds 
+  Time since last request: 0.906155 seconds.
+  path: Assets/Sprites/Dungeon Crawlers Sprites/heroes/knight
+  artifactKey: Guid(06983a91b18ca044ba39600acb43367e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Dungeon Crawlers Sprites/heroes/knight using Guid(06983a91b18ca044ba39600acb43367e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'debf70d288a343b1904695a5986dde75') in 0.012656 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000060 seconds.
-  path: Assets/Sprites/UI/Skill Icons/Debuffs/blinded.png
-  artifactKey: Guid(2d5ec68d0cff31442bbac9815ec700a1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Skill Icons/Debuffs/blinded.png using Guid(2d5ec68d0cff31442bbac9815ec700a1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1039b6e8914f649f80ef6c761370c166') in 0.062115 seconds 
+  Time since last request: 0.127212 seconds.
+  path: Assets/Sprites/Dungeon Crawlers Sprites/heroes/knight/weapon_sword_1.png
+  artifactKey: Guid(9180f8f3a4f9ab745a1778be2eee2371) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Dungeon Crawlers Sprites/heroes/knight/weapon_sword_1.png using Guid(9180f8f3a4f9ab745a1778be2eee2371) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '82cd5adc46954e18750d28f224feb60e') in 0.058570 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000040 seconds.
-  path: Assets/Sprites/UI/Bubbles/Blank_Pink.png
-  artifactKey: Guid(e3e417fa05b2d8749bba1652ae4c55f2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Bubbles/Blank_Pink.png using Guid(e3e417fa05b2d8749bba1652ae4c55f2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5442778c5fc7ca43624a2f665577b9fb') in 0.087731 seconds 
+  Time since last request: 1698.399533 seconds.
+  path: Assets/Sprites/Core
+  artifactKey: Guid(203228968e7b3ff4d9f4eb885c2d63df) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Core using Guid(203228968e7b3ff4d9f4eb885c2d63df) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '363280cbe3c34d059aa0d6306940739f') in 0.009600 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000042 seconds.
-  path: Assets/Sprites/UI/Bubbles/Blank_Purple.png
-  artifactKey: Guid(2148144dfc13fee4c9b532f7b9722b69) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Bubbles/Blank_Purple.png using Guid(2148144dfc13fee4c9b532f7b9722b69) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a605a7dbcbd0daaa259cbcb5f8d3fa69') in 0.076923 seconds 
+  Time since last request: 2.763361 seconds.
+  path: Assets/Sprites/Core/New Piskel.png
+  artifactKey: Guid(49a73d12c029e9e4895853cb5b593771) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Core/New Piskel.png using Guid(49a73d12c029e9e4895853cb5b593771) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8f6b1d2cf8ea20e9ee9212da2eb9afaa') in 0.047408 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000042 seconds.
-  path: Assets/Sprites/UI/Bubbles/Blank_LightBlue.png
-  artifactKey: Guid(787902a7af166344ca04e51dac68e0de) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Bubbles/Blank_LightBlue.png using Guid(787902a7af166344ca04e51dac68e0de) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '69c64abf5f01ed4e704e7c446177856c') in 0.069109 seconds 
+  Time since last request: 4.520584 seconds.
+  path: Assets/Sprites/Core/Core_enemy.png
+  artifactKey: Guid(49a73d12c029e9e4895853cb5b593771) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Core/Core_enemy.png using Guid(49a73d12c029e9e4895853cb5b593771) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0f5761c758540d2bc545f3e3c55c19bc') in 0.024861 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 6.632825 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/book_closed.png
-  artifactKey: Guid(411ae18b4a3b05e47b11d68f2fc8cc00) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/book_closed.png using Guid(411ae18b4a3b05e47b11d68f2fc8cc00) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '14a8821e781cd6a9d9d76e70a49e35f0') in 0.143728 seconds 
+  Time since last request: 14.480353 seconds.
+  path: Assets/Sprites/Core/Core_enemy.png
+  artifactKey: Guid(49a73d12c029e9e4895853cb5b593771) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Core/Core_enemy.png using Guid(49a73d12c029e9e4895853cb5b593771) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b0749aef2b3922b54ed05445076119d5') in 0.020585 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000037 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/cards_collection.png
-  artifactKey: Guid(828d1d6d5b38a7f44af24944c1e2644a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/cards_collection.png using Guid(828d1d6d5b38a7f44af24944c1e2644a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1c070a52971092f20c40813ae2b1966a') in 0.055144 seconds 
+  Time since last request: 3.079934 seconds.
+  path: Assets/Sprites/Core/Core_enemy.png
+  artifactKey: Guid(49a73d12c029e9e4895853cb5b593771) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Core/Core_enemy.png using Guid(49a73d12c029e9e4895853cb5b593771) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '19fff7c738a0db797594dbe160b4cd62') in 0.016389 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000053 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/card_down.png
-  artifactKey: Guid(88ec9796d4bdfb8468ac4c79860d0842) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/card_down.png using Guid(88ec9796d4bdfb8468ac4c79860d0842) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a321aa5bcec4b7588d614dd6ce0cf8ac') in 0.139347 seconds 
+  Time since last request: 14.196406 seconds.
+  path: Assets/Sprites/Core/Core_enemy.png
+  artifactKey: Guid(49a73d12c029e9e4895853cb5b593771) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Core/Core_enemy.png using Guid(49a73d12c029e9e4895853cb5b593771) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '32eee85c87136a4ec9c5b3eee5d8a51e') in 0.066256 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000058 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/card_lift.png
-  artifactKey: Guid(baacd4f4b22ace34d8c7d1c46e357a4d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/card_lift.png using Guid(baacd4f4b22ace34d8c7d1c46e357a4d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e50f43e239f2ecd0eaee37bca51ae538') in 0.045140 seconds 
+  Time since last request: 100.466241 seconds.
+  path: Assets/Animations/Core
+  artifactKey: Guid(8fbbd1f98f5012346b51b6519d30674b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Animations/Core using Guid(8fbbd1f98f5012346b51b6519d30674b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '145c589ef12f1a414da8d86f2741ee7b') in 0.003670 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000041 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/card_tap_up.png
-  artifactKey: Guid(731c1a7d850ad3a418f954d280b6dbc7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/card_tap_up.png using Guid(731c1a7d850ad3a418f954d280b6dbc7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a9953ddfd9bb9eec43b2d1c0d5470b79') in 0.064523 seconds 
+  Time since last request: 1.740639 seconds.
+  path: Assets/Animations/Core/Core Controller.anim
+  artifactKey: Guid(1c4fb56a21885d1429140934ce7dee0e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Animations/Core/Core Controller.anim using Guid(1c4fb56a21885d1429140934ce7dee0e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0bf2e4d3c61164c68888723d071ea6f3') in 0.014948 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000041 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/card_down_outline.png
-  artifactKey: Guid(2d20fcef1169645438c3ccd8c99bb7d3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/card_down_outline.png using Guid(2d20fcef1169645438c3ccd8c99bb7d3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9052d8b3edc9aa8a202351ef0120a3e6') in 0.064222 seconds 
+  Time since last request: 0.612092 seconds.
+  path: Assets/Animations/Core/Core_enemy_0.controller
+  artifactKey: Guid(7eb74a2650a0d6a4980911bf4e038b1e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Animations/Core/Core_enemy_0.controller using Guid(7eb74a2650a0d6a4980911bf4e038b1e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'cb9cd16a7ef1aafe04d0246929798809') in 0.018723 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000049 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/card_place.png
-  artifactKey: Guid(7e50481771b724b48bf55b8fce756238) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/card_place.png using Guid(7e50481771b724b48bf55b8fce756238) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3130f5d025dbb3664cd782b888c2a47a') in 0.061266 seconds 
+  Time since last request: 10.380291 seconds.
+  path: Assets/Animations/Core/Idle.controller
+  artifactKey: Guid(7eb74a2650a0d6a4980911bf4e038b1e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Animations/Core/Idle.controller using Guid(7eb74a2650a0d6a4980911bf4e038b1e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '45a64017906f321353db0e7ea6c25b26') in 0.013279 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000107 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/card.png
-  artifactKey: Guid(f8f6275dd9894284f83ee1dd6bb83fae) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/card.png using Guid(f8f6275dd9894284f83ee1dd6bb83fae) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '009db0a1d48ae073a3942c192b07ddee') in 0.064280 seconds 
+  Time since last request: 3.842385 seconds.
+  path: Assets/Animations/Core/core_idle.controller
+  artifactKey: Guid(7eb74a2650a0d6a4980911bf4e038b1e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Animations/Core/core_idle.controller using Guid(7eb74a2650a0d6a4980911bf4e038b1e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b42023b0aa5f5d158d05739b25333b82') in 0.013045 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000049 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/cards_diagonal.png
-  artifactKey: Guid(ba74d68e821f04942b921b6cf46d90eb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/cards_diagonal.png using Guid(ba74d68e821f04942b921b6cf46d90eb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0f68dd3fcd42c9f6ffa5ad99a87cf048') in 0.061425 seconds 
+  Time since last request: 5.832371 seconds.
+  path: Assets/Fonts
+  artifactKey: Guid(1fdd0195db37bc442a35ad79c99f52a7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Fonts using Guid(1fdd0195db37bc442a35ad79c99f52a7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9a4af0a6d4da39aa549a7c5a8d4e699f') in 0.009344 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000040 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/card_add.png
-  artifactKey: Guid(540c44e681b78bf40a72e5b9a8137398) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/card_add.png using Guid(540c44e681b78bf40a72e5b9a8137398) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '469b1f0254885dc4e1485573f44c3c84') in 0.056535 seconds 
+  Time since last request: 6.766253 seconds.
+  path: Assets/Animations/Core/Core Controller.anim
+  artifactKey: Guid(1c4fb56a21885d1429140934ce7dee0e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Animations/Core/Core Controller.anim using Guid(1c4fb56a21885d1429140934ce7dee0e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6585a8582b3ac0703e14cca89213130d') in 0.004276 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 2.243971 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/cards_fan.png
-  artifactKey: Guid(27ac42eb03d213742838a38942ce05ec) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/cards_fan.png using Guid(27ac42eb03d213742838a38942ce05ec) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a083d2f81c5ccaaadde011caefbb9808') in 0.078061 seconds 
+  Time since last request: 16.154473 seconds.
+  path: Assets/Animations/Core/core_idle.anim
+  artifactKey: Guid(1c4fb56a21885d1429140934ce7dee0e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Animations/Core/core_idle.anim using Guid(1c4fb56a21885d1429140934ce7dee0e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '47e712e5d5c63c1608dc2c2017ef4c4d') in 0.005274 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000043 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/cards_order.png
-  artifactKey: Guid(9d4f52b3e7cc0464482a6674f747e135) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/cards_order.png using Guid(9d4f52b3e7cc0464482a6674f747e135) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '99a92badd8f37ddeb3434a375ef7db4e') in 0.066517 seconds 
+  Time since last request: 5.173151 seconds.
+  path: Assets/Animations/Core/Core Controller.controller
+  artifactKey: Guid(7eb74a2650a0d6a4980911bf4e038b1e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Animations/Core/Core Controller.controller using Guid(7eb74a2650a0d6a4980911bf4e038b1e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '36ca1746e397b27bfbdb1a1fd232255c') in 0.006945 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000073 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/cards_return.png
-  artifactKey: Guid(b4b2a4ab57084cd4f86734c287885701) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/cards_return.png using Guid(b4b2a4ab57084cd4f86734c287885701) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '66b06234f35ecc80aa93112d825266a0') in 0.055698 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000029 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/cards_seek_top.png
-  artifactKey: Guid(18d644319b8518d43a60f81bd70e4fb4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/cards_seek_top.png using Guid(18d644319b8518d43a60f81bd70e4fb4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '319ad6cc540e4a58cf42071072db6fd9') in 0.046472 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.825530 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/cards_stack_cross.png
-  artifactKey: Guid(d93fc5f96f57d0c40830bba98ab28d0a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/cards_stack_cross.png using Guid(d93fc5f96f57d0c40830bba98ab28d0a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2b440a3ca39afefc3a29e07c37d9951f') in 0.100411 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000102 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/chess_knight.png
-  artifactKey: Guid(6a5a758951e390d4cbaaf56cca6d8e07) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/chess_knight.png using Guid(6a5a758951e390d4cbaaf56cca6d8e07) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '52dfa2c7b7997699714d16c57953e3b5') in 0.081864 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000056 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/character_lift.png
-  artifactKey: Guid(f1dc2be62d370a24ea0a1dfb3e36f923) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/character_lift.png using Guid(f1dc2be62d370a24ea0a1dfb3e36f923) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd9d3117b8c3d4c59b868c520362bd8ae') in 0.073812 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.177635 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/chess_pawn.png
-  artifactKey: Guid(068c4f85ba6e71947ab607559dec8009) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/chess_pawn.png using Guid(068c4f85ba6e71947ab607559dec8009) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f2e3c9a25248cbdfcdf3c8ce8bad05bc') in 0.097028 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000042 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/d3.png
-  artifactKey: Guid(44281cd78ce10164388c2bea5bf533ee) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/d3.png using Guid(44281cd78ce10164388c2bea5bf533ee) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '33b19e2b00f90f0fb167a530a93700f1') in 0.051008 seconds 
+  Time since last request: 16.255396 seconds.
+  path: Assets/Sprites/Dungeon v2 Sprites/skelet_run_anim_f3.png
+  artifactKey: Guid(6755b34e25d0fa6488287cd9aeb511fb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Dungeon v2 Sprites/skelet_run_anim_f3.png using Guid(6755b34e25d0fa6488287cd9aeb511fb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9e8eeaa3cfada0374f56b3c6ab2e6ac0') in 0.087826 seconds 
 ========================================================================
 Received Import Request.
   Time since last request: 0.000031 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/crown_b.png
-  artifactKey: Guid(6007b0e5fb3f55b43b598c14b450f95c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/crown_b.png using Guid(6007b0e5fb3f55b43b598c14b450f95c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '72a93b919db58fe2c9fa58c019f7174c') in 0.067831 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000055 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/d3_number.png
-  artifactKey: Guid(f1db6d332388daf4c855300f91ff78c4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/d3_number.png using Guid(f1db6d332388daf4c855300f91ff78c4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '03db820fc78dadb2d05fc836a3ccefc6') in 0.055329 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.476196 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/d3_outline.png
-  artifactKey: Guid(d388d2cb6bac21343a7dfe66a6e81ad6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/d3_outline.png using Guid(d388d2cb6bac21343a7dfe66a6e81ad6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e7699a4d187e128db288b483f250f039') in 0.055195 seconds 
+  path: Assets/Sprites/Particle Effects/slash_effect_anim_f0.png
+  artifactKey: Guid(351d2e1bc9566c74f9855a78b5b767b8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Particle Effects/slash_effect_anim_f0.png using Guid(351d2e1bc9566c74f9855a78b5b767b8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0a3507b0c68df25957632461261eb00c') in 0.049291 seconds 
 ========================================================================
 Received Import Request.
   Time since last request: 0.000044 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/d6_outline_number.png
-  artifactKey: Guid(6a502bcbd4b50cb47be854fe8e3676ba) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/d6_outline_number.png using Guid(6a502bcbd4b50cb47be854fe8e3676ba) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd65297e0437d7463fc4779f1319e53e4') in 0.051640 seconds 
+  path: Assets/Sprites/Dungeon v2 Sprites/skull.png
+  artifactKey: Guid(f22131f16dbfc524faa9815c0a91536e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Dungeon v2 Sprites/skull.png using Guid(f22131f16dbfc524faa9815c0a91536e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5c87f71662a0946fcd58a60e51a9fdd3') in 0.046094 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000086 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/d4_outline_number.png
-  artifactKey: Guid(9ec88aa6516d07443b70c91d4469df91) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/d4_outline_number.png using Guid(9ec88aa6516d07443b70c91d4469df91) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6468893e6e9a65eec523e99ff8857a4f') in 0.053166 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000069 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/d8_number.png
-  artifactKey: Guid(ad80a6d665fe68940990979644df8623) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/d8_number.png using Guid(ad80a6d665fe68940990979644df8623) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '26a33b9c856df63c187cda3a6dbafbc1') in 0.070592 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000047 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/d12.png
-  artifactKey: Guid(4be463a5598caa04a9a1af8fb01c2fe0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/d12.png using Guid(4be463a5598caa04a9a1af8fb01c2fe0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '72d66423bb52533811b0e5728681ec13') in 0.060235 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000091 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/d8_outline_number.png
-  artifactKey: Guid(dbbec6b29a204974782a153c79c9a39b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/d8_outline_number.png using Guid(dbbec6b29a204974782a153c79c9a39b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ea842110eef8d85493538dc75519984d') in 0.053227 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000053 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/d8_outline.png
-  artifactKey: Guid(0fcdce1dca5acf646ae05a52ace2bbb5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/d8_outline.png using Guid(0fcdce1dca5acf646ae05a52ace2bbb5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7e613c0f8254d8e5ff3dc68ee2d5f0b9') in 0.063384 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 1.916772 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/d20.png
-  artifactKey: Guid(00a18c1ad91595e42a3a6757d267c0c0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/d20.png using Guid(00a18c1ad91595e42a3a6757d267c0c0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a8c59d4988fdf24644793844604af375') in 0.082591 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000028 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/dice_4.png
-  artifactKey: Guid(8716ccd81c2847a4dad76011cc259622) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/dice_4.png using Guid(8716ccd81c2847a4dad76011cc259622) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6c57e1a6b7b8062ed37a7aa51e22acfa') in 0.057282 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000045 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/dice_3.png
-  artifactKey: Guid(7e2b33ba5a123de449b99714c35f4b28) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/dice_3.png using Guid(7e2b33ba5a123de449b99714c35f4b28) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2bda8723f1c8657fd52a92ed423bbaee') in 0.061871 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.533443 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/dice_5.png
-  artifactKey: Guid(d7847adaa90f13f4f97df4b19af4f70f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/dice_5.png using Guid(d7847adaa90f13f4f97df4b19af4f70f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6d2a95d93faf61560308a33a0282dd3c') in 0.074696 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000052 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/direction_e.png
-  artifactKey: Guid(5a63ef6b0a6627e478ffc5b0255be043) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/direction_e.png using Guid(5a63ef6b0a6627e478ffc5b0255be043) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8b6b64029a2bb3686727835f3a04978f') in 0.053923 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000062 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/direction_n.png
-  artifactKey: Guid(dc4e1165ffb500745b7a90f1ac096d69) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/direction_n.png using Guid(dc4e1165ffb500745b7a90f1ac096d69) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'bc677fb8d4a457b3e5dc76abe9ff6812') in 0.059815 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000038 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/direction_s.png
-  artifactKey: Guid(897169a216e4a5d418275c0dff186c7d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/direction_s.png using Guid(897169a216e4a5d418275c0dff186c7d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '732674d36b8e1e2a15a658b151c35b05') in 0.076075 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000031 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/flask_empty.png
-  artifactKey: Guid(77c950677a58d1b4486fc843577f88e0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/flask_empty.png using Guid(77c950677a58d1b4486fc843577f88e0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '613c26a55a99a5c074823fc9d0df398c') in 0.071942 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000073 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/direction_w.png
-  artifactKey: Guid(4060e429874ada04d8c077b2d6925938) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/direction_w.png using Guid(4060e429874ada04d8c077b2d6925938) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'dcf5a37f18a4f6898d45d53a31f034ac') in 0.072309 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000075 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/flask_full.png
-  artifactKey: Guid(7c564b9b8b675bc488e159e04a611383) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/flask_full.png using Guid(7c564b9b8b675bc488e159e04a611383) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e56c7fd76386f23cfa3165b99cebed16') in 0.067810 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000053 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/hand_card.png
-  artifactKey: Guid(cae4f48b46e5e2447bcd0558432b7ddf) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/hand_card.png using Guid(cae4f48b46e5e2447bcd0558432b7ddf) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2b905ee85bde2986542b7ddbd9f9c853') in 0.068103 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000035 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/flip_head.png
-  artifactKey: Guid(66e83c80bec8dd140b712d1f5f130122) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/flip_head.png using Guid(66e83c80bec8dd140b712d1f5f130122) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8815416ac4293069cae3ba4e57416e85') in 0.071800 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000088 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/hand_cross.png
-  artifactKey: Guid(c85b29c577ef7194e95561f58a4a09ed) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/hand_cross.png using Guid(c85b29c577ef7194e95561f58a4a09ed) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7a5b5b84a95d0751f683cce775324ca5') in 0.073436 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000057 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/dice_empty.png
-  artifactKey: Guid(c198e98d4874a474180daafa4912862c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/dice_empty.png using Guid(c198e98d4874a474180daafa4912862c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e70a667e9c8e65180890e4f79d31206d') in 0.054200 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.934949 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/hand_token.png
-  artifactKey: Guid(35b70fa9834cc80408fed7c25d9e33bc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/hand_token.png using Guid(35b70fa9834cc80408fed7c25d9e33bc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4f8caadc04236adf9ad2a5f0581747eb') in 0.075859 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000076 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/hourglass_bottom.png
-  artifactKey: Guid(550aa6d37726eff4a9877521d7fceaed) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/hourglass_bottom.png using Guid(550aa6d37726eff4a9877521d7fceaed) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '748dcccaac6fea759a1cdf75cc8655e1') in 0.061135 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000050 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/hexagon_outline.png
-  artifactKey: Guid(df4cb942388c1644da41a64ad3f49660) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/hexagon_outline.png using Guid(df4cb942388c1644da41a64ad3f49660) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '113bf17d9264278d670237d4e4f4bfa1') in 0.053137 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 3.595542 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/hourglass_top.png
-  artifactKey: Guid(683dd2a6951775c4392605aa38bded23) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/hourglass_top.png using Guid(683dd2a6951775c4392605aa38bded23) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f749105237f7812b0ad6eaa9fbebc8e9') in 0.076099 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000054 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/pawn.png
-  artifactKey: Guid(760f6f4d615b1e04da37d829ee67fd34) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/pawn.png using Guid(760f6f4d615b1e04da37d829ee67fd34) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '15f6e16b11eace5c0a305cfe92dd46f3') in 0.056467 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000115 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/pawn_counterclockwise.png
-  artifactKey: Guid(244f8397011712043a840f39a6771aff) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/pawn_counterclockwise.png using Guid(244f8397011712043a840f39a6771aff) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c907f0dc3fba271161d4253243a94e0f') in 0.051659 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000063 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/pawn_clockwise.png
-  artifactKey: Guid(2fcf03b51220dbb429ef833fb8f53e76) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/pawn_clockwise.png using Guid(2fcf03b51220dbb429ef833fb8f53e76) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '57da72671960a7819d69764506e0cbcb') in 0.045581 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 2.655046 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/pawn_reverse.png
-  artifactKey: Guid(57e4dbfdb8836ca41b2112e7a6044972) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/pawn_reverse.png using Guid(57e4dbfdb8836ca41b2112e7a6044972) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ead168b4ede2dda0d51cd94fcb680d70') in 0.079269 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000062 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/pouch_add.png
-  artifactKey: Guid(a3d433a6d16f807428df28ea4d1df74f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/pouch_add.png using Guid(a3d433a6d16f807428df28ea4d1df74f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '16caf67f79fbc8c130a09ac072c11eda') in 0.053691 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000109 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/pawn_up.png
-  artifactKey: Guid(6040c1ee3145c10438abccbca578cd8d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/pawn_up.png using Guid(6040c1ee3145c10438abccbca578cd8d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5307e59c46a428961ca153fcd19aa9ad') in 0.064940 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000049 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/pawn_table.png
-  artifactKey: Guid(2c1c1831ecbb0e74d90cc6e4d7629d75) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/pawn_table.png using Guid(2c1c1831ecbb0e74d90cc6e4d7629d75) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f75c46a4f06c73b4cfa3a111be694197') in 0.049231 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.136162 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/pouch_remove.png
-  artifactKey: Guid(26750c1a54783524b8a007b70635189c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/pouch_remove.png using Guid(26750c1a54783524b8a007b70635189c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '999c58448e739c22d89de507024df89d') in 0.075917 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000048 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/resource_lumber.png
-  artifactKey: Guid(23d67ee0ef46b5a4eba05728ad032d37) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/resource_lumber.png using Guid(23d67ee0ef46b5a4eba05728ad032d37) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8558a6d3d9cc2c91fbb8ecc75d4e59ee') in 0.068488 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000085 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/resource_iron.png
-  artifactKey: Guid(a9fb8e773df265943b5ff6ebf0a854b4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/resource_iron.png using Guid(a9fb8e773df265943b5ff6ebf0a854b4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e9e50bd0f0a0feb42859602de522e750') in 0.063024 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.903995 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/shield.png
-  artifactKey: Guid(fbbf0112b1599ca46994c054b56749f3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/shield.png using Guid(fbbf0112b1599ca46994c054b56749f3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'fdf67685cb33165f2046b3c38595ca48') in 0.066920 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000047 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/structure_tower.png
-  artifactKey: Guid(537f7459e0e33974ba4e21bbe792131a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/structure_tower.png using Guid(537f7459e0e33974ba4e21bbe792131a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1517ac89145232466532897f0b1a0174') in 0.051480 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000052 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/structure_farm.png
-  artifactKey: Guid(be3e4256d17b780439c8255c413eaded) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/structure_farm.png using Guid(be3e4256d17b780439c8255c413eaded) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ef354793d1d9870a67fa6626cfd7bacd') in 0.066298 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000041 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/spinner_segment.png
-  artifactKey: Guid(2008e122697711e40aaa025ac2b5d75e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/spinner_segment.png using Guid(2008e122697711e40aaa025ac2b5d75e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '61f3c5a4cb03df83db0d5d356a501e0f') in 0.049707 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.283836 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/suit_clubs.png
-  artifactKey: Guid(9647e79a275abee499984af5749e0b4b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/suit_clubs.png using Guid(9647e79a275abee499984af5749e0b4b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b14a576c7ea954bf8c431b4daace4489') in 0.063805 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000040 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/tag_4.png
-  artifactKey: Guid(a0ba303f1fdb97642a8682ba1d343327) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/tag_4.png using Guid(a0ba303f1fdb97642a8682ba1d343327) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'def29103fb06f223f30d3275291da576') in 0.056688 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000042 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/tag_d6.png
-  artifactKey: Guid(3f5bb27da67729347893f2cf75784073) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/tag_d6.png using Guid(3f5bb27da67729347893f2cf75784073) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'be10d231f2b536f7cd18d4db0a697454') in 0.053943 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000047 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/tag_3.png
-  artifactKey: Guid(8689ef199d5d84e4f89e71ccb4ec8f94) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/tag_3.png using Guid(8689ef199d5d84e4f89e71ccb4ec8f94) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2126274ee19838b81a65a023f09d15e9') in 0.054475 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000048 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/tag_d6_2.png
-  artifactKey: Guid(2159f7345dc8f104c9cbf605765bf53c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/tag_d6_2.png using Guid(2159f7345dc8f104c9cbf605765bf53c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'cac5f5032b580802204c14cb038da888') in 0.060670 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000051 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/tag_d6_4.png
-  artifactKey: Guid(2b1ee602c25d1ac4b931970e7ee95331) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/tag_d6_4.png using Guid(2b1ee602c25d1ac4b931970e7ee95331) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'eebf729331e7efab34a22c788c6a7cd1') in 0.068442 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000129 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/tag_5.png
-  artifactKey: Guid(e474408d2f8c9fb4c861f69d6a28a523) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/tag_5.png using Guid(e474408d2f8c9fb4c861f69d6a28a523) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b7cbb081e1dbaad6434d7618b4b425ff') in 0.059657 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.234506 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/tag_d6_6.png
-  artifactKey: Guid(3e13be697a5c62345ba6cfb600113901) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/tag_d6_6.png using Guid(3e13be697a5c62345ba6cfb600113901) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5d27e0f6e437e63951ee38f2b391962a') in 0.093402 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000033 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/tag_shield_2.png
-  artifactKey: Guid(b6b8ae250b4bbf548a7234817ccd71c0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/tag_shield_2.png using Guid(b6b8ae250b4bbf548a7234817ccd71c0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7001ab84f2512213a90e0448df235bc0') in 0.053443 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000512 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/tag_shield_4.png
-  artifactKey: Guid(f2fc15366af232643a38a06eb296b07b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/tag_shield_4.png using Guid(f2fc15366af232643a38a06eb296b07b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'bb3b64d655fb7b06d689c4d3f084e95c') in 0.071251 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 1.377631 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/tag_shield_5.png
-  artifactKey: Guid(bf44067723da5124da4ed7dd4ecf9ddc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/tag_shield_5.png using Guid(bf44067723da5124da4ed7dd4ecf9ddc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c3635d9f2c2eaf7185e99d121064bd9b') in 0.067505 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000047 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/timer_100.png
-  artifactKey: Guid(5a90055d58be4ae4f9afb83a5f6317ba) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/timer_100.png using Guid(5a90055d58be4ae4f9afb83a5f6317ba) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f0f22b246e2da9229cdddb6ee8503552') in 0.063498 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000058 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/tag_shield_9.png
-  artifactKey: Guid(8a31e46bc3f5cb247a30d6a04d0520a6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/tag_shield_9.png using Guid(8a31e46bc3f5cb247a30d6a04d0520a6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f0b3289d56b9d0ad4068e20fc736a9ac') in 0.051924 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.893686 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/timer_CCW_75.png
-  artifactKey: Guid(9cfd2ee2c40d75042900e5f89c3402f5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/timer_CCW_75.png using Guid(9cfd2ee2c40d75042900e5f89c3402f5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'adb240d46bb010ecb45a306077f26899') in 0.080267 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000048 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/token.png
-  artifactKey: Guid(c3de07e6158f6b041850eee08eda561d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/token.png using Guid(c3de07e6158f6b041850eee08eda561d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5e1304890c4f3f8ec7b5725896301fe0') in 0.057615 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000056 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/token_add.png
-  artifactKey: Guid(8363a920b7b851a45bd945c5e41cbfb5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/token_add.png using Guid(8363a920b7b851a45bd945c5e41cbfb5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '765c747617dcc14816eb3e7743c8b546') in 0.063487 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.083433 seconds.
-  path: Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/tokens.png
-  artifactKey: Guid(a95b5d117f4f50e4daf87f6fdd8cc388) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/UI/Game Icons/PNG/Pixelated (64px)/tokens.png using Guid(a95b5d117f4f50e4daf87f6fdd8cc388) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '61c3d1dc7d9e47c24487e4bb7c4b034a') in 0.060282 seconds 
+  Time since last request: 0.000037 seconds.
+  path: Assets/Sprites/Particle Effects/slash_effect_anim_f1.png
+  artifactKey: Guid(8eaf56cd85a4b3541bc8cf65702a0fcb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Particle Effects/slash_effect_anim_f1.png using Guid(8eaf56cd85a4b3541bc8cf65702a0fcb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8e167b2397ff1d6313fc372f5eeb0262') in 0.041599 seconds 
 Editor requested this worker to shutdown with reason: Scaling down because of idle timeout
 AssetImportWorker is now disconnected from the server
 Process exiting

@@ -15,48 +15,69 @@ public class IndicatorDisplayUI : MonoBehaviour
     private void Start()
     {
         // Sub
-        GameEvents.instance.onActionSelect += SpawnIndicators;
+        GameEvents.instance.onActionSelect += HandleChoices;
+        GameEvents.instance.onLocationSelect += ClearChoices;
         GameEvents.instance.onInspectAction += PreviewIndicators;
+    }
+
+    private void SpawnIndicator(Entity entity, Action action, Vector3Int location)
+    {
+        // Get entity's world position
+        var entityWorldLocation = selectTilemap.GetCellCenterWorld(entity.location);
+        // Get target world position
+        var targetWorldLocation = selectTilemap.GetCellCenterWorld(location);
+        // Instaniate as child
+        var indicatorUI = Instantiate(indicatorUIPrefab, targetWorldLocation, Quaternion.identity, transform).GetComponent<LocationIndicatorUI>();
+        // Initialize
+        indicatorUI.Initialize(entity, location, entityWorldLocation, targetWorldLocation, action);
     }
 
     private void OnDestroy()
     {
         // Unsub
-        GameEvents.instance.onActionSelect -= SpawnIndicators;
+        GameEvents.instance.onActionSelect -= HandleChoices;
+        GameEvents.instance.onLocationSelect -= ClearChoices;
         GameEvents.instance.onInspectAction -= PreviewIndicators;
     }
 
-    private void SpawnIndicators(Entity entity, Action action, Room room)
+    private void HandleChoices(Entity entity, Action action)
     {
-        if (entity != null && action != null && room != null)
+        if (entity != null)
         {
-            // Get a list of all valid locations by this action
-            var validLocations = action.GetValidLocations(entity.location, room);
+            // Clear tiles first
+            selectTilemap.ClearAllTiles();
 
-            // Get entity location
-            var entityWorldLocation = selectTilemap.GetCellCenterWorld(entity.location);
-
-            // Display all of the action's valid locations
-            foreach (var location in validLocations)
+            if (action != null) // If action was selected
             {
-                // Set tile?
+                // Get a list of all valid locations by this action
+                var validLocations = action.GetValidLocations(entity.location, entity.room);
 
-                // Get world position
-                var targetWorldLocation = selectTilemap.GetCellCenterWorld(location);
-                // Instaniate as child
-                var indicatorUI = Instantiate(indicatorUIPrefab, targetWorldLocation, Quaternion.identity, transform).GetComponent<LocationIndicatorUI>();
-                // Initialize
-                indicatorUI.Initialize(entity, location, entityWorldLocation, targetWorldLocation, action);
+                // Display all of the action's valid locations
+                foreach (var location in validLocations)
+                {
+                    // Set tile
+                    selectTilemap.SetTile(location, highlightTile);
+                    selectTilemap.SetColor(location, action.color);
+
+                    // Spawn a indicator node here
+                    SpawnIndicator(entity, action, location);
+                }
             }
         }
     }
 
-    private void PreviewIndicators(Entity entity, Action action, Room room)
+    private void ClearChoices(Entity entity, Action action, Vector3Int location)
     {
-        if (entity != null && action != null && room != null)
+        // Clear tiles first
+        selectTilemap.ClearAllTiles();
+    }
+
+    private void PreviewIndicators(Entity entity, Action action)
+    {
+        if (entity != null && action != null)
         {
             // Get a list of all valid locations by this action
-            var validLocations = action.GetValidLocations(entity.location, room);
+            var validLocations = action.GetValidLocations(entity.location, entity.room);
 
             // Get entity location
             var entityWorldLocation = selectTilemap.GetCellCenterWorld(entity.location);

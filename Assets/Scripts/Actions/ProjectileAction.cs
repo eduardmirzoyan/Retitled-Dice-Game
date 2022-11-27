@@ -5,8 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Actions/Fire Projectile")]
 public class ProjectileAction : Action
 {
-    public GameObject projectilePrefab;
-    public Entity projectile;
+    public Projectil projectile;
 
     public override List<Vector3Int> GetValidLocations(Vector3Int startLocation, Room room)
     {
@@ -148,46 +147,17 @@ public class ProjectileAction : Action
         Vector3Int direction = (targetLocation - entity.location);
         direction.Clamp(-Vector3Int.one, Vector3Int.one);
 
-        // ~~~ Projectile logic ~~~
-
         // Make a copy
         var copy = projectile.Copy();
-        copy.SetRoom(room, entity.location);
+        copy.Initialize(entity.location, entity, room);
 
-        // Spawn projectile
-        GameEvents.instance.TriggerOnSpawnEnity(copy);
+        // Trigger event
+        GameEvents.instance.TriggerOnProjectileSpawn(copy);
 
-        // Start moving
-        GameEvents.instance.TriggerOnEntityStartMove(copy, direction);
+        // Let the projectile dictate what happens from here
+        yield return copy.Travel(direction, die.value);
 
-        // Keep looping until entiy makes it to its final location
-        while (copy.location != targetLocation)
-        {
-            // Move entity
-            copy.MoveToward(direction);
-
-            // Make sure you don't attack the spawner
-            if (copy.location != entity.location) {
-
-                // Attack the location that you're at
-                bool res = copy.AttackLocation(copy.location, weapon);
-
-                // Trigger event
-                if (res)
-                {
-                    // Finish
-                    break;
-                }
-            }
-
-            // Wait for animation
-            yield return new WaitForSeconds(EntityModel.moveSpeed);
-        }
-
-        // Stop moving
-        GameEvents.instance.TriggerOnEntityStopMove(copy);
-
-        // Destroy proj
-        GameEvents.instance.TriggerOnRemoveEnity(copy);
+        // Trigger event
+        GameEvents.instance.TriggerOnProjectileDespawn(copy);
     }
 }

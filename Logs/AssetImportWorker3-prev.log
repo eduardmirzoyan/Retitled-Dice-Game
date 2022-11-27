@@ -1,0 +1,319 @@
+Using pre-set license
+Built from '2021.3/staging' branch; Version is '2021.3.1f1 (3b70a0754835) revision 3895456'; Using compiler version '192829333'; Build Type 'Release'
+OS: 'Windows 11  (10.0.22621) 64bit Core' Language: 'en' Physical Memory: 16238 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1, IsPro: 1
+
+COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\2021.3.1f1\Editor\Unity.exe
+-adb2
+-batchMode
+-noUpm
+-name
+AssetImportWorker3
+-projectPath
+C:/Users/eduar/Desktop/Unity Projects/Retitled-Dice-Game
+-logFile
+Logs/AssetImportWorker3.log
+-srvPort
+51518
+Successfully changed project path to: C:/Users/eduar/Desktop/Unity Projects/Retitled-Dice-Game
+C:/Users/eduar/Desktop/Unity Projects/Retitled-Dice-Game
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gfx=262144"
+Refreshing native plugins compatible for Editor in 256.94 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 2021.3.1f1 (3b70a0754835)
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2021.3.1f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path C:/Users/eduar/Desktop/Unity Projects/Retitled-Dice-Game/Assets
+GfxDevice: creating device client; threaded=0; jobified=0
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: Intel(R) UHD Graphics 620 (ID=0x5917)
+    Vendor:   Intel
+    VRAM:     8119 MB
+    Driver:   27.20.100.9749
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2021.3.1f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2021.3.1f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/2021.3.1f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56524
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.1f1/Editor/Data/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.1f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Registered in 0.011492 seconds.
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Refreshing native plugins compatible for Editor in 201.01 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  2.125 seconds
+Domain Reload Profiling:
+	ReloadAssembly (2127ms)
+		BeginReloadAssembly (165ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (0ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (2ms)
+		EndReloadAssembly (1425ms)
+			LoadAssemblies (160ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (572ms)
+			ReleaseScriptCaches (0ms)
+			RebuildScriptCaches (65ms)
+			SetupLoadedEditorAssemblies (676ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (22ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (201ms)
+				BeforeProcessingInitializeOnLoad (2ms)
+				ProcessInitializeOnLoadAttributes (330ms)
+				ProcessInitializeOnLoadMethodAttributes (119ms)
+				AfterProcessingInitializeOnLoad (0ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (0ms)
+Platform modules already initialized, skipping
+Registering precompiled user dll's ...
+Registered in 0.015532 seconds.
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory doesn't match image C:\Users\eduar\Desktop\Unity Projects\Retitled-Dice-Game\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
+Symbol file LoadedFromMemory is not a mono symbol file
+Symbol file LoadedFromMemory doesn't match image C:\Users\eduar\Desktop\Unity Projects\Retitled-Dice-Game\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Refreshing native plugins compatible for Editor in 211.64 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  2.505 seconds
+Domain Reload Profiling:
+	ReloadAssembly (2506ms)
+		BeginReloadAssembly (229ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (13ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (38ms)
+		EndReloadAssembly (2032ms)
+			LoadAssemblies (197ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (522ms)
+			ReleaseScriptCaches (1ms)
+			RebuildScriptCaches (143ms)
+			SetupLoadedEditorAssemblies (1070ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (16ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (212ms)
+				BeforeProcessingInitializeOnLoad (185ms)
+				ProcessInitializeOnLoadAttributes (585ms)
+				ProcessInitializeOnLoadMethodAttributes (61ms)
+				AfterProcessingInitializeOnLoad (10ms)
+				EditorAssembliesLoaded (1ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (19ms)
+Platform modules already initialized, skipping
+========================================================================
+Worker process is ready to serve import requests
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.16 seconds
+Refreshing native plugins compatible for Editor in 1.16 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 4020 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 34 unused Assets / (30.2 KB). Loaded Objects now: 4483.
+Memory consumption went from 153.4 MB to 153.4 MB.
+Total: 5.068500 ms (FindLiveObjects: 0.494600 ms CreateObjectMapping: 0.384000 ms MarkObjects: 4.138900 ms  DeleteObjects: 0.048800 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Import Request.
+  Time since last request: 91333.289130 seconds.
+  path: Assets/Sprites/Dungeon v2 Sprites/knight_f_idle_anim_f2.png
+  artifactKey: Guid(ace4589c61d09ba4dad54b26432c5e58) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Dungeon v2 Sprites/knight_f_idle_anim_f2.png using Guid(ace4589c61d09ba4dad54b26432c5e58) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1d464d16db8b573603654edaab74b6d8') in 0.566326 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000041 seconds.
+  path: Assets/Sprites/Dungeon v2 Sprites/knight_m_run_anim_f0.png
+  artifactKey: Guid(b1113fb598ad474469182f3e40bdb655) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Dungeon v2 Sprites/knight_m_run_anim_f0.png using Guid(b1113fb598ad474469182f3e40bdb655) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f0a9cc1eed8e4bd52a28ed72a81a9382') in 0.054794 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000053 seconds.
+  path: Assets/Sprites/Dungeon Crawlers Sprites/heroes/knight/knight_idle_anim_f5.png
+  artifactKey: Guid(7a0217063a9fffe419b908103e789863) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Dungeon Crawlers Sprites/heroes/knight/knight_idle_anim_f5.png using Guid(7a0217063a9fffe419b908103e789863) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd1e857d5a258f0d07cb9d25d2e81f84b') in 0.079928 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000031 seconds.
+  path: Assets/Sprites/Dungeon v2 Sprites/knight_m_idle_anim_f3.png
+  artifactKey: Guid(4c61020f73224fb4f98e46edd0b8c3c1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Dungeon v2 Sprites/knight_m_idle_anim_f3.png using Guid(4c61020f73224fb4f98e46edd0b8c3c1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'df21cc64107f1ed7b35b8b2a0f025d01') in 0.089022 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000061 seconds.
+  path: Assets/Sprites/Dungeon Crawlers Sprites/heroes/knight/knight_run_anim_f4.png
+  artifactKey: Guid(df5648284636f364bacc331914455383) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Dungeon Crawlers Sprites/heroes/knight/knight_run_anim_f4.png using Guid(df5648284636f364bacc331914455383) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '79e1784ea31f9527040b1aa686b7284b') in 0.083056 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000054 seconds.
+  path: Assets/Sprites/Dungeon Crawlers Sprites/heroes/knight/knight_run_anim_f1.png
+  artifactKey: Guid(7deacec2950eb964481fe20042e59ac6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Dungeon Crawlers Sprites/heroes/knight/knight_run_anim_f1.png using Guid(7deacec2950eb964481fe20042e59ac6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'cde33a970586c34a90cabdaa04e7b03f') in 0.063372 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000031 seconds.
+  path: Assets/Sprites/Dungeon Crawlers Sprites/heroes/knight/knight_idle_anim_f0.png
+  artifactKey: Guid(fc47e8c8511ed0340ac0be548351fc95) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Dungeon Crawlers Sprites/heroes/knight/knight_idle_anim_f0.png using Guid(fc47e8c8511ed0340ac0be548351fc95) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c46ee8348e41f4551a85934d37547bfe') in 0.045512 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000035 seconds.
+  path: Assets/Sprites/Dungeon v2 Sprites/knight_f_run_anim_f0.png
+  artifactKey: Guid(39e98ad87ca208e4fb6d0533c25c878d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Dungeon v2 Sprites/knight_f_run_anim_f0.png using Guid(39e98ad87ca208e4fb6d0533c25c878d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2bb672f4871d64cb64441eb72904356e') in 0.045422 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000054 seconds.
+  path: Assets/Sprites/Dungeon v2 Sprites/knight_m_hit_anim_f0.png
+  artifactKey: Guid(08faa6efe9e37c84cb062eac67c7dd46) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Dungeon v2 Sprites/knight_m_hit_anim_f0.png using Guid(08faa6efe9e37c84cb062eac67c7dd46) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2fd5deb1a0c839c59b5939f394b2d638') in 0.090092 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000046 seconds.
+  path: Assets/Sprites/Dungeon Crawlers Sprites/heroes/knight/knight_idle_anim_f2.png
+  artifactKey: Guid(d940b03a543fc5441b164d4b59dc0c72) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Dungeon Crawlers Sprites/heroes/knight/knight_idle_anim_f2.png using Guid(d940b03a543fc5441b164d4b59dc0c72) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6ca4bfb708ef1d83ffbbf15a6505a9be') in 0.049023 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000053 seconds.
+  path: Assets/Sprites/Dungeon Crawlers Sprites/heroes/knight/knight_idle_anim_f1.png
+  artifactKey: Guid(5188e1ff39fe63f4d8bb03999c7b19e4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Dungeon Crawlers Sprites/heroes/knight/knight_idle_anim_f1.png using Guid(5188e1ff39fe63f4d8bb03999c7b19e4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a23bc1d2689f0b30965a6b2ad348c4a8') in 0.046333 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000029 seconds.
+  path: Assets/Sprites/Dungeon Crawlers Sprites/heroes/knight/knight_idle_spritesheet.png
+  artifactKey: Guid(721bbd13f0ed4ac4280c2ee7e9ff8b65) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Dungeon Crawlers Sprites/heroes/knight/knight_idle_spritesheet.png using Guid(721bbd13f0ed4ac4280c2ee7e9ff8b65) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4c854217cc6e748d1bf969abeb66f4a9') in 0.035657 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000038 seconds.
+  path: Assets/Sprites/Dungeon v2 Sprites/knight_m_idle_anim_f1.png
+  artifactKey: Guid(45dbbcd353d474544ad91a8ba2f72f52) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Dungeon v2 Sprites/knight_m_idle_anim_f1.png using Guid(45dbbcd353d474544ad91a8ba2f72f52) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8346ba7ecbcf8cd9559cefdef25aae6c') in 0.073434 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000091 seconds.
+  path: Assets/Sprites/Dungeon v2 Sprites/knight_f_idle_anim_f3.png
+  artifactKey: Guid(820f2200f0422614da26b0974d745d24) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Dungeon v2 Sprites/knight_f_idle_anim_f3.png using Guid(820f2200f0422614da26b0974d745d24) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '186d02fb928be1952c1f5daad6143f7c') in 0.064289 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000051 seconds.
+  path: Assets/Sprites/Dungeon Crawlers Sprites/heroes/knight/knight_run_anim_f2.png
+  artifactKey: Guid(0603c52f9474c7e499e4bf1e08ed74e7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Dungeon Crawlers Sprites/heroes/knight/knight_run_anim_f2.png using Guid(0603c52f9474c7e499e4bf1e08ed74e7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '30970d0a178f89ac4b93a29e7d1e38b1') in 0.045834 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000064 seconds.
+  path: Assets/Sprites/Dungeon Crawlers Sprites/heroes/knight/knight_run_spritesheet.png
+  artifactKey: Guid(00dfb7bd0b1e00b4cb1f07c07217ca73) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Dungeon Crawlers Sprites/heroes/knight/knight_run_spritesheet.png using Guid(00dfb7bd0b1e00b4cb1f07c07217ca73) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c965cd83d43d0ae4f701654efb956a27') in 0.045334 seconds 
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.015888 seconds.
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory doesn't match image C:\Users\eduar\Desktop\Unity Projects\Retitled-Dice-Game\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
+Symbol file LoadedFromMemory is not a mono symbol file
+Symbol file LoadedFromMemory doesn't match image C:\Users\eduar\Desktop\Unity Projects\Retitled-Dice-Game\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Refreshing native plugins compatible for Editor in 2.22 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  2.027 seconds
+Domain Reload Profiling:
+	ReloadAssembly (2028ms)
+		BeginReloadAssembly (211ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (10ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (57ms)
+		EndReloadAssembly (1672ms)
+			LoadAssemblies (156ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (473ms)
+			ReleaseScriptCaches (3ms)
+			RebuildScriptCaches (110ms)
+			SetupLoadedEditorAssemblies (779ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (34ms)
+				SetLoadedEditorAssemblies (1ms)
+				RefreshPlugins (2ms)
+				BeforeProcessingInitializeOnLoad (156ms)
+				ProcessInitializeOnLoadAttributes (472ms)
+				ProcessInitializeOnLoadMethodAttributes (97ms)
+				AfterProcessingInitializeOnLoad (16ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (26ms)
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 10.31 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3994 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 22 unused Assets / (24.6 KB). Loaded Objects now: 4495.
+Memory consumption went from 155.8 MB to 155.7 MB.
+Total: 8.626700 ms (FindLiveObjects: 0.468400 ms CreateObjectMapping: 0.378100 ms MarkObjects: 7.740700 ms  DeleteObjects: 0.036800 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 

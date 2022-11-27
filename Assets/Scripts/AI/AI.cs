@@ -2,15 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu]
+[CreateAssetMenu(menuName = "AI/AI")]
 public class AI : ScriptableObject
 {
     public bool isHostile = true;
-
-    // public virtual void DisplayIntent(Entity entity, Room room)
-    // {
-    //     // Does nothing
-    // }
     
     // Hard coded so far, but action 0 should be move, action 1 is attack
     public virtual (Action, Vector3Int) GenerateBestDecision(Entity entity, Room room)
@@ -84,7 +79,7 @@ public class AI : ScriptableObject
               point2.y <= currPoint.y && currPoint.y <= point1.y;
     }
 
-    public List<(Action, Vector3Int)> GenerateNewBestDecision(Entity entity, Room room, Entity targetEntity)
+    public virtual List<(Action, Vector3Int)> GenerateNewBestDecision(Entity entity, Room room, Entity targetEntity)
     {
         // Store best action w/ heuristic
         List<(Action, Vector3Int)> bestChoiceSquence = new List<(Action, Vector3Int)>();
@@ -97,18 +92,22 @@ public class AI : ScriptableObject
         var permutations = GeneratePermutations(actions);
 
         // For each permutation
-        foreach (var permutation in permutations)
+        foreach (var actionsPermutation in permutations)
         {
             // FIXME
             List<List<(Action, Vector3Int)>> sequences = new List<List<(Action, Vector3Int)>>();
-            GenerateSequences(permutation, entity, room, 0, new List<(Action, Vector3Int)>(), sequences);
+            GenerateSequences(actionsPermutation, entity, room, 0, new List<(Action, Vector3Int)>(), sequences);
             Debug.Log(sequences.Count);
+            foreach (var seq in sequences)
+            {
+                Debug.Log(seq.Count);
+            }
             
-            // REMOVE LATER
+            // // REMOVE LATER
             continue;
 
             // Generate pairs from first action (HARD CODED)
-            var actionPairs = GenerateActionPairs(permutation[0], entity.location, room);
+            var actionPairs = GenerateActionPairs(actionsPermutation[0], entity.location, room);
 
             // Now go through each pair
             foreach (var pair in actionPairs)
@@ -120,7 +119,7 @@ public class AI : ScriptableObject
                 var start = pair.Item2 != Vector3Int.back ? pair.Item2 : entity.location;
 
                 // Now generate new pairs from that new location
-                var actionPairs2 = GenerateActionPairs(permutation[1], start, room);
+                var actionPairs2 = GenerateActionPairs(actionsPermutation[1], start, room);
                 
                 // Now go through each pair and find result
                 foreach (var pair2 in actionPairs2)
@@ -178,7 +177,7 @@ public class AI : ScriptableObject
         return 0f;
     }
 
-    private List<(Action, Vector3Int)> GenerateActionPairs(Action action, Vector3Int start, Room room) 
+    protected List<(Action, Vector3Int)> GenerateActionPairs(Action action, Vector3Int start, Room room) 
     {
         List <(Action, Vector3Int)> result = new List<(Action, Vector3Int)>();
 
@@ -195,13 +194,13 @@ public class AI : ScriptableObject
         return result;
     }
 
-    private List<List<Action>> GeneratePermutations(List<Action> actions)
+    protected List<List<Action>> GeneratePermutations(List<Action> actions)
     {
         var list = new List<List<Action>>();
         return DoPermute(actions, 0, actions.Count - 1, list);
     }
 
-    private List<List<Action>> DoPermute(List<Action> actions, int start, int end, List<List<Action>> list)
+    protected List<List<Action>> DoPermute(List<Action> actions, int start, int end, List<List<Action>> list)
     {
         if (start == end)
         {
@@ -235,7 +234,7 @@ public class AI : ScriptableObject
         return list;
     }
 
-    private void Swap(ref Action a, ref Action b)
+    protected void Swap(ref Action a, ref Action b)
     {
         var temp = a;
         a = b;
@@ -282,8 +281,8 @@ public class AI : ScriptableObject
             return;
         }
 
-        // Manually add 'Do Perform this action' option
-        path.Add((actions[index], Vector3Int.back));
+        // Manually add 'Don't Perform this action' option
+        // path.Add((actions[index], Vector3Int.back));
 
         // Now check all valid locations
         // TODO make sure valid locations takes the position of the current entity

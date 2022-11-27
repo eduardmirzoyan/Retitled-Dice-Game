@@ -64,7 +64,7 @@ public class FreeMoveAction : Action
         path.RemoveAt(0);
 
         // Trigger start move event
-        GameEvents.instance.TriggerOnEntityStartMove(entity, Vector3Int.left);
+        GameEvents.instance.TriggerOnEntityStartMove(entity);
 
         // Keep looping while there is a path
         while (path.Count > 0)

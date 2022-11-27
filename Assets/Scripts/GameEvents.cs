@@ -21,8 +21,6 @@ public class ActionInfo
 public class GameEvents : MonoBehaviour
 {
     public event Action<Room> onEnterFloor;
-    public event Action<Entity> onSpawnEntity;
-    public event Action<Entity> onRemoveEntity;
     public event Action<Room> onExitFloor;
 
     // Game state
@@ -30,8 +28,8 @@ public class GameEvents : MonoBehaviour
     public event Action<Entity> onTurnEnd;
 
     // Action based
-    public event Action<Entity, Action, Room> onActionSelect;
-    public event Action<Entity, Vector3Int> onLocationSelect;
+    public event Action<Entity, Action> onActionSelect;
+    public event Action<Entity, Action, Vector3Int> onLocationSelect;
     public event Action<Entity, Action, Vector3Int, Room> onActionPerformStart;
     public event Action<Entity, Action, Vector3Int, Room> onActionPerformEnd;
 
@@ -42,15 +40,22 @@ public class GameEvents : MonoBehaviour
     public event Action<Die> onDieReplenish;
 
     // Visuals
-    public event Action<Entity, Vector3Int> onEntityStartMove;
+    public event Action<Entity> onEntitySpawn;
+    public event Action<Entity> onEnityDespawn;
+    public event Action<Entity> onEntityMoveStart;
     public event Action<Entity> onEntityMove;
-    public event Action<Entity> onEntityStopMove;
+    public event Action<Entity> onEntityMoveStop;
     public event Action<Entity, Vector3, Weapon> onEntityDrawWeapon;
     public event Action<Entity, Weapon> onEntitySheatheWeapon;
     public event Action<Entity, Weapon> onEntityMeleeAttack;
     public event Action<Entity, Vector3Int, Weapon> onEntityRangedAttack;
     public event Action<Entity, Vector3Int, Weapon, ActionInfo> onEntityRangedAttackTimed;
     public event Action<Entity> onEntityWarp;
+
+    // Projectile visuals
+    public event Action<Projectil> onProjectileSpawn;
+    public event Action<Projectil> onProjectileMove;
+    public event Action<Projectil> onProjectileDespawn;
 
     // Stat changes
     public event Action<Entity, int> onEntityTakeDamage;
@@ -68,8 +73,7 @@ public class GameEvents : MonoBehaviour
     public event Action<Entity, Weapon> onWeaponEquip;
     public event Action<Inventory, bool> onToggleInventory;
     public event Action<Entity> onEntityInspect;
-    public event Action<Entity, Action, Room> onInspectAction;
-    public event Action<Projectil> onProjectileMove;
+    public event Action<Entity, Action> onInspectAction;
 
     public static GameEvents instance;
     private void Awake()
@@ -92,14 +96,6 @@ public class GameEvents : MonoBehaviour
         }
     }
 
-    public void TriggerOnCloseShop()
-    {
-        if (onCloseShop != null)
-        {
-            onCloseShop();
-        }
-    }
-
     public void TriggerOnEnterFloor(Room room)
     {
         if (onEnterFloor != null)
@@ -116,19 +112,19 @@ public class GameEvents : MonoBehaviour
         }
     }
 
-    public void TriggerOnSpawnEnity(Entity entity)
+    public void TriggerOnEntitySpawn(Entity entity)
     {
-        if (onSpawnEntity != null)
+        if (onEntitySpawn != null)
         {
-            onSpawnEntity(entity);
+            onEntitySpawn(entity);
         }
     }
 
-    public void TriggerOnRemoveEnity(Entity entity)
+    public void TriggerOnEntityDespawn(Entity entity)
     {
-        if (onRemoveEntity != null)
+        if (onEnityDespawn != null)
         {
-            onRemoveEntity(entity);
+            onEnityDespawn(entity);
         }
     }
 
@@ -148,19 +144,19 @@ public class GameEvents : MonoBehaviour
         }
     }
 
-    public void TriggerOnActionSelect(Entity entity, Action action, Room room)
+    public void TriggerOnActionSelect(Entity entity, Action action)
     {
         if (onActionSelect != null)
         {
-            onActionSelect(entity, action, room);
+            onActionSelect(entity, action);
         }
     }
 
-    public void TriggerOnLocationSelect(Entity entity, Vector3Int location)
+    public void TriggerOnLocationSelect(Entity entity, Action action, Vector3Int location)
     {
         if (onLocationSelect != null)
         {
-            onLocationSelect(entity, location);
+            onLocationSelect(entity, action, location);
         }
     }
 
@@ -180,11 +176,11 @@ public class GameEvents : MonoBehaviour
         }
     }
 
-    public void TriggerOnEntityStartMove(Entity entity, Vector3Int direction)
+    public void TriggerOnEntityStartMove(Entity entity)
     {
-        if (onEntityStartMove != null)
+        if (onEntityMoveStart != null)
         {
-            onEntityStartMove(entity, direction);
+            onEntityMoveStart(entity);
         }
     }
 
@@ -198,9 +194,9 @@ public class GameEvents : MonoBehaviour
 
     public void TriggerOnEntityStopMove(Entity entity)
     {
-        if (onEntityStopMove != null)
+        if (onEntityMoveStop != null)
         {
-            onEntityStopMove(entity);
+            onEntityMoveStop(entity);
         }
     }
 
@@ -362,15 +358,47 @@ public class GameEvents : MonoBehaviour
     {
         if (onInspectAction != null)
         {
-            onInspectAction(entity, action, room);
+            onInspectAction(entity, action);
         }
     }
 
-    public void TriggerOnProjectileMove(Projectil projectil) 
+    public void TriggerOnProjectileSpawn(Projectil projectile)
+    {
+        if (onProjectileSpawn != null)
+        {
+            onProjectileSpawn(projectile);
+        }
+    }
+
+    public void TriggerOnProjectileDespawn(Projectil projectile)
+    {
+        if (onProjectileDespawn != null)
+        {
+            onProjectileDespawn(projectile);
+        }
+    }
+
+    public void TriggerOnProjectileMoveStart(Projectil projectile)
+    {
+        // if (onProjectileMoveStart != null)
+        // {
+        //     onProjectileMoveStart(projectile);
+        // }
+    }
+
+    public void TriggerOnProjectileMove(Projectil projectile)
     {
         if (onProjectileMove != null)
         {
-            onProjectileMove(projectil);
+            onProjectileMove(projectile);
         }
+    }
+
+    public void TriggerOnProjectileMoveStop(Projectil projectile)
+    {
+        // if (onProjectileMoveStart != null)
+        // {
+        //     onProjectileMoveStart(projectile);
+        // }
     }
 }

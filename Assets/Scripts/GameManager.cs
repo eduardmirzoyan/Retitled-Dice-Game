@@ -105,19 +105,25 @@ public class GameManager : MonoBehaviour
         {
             case 1:
                 // Spawn enemies equal to floor number
-                // for (int i = 0; i < DataManager.instance.GetRoomNumber(); i++)
-                // {
-                //     // Generate a random enemy
-                //     var enemy = enemyGenerator.GenerateEnemy();
+                for (int i = 0; i < DataManager.instance.GetRoomNumber(); i++)
+                {
+                    // Spawn a core
+                    var core = enemyGenerator.GenerateCore();
 
-                //     // Populate the room
-                //     room.Populate(enemy);
-                // }
+                    // Populate the room
+                    room.Populate(core);
+
+                    // Generate a random enemy
+                    var enemy = enemyGenerator.GenerateEnemy();
+
+                    // Populate the room
+                    room.Populate(enemy);
+                }
 
                 break;
             case -1:
                 // READD THIS LATER
-                
+
                 // Generate a shopkeeper
                 var shopkeeper = enemyGenerator.GenerateShopkeeper();
 
@@ -179,7 +185,7 @@ public class GameManager : MonoBehaviour
         roundNumber++;
 
         // Reroll all die
-        yield return ResetAllDie();
+        // yield return ResetAllDie();
 
         // Generate turn order
         // Need to make queue to decide enemy turn order
@@ -208,6 +214,21 @@ public class GameManager : MonoBehaviour
         }
 
         yield return null;
+    }
+
+    private void ResetActions(Entity entity)
+    {
+        // Loop through all actions
+        foreach (var action in entity.GetActions())
+        {
+            // Replenish die with event
+            action.die.Replenish();
+            GameEvents.instance.TriggerOnDieReplenish(action.die);
+
+            // Roll die with event
+            action.die.Roll();
+            GameEvents.instance.TriggerOnDieRoll(action.die);
+        }
     }
 
     private IEnumerator StartTurn()
@@ -240,10 +261,13 @@ public class GameManager : MonoBehaviour
             selectedAction = selectedEntity.preparedAction.Item1;
             selectedLocation = selectedEntity.preparedAction.Item2;
             yield return PerformSelectedAction();
-            
+
             // Reset prepared action
             selectedEntity.preparedAction = (null, Vector3Int.back);
         }
+
+        // Reset actions now
+        ResetActions(selectedEntity);
 
         // Check if the enity has an ai, if so, let them decide their action
         if (selectedEntity.AI != null)
@@ -287,7 +311,7 @@ public class GameManager : MonoBehaviour
             // Check another action
             yield return PerformEnemyTurn();
         }
-        else 
+        else
         {
             // End the turn
             yield return EndTurn();
@@ -296,6 +320,9 @@ public class GameManager : MonoBehaviour
 
     public void SelectAction(Action action)
     {
+        // Dip if u already have location selected
+        if (selectedLocation != Vector3Int.zero) return;
+
         // Update selected action (could be null)
         this.selectedAction = action;
 
@@ -311,7 +338,7 @@ public class GameManager : MonoBehaviour
         }
 
         // Trigger event
-        GameEvents.instance.TriggerOnActionSelect(selectedEntity, selectedAction, room);
+        GameEvents.instance.TriggerOnActionSelect(selectedEntity, selectedAction);
     }
 
     public void ConfirmLocation(Vector3Int location)
@@ -322,24 +349,28 @@ public class GameManager : MonoBehaviour
         print("Location " + location + " was selected.");
 
         // Trigger event
-        GameEvents.instance.TriggerOnLocationSelect(selectedEntity, location);
+        GameEvents.instance.TriggerOnLocationSelect(selectedEntity, selectedAction, location);
 
         // Check action type
-        if (selectedAction.actionSpeed is ActionSpeed.Slow) 
+        if (selectedAction.actionSpeed is ActionSpeed.Slow)
         {
             // Debug
             print("Preparing Slow Action: " + selectedAction.name);
 
             // Store action
             selectedEntity.preparedAction = (selectedAction, selectedLocation);
+
+            // Immediately end turn
+            coroutine = StartCoroutine(EndTurn());
         }
-        else {
+        else
+        {
             // Perform the action right away
 
             // Start routine
             coroutine = StartCoroutine(PerformSelectedAction());
         }
-        
+
     }
 
     private IEnumerator ConfirmLocationAI(Vector3Int location)
@@ -356,7 +387,7 @@ public class GameManager : MonoBehaviour
         // GameEvents.instance.TriggerOnDieExhaust(selectedAction.die);
 
         // Trigger event
-        GameEvents.instance.TriggerOnLocationSelect(selectedEntity, location); 
+        GameEvents.instance.TriggerOnLocationSelect(selectedEntity, selectedAction, location);
 
         // Perform action
         yield return PerformSelectedAction();

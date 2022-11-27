@@ -76,7 +76,7 @@ public class MeleeAction : Action
         GameEvents.instance.TriggerOnEntityDrawWeapon(entity, direction, weapon);
 
         // Trigger start move event
-        GameEvents.instance.TriggerOnEntityStartMove(entity, direction);
+        GameEvents.instance.TriggerOnEntityStartMove(entity);
 
         // Keep looping until entity makes it to its final location
         while (entity.location != targetLocation)

@@ -85,7 +85,7 @@ public class Room : ScriptableObject
         {
             this.player = (Player)entity;
             // Set the player's location to be at dungeon entrance
-            player.SetRoom(this, entranceLocation);
+            player.Initialize(this, entranceLocation);
         }
         else
         {
@@ -102,14 +102,14 @@ public class Room : ScriptableObject
             } while (!IsValidLocation(spawnLocation));
 
             // Set dungeon to this
-            entity.SetRoom(this, spawnLocation);
+            entity.Initialize(this, spawnLocation);
 
             // Save
             enemies.Add(entity);
         }
 
         // Trigger event
-        GameEvents.instance.TriggerOnSpawnEnity(entity);
+        GameEvents.instance.TriggerOnEntitySpawn(entity);
     }
 
     public void Depopulate(Entity entity)
@@ -138,7 +138,7 @@ public class Room : ScriptableObject
         }
 
         // Trigger event
-        GameEvents.instance.TriggerOnRemoveEnity(entity);
+        GameEvents.instance.TriggerOnEntityDespawn(entity);
     }
 
     public Entity[] GetAllEntities()
@@ -248,7 +248,7 @@ public class Room : ScriptableObject
                         // Make copy
                         var copy = barrel.Copy();
                         // Set room
-                        copy.SetRoom(this, position);
+                        copy.Initialize(this, position);
                         // Add barrel here
                         barrels.Add(copy);
                     }

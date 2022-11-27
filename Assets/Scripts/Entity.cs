@@ -31,7 +31,7 @@ public class Entity : ScriptableObject
     public Room room;
     public (Action, Vector3Int) preparedAction;
 
-    public void SetRoom(Room dungeon, Vector3Int spawnLocation)
+    public void Initialize(Room dungeon, Vector3Int spawnLocation)
     {
         this.room = dungeon;
         this.location = spawnLocation;
@@ -141,7 +141,7 @@ public class Entity : ScriptableObject
 
     protected virtual void Interact()
     {
-        // Does nothing
+        // Does nothing for now
     }
 
     public bool AttackLocation(Vector3 location, Weapon weapon)

@@ -232,7 +232,7 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
             GameManager.instance.SetDefaultCursor();
 
             // Deselect action
-            // GameManager.instance.SelectAction(null);
+            GameManager.instance.SelectAction(null);
         }
 
     }

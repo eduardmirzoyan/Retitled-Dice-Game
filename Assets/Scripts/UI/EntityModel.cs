@@ -15,7 +15,7 @@ public class EntityModel : MonoBehaviour
     [SerializeField] private SpriteRenderer modelSpriteRenderer;
     [SerializeField] private Animator modelAnimator;
 
-    [Header("Offahnd Weapon")]
+    [Header("Offhand Weapon")]
     [SerializeField] private SpriteRenderer mainWeaponSpriteRenderer;
     [SerializeField] private Animator mainWeaponAnimator;
     [SerializeField] private Transform mainWeaponHolder;
@@ -76,9 +76,9 @@ public class EntityModel : MonoBehaviour
         offsetTransform.localPosition = entity.offsetDueToSize;
 
         // Sub to events
-        GameEvents.instance.onEntityStartMove += StartMove;
+        GameEvents.instance.onEntityMoveStart += StartMove;
         GameEvents.instance.onEntityMove += MoveEntity;
-        GameEvents.instance.onEntityStopMove += StopMove;
+        GameEvents.instance.onEntityMoveStop += StopMove;
 
         GameEvents.instance.onEntityWarp += WarpEntity;
         GameEvents.instance.onEntityTakeDamage += TakeDamage;
@@ -88,15 +88,15 @@ public class EntityModel : MonoBehaviour
 
         GameEvents.instance.onEntityDrawWeapon += DrawWeapon;
         GameEvents.instance.onEntitySheatheWeapon += SheatheWeapon;
-        GameEvents.instance.onRemoveEntity += RemoveEntity;
+        GameEvents.instance.onEnityDespawn += Despawn;
     }
 
     public void Uninitialize()
     {
         // Unsub to events
-        GameEvents.instance.onEntityStartMove -= StartMove;
+        GameEvents.instance.onEntityMoveStart -= StartMove;
         GameEvents.instance.onEntityMove -= MoveEntity;
-        GameEvents.instance.onEntityStopMove -= StopMove;
+        GameEvents.instance.onEntityMoveStop -= StopMove;
 
         GameEvents.instance.onEntityWarp -= WarpEntity;
         GameEvents.instance.onEntityTakeDamage -= TakeDamage;
@@ -106,7 +106,7 @@ public class EntityModel : MonoBehaviour
 
         GameEvents.instance.onEntityDrawWeapon -= DrawWeapon;
         GameEvents.instance.onEntitySheatheWeapon -= SheatheWeapon;
-        GameEvents.instance.onRemoveEntity -= RemoveEntity;
+        GameEvents.instance.onEnityDespawn -= Despawn;
     }
 
     private void OnDestroy()
@@ -114,7 +114,7 @@ public class EntityModel : MonoBehaviour
         Uninitialize();
     }
 
-    private void RemoveEntity(Entity entity)
+    private void Despawn(Entity entity)
     {
         if (this.entity == entity)
         {
@@ -126,7 +126,7 @@ public class EntityModel : MonoBehaviour
         }
     }
 
-    private void StartMove(Entity entity, Vector3Int direction)
+    private void StartMove(Entity entity)
     {
         if (this.entity == entity)
         {
@@ -213,8 +213,6 @@ public class EntityModel : MonoBehaviour
         // Move transform
         transform.position = newLocation;
     }
-
-
 
     private void FlipModel(Vector3 direction)
     {
