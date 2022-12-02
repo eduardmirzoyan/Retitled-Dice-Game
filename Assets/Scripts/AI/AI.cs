@@ -81,6 +81,7 @@ public class AI : ScriptableObject
 
     public virtual List<(Action, Vector3Int)> GenerateNewBestDecision(Entity entity, Room room, Entity targetEntity)
     {
+
         // Store best action w/ heuristic
         List<(Action, Vector3Int)> bestChoiceSquence = new List<(Action, Vector3Int)>();
         float bestValue = 0f;
@@ -97,10 +98,12 @@ public class AI : ScriptableObject
             // FIXME
             List<List<(Action, Vector3Int)>> sequences = new List<List<(Action, Vector3Int)>>();
             GenerateSequences(actionsPermutation, entity, room, 0, new List<(Action, Vector3Int)>(), sequences);
-            Debug.Log(sequences.Count);
+            
+            // Debug
+            Debug.Log("# of possible turns: " + sequences.Count);
             foreach (var seq in sequences)
             {
-                Debug.Log(seq.Count);
+                Debug.Log("# of actions in move: " + seq.Count);
             }
             
             // // REMOVE LATER
@@ -243,26 +246,26 @@ public class AI : ScriptableObject
 
 
     /// This is the copy paste version translated from python
-    private void GenerateSequences(List<Action> actions, int index, List<Action> path)
-    {
-        // TODO FINISH?
+    // private void GenerateSequences(List<Action> actions, int index, List<Action> path)
+    // {
+    //     // TODO FINISH?
 
-        // If we reached the end, add the calculated path to result
-        if (index >= actions.Count) {
+    //     // If we reached the end, add the calculated path to result
+    //     if (index >= actions.Count) {
             
             
-            return;
-        }
+    //         return;
+    //     }
 
-        foreach (var action in actions)
-        {
-            // Add action to path
-            path.Add(action);
+    //     foreach (var action in actions)
+    //     {
+    //         // Add action to path
+    //         path.Add(action);
 
-            // Recurse
-            GenerateSequences(actions, index + 1, path);
-        }
-    }
+    //         // Recurse
+    //         GenerateSequences(actions, index + 1, path);
+    //     }
+    // }
 
     /// This is gonna be the ideal version
     private void GenerateSequences(List<Action> actions, Entity entity, Room room, int index, List<(Action, Vector3Int)> path, List<List<(Action, Vector3Int)>> sequences)
@@ -274,8 +277,10 @@ public class AI : ScriptableObject
         {
             // Here is where we should calculate final heuristic and store the best
 
-            // Add path to all sequences
+            // Add a copy of path to all sequences
             sequences.Add(path);
+            // // Remove last action
+            // path.RemoveAt(actions.Count);
             
             // Finish path
             return;
@@ -288,14 +293,16 @@ public class AI : ScriptableObject
         // TODO make sure valid locations takes the position of the current entity
         foreach (var location in actions[index].GetValidLocations(entity.location, room))
         {
-            // Add pair to path
-            path.Add((actions[index], location));
+            // Make copy
+            var pathCopy = new List<(Action, Vector3Int)>(path);
+            // Add pair to copy
+            pathCopy.Add((actions[index], location));
 
             // TODO: Need to make copy of the room + entity, perform this action on the copy
             // Then send copy into the recursive call
 
-            // Recurse 1 level deeper
-            GenerateSequences(actions, entity, room, index + 1, path, sequences);
+            // Recurse 1 level deeper with copy
+            GenerateSequences(actions, entity, room, index + 1, pathCopy, sequences);
         }
     }
 
