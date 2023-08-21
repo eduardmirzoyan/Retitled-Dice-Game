@@ -36,7 +36,7 @@ public class RoomUI : MonoBehaviour
             return;
         }
         instance = this;
-        
+
         // Set default inspect
         selectedLocation = Vector3Int.back;
     }
@@ -195,7 +195,7 @@ public class RoomUI : MonoBehaviour
         // Spawn model in container
         var projModel = Instantiate(projectileModelPrefab, worldLocation, Quaternion.identity, projectilesTransform).GetComponent<ProjectileModel>();
         // Initialize
-        projModel.Initialize(projectil, this); 
+        projModel.Initialize(projectil, this);
     }
 
     private void InspectLocation(Vector3Int location)

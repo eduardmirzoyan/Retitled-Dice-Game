@@ -10,6 +10,8 @@ public class Room : ScriptableObject
     public int height;
     public int padding;
 
+    // public RoomTile[,] roomTiles;
+
     /// <summary>
     /// 0 = empty; 1 = exists
     /// </summary>
@@ -53,6 +55,9 @@ public class Room : ScriptableObject
         this.wallSpawnChance = wallSpawnChance;
         this.barrelSpawnChance = barrelSpawnChance;
         this.barrel = barrel;
+
+        // Generate world tiles
+        // GenerateTiles();
 
         // Generate floor
         GenerateFloor();
@@ -144,6 +149,115 @@ public class Room : ScriptableObject
     public Entity[] GetAllEntities()
     {
         return new Entity[] { player }.Concat(enemies).ToArray();
+    }
+
+    private void GenerateTiles()
+    {
+        // roomTiles = new RoomTile[width + 2 * padding, height + 2 * padding];
+
+        // Get all 4 possible corners
+        Vector3Int[] possibleEntranceCorners = {new Vector3Int(padding + 1, padding + 1), new Vector3Int(padding + 1, padding + height - 2),
+                                                new Vector3Int(padding + width - 2, padding + height - 2), new Vector3Int(padding + width - 2, padding + 1)};
+
+        // Set entrance to a random set of corners
+        var entranceLocation = possibleEntranceCorners[Random.Range(0, possibleEntranceCorners.Length)];
+
+        // Set exit based on entrance
+        var exitLocation = new Vector3Int(2 * padding + width - entranceLocation.x - 1, 2 * padding + height - entranceLocation.y - 1);
+
+        for (int i = 0; i < width + 2 * padding; i++)
+        {
+            for (int j = 0; j < height + 2 * padding; j++)
+            {
+                // Create new tile SO
+                var tile = ScriptableObject.CreateInstance<RoomTile>();
+                var location = new Vector3Int(i, j);
+                // Initialize it to default
+                tile.Initialize(location, TileType.Floor, PickUpType.None, this);
+
+                TrySetPadding(tile);
+
+                TrySpawnEntrance(tile, entranceLocation);
+
+                TrySpawnExit(tile, exitLocation);
+
+                TrySpawnWall(tile, wallSpawnChance);
+
+                // TrySpawnGold(tile, goldSpawnChance);
+
+                // TrySpawnBarrel(tile, barrelSpawnChance);
+
+                // Add tile to list
+                // roomTiles[i, j] = tile;
+
+                // Debug
+                // Debug.Log("Created Tile: " + new Vector2Int(i, j).ToString());
+            }
+        }
+    }
+
+    private void TrySetPadding(RoomTile tile)
+    {
+        // If you are in the padding range then add wall
+        if (tile.location.x < padding || tile.location.x >= width + padding || tile.location.y < padding || tile.location.y >= height + padding)
+        {
+            tile.tileType = TileType.Wall;
+        }
+    }
+
+    private void TrySpawnEntrance(RoomTile tile, Vector3Int entranceLocation)
+    {
+        if (tile.location != entranceLocation)
+            return;
+
+        tile.tileType = TileType.Entrance;
+    }
+
+    private void TrySpawnExit(RoomTile tile, Vector3Int exitLocation)
+    {
+        if (tile.location != exitLocation)
+            return;
+
+        tile.tileType = TileType.Exit;
+    }
+
+    private void TrySpawnWall(RoomTile tile, int wallSpawnChance)
+    {
+        // Do nothing if not a floor tile
+        if (tile.tileType != TileType.Floor)
+            return;
+
+        bool flag = Random.Range(0, 100) < wallSpawnChance;
+        if (flag)
+        {
+            tile.tileType = TileType.Wall;
+        }
+    }
+
+    private void TrySpawnGold(RoomTile tile, int goldSpawnChance)
+    {
+        // Do nothing if not a floor tile
+        if (tile.tileType != TileType.Floor)
+            return;
+
+        bool flag = Random.Range(0, 100) < goldSpawnChance;
+        if (flag)
+        {
+            // TODO
+        }
+    }
+
+    private void TrySpawnBarrel(RoomTile tile, int barrelSpawnChance)
+    {
+        // Do nothing if not a floor tile
+        if (tile.tileType != TileType.Floor)
+            return;
+
+        bool flag = Random.Range(0, 100) < barrelSpawnChance;
+        if (flag)
+        {
+            // TODO
+        }
     }
 
     private void GenerateFloor()

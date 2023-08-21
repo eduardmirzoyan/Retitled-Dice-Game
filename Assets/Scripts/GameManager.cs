@@ -107,11 +107,11 @@ public class GameManager : MonoBehaviour
                 // Spawn enemies equal to floor number
                 for (int i = 0; i < DataManager.instance.GetRoomNumber(); i++)
                 {
-                    // Spawn a core
-                    var core = enemyGenerator.GenerateCore();
+                    // // Spawn a core
+                    // var core = enemyGenerator.GenerateCore();
 
-                    // Populate the room
-                    room.Populate(core);
+                    // // Populate the room
+                    // room.Populate(core);
 
                     // Generate a random enemy
                     var enemy = enemyGenerator.GenerateEnemy();

@@ -89,6 +89,9 @@ public class EntityModel : MonoBehaviour
         GameEvents.instance.onEntityDrawWeapon += DrawWeapon;
         GameEvents.instance.onEntitySheatheWeapon += SheatheWeapon;
         GameEvents.instance.onEnityDespawn += Despawn;
+
+        // Set name
+        transform.name = entity.name + " Model";
     }
 
     public void Uninitialize()
