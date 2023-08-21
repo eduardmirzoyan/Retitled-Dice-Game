@@ -88,7 +88,7 @@ public class EntityModel : MonoBehaviour
 
         GameEvents.instance.onEntityDrawWeapon += DrawWeapon;
         GameEvents.instance.onEntitySheatheWeapon += SheatheWeapon;
-        GameEvents.instance.onEnityDespawn += Despawn;
+        GameEvents.instance.onEntityDespawn += Despawn;
 
         // Set name
         transform.name = entity.name + " Model";
@@ -109,7 +109,7 @@ public class EntityModel : MonoBehaviour
 
         GameEvents.instance.onEntityDrawWeapon -= DrawWeapon;
         GameEvents.instance.onEntitySheatheWeapon -= SheatheWeapon;
-        GameEvents.instance.onEnityDespawn -= Despawn;
+        GameEvents.instance.onEntityDespawn -= Despawn;
     }
 
     private void OnDestroy()
@@ -266,7 +266,7 @@ public class EntityModel : MonoBehaviour
         if (this.entity == entity)
         {
             // Debug
-            print("Attacking dir: " + direction);
+            // print("Attacking dir: " + direction);
 
             // Flip model if needed
             FlipModel(direction);

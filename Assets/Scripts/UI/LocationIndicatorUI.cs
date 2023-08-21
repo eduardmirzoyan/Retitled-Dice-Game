@@ -37,25 +37,6 @@ public class LocationIndicatorUI : MonoBehaviour, IPointerEnterHandler, IPointer
         // Hide line
         lineRenderer.enabled = false;
 
-        // Draw path from source to location
-        // lineRenderer.SetPosition(0, sourceLocation);
-        // lineRenderer.SetPosition(1, targetLocation);
-        // 
-
-        // Hide line if needed
-        // if (drawOnHover)
-        // {
-        //     lineRenderer.enabled = false;
-        //     actionIcon.enabled = false;
-        // }
-
-        // Hide outline if needed
-        // if (isPreview)
-        // {
-        //     outlineImage.enabled = false;
-        // }
-
-
         // Sub
         GameEvents.instance.onActionSelect += Unintialize;
         GameEvents.instance.onActionPerformEnd += Unintialize;
@@ -87,15 +68,6 @@ public class LocationIndicatorUI : MonoBehaviour, IPointerEnterHandler, IPointer
         {
             // Destroy self
             Destroy(gameObject);
-        }
-    }
-
-    private void RemoveHighlight(Entity entity, Vector3Int location)
-    {
-        if (this.entity == entity)
-        {
-            // Remove highlight
-            outlineImage.enabled = false;
         }
     }
 

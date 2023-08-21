@@ -15,9 +15,6 @@ public class FreeMoveAction : Action
 
         var validLocations = new List<Vector3Int>();
         int stepCount = 0;
-        
-        // Add start?
-        // validLocations.Add(startLocation);
 
         // Store previous locations
         var previousLocations = new List<Vector3Int>();
@@ -68,7 +65,7 @@ public class FreeMoveAction : Action
 
         // Keep looping while there is a path
         while (path.Count > 0)
-        {   
+        {
             // Calculate direction
             Vector3Int direction = path[0] - entity.location;
 

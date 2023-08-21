@@ -5,7 +5,7 @@ using UnityEngine;
 public class GuardianAI : AI
 {
     // TODO
-    public override List<(Action, Vector3Int)> GenerateNewBestDecision(Entity entity, Room room, Entity targetEntity)
+    public override List<(Action, Vector3Int)> GenerateSequenceOfActions(Entity entity, Room room, Entity targetEntity)
     {
 
         // TODO

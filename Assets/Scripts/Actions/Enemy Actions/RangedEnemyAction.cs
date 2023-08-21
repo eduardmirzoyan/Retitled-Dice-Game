@@ -2,38 +2,46 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Actions/Enemy/Melee")]
-public class MeleeEnemyAction : EnemyAction
+[CreateAssetMenu(menuName = "Actions/Enemy/Ranged")]
+public class RangedEnemyAction : EnemyAction
 {
     public List<Vector3Int> tilesToWatch;
     private Entity watcher;
 
     public override List<Vector3Int> GetValidLocations(Vector3Int startLocation, Room room)
     {
-        return room.GetNeighbors(startLocation, true);
+        List<Vector3Int> result = new List<Vector3Int>();
+
+        // For each cardinal direction
+        foreach (var location in room.GetNeighbors(startLocation, true))
+        {
+            Vector3Int direction = location - startLocation;
+            result.Add(room.GetFirstValidLocation(startLocation, direction, true));
+        }
+
+        return result;
     }
 
     public override IEnumerator Perform(Entity entity, Vector3Int targetLocation, Room room)
     {
-        // Mathematically calculate side tiles
-        Vector3Int direction = targetLocation - entity.location;
-        Vector3Int side1 = Vector3Int.RoundToInt(Vector3.Cross(direction, Vector3Int.forward));
-        Vector3Int side2 = Vector3Int.RoundToInt(Vector3.Cross(direction, Vector3Int.back));
-
-        // Watch the tiles left and right of target location if valid
-        tilesToWatch = new List<Vector3Int>() { targetLocation, targetLocation + side1, targetLocation + side2 };
+        // Watch the tiles in a line between end points
+        tilesToWatch = room.GetAllValidLocationsAlongPath(entity.location, targetLocation, true);
         watcher = entity;
 
+        Debug.Log(tilesToWatch.Count);
+
         // Trigger events
-        GameEvents.instance.TriggerOnEntityWatchLocation(null, targetLocation);
-        GameEvents.instance.TriggerOnEntityWatchLocation(null, targetLocation + side1);
-        GameEvents.instance.TriggerOnEntityWatchLocation(null, targetLocation + side2);
+        foreach (var location in tilesToWatch)
+        {
+            GameEvents.instance.TriggerOnEntityWatchLocation(null, location);
+        }
 
         // Sub to events
         GameEvents.instance.onEntityEnterTile += Retaliate;
         GameEvents.instance.onTurnStart += DisableRetaliation;
 
         // Pull out weapon
+        Vector3Int direction = targetLocation - entity.location;
         GameEvents.instance.TriggerOnEntityDrawWeapon(watcher, direction, weapon);
 
         // Gamemanger should handle this wait time
@@ -46,6 +54,7 @@ public class MeleeEnemyAction : EnemyAction
         if (entity is Player && tilesToWatch.Contains(location))
         {
             // Attack entity
+            // CHANGE THIS TO RANGED?!
             watcher.MeleeAttackEntity(entity, weapon);
 
             Reset();

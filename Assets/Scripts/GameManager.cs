@@ -273,7 +273,7 @@ public class GameManager : MonoBehaviour
         if (selectedEntity.AI != null)
         {
             // Get best sequence of actions
-            bestChoiceSequence = selectedEntity.AI.GenerateNewBestDecision(selectedEntity, room, room.player);
+            bestChoiceSequence = selectedEntity.AI.GenerateSequenceOfActions(selectedEntity, room, room.player);
 
             // Then start performing those actions
             yield return PerformEnemyTurn();
@@ -435,7 +435,7 @@ public class GameManager : MonoBehaviour
         if (turnQueue.Count == 0)
         {
             // Debug
-            print("Empty queue, new round: " + roundNumber + 1);
+            print("Empty queue, new round: " + (roundNumber + 1));
 
             // Make new round
             yield return StartRound();

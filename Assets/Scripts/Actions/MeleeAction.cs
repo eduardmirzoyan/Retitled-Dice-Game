@@ -85,7 +85,7 @@ public class MeleeAction : Action
             entity.MoveToward(direction);
 
             // Attack the location that you're at
-            bool res = entity.AttackLocation(entity.location, weapon);
+            bool res = entity.MeleeAttackLocation(entity.location, weapon);
 
             // Trigger event
             if (res)

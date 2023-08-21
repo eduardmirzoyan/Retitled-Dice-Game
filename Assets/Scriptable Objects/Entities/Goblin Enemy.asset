@@ -23,7 +23,7 @@ MonoBehaviour:
   modelController: {fileID: 9100000, guid: f094f2d8ff32d664e941cd1f7d3a3217, type: 2}
   hitEffectPrefab: {fileID: 7270536486772163001, guid: 335c93a61b62ca84e9f26440c7f3ed0e, type: 3}
   offsetDueToSize: {x: 0, y: 0, z: 0}
-  AI: {fileID: 11400000, guid: 1bad9658d855af047b8e9141254e912d, type: 2}
+  AI: {fileID: 11400000, guid: 88e388c8d016d6043b15268f7555777e, type: 2}
   innateActions: []
   mainWeapon: {fileID: 11400000, guid: 1610aec8d0a5a934ebbd5015d4b681b8, type: 2}
   offWeapon: {fileID: 0}

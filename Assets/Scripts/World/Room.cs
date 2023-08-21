@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEditor.Experimental.GraphView;
 
 [CreateAssetMenu]
 public class Room : ScriptableObject
@@ -424,31 +425,31 @@ public class Room : ScriptableObject
     }
 
 
-    public List<Vector3Int> GetNeighbors(Vector3Int location)
+    public List<Vector3Int> GetNeighbors(Vector3Int location, bool ignoreEntity = false)
     {
         var neighbors = new List<Vector3Int>();
 
         // Check cardinal directions
         var position = location + Vector3Int.up;
-        if (IsValidLocation(position))
+        if (IsValidLocation(position, ignoreEntity))
         {
             neighbors.Add(position);
         }
 
         position = location + Vector3Int.right;
-        if (IsValidLocation(position))
+        if (IsValidLocation(position, ignoreEntity))
         {
             neighbors.Add(position);
         }
 
         position = location + Vector3Int.down;
-        if (IsValidLocation(position))
+        if (IsValidLocation(position, ignoreEntity))
         {
             neighbors.Add(position);
         }
 
         position = location + Vector3Int.left;
-        if (IsValidLocation(position))
+        if (IsValidLocation(position, ignoreEntity))
         {
             neighbors.Add(position);
         }
@@ -458,7 +459,7 @@ public class Room : ScriptableObject
 
     public bool IsValidLocation(Vector3Int location, bool ignoreEntity = false)
     {
-        // Debug.Log(location);
+        Debug.Log(location);
 
         // Make sure there is no wall
         if (walls[location.x][location.y] != 0)
@@ -517,7 +518,7 @@ public class Room : ScriptableObject
         if (endMustBeClear)
         {
             // Make sure there is no enemy on the last tile regardless of conditions
-            if (!IsValidLocation(end))
+            if (!IsValidLocation(end, ignoreEntity))
             {
                 return false;
             }
@@ -531,6 +532,43 @@ public class Room : ScriptableObject
 
         // Else we good :)
         return true;
+    }
+
+    public Vector3Int GetFirstValidLocation(Vector3Int start, Vector3Int direction, bool ignoreEntity = false)
+    {
+        while (IsValidLocation(start, ignoreEntity))
+        {
+            start += direction;
+        }
+
+        return start;
+    }
+
+    public List<Vector3Int> GetAllValidLocationsAlongPath(Vector3Int start, Vector3Int end, bool ignoreEntity = false)
+    {
+        Debug.Log("Start: " + start);
+        Debug.Log("End: " + end);
+
+        List<Vector3Int> result = new List<Vector3Int>();
+
+        Vector3Int direction = end - start;
+        direction.Clamp(-Vector3Int.one, Vector3Int.one);
+
+        while (start != end)
+        {
+            // Check to see if the location is valid
+            if (!IsValidLocation(start + direction, ignoreEntity))
+            {
+                break;
+            }
+
+            result.Add(start + direction);
+
+            // Increment start
+            start += direction;
+        }
+
+        return result;
     }
 
     public void UseKey()

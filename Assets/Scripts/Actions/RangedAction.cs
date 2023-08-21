@@ -85,7 +85,7 @@ public class RangedAction : Action
         // GameEvents.instance.TriggerOnEntitySheatheWeapon(entity, weapon);
 
         // Damage location
-        entity.AttackLocation(targetLocation, weapon);
+        entity.MeleeAttackLocation(targetLocation, weapon);
 
         // Finnish!
     }

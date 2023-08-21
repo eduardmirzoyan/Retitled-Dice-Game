@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Enemy Generator
   m_EditorClassIdentifier: 
   possibleEnemies:
-  - {fileID: 11400000, guid: f2e6bff7fa56b7c4f839a49b81475266, type: 2}
+  - {fileID: 11400000, guid: 3be0a956ef097ed4e8563b13c3972f0a, type: 2}
   shopkeeper: {fileID: 11400000, guid: 00bce857e2abbbf4abd58c0a57b986c3, type: 2}
   core: {fileID: 11400000, guid: 60edfca14cf907b4c910c7104cee26a5, type: 2}
   shopItemGenerator: {fileID: 11400000, guid: b642c2acfcb26924ebf7a4b19f3f7fe0, type: 2}

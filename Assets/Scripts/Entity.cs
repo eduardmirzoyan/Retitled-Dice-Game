@@ -125,6 +125,7 @@ public class Entity : ScriptableObject
 
         // Trigger event
         GameEvents.instance.TriggerOnEntityMove(this);
+        GameEvents.instance.TriggerOnEntityEnterTile(this, location);
 
         // Interact with new location
         Interact();
@@ -144,7 +145,7 @@ public class Entity : ScriptableObject
         // Does nothing for now
     }
 
-    public bool AttackLocation(Vector3 location, Weapon weapon)
+    public bool MeleeAttackLocation(Vector3 location, Weapon weapon = null)
     {
         var targets = new List<Entity>();
 
@@ -167,6 +168,16 @@ public class Entity : ScriptableObject
         }
 
         return false;
+    }
+
+    public void MeleeAttackEntity(Entity target, Weapon weapon = null)
+    {
+        // Currently deal 1 damage, but this might change?
+        target.TakeDamage(1);
+
+        // Trigger event
+        if (weapon != null)
+            GameEvents.instance.TriggerOnEntityMeleeAttack(this, weapon);
     }
 
     public void AddGold(int amount)

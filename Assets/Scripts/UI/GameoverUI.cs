@@ -15,7 +15,8 @@ public class GameoverUI : MonoBehaviour
     private Entity entity;
 
     public static GameoverUI instance;
-    private void Awake() {
+    private void Awake()
+    {
         // Singleton logic
         if (GameoverUI.instance != null)
         {
@@ -27,25 +28,30 @@ public class GameoverUI : MonoBehaviour
         canvasGroup = GetComponentInChildren<CanvasGroup>();
     }
 
-    private void Start() {
+    private void Start()
+    {
         // Sub to events
-        GameEvents.instance.onEnityDespawn += ShowMenu;
+        GameEvents.instance.onEntityDespawn += ShowMenu;
     }
 
-    private void OnDestroy() {
+    private void OnDestroy()
+    {
         // Unsub
-        GameEvents.instance.onEnityDespawn -= ShowMenu;
+        GameEvents.instance.onEntityDespawn -= ShowMenu;
     }
 
-    private void ShowMenu(Entity entity) {
+    private void ShowMenu(Entity entity)
+    {
         // If player was killed, show menu
-        if (entity is Player) {
+        if (entity is Player)
+        {
             this.entity = entity;
             StartCoroutine(DelayedDisplay(delayDuration));
         }
     }
 
-    private IEnumerator DelayedDisplay(float duration) {
+    private IEnumerator DelayedDisplay(float duration)
+    {
         // Wait
         yield return new WaitForSeconds(duration);
 
@@ -58,7 +64,8 @@ public class GameoverUI : MonoBehaviour
         scoreText.text = "Score: " + entity.gold;
     }
 
-    public void Restart() {
+    public void Restart()
+    {
         // Create new character
         DataManager.instance.CreateNewPlayer();
 

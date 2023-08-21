@@ -58,6 +58,7 @@
      <Compile Include="Assets\Scripts\World\KeyPickup.cs" />
      <Compile Include="Assets\Scripts\AI\IdleAI.cs" />
      <Compile Include="Assets\Scripts\Items\Weapon.cs" />
+     <Compile Include="Assets\Scripts\Actions\Enemy Actions\MeleeEnemyAction.cs" />
      <Compile Include="Assets\Scripts\UI\TooltipTriggerUI.cs" />
      <Compile Include="Assets\Scripts\World\RoomExit.cs" />
      <Compile Include="Assets\Scripts\World\ItemGenerator.cs" />
@@ -75,6 +76,8 @@
      <Compile Include="Assets\Scripts\Game Feel\FloatingTextManager.cs" />
      <Compile Include="Assets\Scripts\UI\ProjectileModel.cs" />
      <Compile Include="Assets\Scripts\Items\HealingPotion.cs" />
+     <Compile Include="Assets\Scripts\Actions\Enemy Actions\EnemyAction.cs" />
+     <Compile Include="Assets\Scripts\World\RoomTile.cs" />
      <Compile Include="Assets\Scripts\Actions\MoveAction.cs" />
      <Compile Include="Assets\Scripts\Die.cs" />
      <Compile Include="Assets\Scripts\Game Feel\HitFreeze.cs" />
@@ -112,9 +115,9 @@
      <Compile Include="Assets\Scripts\AI\AI.cs" />
      <Compile Include="Assets\Scripts\Actions\ShopAction.cs" />
      <Compile Include="Assets\Scripts\Projectiles\BasicProjectile.cs" />
-     <Compile Include="Assets\Scripts\World\RoomTile.cs" />
-     <Compile Include="Assets\Scripts\Actions\Enemy Actions\EnemyAction.cs" />
-     <Compile Include="Assets\Scripts\Actions\Enemy Actions\MeleeEnemyAction.cs" />
+     <Compile Include="Assets\Scripts\AI\MeleeAI.cs" />
+     <Compile Include="Assets\Scripts\AI\RangedAI.cs" />
+     <Compile Include="Assets\Scripts\Actions\Enemy Actions\RangedEnemyAction.cs" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />

@@ -19,7 +19,7 @@ public class EquipmentUI : MonoBehaviour
         // Sub
         GameEvents.instance.onEnterFloor += Initialize;
         GameEvents.instance.onItemInsert += EquipWeapon;
-        GameEvents.instance.onEnityDespawn += CheckUnlock;
+        GameEvents.instance.onEntityDespawn += CheckUnlock;
     }
 
     private void OnDestroy()
@@ -27,7 +27,7 @@ public class EquipmentUI : MonoBehaviour
         // Unsub
         GameEvents.instance.onEnterFloor -= Initialize;
         GameEvents.instance.onItemInsert -= EquipWeapon;
-        GameEvents.instance.onEnityDespawn -= CheckUnlock;
+        GameEvents.instance.onEntityDespawn -= CheckUnlock;
     }
 
     private void Initialize(Room room)
@@ -88,7 +88,7 @@ public class EquipmentUI : MonoBehaviour
     {
         // Lock slots
         primaryWeaponSlotUI.Lock();
-        
+
         secondaryWeaponSlotUI.Lock();
 
         isLocked = true;

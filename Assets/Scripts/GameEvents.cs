@@ -20,10 +20,9 @@ public class ActionInfo
 
 public class GameEvents : MonoBehaviour
 {
+    // Game state
     public event Action<Room> onEnterFloor;
     public event Action<Room> onExitFloor;
-
-    // Game state
     public event Action<Entity> onTurnStart;
     public event Action<Entity> onTurnEnd;
 
@@ -33,7 +32,6 @@ public class GameEvents : MonoBehaviour
     public event Action<Entity, Action, Vector3Int, Room> onActionPerformStart;
     public event Action<Entity, Action, Vector3Int, Room> onActionPerformEnd;
 
-
     // Dice based
     public event Action<Die> onDieRoll;
     public event Action<Die> onDieExhaust;
@@ -41,7 +39,7 @@ public class GameEvents : MonoBehaviour
 
     // Visuals
     public event Action<Entity> onEntitySpawn;
-    public event Action<Entity> onEnityDespawn;
+    public event Action<Entity> onEntityDespawn;
     public event Action<Entity> onEntityMoveStart;
     public event Action<Entity> onEntityMove;
     public event Action<Entity> onEntityMoveStop;
@@ -51,6 +49,7 @@ public class GameEvents : MonoBehaviour
     public event Action<Entity, Vector3Int, Weapon> onEntityRangedAttack;
     public event Action<Entity, Vector3Int, Weapon, ActionInfo> onEntityRangedAttackTimed;
     public event Action<Entity> onEntityWarp;
+    public event Action<Entity, Vector3Int> onEntityWatchLocation;
 
     // Projectile visuals
     public event Action<Projectil> onProjectileSpawn;
@@ -63,12 +62,14 @@ public class GameEvents : MonoBehaviour
     public event Action<Entity, int> onEntityGainLevel;
     public event Action<Entity, int> onEntityGainGold;
 
+    // Common Events
     public event Action<Entity, int> onPickup;
     public event Action<int> onUseKey;
+    public event Action<Entity, Vector3Int> onEntityEnterTile;
 
+    // UI Based
     public event Action<Inventory> onOpenShop;
     public event System.Action onCloseShop;
-
     public event Action<ItemUI, ItemSlotUI> onItemInsert;
     public event Action<Entity, Weapon> onWeaponEquip;
     public event Action<Inventory, bool> onToggleInventory;
@@ -122,9 +123,9 @@ public class GameEvents : MonoBehaviour
 
     public void TriggerOnEntityDespawn(Entity entity)
     {
-        if (onEnityDespawn != null)
+        if (onEntityDespawn != null)
         {
-            onEnityDespawn(entity);
+            onEntityDespawn(entity);
         }
     }
 
@@ -298,6 +299,14 @@ public class GameEvents : MonoBehaviour
         }
     }
 
+    public void TriggerOnEntityEnterTile(Entity entity, Vector3Int location)
+    {
+        if (onEntityEnterTile != null)
+        {
+            onEntityEnterTile(entity, location);
+        }
+    }
+
     public void TriggerOnGainExperience(Entity entity, int amount)
     {
         if (onEntityGainExperience != null)
@@ -361,6 +370,18 @@ public class GameEvents : MonoBehaviour
             onInspectAction(entity, action);
         }
     }
+
+    public void TriggerOnEntityWatchLocation(Entity entity, Vector3Int location)
+    {
+        if (onEntityWatchLocation != null)
+        {
+            onEntityWatchLocation(entity, location);
+        }
+    }
+
+
+
+    // WORK IN PROGRESS??
 
     public void TriggerOnProjectileSpawn(Projectil projectile)
     {

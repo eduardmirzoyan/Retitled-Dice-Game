@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.XR;
 
 public class IndicatorDisplayUI : MonoBehaviour
 {
@@ -15,9 +16,19 @@ public class IndicatorDisplayUI : MonoBehaviour
     private void Start()
     {
         // Sub
-        GameEvents.instance.onActionSelect += HandleChoices;
+        GameEvents.instance.onActionSelect += DisplayChoices;
         GameEvents.instance.onLocationSelect += ClearChoices;
         GameEvents.instance.onInspectAction += PreviewIndicators;
+        GameEvents.instance.onEntityWatchLocation += HighlightTile;
+    }
+
+    private void OnDestroy()
+    {
+        // Unsub
+        GameEvents.instance.onActionSelect -= DisplayChoices;
+        GameEvents.instance.onLocationSelect -= ClearChoices;
+        GameEvents.instance.onInspectAction -= PreviewIndicators;
+        GameEvents.instance.onEntityWatchLocation += HighlightTile;
     }
 
     private void SpawnIndicator(Entity entity, Action action, Vector3Int location)
@@ -32,15 +43,7 @@ public class IndicatorDisplayUI : MonoBehaviour
         indicatorUI.Initialize(entity, location, entityWorldLocation, targetWorldLocation, action);
     }
 
-    private void OnDestroy()
-    {
-        // Unsub
-        GameEvents.instance.onActionSelect -= HandleChoices;
-        GameEvents.instance.onLocationSelect -= ClearChoices;
-        GameEvents.instance.onInspectAction -= PreviewIndicators;
-    }
-
-    private void HandleChoices(Entity entity, Action action)
+    private void DisplayChoices(Entity entity, Action action)
     {
         if (entity != null)
         {
@@ -93,5 +96,14 @@ public class IndicatorDisplayUI : MonoBehaviour
                 indicatorUI.Initialize(entity, location, entityWorldLocation, targetWorldLocation, action, true);
             }
         }
+    }
+
+    private void HighlightTile(Entity entity, Vector3Int location)
+    {
+        // print("Threaened: " + location);
+
+        // Set tile to color
+        selectTilemap.SetTile(location, highlightTile);
+        selectTilemap.SetColor(location, Color.red);
     }
 }
