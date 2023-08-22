@@ -7,15 +7,8 @@ public class EnemyGenerator : ScriptableObject
 {
     public List<Entity> possibleEnemies;
     public Entity shopkeeper;
-    public Core core;
 
     public ItemGenerator shopItemGenerator;
-
-    public Core GenerateCore()
-    {
-        // Return a copy
-        return (Core) core.Copy();
-    }
 
     public Entity GenerateEnemy()
     {
@@ -46,7 +39,7 @@ public class EnemyGenerator : ScriptableObject
         for (int i = 0; i < shopSize; i++)
         {
             // Add a random item
-            inventory.AddItemToEnd(shopItemGenerator.GenerateItem());   
+            inventory.AddItemToEnd(shopItemGenerator.GenerateItem());
         }
         // Set inventory
         copy.inventory = inventory;

@@ -17,7 +17,8 @@ public class BasicProjectile : Projectil
             MoveToward(direction);
 
             // Make sure you don't attack the spawner
-            if (location != entity.location) {
+            if (location != entity.location)
+            {
 
                 // Attempt to attack location, if so break
                 if (AttackLocation()) break;
@@ -43,8 +44,8 @@ public class BasicProjectile : Projectil
 
         // Consider player, enemies and barrels
         targets.Add(room.player);
-        targets.AddRange(room.enemies);
-        targets.AddRange(room.barrels);
+        targets.AddRange(room.hostileEntities);
+        targets.AddRange(room.neutralEntities);
 
         // Check if any entities are on the same tile, if so damage them
         foreach (var target in targets)
@@ -61,5 +62,5 @@ public class BasicProjectile : Projectil
 
         return false;
     }
-    
+
 }

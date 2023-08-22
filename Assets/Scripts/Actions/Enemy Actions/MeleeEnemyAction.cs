@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR;
 
 [CreateAssetMenu(menuName = "Actions/Enemy/Melee")]
 public class MeleeEnemyAction : EnemyAction
@@ -25,9 +26,9 @@ public class MeleeEnemyAction : EnemyAction
         watcher = entity;
 
         // Trigger events
-        GameEvents.instance.TriggerOnEntityWatchLocation(null, targetLocation);
-        GameEvents.instance.TriggerOnEntityWatchLocation(null, targetLocation + side1);
-        GameEvents.instance.TriggerOnEntityWatchLocation(null, targetLocation + side2);
+        GameEvents.instance.TriggerOnEntityWatchLocation(targetLocation);
+        GameEvents.instance.TriggerOnEntityWatchLocation(targetLocation + side1);
+        GameEvents.instance.TriggerOnEntityWatchLocation(targetLocation + side2);
 
         // Sub to events
         GameEvents.instance.onEntityEnterTile += Retaliate;
@@ -63,8 +64,11 @@ public class MeleeEnemyAction : EnemyAction
 
     private void Reset()
     {
-        // Unhighlight
-        // TODO
+        // Unhighlight tiles
+        foreach (var location in tilesToWatch)
+        {
+            GameEvents.instance.TriggerOnEntityUnwatchLocation(location);
+        }
 
         // Sheathe weapon
         // GameEvents.instance.TriggerOnEntitySheatheWeapon(watcher, weapon);

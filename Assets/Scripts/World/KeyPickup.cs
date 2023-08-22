@@ -21,19 +21,19 @@ public class KeyPickup : MonoBehaviour
         this.location = location;
 
         // Sub to events
-        GameEvents.instance.onPickup += Pickup;
+        GameEvents.instance.onPickupDespawn += Pickup;
     }
 
     private void OnDestroy()
     {
         // Unsub
-        GameEvents.instance.onPickup -= Pickup;
+        GameEvents.instance.onPickupDespawn -= Pickup;
     }
 
-    private void Pickup(Entity entity, int index)
+    private void Pickup(Vector3Int location)
     {
         // If this key was picked up destroy it
-        if (this.location == entity.location && index == 1)
+        if (this.location == location)
         {
             // Spawn effect
             Instantiate(pickupEffect, transform.position, Quaternion.identity);

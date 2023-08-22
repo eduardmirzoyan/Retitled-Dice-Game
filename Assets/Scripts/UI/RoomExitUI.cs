@@ -9,22 +9,38 @@ public class RoomExitUI : MonoBehaviour
     [SerializeField] private SpriteRenderer iconRenderer;
 
     [Header("Data")]
-    [SerializeField] private RoomExit roomExit;
     [SerializeField] private List<Sprite> exitIcons;
 
-    public void Initialize(RoomExit roomExit)
+    private void Awake()
     {
-        this.roomExit = roomExit;
+        Lock();
 
-        // If door is already unlocked
-        if (!roomExit.IsLocked())
-        {
-            // Play animation
-            animator.Play("Unlock");
-        }
+        GameEvents.instance.onLockExit += Lock;
+        GameEvents.instance.onUnlockExit += Unlock;
+    }
+
+    private void OnDestroy()
+    {
+        GameEvents.instance.onLockExit -= Lock;
+        GameEvents.instance.onUnlockExit -= Unlock;
+    }
+
+    private void Lock()
+    {
+        // Remove icon while locked
+        iconRenderer.sprite = null;
+
+        // Unlock door
+        animator.Play("Lock");
+    }
+
+    private void Unlock()
+    {
+        // Get next room index
+        var nextRoomIndex = DataManager.instance.GetNextRoomIndex();
 
         // Set sprite based on what the exit is to
-        switch (roomExit.destinationIndex)
+        switch (nextRoomIndex)
         {
             case 1:
                 iconRenderer.sprite = exitIcons[0];
@@ -34,22 +50,7 @@ public class RoomExitUI : MonoBehaviour
                 break;
         }
 
-        // Sub to events
-        GameEvents.instance.onUseKey += CheckUnlock;
-    }
-
-    private void OnDestroy()
-    {
-        // Unsub to events
-        GameEvents.instance.onUseKey -= CheckUnlock;
-    }
-
-    public void CheckUnlock(int value)
-    {
-        if (!roomExit.IsLocked())
-        {
-            // Unlock door
-            animator.Play("Unlock");
-        }
+        // Unlock door
+        animator.Play("Unlock");
     }
 }

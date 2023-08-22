@@ -26,7 +26,7 @@ public class GameManager : MonoBehaviour
     private Entity selectedEntity;
     private Action selectedAction;
     private Vector3Int selectedLocation;
-    List<(Action, Vector3Int)> bestChoiceSequence;
+    private List<(Action, Vector3Int)> bestChoiceSequence;
 
     private Coroutine coroutine;
 
@@ -53,11 +53,16 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator EnterFloor()
     {
-        // Start the game
+        // Reset round count
         roundNumber = 1;
 
         // Generate the room
         yield return GenerateRoom();
+
+        // Generate Keys
+        yield return GenerateKeys();
+
+        // Generate coins?
 
         // Generate player and add to room
         yield return GeneratePlayer();
@@ -94,6 +99,8 @@ public class GameManager : MonoBehaviour
                 throw new System.Exception("ERROR CREATING ROOM WITH ROOM INDEX: " + index);
         }
 
+
+
         // Finish
         yield return null;
     }
@@ -107,17 +114,11 @@ public class GameManager : MonoBehaviour
                 // Spawn enemies equal to floor number
                 for (int i = 0; i < DataManager.instance.GetRoomNumber(); i++)
                 {
-                    // // Spawn a core
-                    // var core = enemyGenerator.GenerateCore();
-
-                    // // Populate the room
-                    // room.Populate(core);
-
                     // Generate a random enemy
                     var enemy = enemyGenerator.GenerateEnemy();
 
                     // Populate the room
-                    room.Populate(enemy);
+                    room.SpawnEntity(enemy);
                 }
 
                 break;
@@ -128,7 +129,7 @@ public class GameManager : MonoBehaviour
                 var shopkeeper = enemyGenerator.GenerateShopkeeper();
 
                 // Populate the room
-                room.Populate(shopkeeper);
+                room.SpawnEntity(shopkeeper);
 
                 break;
             default:
@@ -145,7 +146,18 @@ public class GameManager : MonoBehaviour
         var player = DataManager.instance.GetPlayer();
 
         // Populate the room
-        room.Populate(player);
+        room.SpawnEntity(player);
+
+        // Finish
+        yield return null;
+    }
+
+    private IEnumerator GenerateKeys()
+    {
+        for (int i = 0; i < 1; i++)
+        {
+            room.AddKey();
+        }
 
         // Finish
         yield return null;
@@ -160,7 +172,7 @@ public class GameManager : MonoBehaviour
         turnQueue.Enqueue(room.player);
 
         // Now pull enemes from the room
-        foreach (var enemy in room.enemies)
+        foreach (var enemy in room.hostileEntities)
         {
             // Add enemy
             turnQueue.Enqueue(enemy);
@@ -193,27 +205,6 @@ public class GameManager : MonoBehaviour
 
         // Start turn
         yield return StartTurn();
-    }
-
-    private IEnumerator ResetAllDie()
-    {
-        // Loop through all entities in room
-        foreach (var entity in room.GetAllEntities())
-        {
-            // Loop through all actions
-            foreach (var action in entity.GetActions())
-            {
-                // Replenish die with event
-                action.die.Replenish();
-                GameEvents.instance.TriggerOnDieReplenish(action.die);
-
-                // Roll die with event
-                action.die.Roll();
-                GameEvents.instance.TriggerOnDieRoll(action.die);
-            }
-        }
-
-        yield return null;
     }
 
     private void ResetActions(Entity entity)
@@ -465,7 +456,7 @@ public class GameManager : MonoBehaviour
         ExitFloor();
 
         // We want to consider the exit we chose's number
-        var roomIndex = room.roomExit.destinationIndex;
+        var roomIndex = DataManager.instance.GetNextRoomIndex();
         // Set next room based on exit's index
         DataManager.instance.SetNextRoom(roomIndex);
 

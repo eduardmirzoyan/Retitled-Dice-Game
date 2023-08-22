@@ -53,14 +53,12 @@
      <Compile Include="Assets\Scripts\Actions\WarpAction.cs" />
      <Compile Include="Assets\Scripts\Items\Consumable.cs" />
      <Compile Include="Assets\Scripts\UI\EndTurnUI.cs" />
-     <Compile Include="Assets\Scripts\AI\GuardianAI.cs" />
      <Compile Include="Assets\Scripts\UI\HeartUI.cs" />
      <Compile Include="Assets\Scripts\World\KeyPickup.cs" />
-     <Compile Include="Assets\Scripts\AI\IdleAI.cs" />
      <Compile Include="Assets\Scripts\Items\Weapon.cs" />
      <Compile Include="Assets\Scripts\Actions\Enemy Actions\MeleeEnemyAction.cs" />
+     <Compile Include="Assets\Scripts\AI\MeleeAI.cs" />
      <Compile Include="Assets\Scripts\UI\TooltipTriggerUI.cs" />
-     <Compile Include="Assets\Scripts\World\RoomExit.cs" />
      <Compile Include="Assets\Scripts\World\ItemGenerator.cs" />
      <Compile Include="Assets\Scripts\UI\TextTooltipUI.cs" />
      <Compile Include="Assets\Scripts\UI\HealthbarUI.cs" />
@@ -69,7 +67,6 @@
      <Compile Include="Assets\Scripts\UI\HowToPlayUI.cs" />
      <Compile Include="Assets\Scripts\UI\ActionUI.cs" />
      <Compile Include="Assets\Scripts\Main Menu\MainMenuManager.cs" />
-     <Compile Include="Assets\Scripts\Core.cs" />
      <Compile Include="Assets\Scripts\Actions\FreeMoveAction.cs" />
      <Compile Include="Assets\Scripts\World\RoomGenerator.cs" />
      <Compile Include="Assets\Scripts\Audio\AudioManager.cs" />
@@ -82,9 +79,11 @@
      <Compile Include="Assets\Scripts\Die.cs" />
      <Compile Include="Assets\Scripts\Game Feel\HitFreeze.cs" />
      <Compile Include="Assets\Scripts\Barrel.cs" />
+     <Compile Include="Assets\Scripts\Actions\Enemy Actions\RangedEnemyAction.cs" />
      <Compile Include="Assets\Scripts\Inventory.cs" />
      <Compile Include="Assets\Scripts\UI\ItemUI.cs" />
      <Compile Include="Assets\Scripts\World\GoldPickup.cs" />
+     <Compile Include="Assets\Scripts\AI\RangedAI.cs" />
      <Compile Include="Assets\Scripts\UI\EntityModel.cs" />
      <Compile Include="Assets\Scripts\TimedDestroy.cs" />
      <Compile Include="Assets\Scripts\World\EnemyGenerator.cs" />
@@ -115,9 +114,7 @@
      <Compile Include="Assets\Scripts\AI\AI.cs" />
      <Compile Include="Assets\Scripts\Actions\ShopAction.cs" />
      <Compile Include="Assets\Scripts\Projectiles\BasicProjectile.cs" />
-     <Compile Include="Assets\Scripts\AI\MeleeAI.cs" />
-     <Compile Include="Assets\Scripts\AI\RangedAI.cs" />
-     <Compile Include="Assets\Scripts\Actions\Enemy Actions\RangedEnemyAction.cs" />
+     <Compile Include="Assets\Scripts\UI\EnemyIntentUI.cs" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />

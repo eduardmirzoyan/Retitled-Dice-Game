@@ -19,7 +19,6 @@ public class IndicatorDisplayUI : MonoBehaviour
         GameEvents.instance.onActionSelect += DisplayChoices;
         GameEvents.instance.onLocationSelect += ClearChoices;
         GameEvents.instance.onInspectAction += PreviewIndicators;
-        GameEvents.instance.onEntityWatchLocation += HighlightTile;
     }
 
     private void OnDestroy()
@@ -28,7 +27,6 @@ public class IndicatorDisplayUI : MonoBehaviour
         GameEvents.instance.onActionSelect -= DisplayChoices;
         GameEvents.instance.onLocationSelect -= ClearChoices;
         GameEvents.instance.onInspectAction -= PreviewIndicators;
-        GameEvents.instance.onEntityWatchLocation += HighlightTile;
     }
 
     private void SpawnIndicator(Entity entity, Action action, Vector3Int location)
@@ -96,14 +94,5 @@ public class IndicatorDisplayUI : MonoBehaviour
                 indicatorUI.Initialize(entity, location, entityWorldLocation, targetWorldLocation, action, true);
             }
         }
-    }
-
-    private void HighlightTile(Entity entity, Vector3Int location)
-    {
-        // print("Threaened: " + location);
-
-        // Set tile to color
-        selectTilemap.SetTile(location, highlightTile);
-        selectTilemap.SetColor(location, Color.red);
     }
 }

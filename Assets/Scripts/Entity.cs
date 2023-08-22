@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.Http.Headers;
 using UnityEngine;
 
 [CreateAssetMenu]
@@ -90,7 +91,7 @@ public class Entity : ScriptableObject
             OnDeath();
 
             // Remove self from dungeon
-            room.Depopulate(this);
+            room.DespawnEntity(this);
         }
     }
 
@@ -117,15 +118,11 @@ public class Entity : ScriptableObject
 
     public void MoveToward(Vector3Int direction)
     {
-        // Make sure you are only moving up to 1 tile at a time
-        if (direction.magnitude > 1) throw new System.Exception("DIRECTION MAG is NOT 1");
-
-        // Increment location
-        this.location += direction;
+        // Move within room
+        room.MoveEntityToward(this, direction);
 
         // Trigger event
         GameEvents.instance.TriggerOnEntityMove(this);
-        GameEvents.instance.TriggerOnEntityEnterTile(this, location);
 
         // Interact with new location
         Interact();
@@ -133,8 +130,8 @@ public class Entity : ScriptableObject
 
     public void WarpTo(Vector3Int location)
     {
-        // Set location to warp point
-        this.location = location;
+        // Move
+        room.MoveEntityTo(this, location);
 
         // Interact with new location
         Interact();
@@ -145,26 +142,15 @@ public class Entity : ScriptableObject
         // Does nothing for now
     }
 
-    public bool MeleeAttackLocation(Vector3 location, Weapon weapon = null)
+    public bool MeleeAttackLocation(Vector3Int location, Weapon weapon = null)
     {
-        var targets = new List<Entity>();
-
-        // Consider player, enemies and barrels
-        targets.Add(room.player);
-        targets.AddRange(room.enemies);
-        targets.AddRange(room.barrels);
-
-        // Check if any entities are on the same tile, if so damage them
-        foreach (var target in targets)
+        var target = room.GetEntityAtLocation(location);
+        if (target != null)
         {
-            // If the target is not itself
-            if (target.location == location && target != this)
-            {
-                // Currently deal 1 damage, but this might change?
-                target.TakeDamage(1);
+            // Attack target
+            MeleeAttackEntity(target, weapon);
 
-                return true;
-            }
+            return true;
         }
 
         return false;

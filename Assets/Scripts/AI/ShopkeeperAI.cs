@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu]
-public class ShopkeeperAI : AI
+public abstract class ShopkeeperAI : AI
 {
     // public override void DisplayIntent(Entity entity, Room room)
     // {

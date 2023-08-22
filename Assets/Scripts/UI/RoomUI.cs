@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.XR;
 
 public class RoomUI : MonoBehaviour
 {
@@ -44,16 +46,18 @@ public class RoomUI : MonoBehaviour
     private void Start()
     {
         // Sub
-        GameEvents.instance.onEnterFloor += SpawnRoom;
+        GameEvents.instance.onEnterFloor += DrawRoom;
         GameEvents.instance.onEntitySpawn += SpawnEntity;
+        GameEvents.instance.onPickupSpawn += SpawnPickup;
         GameEvents.instance.onProjectileSpawn += SpawnProjectile;
     }
 
     private void OnDestroy()
     {
         // Unsub
-        GameEvents.instance.onEnterFloor -= SpawnRoom;
+        GameEvents.instance.onEnterFloor -= DrawRoom;
         GameEvents.instance.onEntitySpawn -= SpawnEntity;
+        GameEvents.instance.onPickupSpawn += SpawnPickup;
         GameEvents.instance.onProjectileSpawn -= SpawnProjectile;
     }
 
@@ -66,10 +70,9 @@ public class RoomUI : MonoBehaviour
             Vector3 cameraLocation = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             cameraLocation.z = 0; // Because camera is -10 from the world
             Vector3Int selectedLocation = selectionTilemap.WorldToCell(cameraLocation);
+
             // Select position
             SelectTile(selectedLocation);
-            // Debug
-            // print(selectedLocation);
         }
         // Right click clears any selection
         else if (Input.GetMouseButtonDown(1))
@@ -109,73 +112,84 @@ public class RoomUI : MonoBehaviour
         this.selectedLocation = location;
     }
 
-    private void SpawnRoom(Room room)
+    private void DrawRoom(Room room)
     {
+        // Error check
+        if (room == null)
+            throw new System.Exception("ROOM IS NULL.");
+
         this.room = room;
 
-        // Draw dungeon
-        if (room != null)
+        // Loop through each tile
+        foreach (var tile in room.tiles)
         {
-            Vector3Int position;
-
-            // Loop through all spaces in the dungeon
-            for (int i = 0; i < room.walls.Count; i++)
+            switch (tile.tileType)
             {
-                for (int j = 0; j < room.walls[i].Count; j++)
-                {
-                    // Set position being considered
-                    position = new Vector3Int(i, j, 0);
+                case TileType.Void:
 
-                    // Check if floor exists here
-                    if (room.floor[i][j] == 1)
-                    {
-                        // Set tile to floor
-                        floorTilemap.SetTile(position, floorTile);
-                    }
+                    // Set tile to empty
+                    floorTilemap.SetTile(tile.location, null);
+                    wallsTilemap.SetTile(tile.location, null);
 
-                    // Check if wall exists here
-                    if (room.walls[i][j] == 1)
-                    {
-                        // Set tile to floor
-                        wallsTilemap.SetTile(position, wallTile);
-                    }
+                    break;
+                case TileType.Floor:
 
-                    // Check if coin exists here
-                    if (room.pickups[i][j] == 2)
-                    {
-                        // Spawn coin
-                        var gold = Instantiate(goldPickupPrefab, floorTilemap.GetCellCenterWorld(position), Quaternion.identity, decorTilemap.transform).GetComponent<GoldPickup>();
-                        gold.Initialize(position);
-                    }
+                    // Set tile to floor
+                    floorTilemap.SetTile(tile.location, floorTile);
 
-                    // Check if key exists here
-                    if (room.pickups[i][j] == 1)
-                    {
-                        // Spawn key
-                        var key = Instantiate(keyPickupPrefab, floorTilemap.GetCellCenterWorld(position), Quaternion.identity, decorTilemap.transform).GetComponent<KeyPickup>();
-                        key.Initialize(position);
-                    }
-                }
+                    break;
+                case TileType.Wall:
+
+                    // Set tile to wall
+                    wallsTilemap.SetTile(tile.location, wallTile);
+
+                    break;
+                case TileType.Entrance:
+
+                    // Set tile to floor
+                    floorTilemap.SetTile(tile.location, floorTile);
+                    // Draw entrance
+                    decorTilemap.SetTile(tile.location, entranceTile);
+
+                    break;
+                case TileType.Exit:
+
+                    // Set tile to floor
+                    floorTilemap.SetTile(tile.location, floorTile);
+
+                    Instantiate(floorExitPrefab, floorTilemap.GetCellCenterWorld(tile.location), Quaternion.identity, floorTilemap.transform);
+                    // exit.Initialize(room.roomExit);
+
+                    break;
             }
 
-            // Spawn all barrels
-            foreach (var barrel in room.barrels)
-            {
-                SpawnEntity(barrel);
-            }
+            // switch (tile.containedPickup)
+            // {
+            //     case PickUpType.None:
+            //         // Do nothing
+            //         break;
 
-            // Spawn entrance
-            decorTilemap.SetTile(room.entranceLocation, entranceTile);
+            //     case PickUpType.Gold:
 
-            // Spawn exit
-            var exit = Instantiate(floorExitPrefab, floorTilemap.GetCellCenterWorld(room.roomExit.location), Quaternion.identity, floorTilemap.transform).GetComponent<RoomExitUI>();
-            exit.Initialize(room.roomExit);
+            //         // Spawn gold coin
+            //         var gold = Instantiate(goldPickupPrefab, floorTilemap.GetCellCenterWorld(tile.location), Quaternion.identity, decorTilemap.transform).GetComponent<GoldPickup>();
+            //         gold.Initialize(tile.location);
 
-            // Get center of dungeon
-            Vector3 center = floorTilemap.CellToWorld(new Vector3Int(room.width / 2 + room.padding, room.height / 2 + room.padding, 0));
-            // Set camera to center of dungeon
-            CameraManager.instance.SetPosition(center);
+            //         break;
+            //     case PickUpType.Key:
+
+            //         // Spawn key
+            //         var key = Instantiate(keyPickupPrefab, floorTilemap.GetCellCenterWorld(tile.location), Quaternion.identity, decorTilemap.transform).GetComponent<KeyPickup>();
+            //         key.Initialize(tile.location);
+
+            //         break;
+            // }
         }
+
+        // Get center of dungeon
+        Vector3 center = floorTilemap.CellToWorld(new Vector3Int(room.width / 2 + room.padding, room.height / 2 + room.padding, 0));
+        // Set camera to center of dungeon
+        CameraManager.instance.SetPosition(center);
     }
 
     private void SpawnEntity(Entity entity)
@@ -198,10 +212,35 @@ public class RoomUI : MonoBehaviour
         projModel.Initialize(projectil, this);
     }
 
+    private void SpawnPickup(PickUpType pickUpType, Vector3Int location)
+    {
+        switch (pickUpType)
+        {
+            case PickUpType.None:
+                // Do nothing
+                break;
+
+            case PickUpType.Gold:
+
+                // Spawn gold coin
+                var gold = Instantiate(goldPickupPrefab, floorTilemap.GetCellCenterWorld(location), Quaternion.identity, decorTilemap.transform).GetComponent<GoldPickup>();
+                gold.Initialize(location);
+
+                break;
+            case PickUpType.Key:
+
+                // Spawn key
+                var key = Instantiate(keyPickupPrefab, floorTilemap.GetCellCenterWorld(location), Quaternion.identity, decorTilemap.transform).GetComponent<KeyPickup>();
+                key.Initialize(location);
+
+                break;
+        }
+    }
+
     private void InspectLocation(Vector3Int location)
     {
         // Look for enemy on this tile
-        foreach (var enemy in room.enemies)
+        foreach (var enemy in room.hostileEntities)
         {
             // If an enemy exists at this location
             if (enemy.location == location)
@@ -214,7 +253,7 @@ public class RoomUI : MonoBehaviour
         }
 
         // Look at barrels
-        foreach (var barrel in room.barrels)
+        foreach (var barrel in room.neutralEntities)
         {
             // If an enemy exists at this location
             if (barrel.location == location)

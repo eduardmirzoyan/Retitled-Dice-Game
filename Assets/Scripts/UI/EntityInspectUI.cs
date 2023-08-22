@@ -17,12 +17,10 @@ public class EntityInspectUI : MonoBehaviour
     [SerializeField] private GameObject actionUIPrefab;
     [SerializeField] private Entity entity;
 
-    private List<GameObject> heartObjects;
     private List<ActionUI> actionUIs;
 
     private void Awake()
     {
-        heartObjects = new List<GameObject>();
         actionUIs = new List<ActionUI>();
     }
 
@@ -54,7 +52,7 @@ public class EntityInspectUI : MonoBehaviour
                 healthbarUI.Uninitialize();
                 DestroyActions();
             }
-            
+
             if (entity != null)
             {
                 // Show visuals

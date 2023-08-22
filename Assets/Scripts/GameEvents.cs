@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Unity.VisualScripting;
 
 public class ActionInfo
 {
@@ -49,7 +50,8 @@ public class GameEvents : MonoBehaviour
     public event Action<Entity, Vector3Int, Weapon> onEntityRangedAttack;
     public event Action<Entity, Vector3Int, Weapon, ActionInfo> onEntityRangedAttackTimed;
     public event Action<Entity> onEntityWarp;
-    public event Action<Entity, Vector3Int> onEntityWatchLocation;
+    public event Action<Vector3Int> onEntityWatchLocation;
+    public event Action<Vector3Int> onEntityUnwatchLocation;
 
     // Projectile visuals
     public event Action<Projectil> onProjectileSpawn;
@@ -63,8 +65,10 @@ public class GameEvents : MonoBehaviour
     public event Action<Entity, int> onEntityGainGold;
 
     // Common Events
-    public event Action<Entity, int> onPickup;
-    public event Action<int> onUseKey;
+    public event Action<PickUpType, Vector3Int> onPickupSpawn;
+    public event Action<Vector3Int> onPickupDespawn;
+    public event System.Action onLockExit;
+    public event System.Action onUnlockExit;
     public event Action<Entity, Vector3Int> onEntityEnterTile;
 
     // UI Based
@@ -283,19 +287,35 @@ public class GameEvents : MonoBehaviour
         }
     }
 
-    public void TriggerOnPickup(Entity entity, int index)
+    public void TriggerOnPickupSpawn(PickUpType pickUpType, Vector3Int location)
     {
-        if (onPickup != null)
+        if (onPickupSpawn != null)
         {
-            onPickup(entity, index);
+            onPickupSpawn(pickUpType, location);
         }
     }
 
-    public void TriggerOnUseKey(int value)
+    public void TriggerOnPickupDespawn(Vector3Int location)
     {
-        if (onUseKey != null)
+        if (onPickupDespawn != null)
         {
-            onUseKey(value);
+            onPickupDespawn(location);
+        }
+    }
+
+    public void TriggerOnUnlockExit()
+    {
+        if (onUnlockExit != null)
+        {
+            onUnlockExit();
+        }
+    }
+
+    public void TriggerOnLockExit()
+    {
+        if (onLockExit != null)
+        {
+            onLockExit();
         }
     }
 
@@ -371,11 +391,19 @@ public class GameEvents : MonoBehaviour
         }
     }
 
-    public void TriggerOnEntityWatchLocation(Entity entity, Vector3Int location)
+    public void TriggerOnEntityWatchLocation(Vector3Int location)
     {
         if (onEntityWatchLocation != null)
         {
-            onEntityWatchLocation(entity, location);
+            onEntityWatchLocation(location);
+        }
+    }
+
+    public void TriggerOnEntityUnwatchLocation(Vector3Int location)
+    {
+        if (onEntityUnwatchLocation != null)
+        {
+            onEntityUnwatchLocation(location);
         }
     }
 

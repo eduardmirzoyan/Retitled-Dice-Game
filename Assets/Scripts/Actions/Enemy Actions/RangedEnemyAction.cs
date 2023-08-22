@@ -28,12 +28,10 @@ public class RangedEnemyAction : EnemyAction
         tilesToWatch = room.GetAllValidLocationsAlongPath(entity.location, targetLocation, true);
         watcher = entity;
 
-        Debug.Log(tilesToWatch.Count);
-
         // Trigger events
         foreach (var location in tilesToWatch)
         {
-            GameEvents.instance.TriggerOnEntityWatchLocation(null, location);
+            GameEvents.instance.TriggerOnEntityWatchLocation(location);
         }
 
         // Sub to events
@@ -42,6 +40,7 @@ public class RangedEnemyAction : EnemyAction
 
         // Pull out weapon
         Vector3Int direction = targetLocation - entity.location;
+        Debug.Log("Draw");
         GameEvents.instance.TriggerOnEntityDrawWeapon(watcher, direction, weapon);
 
         // Gamemanger should handle this wait time
@@ -72,12 +71,15 @@ public class RangedEnemyAction : EnemyAction
 
     private void Reset()
     {
-        // Unhighlight
-        // TODO
+        // Unhighlight tiles
+        foreach (var location in tilesToWatch)
+        {
+            GameEvents.instance.TriggerOnEntityUnwatchLocation(location);
+        }
 
         // Sheathe weapon
-        // GameEvents.instance.TriggerOnEntitySheatheWeapon(watcher, weapon);
-        // FIGURE THIS OUT?!
+        Debug.Log("Shethe");
+        GameEvents.instance.TriggerOnEntitySheatheWeapon(watcher, weapon);
 
         // Reset data
         tilesToWatch = null;
