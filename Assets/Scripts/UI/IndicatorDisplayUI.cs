@@ -17,7 +17,7 @@ public class IndicatorDisplayUI : MonoBehaviour
     {
         // Sub
         GameEvents.instance.onActionSelect += DisplayChoices;
-        GameEvents.instance.onLocationSelect += ClearChoices;
+        GameEvents.instance.onActionConfirm += ClearChoices;
         GameEvents.instance.onInspectAction += PreviewIndicators;
     }
 
@@ -25,7 +25,7 @@ public class IndicatorDisplayUI : MonoBehaviour
     {
         // Unsub
         GameEvents.instance.onActionSelect -= DisplayChoices;
-        GameEvents.instance.onLocationSelect -= ClearChoices;
+        GameEvents.instance.onActionConfirm -= ClearChoices;
         GameEvents.instance.onInspectAction -= PreviewIndicators;
     }
 
@@ -38,7 +38,7 @@ public class IndicatorDisplayUI : MonoBehaviour
         // Instaniate as child
         var indicatorUI = Instantiate(indicatorUIPrefab, targetWorldLocation, Quaternion.identity, transform).GetComponent<LocationIndicatorUI>();
         // Initialize
-        indicatorUI.Initialize(entity, location, entityWorldLocation, targetWorldLocation, action);
+        indicatorUI.Initialize(entity, location, action);
     }
 
     private void DisplayChoices(Entity entity, Action action)
@@ -91,7 +91,7 @@ public class IndicatorDisplayUI : MonoBehaviour
                 // Instaniate as child
                 var indicatorUI = Instantiate(indicatorUIPrefab, targetWorldLocation, Quaternion.identity, transform).GetComponent<LocationIndicatorUI>();
                 // Initialize
-                indicatorUI.Initialize(entity, location, entityWorldLocation, targetWorldLocation, action, true);
+                indicatorUI.Initialize(entity, location, action, true);
             }
         }
     }

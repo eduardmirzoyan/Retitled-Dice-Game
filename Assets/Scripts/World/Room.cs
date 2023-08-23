@@ -408,30 +408,20 @@ public class Room : ScriptableObject
 
     public bool IsValidPath(Vector3Int start, Vector3Int end, bool ignoreEntity = false, bool endMustBeClear = true)
     {
-        // Get direction
+        // Get path between start and end
         Vector3Int direction = end - start;
-        // Make sure it is a STRAIGHT line between start and end
-        if (direction.x > 0 && direction.y > 0)
+
+        // Make sure path is straight
+        if (!(direction.x == 0 || direction.y == 0))
         {
             return false;
         }
 
-        if (direction.x > 0) // Move right
-        {
-            direction.x = 1;
-        }
-        else if (direction.x < 0) // Move left
-        {
-            direction.x = -1;
-        }
-        else if (direction.y > 0) // Move up
-        {
-            direction.y = 1;
-        }
-        else if (direction.y < 0) // Move down
-        {
-            direction.y = -1;
-        }
+        // Normalize direction
+        direction.Clamp(-Vector3Int.one, Vector3Int.one);
+
+        // Debug
+        Debug.Log("Direction: " + direction);
 
         // Keep looping until start is at the end 
         while (start != end - direction)

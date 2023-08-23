@@ -29,7 +29,8 @@ public class GameEvents : MonoBehaviour
 
     // Action based
     public event Action<Entity, Action> onActionSelect;
-    public event Action<Entity, Action, Vector3Int> onLocationSelect;
+    public event Action<Action, Vector3Int> onLocationSelect;
+    public event Action<Entity, Action, Vector3Int> onActionConfirm;
     public event Action<Entity, Action, Vector3Int, Room> onActionPerformStart;
     public event Action<Entity, Action, Vector3Int, Room> onActionPerformEnd;
 
@@ -50,8 +51,8 @@ public class GameEvents : MonoBehaviour
     public event Action<Entity, Vector3Int, Weapon> onEntityRangedAttack;
     public event Action<Entity, Vector3Int, Weapon, ActionInfo> onEntityRangedAttackTimed;
     public event Action<Entity> onEntityWarp;
-    public event Action<Vector3Int> onEntityWatchLocation;
-    public event Action<Vector3Int> onEntityUnwatchLocation;
+    public event Action<Vector3Int> onActionThreatenLocation;
+    public event Action<Vector3Int> onActionUnthreatenLocation;
 
     // Projectile visuals
     public event Action<Projectil> onProjectileSpawn;
@@ -156,12 +157,19 @@ public class GameEvents : MonoBehaviour
             onActionSelect(entity, action);
         }
     }
-
-    public void TriggerOnLocationSelect(Entity entity, Action action, Vector3Int location)
+    public void TriggerOnLocationSelect(Action action, Vector3Int location)
     {
         if (onLocationSelect != null)
         {
-            onLocationSelect(entity, action, location);
+            onLocationSelect(action, location);
+        }
+    }
+
+    public void TriggerOnActionConfirm(Entity entity, Action action, Vector3Int location)
+    {
+        if (onActionConfirm != null)
+        {
+            onActionConfirm(entity, action, location);
         }
     }
 
@@ -391,19 +399,19 @@ public class GameEvents : MonoBehaviour
         }
     }
 
-    public void TriggerOnEntityWatchLocation(Vector3Int location)
+    public void TriggerOnActionThreatenLocation(Vector3Int location)
     {
-        if (onEntityWatchLocation != null)
+        if (onActionThreatenLocation != null)
         {
-            onEntityWatchLocation(location);
+            onActionThreatenLocation(location);
         }
     }
 
-    public void TriggerOnEntityUnwatchLocation(Vector3Int location)
+    public void TriggerOnActionUnthreatenLocation(Vector3Int location)
     {
-        if (onEntityUnwatchLocation != null)
+        if (onActionUnthreatenLocation != null)
         {
-            onEntityUnwatchLocation(location);
+            onActionUnthreatenLocation(location);
         }
     }
 

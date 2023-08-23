@@ -19,15 +19,15 @@ public class EnemyIntentUI : MonoBehaviour
 
     private void Start()
     {
-        GameEvents.instance.onEntityWatchLocation += MarkTile;
-        GameEvents.instance.onEntityUnwatchLocation += UnmarkTile;
+        GameEvents.instance.onActionThreatenLocation += MarkTile;
+        GameEvents.instance.onActionUnthreatenLocation += UnmarkTile;
 
     }
 
     private void OnDestroy()
     {
-        GameEvents.instance.onEntityWatchLocation -= MarkTile;
-        GameEvents.instance.onEntityUnwatchLocation -= UnmarkTile;
+        GameEvents.instance.onActionThreatenLocation -= MarkTile;
+        GameEvents.instance.onActionUnthreatenLocation -= UnmarkTile;
     }
 
     private void MarkTile(Vector3Int location)

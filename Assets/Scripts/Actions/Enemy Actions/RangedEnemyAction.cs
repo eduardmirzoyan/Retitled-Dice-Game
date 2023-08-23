@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Actions/Enemy/Ranged")]
-public class RangedEnemyAction : EnemyAction
+public class RangedEnemyAction : Action
 {
-    public List<Vector3Int> tilesToWatch;
     private Entity watcher;
 
     public override List<Vector3Int> GetValidLocations(Vector3Int startLocation, Room room)
@@ -22,16 +21,24 @@ public class RangedEnemyAction : EnemyAction
         return result;
     }
 
+    public override List<Vector3Int> GetThreatenedLocations(Entity entity, Vector3Int targetLocation)
+    {
+        throw new System.NotImplementedException();
+    }
+
     public override IEnumerator Perform(Entity entity, Vector3Int targetLocation, Room room)
     {
+        // Give small buffer time
+        yield return new WaitForSeconds(0.1f);
+
         // Watch the tiles in a line between end points
-        tilesToWatch = room.GetAllValidLocationsAlongPath(entity.location, targetLocation, true);
+        threatenedLocations = room.GetAllValidLocationsAlongPath(entity.location, targetLocation, true);
         watcher = entity;
 
         // Trigger events
-        foreach (var location in tilesToWatch)
+        foreach (var location in threatenedLocations)
         {
-            GameEvents.instance.TriggerOnEntityWatchLocation(location);
+            GameEvents.instance.TriggerOnActionThreatenLocation(location);
         }
 
         // Sub to events
@@ -40,17 +47,13 @@ public class RangedEnemyAction : EnemyAction
 
         // Pull out weapon
         Vector3Int direction = targetLocation - entity.location;
-        Debug.Log("Draw");
         GameEvents.instance.TriggerOnEntityDrawWeapon(watcher, direction, weapon);
-
-        // Gamemanger should handle this wait time
-        yield return new WaitForSeconds(0.5f);
     }
 
     private void Retaliate(Entity entity, Vector3Int location)
     {
         // If player entered tile that is being watched
-        if (entity is Player && tilesToWatch.Contains(location))
+        if (entity is Player && threatenedLocations.Contains(location))
         {
             // Attack entity
             // CHANGE THIS TO RANGED?!
@@ -72,17 +75,16 @@ public class RangedEnemyAction : EnemyAction
     private void Reset()
     {
         // Unhighlight tiles
-        foreach (var location in tilesToWatch)
+        foreach (var location in threatenedLocations)
         {
-            GameEvents.instance.TriggerOnEntityUnwatchLocation(location);
+            GameEvents.instance.TriggerOnActionUnthreatenLocation(location);
         }
 
         // Sheathe weapon
-        Debug.Log("Shethe");
         GameEvents.instance.TriggerOnEntitySheatheWeapon(watcher, weapon);
 
         // Reset data
-        tilesToWatch = null;
+        threatenedLocations = null;
         watcher = null;
 
         // Unsub from events

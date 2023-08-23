@@ -15,35 +15,65 @@ public class MoveAction : Action
         // Check in 4 cardinal direction based on die value
 
         // North
-        Vector3Int endLocation = startLocation + new Vector3Int(0, range, 0);
-        if (room.IsValidPath(startLocation, endLocation))
+        Vector3Int location = startLocation;
+        int count = range;
+        while (room.IsValidLocation(location + Vector3Int.up) && count > 0)
         {
-            result.Add(startLocation + new Vector3Int(0, range, 0));
+            location += Vector3Int.up;
+            count--;
+        }
+        if (location != startLocation)
+        {
+            result.Add(location);
         }
 
         // South
-        endLocation = startLocation + new Vector3Int(0, -range, 0);
-        if (room.IsValidPath(startLocation, endLocation))
+        location = startLocation;
+        count = range;
+        while (room.IsValidLocation(location + Vector3Int.down) && count > 0)
         {
-            result.Add(startLocation + new Vector3Int(0, -range, 0));
+            location += Vector3Int.down;
+            count--;
+        }
+        if (location != startLocation)
+        {
+            result.Add(location);
         }
 
         // East
-        endLocation = startLocation + new Vector3Int(range, 0, 0);
-        if (room.IsValidPath(startLocation, endLocation))
+        location = startLocation;
+        count = range;
+        while (room.IsValidLocation(location + Vector3Int.right) && count > 0)
         {
-            result.Add(startLocation + new Vector3Int(range, 0, 0));
+            location += Vector3Int.right;
+            count--;
+        }
+        if (location != startLocation)
+        {
+            result.Add(location);
         }
 
         // West
-        endLocation = startLocation + new Vector3Int(-range, 0, 0);
-        if (room.IsValidPath(startLocation, endLocation))
+        location = startLocation;
+        count = range;
+        while (room.IsValidLocation(location + Vector3Int.left) && count > 0)
         {
-            result.Add(startLocation + new Vector3Int(-range, 0, 0));
+            location += Vector3Int.left;
+            count--;
+        }
+        if (location != startLocation)
+        {
+            result.Add(location);
         }
 
         return result;
     }
+
+    public override List<Vector3Int> GetThreatenedLocations(Entity entity, Vector3Int targetLocation)
+    {
+        return new List<Vector3Int> { targetLocation };
+    }
+
 
     public override IEnumerator Perform(Entity entity, Vector3Int targetLocation, Room room)
     {
@@ -58,10 +88,7 @@ public class MoveAction : Action
         while (entity.location != targetLocation)
         {
             // Move entity
-            entity.MoveToward(direction);
-
-            // Wait for animation
-            yield return new WaitForSeconds(EntityModel.moveSpeed);
+            yield return entity.MoveToward(direction); // Convert this into IEnumator
         }
 
         // Trigger stop move event

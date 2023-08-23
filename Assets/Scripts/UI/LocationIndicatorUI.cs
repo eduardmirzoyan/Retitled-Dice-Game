@@ -18,10 +18,7 @@ public class LocationIndicatorUI : MonoBehaviour, IPointerEnterHandler, IPointer
     [SerializeField] private Color defaultColor = Color.white;
     [SerializeField] private Color highlightColor = Color.yellow;
 
-    [Header("Config")]
-    [SerializeField] private bool drawOnHover = false;
-
-    public void Initialize(Entity entity, Vector3Int location, Vector3 sourceLocation, Vector3 targetLocation, Action action, bool isPreview = false)
+    public void Initialize(Entity entity, Vector3Int location, Action action, bool isPreview = false)
     {
         this.entity = entity;
         this.location = location;
@@ -101,6 +98,9 @@ public class LocationIndicatorUI : MonoBehaviour, IPointerEnterHandler, IPointer
 
             // Highlight
             actionIcon.color = highlightColor;
+
+            // Select this location
+            GameManager.instance.SelectLocation(location);
         }
     }
 
@@ -115,6 +115,9 @@ public class LocationIndicatorUI : MonoBehaviour, IPointerEnterHandler, IPointer
 
             // Un-highlgiht
             actionIcon.color = defaultColor;
+
+            // Select this location
+            GameManager.instance.SelectLocation(Vector3Int.zero);
         }
     }
 
@@ -127,8 +130,8 @@ public class LocationIndicatorUI : MonoBehaviour, IPointerEnterHandler, IPointer
             // Un-highlgiht
             actionIcon.color = defaultColor;
 
-            // Select this location
-            GameManager.instance.ConfirmLocation(location);
+            // Confirm this action at this location
+            GameManager.instance.ConfirmAction();
         }
     }
 }

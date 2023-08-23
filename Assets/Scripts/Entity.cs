@@ -19,7 +19,6 @@ public class Entity : ScriptableObject
     public Sprite modelSprite;
     public RuntimeAnimatorController modelController;
     public GameObject hitEffectPrefab;
-    public Vector3 offsetDueToSize;
 
     [Header("Variable Stats")]
     public AI AI;
@@ -27,10 +26,9 @@ public class Entity : ScriptableObject
     public Weapon mainWeapon;
     public Weapon offWeapon;
 
-    [Header("Dungeon Dependant")]
+    [Header("Dynamic Data")]
     public Vector3Int location; // Location of this entity on the floor
     public Room room;
-    public (Action, Vector3Int) preparedAction;
 
     public void Initialize(Room dungeon, Vector3Int spawnLocation)
     {
@@ -116,7 +114,7 @@ public class Entity : ScriptableObject
         GameEvents.instance.TriggerOnEntityTakeDamage(this, -amount);
     }
 
-    public void MoveToward(Vector3Int direction)
+    public IEnumerator MoveToward(Vector3Int direction)
     {
         // Move within room
         room.MoveEntityToward(this, direction);
@@ -126,15 +124,31 @@ public class Entity : ScriptableObject
 
         // Interact with new location
         Interact();
+
+        // Check for any reactive actions
+        if (this is Player)
+            yield return GameManager.instance.PerformReactiveAction(location);
+
+        // Wait for animation
+        yield return new WaitForSeconds(EntityModel.moveSpeed); // Refactor into game settings
     }
 
-    public void WarpTo(Vector3Int location)
+    public IEnumerator WarpTo(Vector3Int location)
     {
         // Move
         room.MoveEntityTo(this, location);
 
+        // Trigger event
+        GameEvents.instance.TriggerOnEnityWarp(this);
+
         // Interact with new location
         Interact();
+
+        // Check for any reactive actions
+        yield return GameManager.instance.PerformReactiveAction(location);
+
+        // Wait for animation
+        yield return new WaitForSeconds(EntityModel.warpSpeed);
     }
 
     protected virtual void Interact()
@@ -142,18 +156,19 @@ public class Entity : ScriptableObject
         // Does nothing for now
     }
 
-    public bool MeleeAttackLocation(Vector3Int location, Weapon weapon = null)
+    public void MeleeAttackLocation(Vector3Int location, Weapon weapon = null)
     {
         var target = room.GetEntityAtLocation(location);
         if (target != null)
         {
             // Attack target
             MeleeAttackEntity(target, weapon);
-
-            return true;
         }
-
-        return false;
+        else
+        {
+            // Debug
+            Debug.Log("No enemy at this location to attack.");
+        }
     }
 
     public void MeleeAttackEntity(Entity target, Weapon weapon = null)

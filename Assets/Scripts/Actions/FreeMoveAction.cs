@@ -44,18 +44,15 @@ public class FreeMoveAction : Action
         return validLocations.Distinct().ToList();
     }
 
+    public override List<Vector3Int> GetThreatenedLocations(Entity entity, Vector3Int targetLocation)
+    {
+        return new List<Vector3Int> { targetLocation };
+    }
+
     public override IEnumerator Perform(Entity entity, Vector3Int targetLocation, Room room)
     {
         // Generate path
         var path = room.pathfinder.FindPath(entity.location, targetLocation, room);
-
-        // Debug
-        // string debug = "Path: ";
-        // foreach (var location in path)
-        // {
-        //     debug += location + " ";
-        // }
-        // Debug.Log(debug);
 
         // Remove the start location
         path.RemoveAt(0);
@@ -70,13 +67,10 @@ public class FreeMoveAction : Action
             Vector3Int direction = path[0] - entity.location;
 
             // Move entity
-            entity.MoveToward(direction);
+            yield return entity.MoveToward(direction);
 
             // Pop
             path.RemoveAt(0);
-
-            // Wait for animation
-            yield return new WaitForSeconds(EntityModel.moveSpeed);
         }
 
         // Trigger stop move event

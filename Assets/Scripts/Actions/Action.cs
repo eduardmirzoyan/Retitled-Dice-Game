@@ -2,22 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ActionSpeed { Fast, Slow }
+public enum ActionType { Instant, Reactive, Delayed }
 
 public abstract class Action : ScriptableObject
 {
+    [Header("Static Data")]
     public new string name;
     public string description;
     public Sprite icon;
     public Sprite background;
     public Color color;
+    public ActionType actionType;
 
+    [Header("Dynamic Data")]
     public Die die;
     public Weapon weapon;
-    public ActionSpeed actionSpeed;
+    public List<Vector3Int> threatenedLocations;
 
     public abstract List<Vector3Int> GetValidLocations(Vector3Int startLocation, Room room);
-    public abstract IEnumerator Perform(Entity entity, Vector3Int targetLocation, Room room);
+
+    public abstract List<Vector3Int> GetThreatenedLocations(Entity entity, Vector3Int targetLocation);
+
+    public abstract IEnumerator Perform(Entity entity, Vector3Int targetLocation, Room room); // Refactor to take in list
 
     public Action Copy()
     {

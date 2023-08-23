@@ -11,12 +11,18 @@ public class RerollAction : Action
         return new List<Vector3Int>() { startLocation };
     }
 
+    public override List<Vector3Int> GetThreatenedLocations(Entity entity, Vector3Int targetLocation)
+    {
+        throw new System.NotImplementedException();
+    }
+
     public override IEnumerator Perform(Entity entity, Vector3Int targetLocation, Room room)
     {
         // Reroll all other action's die
         foreach (var action in entity.GetActions())
         {
-            if (action != this && !action.die.isExhausted) {
+            if (action != this && !action.die.isExhausted)
+            {
                 // Reroll all die
                 action.die.Roll();
                 // Trigger event

@@ -4838,7 +4838,7 @@ ParticleSystemRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 704134753
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
@@ -9828,7 +9828,7 @@ ParticleSystemRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 704134753
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
@@ -9956,6 +9956,7 @@ MonoBehaviour:
   offsetTransform: {fileID: 6048487393292599769}
   modelSpriteRenderer: {fileID: 6406055089092226309}
   modelAnimator: {fileID: 6406055089092226310}
+  properLayerSort: {fileID: 0}
   mainWeaponSpriteRenderer: {fileID: 5041543948791362742}
   mainWeaponAnimator: {fileID: 7310614640320965906}
   mainWeaponHolder: {fileID: 5453179228924539968}
@@ -9980,6 +9981,7 @@ GameObject:
   - component: {fileID: 6406055089092226308}
   - component: {fileID: 6406055089092226309}
   - component: {fileID: 6406055089092226310}
+  - component: {fileID: 3812161206661520186}
   m_Layer: 0
   m_Name: Model Sprite
   m_TagString: Untagged
@@ -9995,7 +9997,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6406055089092226427}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10074,6 +10076,22 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &3812161206661520186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6406055089092226427}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db1610ca26816984194d7dbaa39fb981, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rend: {fileID: 0}
+  offset: 0
+  runOnce: 0
+  isActive: 0
 --- !u!1 &6833255143211713610
 GameObject:
   m_ObjectHideFlags: 0

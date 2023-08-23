@@ -45,6 +45,11 @@ public class RangedAction : Action
         return result;
     }
 
+    public override List<Vector3Int> GetThreatenedLocations(Entity entity, Vector3Int targetLocation)
+    {
+        throw new System.NotImplementedException();
+    }
+
     public override IEnumerator Perform(Entity entity, Vector3Int targetLocation, Room room)
     {
         // Calculate direction

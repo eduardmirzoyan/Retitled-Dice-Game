@@ -17,5 +17,5 @@ MonoBehaviour:
   roomPadding: 8
   goldSpawnChance: 0
   barrelSpawnChance: 0
-  wallSpawnChanceDistribution: {x: 2, y: 2}
+  wallSpawnChanceDistribution: {x: 7, y: 7}
   barrel: {fileID: 11400000, guid: 6b0af5af49746404ba2a2897b7bd94ab, type: 2}

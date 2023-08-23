@@ -27,6 +27,7 @@ public class EntityModel : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] private DamageFlash damageFlash;
+    [SerializeField] private ProperLayerSort properLayerSort;
 
     [Header("Particles")]
     [SerializeField] private ParticleSystem warpGenerateParticles;
@@ -41,6 +42,11 @@ public class EntityModel : MonoBehaviour
     private RoomUI roomUI;
     private Coroutine coroutine;
 
+    private void Awake()
+    {
+        properLayerSort = GetComponentInChildren<ProperLayerSort>();
+    }
+
     public void Initialize(Entity entity, RoomUI roomUI)
     {
         this.entity = entity;
@@ -49,6 +55,9 @@ public class EntityModel : MonoBehaviour
         // Set up model
         modelSpriteRenderer.sprite = entity.modelSprite;
         modelAnimator.runtimeAnimatorController = entity.modelController;
+
+        // Update sorting layer once
+        properLayerSort.UpdateLayer();
 
         // Set up main weapon
         if (entity.mainWeapon != null)
@@ -71,9 +80,6 @@ public class EntityModel : MonoBehaviour
         {
             offWeaponSpriteRenderer.enabled = false;
         }
-
-        // Apply offset
-        offsetTransform.localPosition = entity.offsetDueToSize;
 
         // Sub to events
         GameEvents.instance.onEntityMoveStart += StartMove;
@@ -135,6 +141,9 @@ public class EntityModel : MonoBehaviour
         {
             // Play proper animation
             modelAnimator.Play("Run");
+
+            // Start layering
+            properLayerSort.SetActive(true);
         }
     }
 
@@ -161,6 +170,9 @@ public class EntityModel : MonoBehaviour
         {
             // Stop proper animation
             modelAnimator.Play("Idle");
+
+            // Stop layering
+            properLayerSort.SetActive(false);
         }
     }
 
@@ -261,81 +273,6 @@ public class EntityModel : MonoBehaviour
         }
     }
 
-    private void DrawWeapon(Entity entity, Vector3 direction, Weapon weapon)
-    {
-        if (this.entity == entity)
-        {
-            // Debug
-            // print("Attacking dir: " + direction);
-
-            // Flip model if needed
-            FlipModel(direction);
-
-            // Holder z = 90, attack up
-            // Holder z = 0, attack facing direction
-            // Holder z = -90, attack down
-
-            // Play proper animation
-            if (weapon.controller == mainWeaponAnimator.runtimeAnimatorController)
-            {
-                // Change attack orientation based which direction you are attacking
-                // If attacking upward
-                if (direction.y > 0)
-                {
-                    mainWeaponHolder.localEulerAngles = new Vector3(0, 0, 90);
-                }
-                // If attacking downward
-                else if (direction.y < 0)
-                {
-                    mainWeaponHolder.localEulerAngles = new Vector3(0, 0, -90);
-                }
-                // Else set to facing direction
-                else
-                {
-                    mainWeaponHolder.localEulerAngles = new Vector3(0, 0, 0);
-                }
-
-                // Randomly select a starting position
-                if (Random.Range(0, 1) == 1)
-                {
-                    mainWeaponAnimator.Play("Attack 2");
-                }
-                else
-                {
-                    mainWeaponAnimator.Play("Attack 3");
-                }
-            }
-            else if (weapon.controller == offWeaponAnimator.runtimeAnimatorController)
-            {
-                // If attacking upward
-                if (direction.y > 0)
-                {
-                    offWeaponHolder.localEulerAngles = new Vector3(0, 0, 90);
-                }
-                // If attacking downward
-                else if (direction.y < 0)
-                {
-                    offWeaponHolder.localEulerAngles = new Vector3(0, 0, -90);
-                }
-                // Else set to facing direction
-                else
-                {
-                    offWeaponHolder.localEulerAngles = new Vector3(0, 0, 0);
-                }
-
-                // Randomly select a starting position
-                if (Random.Range(0, 1) == 1)
-                {
-                    offWeaponAnimator.Play("Attack 2");
-                }
-                else
-                {
-                    offWeaponAnimator.Play("Attack 3");
-                }
-            }
-        }
-    }
-
     private void MeleeAttack(Entity entity, Weapon weapon)
     {
         // If this entity attacked
@@ -430,20 +367,95 @@ public class EntityModel : MonoBehaviour
         }
     }
 
+    private void DrawWeapon(Entity entity, Vector3 direction, Weapon weapon)
+    {
+        if (this.entity == entity)
+        {
+            // Flip model if needed
+            FlipModel(direction);
+
+            // Holder z = 90, attack up
+            // Holder z = 0, attack facing direction
+            // Holder z = -90, attack down
+
+            // Play proper animation
+            if (weapon.controller == mainWeaponAnimator.runtimeAnimatorController)
+            {
+                // Change attack orientation based which direction you are attacking
+                // If attacking upward
+                if (direction.y > 0)
+                {
+                    mainWeaponHolder.localEulerAngles = new Vector3(0, 0, 90);
+                }
+                // If attacking downward
+                else if (direction.y < 0)
+                {
+                    mainWeaponHolder.localEulerAngles = new Vector3(0, 0, -90);
+                }
+                // Else set to facing direction
+                else
+                {
+                    mainWeaponHolder.localEulerAngles = new Vector3(0, 0, 0);
+                }
+
+                // Randomly select a starting position
+                if (Random.Range(0, 1) == 1)
+                {
+                    mainWeaponAnimator.Play("Attack 2");
+                }
+                else
+                {
+                    mainWeaponAnimator.Play("Attack 3");
+                }
+            }
+            else if (weapon.controller == offWeaponAnimator.runtimeAnimatorController)
+            {
+                // If attacking upward
+                if (direction.y > 0)
+                {
+                    offWeaponHolder.localEulerAngles = new Vector3(0, 0, 90);
+                }
+                // If attacking downward
+                else if (direction.y < 0)
+                {
+                    offWeaponHolder.localEulerAngles = new Vector3(0, 0, -90);
+                }
+                // Else set to facing direction
+                else
+                {
+                    offWeaponHolder.localEulerAngles = new Vector3(0, 0, 0);
+                }
+
+                // Randomly select a starting position
+                if (Random.Range(0, 1) == 1)
+                {
+                    offWeaponAnimator.Play("Attack 2");
+                }
+                else
+                {
+                    offWeaponAnimator.Play("Attack 3");
+                }
+            }
+        }
+    }
+
     private void SheatheWeapon(Entity entity, Weapon weapon)
     {
-        // Play proper animation
-        if (weapon.controller == mainWeaponAnimator.runtimeAnimatorController)
+        if (this.entity == entity)
         {
-            mainWeaponAnimator.Play("Idle");
-            // Reset rotation
-            mainWeaponHolder.localEulerAngles = Vector3.zero;
-        }
-        else if (weapon.controller == offWeaponAnimator.runtimeAnimatorController)
-        {
-            offWeaponAnimator.Play("Idle");
-            // Reset rotation
-            offWeaponHolder.localEulerAngles = Vector3.zero;
+            // Play proper animation
+            if (weapon.controller == mainWeaponAnimator.runtimeAnimatorController)
+            {
+                mainWeaponAnimator.Play("Idle");
+                // Reset rotation
+                mainWeaponHolder.localEulerAngles = Vector3.zero;
+            }
+            else if (weapon.controller == offWeaponAnimator.runtimeAnimatorController)
+            {
+                offWeaponAnimator.Play("Idle");
+                // Reset rotation
+                offWeaponHolder.localEulerAngles = Vector3.zero;
+            }
         }
     }
 }

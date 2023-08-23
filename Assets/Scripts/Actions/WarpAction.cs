@@ -45,17 +45,14 @@ public class WarpAction : Action
         return result;
     }
 
+    public override List<Vector3Int> GetThreatenedLocations(Entity entity, Vector3Int targetLocation)
+    {
+        throw new System.NotImplementedException();
+    }
+
     public override IEnumerator Perform(Entity entity, Vector3Int targetLocation, Room room)
     {
         // Warp to location
-        entity.WarpTo(targetLocation);
-
-        // Wait for animation
-        yield return new WaitForSeconds(EntityModel.warpSpeed);
-
-        // Trigger event
-        GameEvents.instance.TriggerOnEnityWarp(entity);
-
-        // Finnish!
+        yield return entity.WarpTo(targetLocation);
     }
 }

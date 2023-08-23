@@ -29,9 +29,9 @@ public class ProjectileAction : Action
             position += direction;
 
             // Make sure tile is valid
-            if (!room.IsValidLocation(position, true)) 
+            if (!room.IsValidLocation(position, true))
             {
-                if (position - direction != startLocation) 
+                if (position - direction != startLocation)
                 {
                     // Add previous location
                     result.Add(position - direction);
@@ -45,7 +45,7 @@ public class ProjectileAction : Action
         {
             result.Add(endLocation);
         }
-        
+
 
         // South
         endLocation = startLocation + new Vector3Int(0, -maxRange, 0);
@@ -138,6 +138,11 @@ public class ProjectileAction : Action
         }
 
         return result;
+    }
+
+    public override List<Vector3Int> GetThreatenedLocations(Entity entity, Vector3Int targetLocation)
+    {
+        throw new System.NotImplementedException();
     }
 
 

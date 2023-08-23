@@ -73,7 +73,6 @@
      <Compile Include="Assets\Scripts\Game Feel\FloatingTextManager.cs" />
      <Compile Include="Assets\Scripts\UI\ProjectileModel.cs" />
      <Compile Include="Assets\Scripts\Items\HealingPotion.cs" />
-     <Compile Include="Assets\Scripts\Actions\Enemy Actions\EnemyAction.cs" />
      <Compile Include="Assets\Scripts\World\RoomTile.cs" />
      <Compile Include="Assets\Scripts\Actions\MoveAction.cs" />
      <Compile Include="Assets\Scripts\Die.cs" />
@@ -96,6 +95,7 @@
      <Compile Include="Assets\Scripts\Actions\Action.cs" />
      <Compile Include="Assets\Scripts\Main Menu\PauseManager.cs" />
      <Compile Include="Assets\Scripts\Items\Item.cs" />
+     <Compile Include="Assets\Scripts\UI\EnemyIntentUI.cs" />
      <Compile Include="Assets\Scripts\UI\EquipmentUI.cs" />
      <Compile Include="Assets\Scripts\UI\ActionsDisplayUI.cs" />
      <Compile Include="Assets\Scripts\Pathfinder.cs" />
@@ -114,7 +114,7 @@
      <Compile Include="Assets\Scripts\AI\AI.cs" />
      <Compile Include="Assets\Scripts\Actions\ShopAction.cs" />
      <Compile Include="Assets\Scripts\Projectiles\BasicProjectile.cs" />
-     <Compile Include="Assets\Scripts\UI\EnemyIntentUI.cs" />
+     <Compile Include="Assets\Scripts\UI\ProperLayerSort.cs" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
