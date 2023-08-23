@@ -17,13 +17,12 @@ public abstract class Action : ScriptableObject
     [Header("Dynamic Data")]
     public Die die;
     public Weapon weapon;
-    public List<Vector3Int> threatenedLocations;
 
     public abstract List<Vector3Int> GetValidLocations(Vector3Int startLocation, Room room);
 
     public abstract List<Vector3Int> GetThreatenedLocations(Entity entity, Vector3Int targetLocation);
 
-    public abstract IEnumerator Perform(Entity entity, Vector3Int targetLocation, Room room); // Refactor to take in list
+    public abstract IEnumerator Perform(Entity entity, List<Vector3Int> targetLocations, Room room); // Refactor to take in list
 
     public Action Copy()
     {

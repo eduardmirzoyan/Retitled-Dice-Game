@@ -53,7 +53,7 @@ public class RangedAI : AI
 
         foreach (var location in locations)
         {
-            Debug.Log("Want to go from: " + location + " to " + targetLocation);
+            // Debug.Log("Want to go from: " + location + " to " + targetLocation);
 
             // Make sure you have line of sight
             if (!room.IsValidPath(location, targetLocation, false, false))

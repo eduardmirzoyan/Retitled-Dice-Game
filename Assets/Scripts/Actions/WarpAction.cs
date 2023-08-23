@@ -50,9 +50,9 @@ public class WarpAction : Action
         throw new System.NotImplementedException();
     }
 
-    public override IEnumerator Perform(Entity entity, Vector3Int targetLocation, Room room)
+    public override IEnumerator Perform(Entity entity, List<Vector3Int> targetLocations, Room room)
     {
         // Warp to location
-        yield return entity.WarpTo(targetLocation);
+        yield return entity.WarpTo(targetLocations[0]);
     }
 }

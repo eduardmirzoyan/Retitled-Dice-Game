@@ -50,10 +50,10 @@ public class ShopAction : Action
         throw new System.NotImplementedException();
     }
 
-    public override IEnumerator Perform(Entity entity, Vector3Int targetLocation, Room room)
+    public override IEnumerator Perform(Entity entity, List<Vector3Int> targetLocations, Room room)
     {
         // Ignore input target
-        if (targetLocation == room.player.location)
+        if (targetLocations[0] == room.player.location)
         {
             // Open shop menu with inventory
             GameEvents.instance.TriggerOnOpenShop(entity.inventory);

@@ -75,8 +75,10 @@ public class MoveAction : Action
     }
 
 
-    public override IEnumerator Perform(Entity entity, Vector3Int targetLocation, Room room)
+    public override IEnumerator Perform(Entity entity, List<Vector3Int> targetLocations, Room room)
     {
+        var targetLocation = targetLocations[0];
+
         // Calculate direction
         Vector3Int direction = targetLocation - entity.location;
         direction.Clamp(-Vector3Int.one, Vector3Int.one);

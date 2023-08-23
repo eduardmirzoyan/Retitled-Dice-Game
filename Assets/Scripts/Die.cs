@@ -14,32 +14,32 @@ public class Die : ScriptableObject
     public bool neverExhaust = false;
     public bool lockValue = false;
 
-    public void Exhaust() {
+    public void Exhaust()
+    {
         if (neverExhaust) return;
-        
+
         isExhausted = true;
 
         // Trigger event
         GameEvents.instance.TriggerOnDieExhaust(this);
     }
 
-    public void Replenish() {
+    public void Replenish()
+    {
         isExhausted = false;
     }
-    
-    public void Roll() {
+
+    public void Roll()
+    {
         if (lockValue) return;
 
         // Generate a random value
         value = Random.Range(1, maxValue + 1);
     }
 
-    public Die Copy() {
+    public Die Copy()
+    {
         var copy = Instantiate(this);
-
-        // Do more here if needed?
-        copy.value = 1;
-        copy.isExhausted = false;
 
         return copy;
     }

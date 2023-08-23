@@ -51,8 +51,8 @@ public class GameEvents : MonoBehaviour
     public event Action<Entity, Vector3Int, Weapon> onEntityRangedAttack;
     public event Action<Entity, Vector3Int, Weapon, ActionInfo> onEntityRangedAttackTimed;
     public event Action<Entity> onEntityWarp;
-    public event Action<Vector3Int> onActionThreatenLocation;
-    public event Action<Vector3Int> onActionUnthreatenLocation;
+    public event Action<Action, Vector3Int> onActionThreatenLocation;
+    public event Action<Action, Vector3Int> onActionUnthreatenLocation;
 
     // Projectile visuals
     public event Action<Projectil> onProjectileSpawn;
@@ -399,19 +399,19 @@ public class GameEvents : MonoBehaviour
         }
     }
 
-    public void TriggerOnActionThreatenLocation(Vector3Int location)
+    public void TriggerOnActionThreatenLocation(Action action, Vector3Int location)
     {
         if (onActionThreatenLocation != null)
         {
-            onActionThreatenLocation(location);
+            onActionThreatenLocation(action, location);
         }
     }
 
-    public void TriggerOnActionUnthreatenLocation(Vector3Int location)
+    public void TriggerOnActionUnthreatenLocation(Action action, Vector3Int location)
     {
         if (onActionUnthreatenLocation != null)
         {
-            onActionUnthreatenLocation(location);
+            onActionUnthreatenLocation(action, location);
         }
     }
 
