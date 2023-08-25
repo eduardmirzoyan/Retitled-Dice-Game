@@ -81,11 +81,11 @@ public class MeleeAction : Action
     public override IEnumerator Perform(Entity entity, Vector3Int targetLocation, List<Vector3Int> threatenedLocations, Room room)
     {
         // Calculate direction
-        //Vector3Int direction = targetLocation - entity.location;
-        //direction.Clamp(-Vector3Int.one, Vector3Int.one);
+        Vector3Int direction = targetLocation - entity.location;
+        direction.Clamp(-Vector3Int.one, Vector3Int.one);
 
         // Draw weapon
-        GameEvents.instance.TriggerOnEntityDrawWeapon(entity, Vector3.left, weapon);
+        GameEvents.instance.TriggerOnEntityDrawWeapon(entity, direction, weapon);
 
         // Wait for animation
         yield return new WaitForSeconds(EntityModel.moveSpeed);
@@ -95,19 +95,14 @@ public class MeleeAction : Action
             var target = room.GetEntityAtLocation(location);
             if (target != null)
             {
-                entity.MeleeAttackEntity(target);
+                entity.MeleeAttackEntity(target, weapon);
 
                 // Wait for animation
                 yield return new WaitForSeconds(EntityModel.moveSpeed);
             }
         }
 
-        // Attack the location that you're at
-        // entity.MeleeAttackLocation(targetLocation, weapon);
-
         // Sheathe weapon
         GameEvents.instance.TriggerOnEntitySheatheWeapon(entity, weapon);
-
-        // Finnish!
     }
 }

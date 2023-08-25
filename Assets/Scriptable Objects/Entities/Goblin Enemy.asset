@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Goblin Enemy
   m_EditorClassIdentifier: 
   name: Goblin
-  maxHealth: 1
-  currentHealth: 1
+  maxHealth: 5
+  currentHealth: 5
   level: 1
   experience: 2
   gold: 0

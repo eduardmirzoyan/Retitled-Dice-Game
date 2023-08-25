@@ -47,7 +47,7 @@ public class GameEvents : MonoBehaviour
     public event Action<Entity> onEntityMoveStop;
     public event Action<Entity, Vector3, Weapon> onEntityDrawWeapon;
     public event Action<Entity, Weapon> onEntitySheatheWeapon;
-    public event Action<Entity, Weapon> onEntityMeleeAttack;
+    public event Action<Entity, Weapon, Vector3Int> onEntityMeleeAttack;
     public event Action<Entity, Vector3Int, Weapon> onEntityRangedAttack;
     public event Action<Entity, Vector3Int, Weapon, ActionInfo> onEntityRangedAttackTimed;
     public event Action<Entity> onEntityWarp;
@@ -254,11 +254,11 @@ public class GameEvents : MonoBehaviour
         }
     }
 
-    public void TriggerOnEntityMeleeAttack(Entity entity, Weapon weapon)
+    public void TriggerOnEntityMeleeAttack(Entity entity, Weapon weapon, Vector3Int direction)
     {
         if (onEntityMeleeAttack != null)
         {
-            onEntityMeleeAttack(entity, weapon);
+            onEntityMeleeAttack(entity, weapon, direction);
         }
     }
 

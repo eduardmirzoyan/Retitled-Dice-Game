@@ -183,7 +183,12 @@ public class Entity : ScriptableObject
 
         // Trigger event
         if (weapon != null)
-            GameEvents.instance.TriggerOnEntityMeleeAttack(this, weapon);
+        {
+            var direction = target.location - location;
+            direction.Clamp(-Vector3Int.one, Vector3Int.one);
+
+            GameEvents.instance.TriggerOnEntityMeleeAttack(this, weapon, direction);
+        }
     }
 
     public void AddGold(int amount)

@@ -63,16 +63,6 @@ public class GameManager : MonoBehaviour
         coroutine = StartCoroutine(EnterFloor());
     }
 
-    private void Update()
-    {
-        // Debug
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            print("Reactive Count: " + reactiveActionsHastable.Count);
-            print("Delayed Count: " + delayedActionsHashtable.Count);
-        }
-    }
-
     private IEnumerator EnterFloor()
     {
         // Reset round count

@@ -9,8 +9,6 @@ public class EntityModel : MonoBehaviour
     public static float moveSpeed = 0.35f;
     public static float warpSpeed = 0.5f;
 
-    [SerializeField] private Transform offsetTransform;
-
     [Header("Model")]
     [SerializeField] private SpriteRenderer modelSpriteRenderer;
     [SerializeField] private Animator modelAnimator;
@@ -45,6 +43,27 @@ public class EntityModel : MonoBehaviour
     private void Awake()
     {
         properLayerSort = GetComponentInChildren<ProperLayerSort>();
+    }
+
+    private void Update()
+    {
+        // Testing
+        if (entity is Player)
+        {
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                mainWeaponAnimator.Play("Draw");
+            }
+            else if (Input.GetKeyDown(KeyCode.S))
+            {
+                mainWeaponAnimator.Play("Attack");
+            }
+            else if (Input.GetKeyDown(KeyCode.D))
+            {
+                mainWeaponAnimator.Play("Sheathe");
+            }
+        }
+
     }
 
     public void Initialize(Entity entity, RoomUI roomUI)
@@ -273,7 +292,7 @@ public class EntityModel : MonoBehaviour
         }
     }
 
-    private void MeleeAttack(Entity entity, Weapon weapon)
+    private void MeleeAttack(Entity entity, Weapon weapon, Vector3Int direction)
     {
         // If this entity attacked
         if (this.entity == entity)
@@ -282,24 +301,26 @@ public class EntityModel : MonoBehaviour
             if (weapon.controller == mainWeaponAnimator.runtimeAnimatorController)
             {
                 // Flip to other end position
-                mainWeaponAnimator.SetTrigger("Attack");
+                // mainWeaponAnimator.SetTrigger("Attack");
+                mainWeaponAnimator.Play("Attack");
 
                 // Spawn particle in the same orientation as your attacking weapon
                 if (GameManager.instance.isSlashEffect && entity.mainWeapon.attackParticlePrefab != null)
                 {
-                    Instantiate(weapon.attackParticlePrefab, transform.position, mainWeaponHolder.rotation);
+                    Instantiate(weapon.attackParticlePrefab, transform.position + mainWeaponHolder.right, mainWeaponHolder.rotation);
                 }
             }
             // Or attacking with secondary
             else if (weapon.controller == offWeaponAnimator.runtimeAnimatorController)
             {
                 // Flip to other end position
-                offWeaponAnimator.SetTrigger("Attack");
+                // offWeaponAnimator.SetTrigger("Attack");
+                offWeaponAnimator.Play("Attack");
 
                 // Spawn particle in the same orientation as your attacking weapon
-                if (GameManager.instance.isSlashEffect && entity.mainWeapon.attackParticlePrefab != null)
+                if (GameManager.instance.isSlashEffect && entity.offWeapon.attackParticlePrefab != null)
                 {
-                    Instantiate(weapon.attackParticlePrefab, transform.position, offWeaponHolder.rotation);
+                    Instantiate(weapon.attackParticlePrefab, transform.position + offWeaponHolder.right, offWeaponHolder.rotation);
                 }
             }
         }
@@ -398,15 +419,9 @@ public class EntityModel : MonoBehaviour
                     mainWeaponHolder.localEulerAngles = new Vector3(0, 0, 0);
                 }
 
-                // Randomly select a starting position
-                if (Random.Range(0, 1) == 1)
-                {
-                    mainWeaponAnimator.Play("Attack 2");
-                }
-                else
-                {
-                    mainWeaponAnimator.Play("Attack 3");
-                }
+                // Play animation
+                mainWeaponAnimator.Play("Draw");
+
             }
             else if (weapon.controller == offWeaponAnimator.runtimeAnimatorController)
             {
@@ -426,15 +441,8 @@ public class EntityModel : MonoBehaviour
                     offWeaponHolder.localEulerAngles = new Vector3(0, 0, 0);
                 }
 
-                // Randomly select a starting position
-                if (Random.Range(0, 1) == 1)
-                {
-                    offWeaponAnimator.Play("Attack 2");
-                }
-                else
-                {
-                    offWeaponAnimator.Play("Attack 3");
-                }
+                // Play animation
+                offWeaponAnimator.Play("Draw");
             }
         }
     }
@@ -446,13 +454,17 @@ public class EntityModel : MonoBehaviour
             // Play proper animation
             if (weapon.controller == mainWeaponAnimator.runtimeAnimatorController)
             {
-                mainWeaponAnimator.Play("Idle");
+                // Play animation
+                mainWeaponAnimator.Play("Sheathe");
+
                 // Reset rotation
                 mainWeaponHolder.localEulerAngles = Vector3.zero;
             }
             else if (weapon.controller == offWeaponAnimator.runtimeAnimatorController)
             {
-                offWeaponAnimator.Play("Idle");
+                // Play animation
+                offWeaponAnimator.Play("Sheathe");
+
                 // Reset rotation
                 offWeaponHolder.localEulerAngles = Vector3.zero;
             }
