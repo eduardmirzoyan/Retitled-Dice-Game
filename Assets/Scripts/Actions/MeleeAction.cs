@@ -78,7 +78,7 @@ public class MeleeAction : Action
         return targets;
     }
 
-    public override IEnumerator Perform(Entity entity, List<Vector3Int> targetLocations, Room room)
+    public override IEnumerator Perform(Entity entity, Vector3Int targetLocation, List<Vector3Int> threatenedLocations, Room room)
     {
         // Calculate direction
         //Vector3Int direction = targetLocation - entity.location;
@@ -90,7 +90,7 @@ public class MeleeAction : Action
         // Wait for animation
         yield return new WaitForSeconds(EntityModel.moveSpeed);
 
-        foreach (var location in targetLocations)
+        foreach (var location in threatenedLocations)
         {
             var target = room.GetEntityAtLocation(location);
             if (target != null)

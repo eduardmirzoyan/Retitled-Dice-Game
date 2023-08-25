@@ -7,6 +7,7 @@ public class EnemyGenerator : ScriptableObject
 {
     public List<Entity> possibleEnemies;
     public Entity shopkeeper;
+    public Barrel barrel;
 
     public ItemGenerator shopItemGenerator;
 
@@ -17,10 +18,6 @@ public class EnemyGenerator : ScriptableObject
 
         // Return a copy
         var copy = possibleEnemies[Random.Range(0, possibleEnemies.Count)].Copy();
-
-        // TODO CHANGE THIS!
-        // Make both actions take same die
-        // copy.GetActions()[1].die = copy.GetActions()[0].die;
 
         return copy;
     }

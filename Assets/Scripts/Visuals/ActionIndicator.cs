@@ -8,9 +8,13 @@ public class ActionIndicator : MonoBehaviour
 {
     [Header("Components")]
     [SerializeField] private Tilemap intentionTilemap;
+    [SerializeField] private Tilemap intentionIconTilemap;
     [SerializeField] private Tilemap previewTilemap;
-    [SerializeField] private RuleTile markTile;
+    [SerializeField] private Tilemap inspectTilemap;
+    [SerializeField] private RuleTile highlightedTile;
     [SerializeField] private GameObject actionPreviewPrefab;
+    [SerializeField] private Tile reactiveIconTile;
+    [SerializeField] private Tile delayedIconTile;
 
     [Header("Settings")]
     [SerializeField] private float alpha = 0.25f;
@@ -24,20 +28,22 @@ public class ActionIndicator : MonoBehaviour
 
     private void Start()
     {
-        GameEvents.instance.onActionSelect += SpawnOptions;
+        GameEvents.instance.onActionSelect += ShowOptions;
         GameEvents.instance.onLocationSelect += FocusTile;
-        GameEvents.instance.onActionConfirm += ClearOptions;
+        GameEvents.instance.onActionConfirm += HideOptions;
         GameEvents.instance.onActionThreatenLocation += ThreatenTile;
         GameEvents.instance.onActionUnthreatenLocation += UnthreatenTile;
+        GameEvents.instance.onThreatsInspect += HighlightTiles;
     }
 
     private void OnDestroy()
     {
-        GameEvents.instance.onActionSelect -= SpawnOptions;
+        GameEvents.instance.onActionSelect -= ShowOptions;
         GameEvents.instance.onLocationSelect -= FocusTile;
-        GameEvents.instance.onActionConfirm -= ClearOptions;
+        GameEvents.instance.onActionConfirm -= HideOptions;
         GameEvents.instance.onActionThreatenLocation -= ThreatenTile;
         GameEvents.instance.onActionUnthreatenLocation -= UnthreatenTile;
+        GameEvents.instance.onThreatsInspect -= HighlightTiles;
     }
 
     private void ThreatenTile(Action action, Vector3Int location)
@@ -50,9 +56,13 @@ public class ActionIndicator : MonoBehaviour
         }
         else
         {
-            // Mark tile
-            intentionTilemap.SetTile(location, markTile);
+            // Highlight tile
+            intentionTilemap.SetTile(location, highlightedTile);
             intentionTilemap.SetColor(location, action.color);
+
+            // Set icon
+            intentionIconTilemap.SetTile(location, reactiveIconTile);
+            intentionIconTilemap.SetColor(location, action.color);
 
             // Add to dict
             threatTable[location] = 1;
@@ -70,6 +80,9 @@ public class ActionIndicator : MonoBehaviour
                 // Unmark
                 intentionTilemap.SetTile(location, null);
 
+                // Remove icon
+                intentionIconTilemap.SetTile(location, null);
+
                 // Remove entry
                 threatTable.Remove(location);
             }
@@ -85,7 +98,7 @@ public class ActionIndicator : MonoBehaviour
         }
     }
 
-    private void SpawnOptions(Entity entity, Action action)
+    private void ShowOptions(Entity entity, Action action)
     {
         if (entity != null)
         {
@@ -102,7 +115,7 @@ public class ActionIndicator : MonoBehaviour
                 {
                     // Set tile
                     previewTilemap.RemoveTileFlags(location, TileFlags.LockColor);
-                    previewTilemap.SetTile(location, markTile);
+                    previewTilemap.SetTile(location, highlightedTile);
                     previewTilemap.SetColor(location, action.color);
 
                     // Spawn a indicator node here if it's a player
@@ -123,7 +136,7 @@ public class ActionIndicator : MonoBehaviour
         actionPreview.Initialize(entity, location, action);
     }
 
-    private void ClearOptions(Entity entity, Action action, Vector3Int location)
+    private void HideOptions(Entity entity, Action action, Vector3Int location)
     {
         // Clear tiles first
         previewTilemap.ClearAllTiles();
@@ -131,8 +144,6 @@ public class ActionIndicator : MonoBehaviour
 
     private void FocusTile(Action action, Vector3Int location)
     {
-        // print("FOCUS: " + location);
-        // previewTilemap.CompressBounds();
         foreach (Vector3Int cellPosition in previewTilemap.cellBounds.allPositionsWithin)
         {
             previewTilemap.RemoveTileFlags(cellPosition, TileFlags.LockColor);
@@ -154,8 +165,21 @@ public class ActionIndicator : MonoBehaviour
         }
     }
 
-    private void PreviewIndicators(Entity entity, Action action)
+    private void HighlightTiles(List<Vector3Int> locations)
     {
-        // REDO THIS
+        if (locations != null)
+        {
+            foreach (var location in locations)
+            {
+                inspectTilemap.SetTile(location, highlightedTile);
+                inspectTilemap.SetTileFlags(location, TileFlags.None);
+            }
+        }
+        else
+        {
+            inspectTilemap.ClearAllTiles();
+        }
+
+
     }
 }

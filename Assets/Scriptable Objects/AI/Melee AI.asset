@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76c8345b3dfc8124b967763f0ede815b, type: 3}
   m_Name: Melee AI
   m_EditorClassIdentifier: 
-  isHostile: 1
+  alignment: 2

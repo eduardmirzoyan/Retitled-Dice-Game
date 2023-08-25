@@ -79,6 +79,7 @@ public class GameEvents : MonoBehaviour
     public event Action<Entity, Weapon> onWeaponEquip;
     public event Action<Inventory, bool> onToggleInventory;
     public event Action<Entity> onEntityInspect;
+    public event Action<List<Vector3Int>> onThreatsInspect;
     public event Action<Entity, Action> onInspectAction;
 
     public static GameEvents instance;
@@ -388,6 +389,14 @@ public class GameEvents : MonoBehaviour
         if (onEntityInspect != null)
         {
             onEntityInspect(entity);
+        }
+    }
+
+    public void TriggerOnThreatsInspect(List<Vector3Int> locations)
+    {
+        if (onThreatsInspect != null)
+        {
+            onThreatsInspect(locations);
         }
     }
 

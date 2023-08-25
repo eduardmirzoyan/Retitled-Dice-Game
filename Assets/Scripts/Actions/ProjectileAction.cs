@@ -146,10 +146,10 @@ public class ProjectileAction : Action
     }
 
 
-    public override IEnumerator Perform(Entity entity, List<Vector3Int> targetLocations, Room room)
+    public override IEnumerator Perform(Entity entity, Vector3Int targetLocation, List<Vector3Int> threatenedLocations, Room room)
     {
         // Calculate direction
-        Vector3Int direction = targetLocations[0] - entity.location;
+        Vector3Int direction = targetLocation - entity.location;
         direction.Clamp(-Vector3Int.one, Vector3Int.one);
 
         // Make a copy

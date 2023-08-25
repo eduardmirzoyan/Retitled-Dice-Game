@@ -56,7 +56,7 @@ public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
         isInteractable = true;
 
         // Move as second to last
-        transform.SetSiblingIndex(1);
+        transform.SetSiblingIndex(2);
     }
 
     public void SetInteractable(bool state)
@@ -132,16 +132,17 @@ public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
             {
                 // Use the consumable and store result
                 bool isSucessful = (item as Consumable).Use(DataManager.instance.GetPlayer());
-                
+
                 // Delete item if it was used
-                if (isSucessful) {
+                if (isSucessful)
+                {
                     // Remove item
                     itemSlotUI.StoreItem(null);
 
                     // Then delete it
                     Destroy(gameObject);
                 }
-                
+
             }
         }
     }

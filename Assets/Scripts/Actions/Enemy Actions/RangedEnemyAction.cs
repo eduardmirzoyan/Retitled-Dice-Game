@@ -24,7 +24,7 @@ public class RangedEnemyAction : Action
         throw new System.NotImplementedException();
     }
 
-    public override IEnumerator Perform(Entity entity, List<Vector3Int> targetLocations, Room room)
+    public override IEnumerator Perform(Entity entity, Vector3Int targetLocation, List<Vector3Int> threatenedLocations, Room room)
     {
         // Attack location
         // entity.MeleeAttackLocation(targetLocation, weapon);

@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum Alignment { Allied, Neutral, Hostile }
+
 [CreateAssetMenu(menuName = "AI/AI")]
 public abstract class AI : ScriptableObject
 {
-    public bool isHostile = true;
+    public Alignment alignment;
 
     public abstract List<(Action, Vector3Int)> GenerateSequenceOfActions(Entity entity, Room room, Entity targetEntity);
 }

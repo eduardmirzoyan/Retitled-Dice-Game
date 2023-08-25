@@ -85,6 +85,10 @@ public class Entity : ScriptableObject
         // Check if dead
         if (currentHealth == 0)
         {
+            // Cancel any actions
+            GameManager.instance.ClearDelayedActions(this);
+            GameManager.instance.ClearReativeActions(this);
+
             // Trigger death
             OnDeath();
 
@@ -145,7 +149,8 @@ public class Entity : ScriptableObject
         Interact();
 
         // Check for any reactive actions
-        yield return GameManager.instance.PerformReactiveAction(location);
+        if (this is Player)
+            yield return GameManager.instance.PerformReactiveAction(location);
 
         // Wait for animation
         yield return new WaitForSeconds(EntityModel.warpSpeed);

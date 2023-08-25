@@ -21,16 +21,16 @@ public class GoldPickup : MonoBehaviour
         this.location = location;
 
         // Sub to events
-        GameEvents.instance.onPickupDespawn += Pickup;
+        GameEvents.instance.onPickupDespawn += Despawn;
     }
 
     private void OnDestroy()
     {
         // Unsub
-        GameEvents.instance.onPickupDespawn -= Pickup;
+        GameEvents.instance.onPickupDespawn -= Despawn;
     }
 
-    private void Pickup(Vector3Int location)
+    private void Despawn(Vector3Int location)
     {
         // If this key was picked up destroy it
         if (this.location == location)

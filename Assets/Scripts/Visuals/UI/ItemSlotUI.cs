@@ -8,10 +8,11 @@ public class ItemSlotUI : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPo
 {
     [Header("Components")]
     [SerializeField] private Image highlightImage;
+    [SerializeField] private Image lockIcon;
+    [SerializeField] private Image afterImageIcon;
     [SerializeField] private Color defaultColor;
     [SerializeField] private Color highlightColor;
     [SerializeField] private Color disabledColor;
-    [SerializeField] private Image lockIcon;
 
     [Header("Data")]
     [SerializeField] private ItemUI itemUI;
@@ -29,11 +30,16 @@ public class ItemSlotUI : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPo
         var itemUI = Instantiate(itemUIPrefab, transform).GetComponent<ItemUI>();
         itemUI.Initialize(item, this);
 
+        // Update afterimage
+        afterImageIcon.sprite = itemUI.GetItem().sprite;
+        afterImageIcon.enabled = true;
+
         // Save item
         this.itemUI = itemUI;
     }
 
-    public void SetShopSlot(bool state) {
+    public void SetShopSlot(bool state)
+    {
         // Set this slot to a shop slot...
 
         // Must pay price to remove items
@@ -120,14 +126,19 @@ public class ItemSlotUI : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPo
 
     public void StoreItem(ItemUI itemUI)
     {
+        // Actual Item
         if (itemUI != null)
         {
             // Debugging
             print("Item " + itemUI.name + " has inserted into the slot: " + name);
-            
+
             // Change slot
             itemUI.SetParent(gameObject.transform);
             itemUI.SetItemSlot(this);
+
+            // Update afterimage
+            afterImageIcon.sprite = itemUI.GetItem().sprite;
+            afterImageIcon.enabled = true;
 
             // Trigger event
             GameEvents.instance.TriggerOnItemInsert(itemUI, this);
@@ -136,6 +147,9 @@ public class ItemSlotUI : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPo
         {
             // Debugging
             print("Item was removed from slot: " + name);
+
+            // Disable afterimage
+            afterImageIcon.enabled = false;
 
             // Trigger event
             GameEvents.instance.TriggerOnItemInsert(null, this);
@@ -182,5 +196,5 @@ public class ItemSlotUI : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPo
         return mustPurchase;
     }
 
-    
+
 }

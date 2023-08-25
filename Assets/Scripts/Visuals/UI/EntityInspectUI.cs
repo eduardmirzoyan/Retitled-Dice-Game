@@ -11,34 +11,26 @@ public class EntityInspectUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI entityName;
     [SerializeField] private Image entityIcon;
     [SerializeField] private HealthbarUI healthbarUI;
-    [SerializeField] private HorizontalLayoutGroup actionsLayoutGroup;
 
     [Header("Data")]
-    [SerializeField] private GameObject actionUIPrefab;
     [SerializeField] private Entity entity;
 
-    private List<ActionUI> actionUIs;
-
-    private void Awake()
-    {
-        actionUIs = new List<ActionUI>();
-    }
 
     private void Start()
     {
         // Sub
-        GameEvents.instance.onEntityInspect += UpdateInspect;
+        GameEvents.instance.onEntityInspect += InspectEntity;
     }
 
     private void OnDestroy()
     {
         // Unsub
-        GameEvents.instance.onEntityInspect -= UpdateInspect;
+        GameEvents.instance.onEntityInspect -= InspectEntity;
     }
 
-    public void UpdateInspect(Entity entity)
+    public void InspectEntity(Entity entity)
     {
-        // If entity is different, you need to make some change
+        // If entity is different, you need to make some changes
         if (this.entity != entity)
         {
             if (this.entity != null)
@@ -50,7 +42,6 @@ public class EntityInspectUI : MonoBehaviour
 
                 // Remove any visuals
                 healthbarUI.Uninitialize();
-                DestroyActions();
             }
 
             if (entity != null)
@@ -68,35 +59,10 @@ public class EntityInspectUI : MonoBehaviour
 
                 // Intialize healthbar
                 healthbarUI.Initialize(entity);
-
-                // Display all of the entity's actions
-                foreach (var action in entity.GetActions())
-                {
-                    // Instaniate as child
-                    var actionUI = Instantiate(actionUIPrefab, actionsLayoutGroup.transform).GetComponent<ActionUI>();
-                    // Initialize in inspect mode
-                    actionUI.Initialize(action, ActionMode.Inspect, entity);
-                    // Save
-                    actionUIs.Add(actionUI);
-                }
             }
         }
 
         // Update field
         this.entity = entity;
-    }
-
-    private void DestroyActions()
-    {
-        foreach (var actionUI in actionUIs)
-        {
-            // Un-init
-            actionUI.Uninitialize();
-            // Destroy
-            Destroy(actionUI.gameObject);
-        }
-
-        // Clear list
-        actionUIs.Clear();
     }
 }

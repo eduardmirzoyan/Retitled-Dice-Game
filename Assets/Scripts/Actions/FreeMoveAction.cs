@@ -49,10 +49,10 @@ public class FreeMoveAction : Action
         return new List<Vector3Int> { targetLocation };
     }
 
-    public override IEnumerator Perform(Entity entity, List<Vector3Int> targetLocations, Room room)
+    public override IEnumerator Perform(Entity entity, Vector3Int targetLocation, List<Vector3Int> threatenedLocations, Room room)
     {
         // Generate path
-        var path = room.pathfinder.FindPath(entity.location, targetLocations[0], room);
+        var path = room.pathfinder.FindPath(entity.location, targetLocation, room);
 
         // Remove the start location
         path.RemoveAt(0);

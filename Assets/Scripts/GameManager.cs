@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.UI;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class GameManager : MonoBehaviour
 {
@@ -31,14 +32,12 @@ public class GameManager : MonoBehaviour
     private Entity selectedEntity;
     private Action selectedAction;
     private Vector3Int selectedLocation;
+    private List<Vector3Int> selectedThreats;
     private List<(Action, Vector3Int)> bestChoiceSequence;
-    private Dictionary<Action, List<Vector3Int>> threatenLocationsHashtable;
-    private Dictionary<Entity, (Action, Vector3Int)> delayedActionsHashtable;
-    private Dictionary<Vector3Int, List<(Entity, Action)>> reactiveActionsHastable;
-
+    private Dictionary<(Entity, Action), List<Vector3Int>> reactiveActionsHastable;
+    private Dictionary<(Entity, Action), List<Vector3Int>> delayedActionsHashtable;
 
     private Coroutine coroutine;
-
     public static GameManager instance;
     private void Awake()
     {
@@ -51,11 +50,11 @@ public class GameManager : MonoBehaviour
 
         instance = this;
 
+        // Initialize lists
         bestChoiceSequence = new List<(Action, Vector3Int)>();
-
-        threatenLocationsHashtable = new Dictionary<Action, List<Vector3Int>>();
-        reactiveActionsHastable = new Dictionary<Vector3Int, List<(Entity, Action)>>();
-        delayedActionsHashtable = new Dictionary<Entity, (Action, Vector3Int)>();
+        selectedThreats = new List<Vector3Int>();
+        reactiveActionsHastable = new Dictionary<(Entity, Action), List<Vector3Int>>();
+        delayedActionsHashtable = new Dictionary<(Entity, Action), List<Vector3Int>>();
     }
 
     private void Start()
@@ -69,7 +68,6 @@ public class GameManager : MonoBehaviour
         // Debug
         if (Input.GetKeyDown(KeyCode.D))
         {
-            print("Threat Count: " + threatenLocationsHashtable.Count);
             print("Reactive Count: " + reactiveActionsHastable.Count);
             print("Delayed Count: " + delayedActionsHashtable.Count);
         }
@@ -83,17 +81,20 @@ public class GameManager : MonoBehaviour
         // Generate the room
         yield return GenerateRoom();
 
-        // Generate Keys
-        yield return GenerateKeys();
-
-        // Generate coins?
-        // TODO
-
-        // Generate player and add to room
+        // Generate player
         yield return GeneratePlayer();
 
-        // Generate enemies and add to room
+        // Generate enemies
         yield return GenerateEnemies();
+
+        // Generate barrels
+        yield return GenerateBarrels();
+
+        // Generate keys
+        yield return GenerateKeys();
+
+        // Generate gold
+        yield return GenerateGold();
 
         // Trigger event
         GameEvents.instance.TriggerOnEnterFloor(room);
@@ -123,6 +124,18 @@ public class GameManager : MonoBehaviour
             default:
                 throw new System.Exception("ERROR CREATING ROOM WITH ROOM INDEX: " + index);
         }
+
+        // Finish
+        yield return null;
+    }
+
+    private IEnumerator GeneratePlayer()
+    {
+        // Get player from data
+        var player = DataManager.instance.GetPlayer();
+
+        // Populate the room
+        room.SpawnPlayer(player);
 
         // Finish
         yield return null;
@@ -163,13 +176,14 @@ public class GameManager : MonoBehaviour
         yield return null;
     }
 
-    private IEnumerator GeneratePlayer()
+    private IEnumerator GenerateBarrels()
     {
-        // Get player from data
-        var player = DataManager.instance.GetPlayer();
-
-        // Populate the room
-        room.SpawnEntity(player);
+        // Create keys based on room number
+        for (int i = 0; i < DataManager.instance.GetRoomNumber(); i++)
+        {
+            // Spawn a barrel
+            room.SpawnEntity(enemyGenerator.barrel);
+        }
 
         // Finish
         yield return null;
@@ -180,7 +194,21 @@ public class GameManager : MonoBehaviour
         // Create keys based on room number
         for (int i = 0; i < DataManager.instance.GetRoomNumber(); i++)
         {
-            room.AddKey();
+            // Spawn a key
+            room.SpawnPickup(PickUpType.Key);
+        }
+
+        // Finish
+        yield return null;
+    }
+
+    private IEnumerator GenerateGold()
+    {
+        // Create keys based on room number
+        for (int i = 0; i < DataManager.instance.GetRoomNumber(); i++)
+        {
+            // Spawn a key
+            room.SpawnPickup(PickUpType.Gold);
         }
 
         // Finish
@@ -195,11 +223,16 @@ public class GameManager : MonoBehaviour
         // First entity is always the player
         turnQueue.Enqueue(room.player);
 
-        // Now pull enemes from the room
-        foreach (var enemy in room.hostileEntities)
+        // Now hostile entities from the room
+        foreach (var entity in room.hostileEntities)
         {
-            // Add enemy
-            turnQueue.Enqueue(enemy);
+            turnQueue.Enqueue(entity);
+        }
+
+        // Get neutral entities
+        foreach (var entity in room.neutralEntities)
+        {
+            turnQueue.Enqueue(entity);
         }
 
         // Debug
@@ -256,7 +289,7 @@ public class GameManager : MonoBehaviour
         ClearReativeActions(selectedEntity);
 
         // Reset actions now
-        ResetActions(selectedEntity);
+        ReplenishActions(selectedEntity);
 
         // Check if the enity has an ai, if so, let them decide their action
         if (selectedEntity.AI != null)
@@ -304,8 +337,15 @@ public class GameManager : MonoBehaviour
             // Debug
             // print("Location " + location + " was de-selected.");
 
-            // Clean up selected tiles, etc
-            CleanThreats(selectedAction);
+            if (selectedThreats != null)
+            {
+                // Clean up selected tiles, etc
+                HideThreats(selectedAction, selectedThreats);
+
+                // Remove threats
+                selectedThreats = null;
+            }
+
         }
         else
         {
@@ -313,15 +353,10 @@ public class GameManager : MonoBehaviour
             // print("Location " + location + " was selected.");
 
             // Add threatened locations to table
-            var locations = selectedAction.GetThreatenedLocations(selectedEntity, location);
-            threatenLocationsHashtable.Add(selectedAction, locations);
+            selectedThreats = selectedAction.GetThreatenedLocations(selectedEntity, location);
 
             // Show threats
-            foreach (var loc in locations)
-            {
-                // Trigger events
-                GameEvents.instance.TriggerOnActionThreatenLocation(selectedAction, loc);
-            }
+            ShowThreats(selectedAction, selectedThreats);
         }
 
         // Trigger event
@@ -342,30 +377,13 @@ public class GameManager : MonoBehaviour
             case ActionType.Instant:
 
                 // Perform immediately
-                coroutine = StartCoroutine(PerformAction(selectedEntity, selectedAction, selectedLocation));
-
-                // Clean up selected tiles, etc
-                CleanThreats(selectedAction);
+                coroutine = StartCoroutine(PerformAction(selectedEntity, selectedAction, selectedLocation, selectedThreats));
 
                 break;
             case ActionType.Reactive:
 
-                var locations = threatenLocationsHashtable[selectedAction];
-                foreach (var location in locations)
-                {
-                    // Store in dictionary
-                    if (reactiveActionsHastable.TryGetValue(location, out var entityActionPairList))
-                    {
-                        // Add to existing list
-                        entityActionPairList.Add((selectedEntity, selectedAction));
-                    }
-                    else
-                    {
-                        // Add new entry
-                        reactiveActionsHastable.Add(location, new List<(Entity, Action)>() { (selectedEntity, selectedAction) });
-
-                    }
-                }
+                // Save action pair to table
+                reactiveActionsHastable[(selectedEntity, selectedAction)] = selectedThreats;
 
                 // Immediately end turn after
                 coroutine = StartCoroutine(EndTurn());
@@ -373,8 +391,8 @@ public class GameManager : MonoBehaviour
                 break;
             case ActionType.Delayed:
 
-                // Store in dictionary somewhere to perform later
-                delayedActionsHashtable.Add(selectedEntity, (selectedAction, selectedLocation));
+                // Save action pair to table
+                delayedActionsHashtable[(selectedEntity, selectedAction)] = selectedThreats;
 
                 // Immediately end turn after
                 coroutine = StartCoroutine(EndTurn());
@@ -445,36 +463,19 @@ public class GameManager : MonoBehaviour
             case ActionType.Instant:
 
                 // Perform immediately
-                yield return PerformAction(selectedEntity, selectedAction, selectedLocation);
-
-                // Clean up selected tiles, etc
-                CleanThreats(selectedAction);
+                yield return PerformAction(selectedEntity, selectedAction, selectedLocation, selectedThreats);
 
                 break;
             case ActionType.Reactive:
 
-                var locations = threatenLocationsHashtable[selectedAction];
-                foreach (var location in locations)
-                {
-                    // Store in dictionary
-                    if (reactiveActionsHastable.TryGetValue(location, out var entityActionPairList))
-                    {
-                        // Add to existing list
-                        entityActionPairList.Add((selectedEntity, selectedAction));
-                    }
-                    else
-                    {
-                        // Add new entry
-                        reactiveActionsHastable.Add(location, new List<(Entity, Action)>() { (selectedEntity, selectedAction) });
-
-                    }
-                }
+                // Save action pair to table
+                reactiveActionsHastable[(selectedEntity, selectedAction)] = selectedThreats;
 
                 break;
             case ActionType.Delayed:
 
-                // Store in dictionary somewhere to perform later
-                delayedActionsHashtable.Add(selectedEntity, (selectedAction, selectedLocation));
+                // Save action pair to table
+                delayedActionsHashtable[(selectedEntity, selectedAction)] = selectedThreats;
 
                 break;
         }
@@ -553,7 +554,7 @@ public class GameManager : MonoBehaviour
         TransitionManager.instance.LoadMainMenuScene(location);
     }
 
-    private void ResetActions(Entity entity)
+    private void ReplenishActions(Entity entity)
     {
         // Loop through all actions
         foreach (var action in entity.GetActions())
@@ -568,7 +569,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private IEnumerator PerformAction(Entity entity, Action action, Vector3Int location)
+    private IEnumerator PerformAction(Entity entity, Action action, Vector3Int location, List<Vector3Int> threatenedLocations)
     {
         // Trigger event
         GameEvents.instance.TriggerOnActionPerformStart(entity, action, location, room);
@@ -576,13 +577,14 @@ public class GameManager : MonoBehaviour
         // Exhaust selected die
         action.die.Exhaust();
 
-        var locations = threatenLocationsHashtable[action];
-
         // Perform the action and wait until it's finished
-        yield return action.Perform(entity, locations, room);
+        yield return action.Perform(entity, location, threatenedLocations, room);
 
         // After the action is performed, re-enable UI
         GameEvents.instance.TriggerOnActionPerformEnd(entity, action, location, room);
+
+        // Clean up selected tiles, etc
+        HideThreats(action, threatenedLocations);
 
         // Done
         yield return null;
@@ -590,87 +592,165 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator PerformDelayedAction(Entity entity)
     {
-        // See if there is a reactive action at this location
-        if (delayedActionsHashtable.TryGetValue(entity, out var actionLocationPair))
+        // Loop through each pair
+        foreach (var entityActionPair in delayedActionsHashtable)
         {
-            // Perform the action
-            yield return PerformAction(entity, actionLocationPair.Item1, actionLocationPair.Item2);
+            // Check for any matches
+            if (entityActionPair.Key.Item1 == entity)
+            {
+                // Parse data
+                var action = entityActionPair.Key.Item2;
+                var targets = entityActionPair.Value;
 
-            // Remove entry
-            delayedActionsHashtable.Remove(entity);
+                // Perform the action
+                yield return PerformAction(entity, action, targets[0], targets);
 
-            // Clean up selected tiles, etc
-            CleanThreats(actionLocationPair.Item1);
+                // Remove entry
+                delayedActionsHashtable.Remove(entityActionPair.Key);
+
+                // Stop
+                break;
+            }
         }
     }
 
     public IEnumerator PerformReactiveAction(Vector3Int location)
     {
-        // See if there is a reactive action at this location
-        if (reactiveActionsHastable.TryGetValue(location, out var entityActionPairList))
+        // Loop through each pair
+        foreach (var entityActionPair in reactiveActionsHastable)
         {
-            // Loop through each pair and activate it
-            foreach (var entityActionPair in entityActionPairList)
+            // Check if action threatens this location
+            if (entityActionPair.Value.Contains(location))
             {
+                // Parse data
+                var entity = entityActionPair.Key.Item1;
+                var action = entityActionPair.Key.Item2;
+                var targets = entityActionPair.Value;
+
                 // Perform the action
-                yield return PerformAction(entityActionPair.Item1, entityActionPair.Item2, location);
+                yield return PerformAction(entity, action, targets[0], targets);
 
-                // Clean up selected tiles, etc
-                CleanThreats(entityActionPair.Item2);
+                // Remove entry
+                reactiveActionsHastable.Remove(entityActionPair.Key);
+
+                // Stop
+                break;
             }
-
-            // Remove entry from table
-            reactiveActionsHastable.Remove(location);
         }
     }
 
-    private void ClearReativeActions(Entity entity)
+    public void ClearReativeActions(Entity entity)
     {
-        // Look through each entry
-        foreach (var entry in reactiveActionsHastable)
+        // Loop through each pair
+        foreach (var entityActionPair in reactiveActionsHastable)
         {
-            // Check though list
-            foreach (var pair in entry.Value)
+            // Check if action threatens this location
+            if (entityActionPair.Key.Item1 == entity)
             {
-                // If this entity is found
-                if (pair.Item1 == entity)
+                // Parse data
+                var action = entityActionPair.Key.Item2;
+                var targets = entityActionPair.Value;
+
+                // Remove entry
+                reactiveActionsHastable.Remove(entityActionPair.Key);
+
+                // Hide threats
+                HideThreats(action, targets);
+
+                // Stop
+                break;
+            }
+        }
+    }
+
+    public void ClearDelayedActions(Entity entity)
+    {
+        // Loop through each pair
+        foreach (var entityActionPair in delayedActionsHashtable)
+        {
+            // Check if action threatens this location
+            if (entityActionPair.Key.Item1 == entity)
+            {
+                // Parse data
+                var action = entityActionPair.Key.Item2;
+                var targets = entityActionPair.Value;
+
+                // Remove entry
+                delayedActionsHashtable.Remove(entityActionPair.Key);
+
+                // Hide threats
+                HideThreats(action, targets);
+
+                // Stop
+                break;
+            }
+        }
+    }
+
+    private void ShowThreats(Action action, List<Vector3Int> locations)
+    {
+        foreach (var location in locations)
+        {
+            // Trigger event
+            GameEvents.instance.TriggerOnActionThreatenLocation(action, location);
+        }
+    }
+
+    private void HideThreats(Action action, List<Vector3Int> locations)
+    {
+        if (locations == null)
+        {
+            throw new System.Exception("NO THREATS EXIST?");
+        }
+
+        foreach (var location in locations)
+        {
+            // Trigger event
+            GameEvents.instance.TriggerOnActionUnthreatenLocation(action, location);
+        }
+    }
+
+    public void InspectLocation(Vector3Int location)
+    {
+        // Get entity at the location
+        Entity entity = room.GetEntityAtLocation(location);
+
+        if (entity != null)
+        {
+            // Loop through each pair
+            foreach (var entityActionPair in delayedActionsHashtable)
+            {
+                // Check if action threatens this location
+                if (entityActionPair.Key.Item1 == entity)
                 {
-                    // Remove entry from list
-                    reactiveActionsHastable[entry.Key].Remove(pair);
-                    if (reactiveActionsHastable.Count == 0)
-                    {
-                        // Remove entry from table
-                        reactiveActionsHastable.Remove(entry.Key);
-                    }
+                    var targets = entityActionPair.Value;
 
-                    // Clear threats
-                    CleanThreats(pair.Item2);
+                    // Trigger event
+                    GameEvents.instance.TriggerOnThreatsInspect(targets);
+                }
+            }
 
-                    return;
+            // Loop through each pair
+            foreach (var entityActionPair in reactiveActionsHastable)
+            {
+                // Check if action threatens this location
+                if (entityActionPair.Key.Item1 == entity)
+                {
+                    var targets = entityActionPair.Value;
+
+                    // Trigger event
+                    GameEvents.instance.TriggerOnThreatsInspect(targets);
                 }
             }
         }
-    }
-
-    private void CleanThreats(Action action)
-    {
-        // See if action exists in table
-        if (threatenLocationsHashtable.TryGetValue(action, out var locations))
-        {
-            foreach (var location in locations)
-            {
-                // Trigger event
-                GameEvents.instance.TriggerOnActionUnthreatenLocation(action, location);
-            }
-
-            // Remove entry
-            threatenLocationsHashtable.Remove(action);
-        }
         else
         {
-            // Debug
-            print("CANNOT CLEAN ACTION: " + action.name);
+            // Trigger event
+            GameEvents.instance.TriggerOnThreatsInspect(null);
         }
+
+        // Trigger event
+        GameEvents.instance.TriggerOnEntityInspect(entity);
     }
 
 

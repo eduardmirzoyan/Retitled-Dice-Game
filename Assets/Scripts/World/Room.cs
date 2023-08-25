@@ -24,72 +24,79 @@ public class Room : ScriptableObject
 
     public List<Entity> neutralEntities;
     public List<Entity> hostileEntities;
+    public List<Entity> alliedEntities;
     public Player player;
-
-    private Barrel barrel;
-
-    private int goldSpawnChance;
-    private int wallSpawnChance;
-    private int barrelSpawnChance;
 
     public Pathfinder pathfinder;
 
-    public void Initialize(int width, int height, int padding, int numKeys, int goldSpawnChance, int wallSpawnChance, int barrelSpawnChance, Barrel barrel)
+    public void Initialize(int roomWidth, int roomHeight, int padding, int wallSpawnChance)
     {
         // Save dimensions
-        this.width = width;
-        this.height = height;
+        this.width = roomWidth;
+        this.height = roomHeight;
         this.padding = padding;
-        this.numKeys = 0;
-        this.goldSpawnChance = goldSpawnChance;
-        this.wallSpawnChance = wallSpawnChance;
-        this.barrelSpawnChance = barrelSpawnChance;
-        this.barrel = barrel;
 
-        // Generate world tiles
-        GenerateTiles();
-
-        // Spawn keys
-        // SpawnKeys(numKeys);
+        numKeys = 0;
 
         // Initalize lists
         hostileEntities = new List<Entity>();
         neutralEntities = new List<Entity>();
+        alliedEntities = new List<Entity>();
 
         // Initalize pathfinder
         pathfinder = new Pathfinder();
+
+        // Generate world tiles
+        GenerateTiles(wallSpawnChance);
+    }
+
+    public void SpawnPlayer(Player player)
+    {
+        this.player = player;
+
+        // Set the player's location to be at dungeon entrance
+        player.Initialize(this, entranceTile.location);
+
+        // Update tile
+        entranceTile.containedEntity = player;
+
+        // Trigger event
+        GameEvents.instance.TriggerOnEntitySpawn(player);
     }
 
     public void SpawnEntity(Entity entity)
     {
-        if (entity is Player)
+        // Get random point in room
+        Vector3Int spawnLocation = GetRandomLocation();
+
+        // Intialize entity
+        entity.Initialize(this, spawnLocation);
+
+        // Update tile
+        tiles[spawnLocation.x, spawnLocation.y].containedEntity = entity;
+
+        switch (entity.AI.alignment)
         {
-            this.player = (Player)entity;
-            // Set the player's location to be at dungeon entrance
-            player.Initialize(this, entranceTile.location);
+            case Alignment.Hostile:
 
-            // Update tile
-            entranceTile.containedEntity = player;
-        }
-        else
-        {
-            Vector3Int spawnLocation;
-            do // Get random free point in dungeon
-            {
-                int randX = padding + Random.Range(0, width);
-                int randY = padding + Random.Range(0, height);
-                spawnLocation = new Vector3Int(randX, randY);
+                // Save to list
+                hostileEntities.Add(entity);
 
-            } while (!IsValidLocation(spawnLocation));
+                // Check to lock inventory?
 
-            // Intialize entity
-            entity.Initialize(this, spawnLocation);
+                break;
+            case Alignment.Neutral:
 
-            // Update tile
-            tiles[spawnLocation.x, spawnLocation.y].containedEntity = entity;
+                // Save to list
+                neutralEntities.Add(entity);
 
-            // Save
-            hostileEntities.Add(entity);
+                break;
+            case Alignment.Allied:
+
+                // Save to list
+                alliedEntities.Add(entity);
+
+                break;
         }
 
         // Trigger event
@@ -171,6 +178,9 @@ public class Room : ScriptableObject
 
     public Entity GetEntityAtLocation(Vector3Int location)
     {
+        if (location.x < 0 || location.x >= 2 * padding + width || location.y < 0 || location.y >= 2 * padding + height)
+            throw new System.Exception("INPUT LOCATION OUT OF BOUNSD: " + location);
+
         return tiles[location.x, location.y].containedEntity;
     }
 
@@ -179,7 +189,7 @@ public class Room : ScriptableObject
         return tiles[location.x, location.y];
     }
 
-    private void GenerateTiles()
+    private void GenerateTiles(int wallSpawnChance)
     {
         tiles = new RoomTile[width + 2 * padding, height + 2 * padding];
 
@@ -200,6 +210,7 @@ public class Room : ScriptableObject
                 // Create new tile SO
                 var tile = ScriptableObject.CreateInstance<RoomTile>();
                 var location = new Vector3Int(i, j);
+
                 // Initialize it to default
                 tile.Initialize(location, this);
 
@@ -257,98 +268,94 @@ public class Room : ScriptableObject
         }
     }
 
-    private void TrySpawnGold(RoomTile tile, int goldSpawnChance)
-    {
-        // Do nothing if not a floor tile
-        if (tile.tileType != TileType.Floor)
-            return;
-
-        bool flag = Random.Range(0, 100) < goldSpawnChance;
-        if (flag)
-        {
-            // TODO
-        }
-    }
-
-    private void TrySpawnBarrel(RoomTile tile, int barrelSpawnChance)
-    {
-        // Do nothing if not a floor tile
-        if (tile.tileType != TileType.Floor)
-            return;
-
-        bool flag = Random.Range(0, 100) < barrelSpawnChance;
-        if (flag)
-        {
-            // TODO
-        }
-    }
-
-    private void SpawnKeys(int numKeys)
-    {
-        while (numKeys > 0)
-        {
-            // Select random location within room
-            var randomLocation = Vector3Int.zero;
-            randomLocation.x = Random.Range(padding, padding + width);
-            randomLocation.y = Random.Range(padding, padding + height);
-
-            // Make sure location is valid
-            if (!IsValidLocation(randomLocation, true))
-                continue;
-
-            // Set tile to key
-            tiles[randomLocation.x, randomLocation.y].containedPickup = PickUpType.Key;
-            numKeys--;
-        }
-    }
-
-    public void AddKey()
+    public void SpawnPickup(PickUpType pickUpType)
     {
         // Find a random valid location in room
-        Vector3Int randomLocation;
-        do
+        Vector3Int randomLocation = GetRandomLocation();
+
+        // Update tile
+        TileFromLocation(randomLocation).containedPickup = pickUpType;
+
+        switch (pickUpType)
         {
-            int randX = padding + Random.Range(0, width);
-            int randY = padding + Random.Range(0, height);
-            randomLocation = new Vector3Int(randX, randY);
+            case PickUpType.Gold:
 
-        } while (!IsValidLocation(randomLocation) && TileFromLocation(randomLocation).containedPickup == PickUpType.None);
+                // Nothing special needs to happen.
 
-        // Add the key to room
-        SpawnKey(randomLocation);
+                break;
+            case PickUpType.Key:
+
+                // If there were no keys, now we need to lock exit
+                if (numKeys == 0)
+                {
+                    // Trigger event
+                    GameEvents.instance.TriggerOnLockExit();
+                }
+
+                // Increment keys
+                numKeys++;
+
+                break;
+        }
+
+        // Trigger event
+        GameEvents.instance.TriggerOnPickupSpawn(pickUpType, randomLocation);
     }
 
-
-    public void SpawnKey(Vector3Int location)
+    private void DespawnPickup(Entity entity, RoomTile tile)
     {
-        // If there were no keys, now we need to lock exit
-        if (numKeys == 0)
+        // Handle any pickups on tile
+        switch (tile.containedPickup)
         {
-            // Trigger event
-            GameEvents.instance.TriggerOnLockExit();
+            case PickUpType.Gold:
+
+                // Give gold to entity
+                entity.AddGold(1);
+
+                break;
+            case PickUpType.Key:
+
+                // Decrement key count
+                numKeys = Mathf.Max(numKeys - 1, 0);
+                if (numKeys == 0)
+                {
+                    // Trigger event
+                    GameEvents.instance.TriggerOnUnlockExit();
+                }
+
+                break;
         }
 
         // Update tile
-        TileFromLocation(location).containedPickup = PickUpType.Key;
-
-        // Increment keys
-        numKeys++;
+        tile.containedPickup = PickUpType.None;
 
         // Trigger event
-        GameEvents.instance.TriggerOnPickupSpawn(PickUpType.Key, location);
-    }
-
-    private void DespawnKey()
-    {
-        numKeys = Mathf.Max(numKeys - 1, 0);
-        if (numKeys == 0)
-        {
-            // Trigger event
-            GameEvents.instance.TriggerOnUnlockExit();
-        }
+        GameEvents.instance.TriggerOnPickupDespawn(tile.location);
     }
 
     // ~~~~~~~~~~~~~~ HELPER FUNCTIONS ~~~~~~~~~~~~~~
+
+    private Vector3Int GetRandomLocation()
+    {
+        Vector3Int spawnLocation;
+
+        // Keep looping until valid point is found
+        while (true)
+        {
+            int randX = padding + Random.Range(0, width);
+            int randY = padding + Random.Range(0, height);
+            spawnLocation = new Vector3Int(randX, randY);
+
+            // Check if everything is good
+            if (IsValidLocation(spawnLocation, true, false) && (spawnLocation != entranceTile.location || spawnLocation != exitTile.location))
+            {
+                break;
+            }
+
+        }
+
+        return spawnLocation;
+    }
 
     public List<Vector3Int> GetNeighbors(Vector3Int location, bool ignoreEntity = false)
     {
@@ -382,7 +389,7 @@ public class Room : ScriptableObject
         return neighbors;
     }
 
-    public bool IsValidLocation(Vector3Int location, bool ignoreEntity = false)
+    public bool IsValidLocation(Vector3Int location, bool ignoreEntity = false, bool ignorePickup = true)
     {
         // Debug.Log(location);
 
@@ -394,11 +401,18 @@ public class Room : ScriptableObject
             return false;
         }
 
-        // Make sure there is no player or ANY enemy there or ANY barrel
+        // Make sure there is no entity
         if (!ignoreEntity)
         {
             // If there is an entity on this tile, dip
             if (tile.containedEntity != null)
+                return false;
+        }
+
+        if (!ignorePickup)
+        {
+            // If there is a pickup
+            if (tile.containedPickup != PickUpType.None)
                 return false;
         }
 
@@ -468,9 +482,6 @@ public class Room : ScriptableObject
 
     public List<Vector3Int> GetAllValidLocationsAlongPath(Vector3Int start, Vector3Int end, bool ignoreEntity = false)
     {
-        // Debug.Log("Start: " + start);
-        // Debug.Log("End: " + end);
-
         List<Vector3Int> result = new List<Vector3Int>();
 
         Vector3Int direction = end - start;
@@ -505,34 +516,10 @@ public class Room : ScriptableObject
 
             return;
         }
-
-        // Handle any pickups on tile
-        switch (tile.containedPickup)
+        else if (tile.containedPickup != PickUpType.None)
         {
-            case PickUpType.Gold:
-
-                // Give gold to entity
-                entity.AddGold(1);
-
-                // Trigger event
-                GameEvents.instance.TriggerOnPickupDespawn(location);
-
-                // Update tile
-                tile.containedPickup = PickUpType.None;
-
-                break;
-            case PickUpType.Key:
-
-                // Decrement lock count on exit
-                DespawnKey();
-
-                // Trigger event
-                GameEvents.instance.TriggerOnPickupDespawn(location);
-
-                // Update tile
-                tile.containedPickup = PickUpType.None;
-
-                break;
+            // Despawn any pickups
+            DespawnPickup(entity, tile);
         }
 
     }

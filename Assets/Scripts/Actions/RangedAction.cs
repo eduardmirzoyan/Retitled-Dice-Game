@@ -50,10 +50,10 @@ public class RangedAction : Action
         throw new System.NotImplementedException();
     }
 
-    public override IEnumerator Perform(Entity entity, List<Vector3Int> targetLocations, Room room)
+    public override IEnumerator Perform(Entity entity, Vector3Int targetLocation, List<Vector3Int> threatenedLocations, Room room)
     {
         // Calculate direction
-        Vector3Int direction = targetLocations[0] - entity.location;
+        Vector3Int direction = targetLocation - entity.location;
 
         if (direction.x > 0) // Move right
         {
@@ -84,13 +84,13 @@ public class RangedAction : Action
         yield return new WaitForSeconds(Projectile.drawTime);
 
         // Spawn thrown weapon
-        yield return GameEvents.instance.TriggerOnEntityRangedAttack(entity, targetLocations[0], weapon, new ActionInfo());
+        yield return GameEvents.instance.TriggerOnEntityRangedAttack(entity, targetLocation, weapon, new ActionInfo());
 
         // Sheathe weapon
         // GameEvents.instance.TriggerOnEntitySheatheWeapon(entity, weapon);
 
         // Damage location
-        entity.MeleeAttackLocation(targetLocations[0], weapon);
+        entity.MeleeAttackLocation(targetLocation, weapon);
 
         // Finnish!
     }

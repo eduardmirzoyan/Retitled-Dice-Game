@@ -16,7 +16,6 @@ public class ProperLayerSort : MonoBehaviour
     private void Awake()
     {
         rend = GetComponent<Renderer>();
-        isActive = false;
     }
 
     private void LateUpdate()

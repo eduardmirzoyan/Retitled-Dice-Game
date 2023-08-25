@@ -58,49 +58,17 @@ public class LocationInspect : MonoBehaviour
             selectionTilemap.SetTile(location, selectionTile);
 
             // Inspect tile
-            InspectLocation(location);
+            GameManager.instance.InspectLocation(location);
         }
         else
         {
             // Remove selection
             selectionTilemap.SetTile(location, null);
             // Deselect
-            InspectLocation(location);
+            GameManager.instance.InspectLocation(location);
         }
 
         // Set new location
         this.selectedLocation = location;
-    }
-
-    private void InspectLocation(Vector3Int location)
-    {
-        // // Look for enemy on this tile
-        // foreach (var enemy in room.hostileEntities)
-        // {
-        //     // If an enemy exists at this location
-        //     if (enemy.location == location)
-        //     {
-        //         // Trigger inspect event
-        //         GameEvents.instance.TriggerOnEntityInspect(enemy);
-        //         // Finish
-        //         return;
-        //     }
-        // }
-
-        // // Look at barrels
-        // foreach (var barrel in room.neutralEntities)
-        // {
-        //     // If an enemy exists at this location
-        //     if (barrel.location == location)
-        //     {
-        //         // Trigger inspect event
-        //         GameEvents.instance.TriggerOnEntityInspect(barrel);
-        //         // Finish
-        //         return;
-        //     }
-        // }
-
-        // // Else if enemy was not found, then remove any previous inspect
-        // GameEvents.instance.TriggerOnEntityInspect(null);
     }
 }
