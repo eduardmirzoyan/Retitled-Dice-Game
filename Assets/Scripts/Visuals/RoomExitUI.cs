@@ -11,10 +11,8 @@ public class RoomExitUI : MonoBehaviour
     [Header("Data")]
     [SerializeField] private List<Sprite> exitIcons;
 
-    private void Awake()
+    private void Start()
     {
-        Lock();
-
         GameEvents.instance.onLockExit += Lock;
         GameEvents.instance.onUnlockExit += Unlock;
     }
@@ -25,7 +23,7 @@ public class RoomExitUI : MonoBehaviour
         GameEvents.instance.onUnlockExit -= Unlock;
     }
 
-    private void Lock()
+    public void Lock()
     {
         // Remove icon while locked
         iconRenderer.sprite = null;

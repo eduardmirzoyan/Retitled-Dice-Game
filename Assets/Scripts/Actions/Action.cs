@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ActionType { Instant, Reactive, Delayed }
+public enum ActionSpeed { Instant, Reactive, Delayed } // Action Speed
+public enum ActionType { Movement, Offensive, Utility }
 
 public abstract class Action : ScriptableObject
 {
@@ -12,6 +13,7 @@ public abstract class Action : ScriptableObject
     public Sprite icon;
     public Sprite background;
     public Color color;
+    public ActionSpeed actionSpeed;
     public ActionType actionType;
 
     [Header("Dynamic Data")]

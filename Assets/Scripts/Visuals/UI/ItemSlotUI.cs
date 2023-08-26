@@ -130,7 +130,7 @@ public class ItemSlotUI : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPo
         if (itemUI != null)
         {
             // Debugging
-            print("Item " + itemUI.name + " has inserted into the slot: " + name);
+            //print("Item " + itemUI.name + " has inserted into the slot: " + name);
 
             // Change slot
             itemUI.SetParent(gameObject.transform);
@@ -146,7 +146,7 @@ public class ItemSlotUI : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPo
         else
         {
             // Debugging
-            print("Item was removed from slot: " + name);
+            //print("Item was removed from slot: " + name);
 
             // Disable afterimage
             afterImageIcon.enabled = false;

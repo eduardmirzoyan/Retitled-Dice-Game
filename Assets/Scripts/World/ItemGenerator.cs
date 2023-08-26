@@ -6,6 +6,7 @@ using UnityEngine;
 public class ItemGenerator : ScriptableObject
 {
     public List<Item> possibleItems;
+    public HealingPotion healingPotion;
 
     public Item GenerateItem()
     {

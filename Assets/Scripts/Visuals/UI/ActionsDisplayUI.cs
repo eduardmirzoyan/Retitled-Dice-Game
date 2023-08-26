@@ -15,18 +15,25 @@ public class ActionsDisplayUI : MonoBehaviour
         actionUIs = new List<ActionUI>();
 
         // Sub
-        GameEvents.instance.onEnterFloor += DisplayActions;
-        GameEvents.instance.onWeaponEquip += UpdateActions;
+        GameEvents.instance.onEnterFloor += Initialize;
+        GameEvents.instance.onEquipMainhand += UpdateActions;
+        GameEvents.instance.onEquipOffhand += UpdateActions;
+        GameEvents.instance.onUnequipMainhand += UpdateActions;
+        GameEvents.instance.onUnequipOffhand += UpdateActions;
     }
 
     private void OnDestroy()
     {
         // Unsub
-        GameEvents.instance.onEnterFloor -= DisplayActions;
-        GameEvents.instance.onWeaponEquip -= UpdateActions;
+        GameEvents.instance.onEnterFloor -= Initialize;
+        GameEvents.instance.onEquipMainhand -= UpdateActions;
+        GameEvents.instance.onEquipOffhand -= UpdateActions;
+        GameEvents.instance.onUnequipMainhand -= UpdateActions;
+        GameEvents.instance.onUnequipOffhand -= UpdateActions;
+
     }
 
-    private void DisplayActions(Room room)
+    private void Initialize(Room room)
     {
         if (room != null)
         {

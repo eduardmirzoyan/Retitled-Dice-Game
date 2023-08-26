@@ -89,7 +89,7 @@ public class MeleeAction : Action
             var target = room.GetEntityAtLocation(location);
             if (target != null)
             {
-                entity.MeleeAttackEntity(target);
+                entity.Attack(target);
             }
         }
 

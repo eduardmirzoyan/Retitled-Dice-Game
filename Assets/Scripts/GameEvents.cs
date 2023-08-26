@@ -74,10 +74,11 @@ public class GameEvents : MonoBehaviour
 
     // UI Based
     public event Action<Inventory> onOpenShop;
-    public event System.Action onCloseShop;
     public event Action<ItemUI, ItemSlotUI> onItemInsert;
-    public event Action<Entity, Weapon> onWeaponEquip;
-    public event Action<Inventory, bool> onToggleInventory;
+    public event Action<Entity, Weapon> onEquipMainhand;
+    public event Action<Entity, Weapon> onEquipOffhand;
+    public event Action<Entity, Weapon> onUnequipMainhand;
+    public event Action<Entity, Weapon> onUnequipOffhand;
     public event Action<Entity> onEntityInspect;
     public event Action<List<Vector3Int>> onThreatsInspect;
     public event Action<Entity, Action> onInspectAction;
@@ -324,6 +325,7 @@ public class GameEvents : MonoBehaviour
     {
         if (onLockExit != null)
         {
+            Debug.Log("Trig p2");
             onLockExit();
         }
     }
@@ -368,19 +370,35 @@ public class GameEvents : MonoBehaviour
         }
     }
 
-    public void TriggerOnWeaponEquip(Entity entity, Weapon weapon)
+    public void TriggerOnEquipMainhand(Entity entity, Weapon weapon)
     {
-        if (onWeaponEquip != null)
+        if (onEquipMainhand != null)
         {
-            onWeaponEquip(entity, weapon);
+            onEquipMainhand(entity, weapon);
         }
     }
 
-    public void TriggerOnToggleInventory(Inventory inventory, bool state)
+    public void TriggerOnEquipOffhand(Entity entity, Weapon weapon)
     {
-        if (onToggleInventory != null)
+        if (onEquipOffhand != null)
         {
-            onToggleInventory(inventory, state);
+            onEquipOffhand(entity, weapon);
+        }
+    }
+
+    public void TriggerOnUnequipMainhand(Entity entity, Weapon weapon)
+    {
+        if (onUnequipMainhand != null)
+        {
+            onUnequipMainhand(entity, weapon);
+        }
+    }
+
+    public void TriggerOnUnequipOffhand(Entity entity, Weapon weapon)
+    {
+        if (onUnequipOffhand != null)
+        {
+            onUnequipOffhand(entity, weapon);
         }
     }
 

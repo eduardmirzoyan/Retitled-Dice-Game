@@ -10,6 +10,9 @@ public class RoomGenerator : ScriptableObject
     [SerializeField] private int roomPadding = 8;
     [SerializeField] private int wallSpawnChance = 5;
 
+    [SerializeField] private int shopWidth = 5;
+    [SerializeField] private int shopHeight = 5;
+
     public Room GenerateRoom()
     {
         // Create new room
@@ -27,7 +30,7 @@ public class RoomGenerator : ScriptableObject
         var room = ScriptableObject.CreateInstance<Room>();
 
         // Initialize with no extra walls
-        room.Initialize(roomWidth, roomHeight, roomPadding, 0);
+        room.Initialize(shopWidth, shopHeight, roomPadding + (roomWidth - shopWidth), 0);
 
         return room;
     }

@@ -14,8 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Warp
   description: Teleports you to a tile distance equal to die value
-  icon: {fileID: 21300000, guid: fe55a501aef42264ebd234c37435794e, type: 3}
-  background: {fileID: 21300000, guid: f81f4801156081a40820f71f7c700b66, type: 3}
-  color: {r: 0.09411766, g: 0.52156866, b: 0.86274517, a: 1}
+  icon: {fileID: 21300000, guid: 4b28b487b48815c4db5b04cfeeb4b63f, type: 3}
+  background: {fileID: 21300000, guid: d3c559b2e7ed77e489dc11e7ac02a26b, type: 3}
+  color: {r: 0.3647059, g: 0.79607844, b: 0.22352941, a: 1}
+  actionSpeed: 0
+  actionType: 0
   die: {fileID: 11400000, guid: e8d732acdda4b39449630ce6ec7774ab, type: 2}
   weapon: {fileID: 0}

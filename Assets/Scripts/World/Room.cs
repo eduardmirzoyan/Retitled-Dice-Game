@@ -1,11 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
-using UnityEditor.Experimental.GraphView;
-using UnityEngine.XR;
-using Unity.VisualScripting;
-using UnityEngine.WSA;
 
 [CreateAssetMenu]
 public class Room : ScriptableObject
@@ -347,7 +342,7 @@ public class Room : ScriptableObject
             spawnLocation = new Vector3Int(randX, randY);
 
             // Check if everything is good
-            if (IsValidLocation(spawnLocation, true, false) && (spawnLocation != entranceTile.location || spawnLocation != exitTile.location))
+            if (IsValidLocation(spawnLocation, false, false) && (spawnLocation != entranceTile.location || spawnLocation != exitTile.location))
             {
                 break;
             }

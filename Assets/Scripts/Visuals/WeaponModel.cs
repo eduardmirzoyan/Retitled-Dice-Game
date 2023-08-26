@@ -33,6 +33,8 @@ public class WeaponModel : MonoBehaviour
         GameEvents.instance.onEntityDrawWeapon += DrawWeapon;
         GameEvents.instance.onEntityUseWeapon += UseWeapon;
         GameEvents.instance.onEntitySheatheWeapon += SheatheWeapon;
+        GameEvents.instance.onUnequipMainhand += Despawn;
+        GameEvents.instance.onUnequipOffhand += Despawn;
     }
 
     private void OnDestroy()
@@ -40,11 +42,20 @@ public class WeaponModel : MonoBehaviour
         GameEvents.instance.onEntityDrawWeapon -= DrawWeapon;
         GameEvents.instance.onEntityUseWeapon -= UseWeapon;
         GameEvents.instance.onEntitySheatheWeapon -= SheatheWeapon;
+        GameEvents.instance.onUnequipMainhand -= Despawn;
+        GameEvents.instance.onUnequipOffhand -= Despawn;
     }
 
-    private void Despawn()
+    private void Despawn(Entity entity, Weapon weapon)
     {
-        // TODO
+        print("Hit");
+
+        // If this weapon was un-equipped
+        if (this.weapon == weapon)
+        {
+            // Destroy this object
+            Destroy(gameObject);
+        }
     }
 
     private void DrawWeapon(Entity entity, Vector3 direction, Weapon weapon)

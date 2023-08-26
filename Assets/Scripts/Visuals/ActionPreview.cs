@@ -110,10 +110,13 @@ public class ActionPreview : MonoBehaviour
         // print("Entered!");
 
         // Show path
-        lineRenderer.enabled = true;
-        actionIcon.enabled = true;
+        if (action.actionType == ActionType.Movement)
+        {
+            lineRenderer.enabled = true;
+        }
 
         // Highlight
+        actionIcon.enabled = true;
         actionIcon.color = highlightColor;
 
         // Select this location
@@ -153,10 +156,13 @@ public class ActionPreview : MonoBehaviour
         // print("Exit!");
 
         // Hide path
-        lineRenderer.enabled = false;
-        actionIcon.enabled = false;
+        if (action.actionType == ActionType.Movement)
+        {
+            lineRenderer.enabled = false;
+        }
 
-        // Un-highlgiht
+        // Un-highlight
+        actionIcon.enabled = false;
         actionIcon.color = defaultColor;
 
         // Select this location

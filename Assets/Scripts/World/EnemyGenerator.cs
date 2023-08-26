@@ -33,7 +33,8 @@ public class EnemyGenerator : ScriptableObject
         inventory.Initialize(shopSize);
 
         // Fill inventory
-        for (int i = 0; i < shopSize; i++)
+        inventory.AddItemToEnd(shopItemGenerator.healingPotion);
+        for (int i = 0; i < shopSize - 1; i++)
         {
             // Add a random item
             inventory.AddItemToEnd(shopItemGenerator.GenerateItem());

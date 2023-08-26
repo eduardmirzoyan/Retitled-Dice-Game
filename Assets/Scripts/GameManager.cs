@@ -100,6 +100,7 @@ public class GameManager : MonoBehaviour
             case 1:
                 // Generate a normal room
                 room = roomGenerator.GenerateRoom();
+                // room = roomGenerator.GenerateShop();
                 break;
             case -1:
                 // Generate a shop
@@ -143,13 +144,15 @@ public class GameManager : MonoBehaviour
 
                 break;
             case -1:
-                // REDO THIS LATER
 
                 // Generate a shopkeeper
                 var shopkeeper = enemyGenerator.GenerateShopkeeper();
 
                 // Populate the room
                 room.SpawnEntity(shopkeeper);
+
+                // Open Shop if shop floor
+                CheckShop(shopkeeper.inventory);
 
                 break;
             default:
@@ -162,11 +165,24 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator GenerateBarrels()
     {
-        // Create keys based on room number
-        for (int i = 0; i < DataManager.instance.GetRoomNumber(); i++)
+        int index = DataManager.instance.GetRoomIndex();
+        switch (index)
         {
-            // Spawn a barrel
-            room.SpawnEntity(enemyGenerator.barrel);
+            case 1:
+
+                // Create keys based on room number
+                for (int i = 0; i < DataManager.instance.GetRoomNumber(); i++)
+                {
+                    // Spawn a barrel
+                    room.SpawnEntity(enemyGenerator.barrel);
+                }
+
+                break;
+            case -1:
+
+                // No barrels in shop.
+
+                break;
         }
 
         // Finish
@@ -175,11 +191,24 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator GenerateKeys()
     {
-        // Create keys based on room number
-        for (int i = 0; i < DataManager.instance.GetRoomNumber(); i++)
+        int index = DataManager.instance.GetRoomIndex();
+        switch (index)
         {
-            // Spawn a key
-            room.SpawnPickup(PickUpType.Key);
+            case 1:
+
+                // Create keys based on room number
+                for (int i = 0; i < DataManager.instance.GetRoomNumber(); i++)
+                {
+                    // Spawn a key
+                    room.SpawnPickup(PickUpType.Key);
+                }
+
+                break;
+            case -1:
+
+                // No keys in shop.
+
+                break;
         }
 
         // Finish
@@ -188,11 +217,24 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator GenerateGold()
     {
-        // Create keys based on room number
-        for (int i = 0; i < DataManager.instance.GetRoomNumber(); i++)
+        int index = DataManager.instance.GetRoomIndex();
+        switch (index)
         {
-            // Spawn a key
-            room.SpawnPickup(PickUpType.Gold);
+            case 1:
+
+                // Create keys based on room number
+                for (int i = 0; i < DataManager.instance.GetRoomNumber(); i++)
+                {
+                    // Spawn a key
+                    room.SpawnPickup(PickUpType.Gold);
+                }
+
+                break;
+            case -1:
+
+                // No gold in shop.
+
+                break;
         }
 
         // Finish
@@ -294,17 +336,6 @@ public class GameManager : MonoBehaviour
         // Update selected action (could be null)
         this.selectedAction = action;
 
-        if (action != null)
-        {
-            // Debug
-            //print("Action " + action.name + " was selected.");
-        }
-        else
-        {
-            // Debug
-            //print("Action was de-selected.");
-        }
-
         // Trigger event
         GameEvents.instance.TriggerOnActionSelect(selectedEntity, selectedAction);
     }
@@ -314,8 +345,6 @@ public class GameManager : MonoBehaviour
 
         if (location == Vector3Int.zero)
         {
-            // Debug
-            // print("Location " + location + " was de-selected.");
 
             if (selectedThreats != null)
             {
@@ -326,17 +355,15 @@ public class GameManager : MonoBehaviour
                 selectedThreats = null;
             }
 
-            if (selectedLocation != Vector3Int.zero)
+            if (selectedLocation != Vector3Int.zero && selectedAction.actionType == ActionType.Offensive)
             {
-                // Draw weapon
+                // Sheathe weapon
                 GameEvents.instance.TriggerOnEntitySheatheWeapon(selectedEntity, selectedAction.weapon);
             }
 
         }
         else
         {
-            // Debug
-            // print("Location " + location + " was selected.");
 
             // Add threatened locations to table
             selectedThreats = selectedAction.GetThreatenedLocations(selectedEntity, location);
@@ -344,7 +371,7 @@ public class GameManager : MonoBehaviour
             // Show threats
             ShowThreats(selectedAction, selectedThreats);
 
-            if (selectedLocation == Vector3Int.zero)
+            if (selectedLocation == Vector3Int.zero && selectedAction.actionType == ActionType.Offensive)
             {
                 // Calculate direction
                 Vector3Int direction = location - selectedEntity.location;
@@ -371,15 +398,15 @@ public class GameManager : MonoBehaviour
         GameEvents.instance.TriggerOnActionConfirm(selectedEntity, selectedAction, selectedLocation);
 
         // Perform different logic based on action type
-        switch (selectedAction.actionType)
+        switch (selectedAction.actionSpeed)
         {
-            case ActionType.Instant:
+            case ActionSpeed.Instant:
 
                 // Perform immediately
                 coroutine = StartCoroutine(PerformAction(selectedEntity, selectedAction, selectedLocation, selectedThreats));
 
                 break;
-            case ActionType.Reactive:
+            case ActionSpeed.Reactive:
 
                 // Save action pair to table
                 reactiveActionsHastable[(selectedEntity, selectedAction)] = selectedThreats;
@@ -388,7 +415,7 @@ public class GameManager : MonoBehaviour
                 coroutine = StartCoroutine(EndTurn());
 
                 break;
-            case ActionType.Delayed:
+            case ActionSpeed.Delayed:
 
                 // Save action pair to table
                 delayedActionsHashtable[(selectedEntity, selectedAction)] = selectedThreats;
@@ -454,21 +481,21 @@ public class GameManager : MonoBehaviour
         GameEvents.instance.TriggerOnActionConfirm(selectedEntity, selectedAction, selectedLocation);
 
         // Perform different logic based on action type
-        switch (selectedAction.actionType)
+        switch (selectedAction.actionSpeed)
         {
-            case ActionType.Instant:
+            case ActionSpeed.Instant:
 
                 // Perform immediately
                 yield return PerformAction(selectedEntity, selectedAction, selectedLocation, selectedThreats);
 
                 break;
-            case ActionType.Reactive:
+            case ActionSpeed.Reactive:
 
                 // Save action pair to table
                 reactiveActionsHastable[(selectedEntity, selectedAction)] = selectedThreats;
 
                 break;
-            case ActionType.Delayed:
+            case ActionSpeed.Delayed:
 
                 // Save action pair to table
                 delayedActionsHashtable[(selectedEntity, selectedAction)] = selectedThreats;
@@ -582,11 +609,14 @@ public class GameManager : MonoBehaviour
         // Clean up selected tiles, etc
         HideThreats(action, threatenedLocations);
 
-        // Sheathe weapon
-        GameEvents.instance.TriggerOnEntitySheatheWeapon(entity, action.weapon);
+        if (action.actionType == ActionType.Offensive)
+        {
+            // Sheathe weapon
+            GameEvents.instance.TriggerOnEntitySheatheWeapon(entity, action.weapon);
 
-        // Wait for animation
-        yield return new WaitForSeconds(gameSettings.weaponSheatheBufferTime);
+            // Wait for animation
+            yield return new WaitForSeconds(gameSettings.weaponSheatheBufferTime);
+        }
 
         // Done
         yield return null;
@@ -660,7 +690,8 @@ public class GameManager : MonoBehaviour
                 HideThreats(action, targets);
 
                 // Sheathe weapon
-                GameEvents.instance.TriggerOnEntitySheatheWeapon(entity, action.weapon);
+                if (action.actionType == ActionType.Offensive)
+                    GameEvents.instance.TriggerOnEntitySheatheWeapon(entity, action.weapon);
 
                 // Stop
                 break;
@@ -759,6 +790,16 @@ public class GameManager : MonoBehaviour
 
         // Trigger event
         GameEvents.instance.TriggerOnEntityInspect(entity);
+    }
+
+    private void CheckShop(Inventory inventory)
+    {
+        // If we are currently on a shop floor
+        int index = DataManager.instance.GetRoomIndex();
+        if (index == -1)
+        {
+            GameEvents.instance.TriggerOnOpenShop(inventory);
+        }
     }
 
 

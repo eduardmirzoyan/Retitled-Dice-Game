@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.Http.Headers;
+using System.Runtime.InteropServices;
+using UnityEditor;
+using UnityEditor.MPE;
 using UnityEngine;
 
 [CreateAssetMenu]
@@ -38,18 +41,40 @@ public class Entity : ScriptableObject
 
     public void EquipMainhand(Weapon weapon)
     {
+        var curWeapon = mainWeapon;
         this.mainWeapon = weapon;
 
-        // Trigger event
-        GameEvents.instance.TriggerOnWeaponEquip(this, weapon);
+        // If already have equipment
+        if (curWeapon != null)
+        {
+            // Trigger event
+            GameEvents.instance.TriggerOnUnequipMainhand(this, curWeapon);
+        }
+
+        if (weapon != null)
+        {
+            // Trigger event
+            GameEvents.instance.TriggerOnEquipMainhand(this, weapon);
+        }
     }
 
     public void EquipOffhand(Weapon weapon)
     {
+        var curWeapon = offWeapon;
         this.offWeapon = weapon;
 
-        // Trigger event
-        GameEvents.instance.TriggerOnWeaponEquip(this, weapon);
+        // If already have equipment
+        if (curWeapon != null)
+        {
+            // Trigger event
+            GameEvents.instance.TriggerOnUnequipOffhand(this, curWeapon);
+        }
+
+        if (weapon != null)
+        {
+            // Trigger event
+            GameEvents.instance.TriggerOnEquipOffhand(this, weapon);
+        }
     }
 
     public List<Action> GetActions()
@@ -161,7 +186,7 @@ public class Entity : ScriptableObject
         // Does nothing for now
     }
 
-    public void MeleeAttackEntity(Entity target)
+    public void Attack(Entity target)
     {
         // Currently deal 1 damage, but this might change?
         target.TakeDamage(1);

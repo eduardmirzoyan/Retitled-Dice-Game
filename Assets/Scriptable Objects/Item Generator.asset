@@ -13,15 +13,11 @@ MonoBehaviour:
   m_Name: Item Generator
   m_EditorClassIdentifier: 
   possibleItems:
-  - {fileID: 11400000, guid: 2885f6d5977fa394298af86dca1e5922, type: 2}
   - {fileID: 11400000, guid: fffd68e6526f0394688de9638bd15849, type: 2}
-  - {fileID: 11400000, guid: 1610aec8d0a5a934ebbd5015d4b681b8, type: 2}
   - {fileID: 11400000, guid: ec0a55a5682d17d4fa1f1abd52cfa03c, type: 2}
   - {fileID: 11400000, guid: f1a818017f799aa48b0948d5b7bfdc77, type: 2}
-  - {fileID: 11400000, guid: 71752f061859a4d47bc879aa965d371c, type: 2}
   - {fileID: 11400000, guid: 5b63b39edd6807b40bbc04932519123d, type: 2}
   - {fileID: 11400000, guid: 7987acdcbba7e054b8c79888d54acbb9, type: 2}
   - {fileID: 11400000, guid: 29e5b24f4b91ba94f923008bf0b2b1c5, type: 2}
   - {fileID: 11400000, guid: ab2261afb87ee584a8f0d0445b8cbe18, type: 2}
-  - {fileID: 11400000, guid: 3216e5b93d09ae843ac8d7b59b39a103, type: 2}
-  - {fileID: 11400000, guid: 3216e5b93d09ae843ac8d7b59b39a103, type: 2}
+  healingPotion: {fileID: 11400000, guid: 3216e5b93d09ae843ac8d7b59b39a103, type: 2}

@@ -42,7 +42,6 @@ public class RoomUI : MonoBehaviour
         GameEvents.instance.onEnterFloor += DrawRoom;
         GameEvents.instance.onEntitySpawn += SpawnEntity;
         GameEvents.instance.onPickupSpawn += SpawnPickup;
-        GameEvents.instance.onProjectileSpawn += SpawnProjectile;
     }
 
     private void OnDestroy()
@@ -51,7 +50,6 @@ public class RoomUI : MonoBehaviour
         GameEvents.instance.onEnterFloor -= DrawRoom;
         GameEvents.instance.onEntitySpawn -= SpawnEntity;
         GameEvents.instance.onPickupSpawn += SpawnPickup;
-        GameEvents.instance.onProjectileSpawn -= SpawnProjectile;
     }
 
     private void DrawRoom(Room room)
@@ -99,8 +97,12 @@ public class RoomUI : MonoBehaviour
                     // Set tile to floor
                     floorTilemap.SetTile(tile.location, floorTile);
 
-                    Instantiate(floorExitPrefab, floorTilemap.GetCellCenterWorld(tile.location), Quaternion.identity, floorTilemap.transform);
-                    // exit.Initialize(room.roomExit);
+                    // Create room exit
+                    var exit = Instantiate(floorExitPrefab, floorTilemap.GetCellCenterWorld(tile.location), Quaternion.identity, floorTilemap.transform).GetComponent<RoomExitUI>();
+                    if (room.numKeys > 0)
+                    {
+                        exit.Lock();
+                    }
 
                     break;
             }
@@ -142,16 +144,6 @@ public class RoomUI : MonoBehaviour
         var entityModel = Instantiate(entityModelPrefab, worldLocation, Quaternion.identity, entityTransform).GetComponent<EntityModel>();
         // Initialize
         entityModel.Initialize(entity, this);
-    }
-
-    private void SpawnProjectile(Projectil projectil)
-    {
-        // Get world position
-        Vector3 worldLocation = floorTilemap.GetCellCenterWorld(projectil.location);
-        // Spawn model in container
-        var projModel = Instantiate(projectileModelPrefab, worldLocation, Quaternion.identity, projectilesTransform).GetComponent<ProjectileModel>();
-        // Initialize
-        projModel.Initialize(projectil, this);
     }
 
     private void SpawnPickup(PickUpType pickUpType, Vector3Int location)

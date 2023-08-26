@@ -28,7 +28,6 @@ public class EntityModel : MonoBehaviour
     [Header("Data")]
     [SerializeField] private Entity entity;
     [SerializeField] private bool isFacingRight = true;
-    [SerializeField] private GameObject weaponPrefab;
 
     private RoomUI roomUI;
     private Coroutine coroutine;
@@ -59,7 +58,6 @@ public class EntityModel : MonoBehaviour
                 GameEvents.instance.TriggerOnEntitySheatheWeapon(entity, entity.offWeapon);
             }
         }
-
     }
 
     public void Initialize(Entity entity, RoomUI roomUI)
@@ -74,19 +72,14 @@ public class EntityModel : MonoBehaviour
         // Update sorting layer once
         properLayerSort.UpdateLayer();
 
-        if (entity.mainWeapon != null)
-        {
-            // Create and Initalize weapon
-            Instantiate(entity.mainWeapon.weaponPrefab, mainWeaponHolder).GetComponent<WeaponModel>().Initialize(entity.mainWeapon);
-        }
-
-        if (entity.offWeapon != null)
-        {
-            // Create and Initalize weapon
-            Instantiate(entity.offWeapon.weaponPrefab, offWeaponHolder).GetComponent<WeaponModel>().Initialize(entity.offWeapon);
-        }
+        // Spawn weapon models
+        SpawnMainhand(entity, entity.mainWeapon);
+        SpawnOffhand(entity, entity.offWeapon);
 
         // Sub to events
+        GameEvents.instance.onEquipMainhand += SpawnMainhand;
+        GameEvents.instance.onEquipOffhand += SpawnOffhand;
+
         GameEvents.instance.onEntityMoveStart += StartMove;
         GameEvents.instance.onEntityMove += MoveEntity;
         GameEvents.instance.onEntityMoveStop += StopMove;
@@ -103,6 +96,9 @@ public class EntityModel : MonoBehaviour
     private void OnDestroy()
     {
         // Unsub to events
+        GameEvents.instance.onEquipMainhand -= SpawnMainhand;
+        GameEvents.instance.onEquipOffhand -= SpawnOffhand;
+
         GameEvents.instance.onEntityMoveStart -= StartMove;
         GameEvents.instance.onEntityMove -= MoveEntity;
         GameEvents.instance.onEntityMoveStop -= StopMove;
@@ -122,6 +118,24 @@ public class EntityModel : MonoBehaviour
 
             // Destroy self
             Destroy(gameObject);
+        }
+    }
+
+    private void SpawnMainhand(Entity entity, Weapon weapon)
+    {
+        if (this.entity == entity && weapon != null)
+        {
+            // Create and Initalize weapon
+            Instantiate(weapon.weaponPrefab, mainWeaponHolder).GetComponent<WeaponModel>().Initialize(weapon);
+        }
+    }
+
+    private void SpawnOffhand(Entity entity, Weapon weapon)
+    {
+        if (this.entity == entity && weapon != null)
+        {
+            // Create and Initalize weapon
+            Instantiate(weapon.weaponPrefab, offWeaponHolder).GetComponent<WeaponModel>().Initialize(weapon);
         }
     }
 
@@ -262,68 +276,6 @@ public class EntityModel : MonoBehaviour
             // Hit freeze
             if (GameManager.instance.gameSettings.useHitFreeze)
                 HitFreeze.instance.StartHitFreeze(0.1f);
-        }
-    }
-
-    private void RangedAttack(Entity entity, Vector3Int targetLocation, Weapon weapon)
-    {
-        if (this.entity == entity)
-        {
-            // var targetWorld = roomUI.GetLocationCenter(targetLocation);
-
-            // // If attacking with primary weapon
-            // if (weapon.controller == mainWeaponAnimator.runtimeAnimatorController)
-            // {
-            //     // Spawn projectile
-            //     var projectile = Instantiate(projectilePrefab, transform.position, mainWeaponHolder.rotation).GetComponent<Projectile>();
-            //     projectile.Initialize(targetWorld, 25f, weapon);
-            // }
-            // // Or attacking with secondary
-            // else if (weapon.controller == offWeaponAnimator.runtimeAnimatorController)
-            // {
-            //     // Spawn projectile
-            //     var projectile = Instantiate(projectilePrefab, transform.position, offWeaponHolder.rotation).GetComponent<Projectile>();
-            //     projectile.Initialize(targetWorld, 25f, weapon);
-            // }
-        }
-    }
-
-    private void RangedAttackTimed(Entity entity, Vector3Int targetLocation, Weapon weapon, ActionInfo info)
-    {
-        if (this.entity == entity)
-        {
-            var targetWorld = roomUI.GetLocationCenter(targetLocation);
-
-            // // If attacking with primary weapon
-            // if (weapon.controller == mainWeaponAnimator.runtimeAnimatorController)
-            // {
-            //     // Spawn projectile
-            //     var projectile = Instantiate(projectilePrefab, transform.position, mainWeaponHolder.rotation).GetComponent<Projectile>();
-            //     // Wait for projectile to travel
-            //     var travelTime = projectile.Initialize(targetWorld, 25f, weapon);
-            //     // Set action time
-            //     info.waitTime = travelTime;
-            // }
-            // // Or attacking with secondary
-            // else if (weapon.controller == offWeaponAnimator.runtimeAnimatorController)
-            // {
-            //     // Spawn projectile
-            //     var projectile = Instantiate(projectilePrefab, transform.position, offWeaponHolder.rotation).GetComponent<Projectile>();
-            //     // Wait for projectile to travel
-            //     var travelTime = projectile.Initialize(targetWorld, 25f, weapon);
-            //     // Set action time
-            //     info.waitTime = travelTime;
-            // }
-            // else
-            // {
-            //     // Don't do anything
-            //     Debug.Log("Unknown weapon chosen: " + weapon.name);
-            //     // Set action time
-            //     info.waitTime = 0f;
-            // }
-
-            // Sheathe weapon
-            // SheatheWeapon(entity, weapon);
         }
     }
 

@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum RoomType { Normal, Shop } // ENCOPERATE THIS LATER!
+
 public class DataManager : MonoBehaviour
 {
     [Header("Static Data")]
@@ -31,11 +33,7 @@ public class DataManager : MonoBehaviour
     public void CreateNewPlayer()
     {
         // Set player to a copy of the template
-        player = (Player) defaultPlayer.Copy();
-
-        // Create inventory of size 9
-        // player.inventory = ScriptableObject.CreateInstance<Inventory>();
-        // player.inventory.Initialize(9);
+        player = (Player)defaultPlayer.Copy();
 
         // Reset progess
         stageNumber = 1;
@@ -84,7 +82,8 @@ public class DataManager : MonoBehaviour
         }
     }
 
-    public int GetRoomIndex() {
+    public int GetRoomIndex()
+    {
         return currentRoomIndex;
     }
 
@@ -93,19 +92,24 @@ public class DataManager : MonoBehaviour
         return roomNumber;
     }
 
-    public string GetRoomDescription() {
-        if (currentRoomIndex == 1) {
+    public string GetRoomDescription()
+    {
+        if (currentRoomIndex == 1)
+        {
             return "Stage " + stageNumber + " - " + roomNumber;
         }
 
         return "Stage " + stageNumber + " - " + "Shop";
     }
 
-    public int GetNextRoomIndex() {
+    public int GetNextRoomIndex()
+    {
         // If you are on stage x - 2 or x - 4
-        if (roomNumber == 2 || roomNumber == 4) {
+        if (roomNumber == 2 || roomNumber == 4)
+        {
             // And you are in a combat room now
-            if (currentRoomIndex == 1) {
+            if (currentRoomIndex == 1)
+            {
                 // Next room should be a shop
                 return -1;
             }

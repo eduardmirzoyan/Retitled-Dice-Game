@@ -55,13 +55,13 @@ public class EquipmentUI : MonoBehaviour
 
     private void EquipWeapon(ItemUI itemUI, ItemSlotUI itemSlotUI)
     {
-        // Equip primary
+        // Equip mainhand
         if (itemSlotUI == primaryWeaponSlotUI)
         {
             if (itemUI != null) player.EquipMainhand((Weapon)itemUI.GetItem());
             else player.EquipMainhand(null);
         }
-        // Equip primary
+        // Equip offhand
         else if (itemSlotUI == secondaryWeaponSlotUI)
         {
             if (itemUI != null) player.EquipOffhand((Weapon)itemUI.GetItem());
