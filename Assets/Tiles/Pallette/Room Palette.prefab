@@ -201,7 +201,7 @@ Tilemap:
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
-      m_AllTileFlags: 1073741825
+      m_AllTileFlags: 1073741824
   - first: {x: -1, y: -11, z: 0}
     second:
       serializedVersion: 2
@@ -1692,7 +1692,7 @@ Tilemap:
   - m_RefCount: 1
     m_Data: {fileID: 21300000, guid: 4e17c4f44fa3445468f5a67c5fe6bbc8, type: 3}
   - m_RefCount: 1
-    m_Data: {fileID: 21300000, guid: 38f6ecebc3793ab4e994751b164788c3, type: 3}
+    m_Data: {fileID: 21300000, guid: 7b6fcfe836aa6c34fb76d38f356d3a66, type: 3}
   m_TileMatrixArray:
   - m_RefCount: 125
     m_Data:
@@ -1831,11 +1831,11 @@ Grid:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8478264916827925977}
   m_Enabled: 1
-  m_CellSize: {x: 2, y: 1, z: 0}
+  m_CellSize: {x: 0.5, y: 0.5, z: 0}
   m_CellGap: {x: 0, y: 0, z: 0}
   m_CellLayout: 0
   m_CellSwizzle: 0
---- !u!114 &3470019323170195524
+--- !u!114 &2444397742352687293
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

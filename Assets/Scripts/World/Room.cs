@@ -470,17 +470,18 @@ public class Room : ScriptableObject
         return true;
     }
 
-    public Vector3Int GetFirstValidLocation(Vector3Int start, Vector3Int direction, bool ignoreEntity = false)
+    public Vector3Int GetFirstValidLocationWithinRange(Vector3Int start, Vector3Int direction, int range)
     {
-        while (IsValidLocation(start, ignoreEntity))
+        while (IsValidLocation(start + direction, true) && range > 0)
         {
             start += direction;
+            range--;
         }
 
         return start;
     }
 
-    public List<Vector3Int> GetAllValidLocationsAlongPath(Vector3Int start, Vector3Int end, bool ignoreEntity = false)
+    public List<Vector3Int> GetAllValidLocationsAlongPath(Vector3Int start, Vector3Int end)
     {
         List<Vector3Int> result = new List<Vector3Int>();
 
@@ -490,7 +491,7 @@ public class Room : ScriptableObject
         while (start != end)
         {
             // Check to see if the location is valid
-            if (!IsValidLocation(start + direction, ignoreEntity))
+            if (!IsValidLocation(start, true))
             {
                 break;
             }

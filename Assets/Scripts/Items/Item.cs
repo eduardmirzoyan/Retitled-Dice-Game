@@ -4,6 +4,7 @@ using UnityEngine;
 
 public abstract class Item : ScriptableObject
 {
+    [Header("Basic Data")]
     public new string name;
     public string description;
     public Sprite sprite;

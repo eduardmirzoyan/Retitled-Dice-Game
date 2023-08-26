@@ -5,9 +5,12 @@ using UnityEngine;
 [CreateAssetMenu]
 public class Weapon : Item
 {
-    public GameObject attackParticlePrefab;
+    [Header("Mechanics")]
     public List<Action> actions;
-    public RuntimeAnimatorController controller;
+
+    [Header("Visuals")]
+    public GameObject attackParticlePrefab;
+    public GameObject weaponPrefab;
 
     public override Item Copy()
     {

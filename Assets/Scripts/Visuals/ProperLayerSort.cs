@@ -33,7 +33,7 @@ public class ProperLayerSort : MonoBehaviour
 
     public void UpdateLayer()
     {
-        rend.sortingOrder = -(int)((transform.position.y - offset) * 10);
+        rend.sortingOrder = -(int)(transform.position.y * 10 - offset);
     }
 
     public void SetActive(bool isActive)

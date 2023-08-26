@@ -13,7 +13,7 @@ public class RangedEnemyAction : Action
         foreach (var location in room.GetNeighbors(startLocation, true))
         {
             Vector3Int direction = location - startLocation;
-            result.Add(room.GetFirstValidLocation(startLocation, direction, true));
+            result.Add(room.GetFirstValidLocationWithinRange(startLocation, direction, die.value));
         }
 
         return result;

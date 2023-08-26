@@ -9,12 +9,6 @@ using UnityEngine.Tilemaps;
 
 public class GameManager : MonoBehaviour
 {
-    public bool isHitFlash = true;
-    public bool isHitFreeze = true;
-    public bool isScreenShake = true;
-    public bool isSlashEffect = true;
-    public bool isHitEffect = true;
-
     [Header("Cursor")]
     [SerializeField] private Texture2D cursorTexture;
     [SerializeField] private CursorMode cursorMode = CursorMode.Auto;
@@ -26,7 +20,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Data")]
     [SerializeField] private int roundNumber = 0;
-    [SerializeField] public float bufferTime = 0.5f;
+    [SerializeField] public GameSettings gameSettings;
 
     private Queue<Entity> turnQueue;
     private Entity selectedEntity;
@@ -287,9 +281,6 @@ public class GameManager : MonoBehaviour
             // Get best sequence of actions
             bestChoiceSequence = selectedEntity.AI.GenerateSequenceOfActions(selectedEntity, room, room.player);
 
-            // Give small pause
-            yield return new WaitForSeconds(bufferTime);
-
             // Then start performing those actions
             yield return PerformTurnAI();
         }
@@ -320,7 +311,6 @@ public class GameManager : MonoBehaviour
 
     public void SelectLocation(Vector3Int location)
     {
-        this.selectedLocation = location;
 
         if (location == Vector3Int.zero)
         {
@@ -336,6 +326,12 @@ public class GameManager : MonoBehaviour
                 selectedThreats = null;
             }
 
+            if (selectedLocation != Vector3Int.zero)
+            {
+                // Draw weapon
+                GameEvents.instance.TriggerOnEntitySheatheWeapon(selectedEntity, selectedAction.weapon);
+            }
+
         }
         else
         {
@@ -347,7 +343,20 @@ public class GameManager : MonoBehaviour
 
             // Show threats
             ShowThreats(selectedAction, selectedThreats);
+
+            if (selectedLocation == Vector3Int.zero)
+            {
+                // Calculate direction
+                Vector3Int direction = location - selectedEntity.location;
+                direction.Clamp(-Vector3Int.one, Vector3Int.one);
+
+                // Draw weapon
+                GameEvents.instance.TriggerOnEntityDrawWeapon(selectedEntity, direction, selectedAction.weapon);
+            }
         }
+
+        // Update location
+        this.selectedLocation = location;
 
         // Trigger event
         GameEvents.instance.TriggerOnLocationSelect(selectedAction, location);
@@ -406,12 +415,12 @@ public class GameManager : MonoBehaviour
 
             print("Chose: " + bestChoicePair.Item1.name);
 
+            // Wait a bit before performing action
+            yield return new WaitForSeconds(gameSettings.aiBufferTime);
+
             // Make sure choice is a valid location
             if (bestChoicePair.Item2.z != -1)
             {
-                // Debug
-                // print("AI Entity [" + selectedEntity.name + "] used [" + bestChoicePair.Item1.name + "] on location [" + bestChoicePair.Item2 + "]");
-
                 // Select Action
                 SelectAction(bestChoicePair.Item1);
 
@@ -421,9 +430,6 @@ public class GameManager : MonoBehaviour
                 // Confirm Action
                 yield return ConfirmActionAI();
             }
-
-            // Give small pause before next action
-            yield return new WaitForSeconds(bufferTime);
 
             // Reset values
             selectedAction = null;
@@ -576,6 +582,12 @@ public class GameManager : MonoBehaviour
         // Clean up selected tiles, etc
         HideThreats(action, threatenedLocations);
 
+        // Sheathe weapon
+        GameEvents.instance.TriggerOnEntitySheatheWeapon(entity, action.weapon);
+
+        // Wait for animation
+        yield return new WaitForSeconds(gameSettings.weaponSheatheBufferTime);
+
         // Done
         yield return null;
     }
@@ -647,6 +659,9 @@ public class GameManager : MonoBehaviour
                 // Hide threats
                 HideThreats(action, targets);
 
+                // Sheathe weapon
+                GameEvents.instance.TriggerOnEntitySheatheWeapon(entity, action.weapon);
+
                 // Stop
                 break;
             }
@@ -670,6 +685,9 @@ public class GameManager : MonoBehaviour
 
                 // Hide threats
                 HideThreats(action, targets);
+
+                // Sheathe weapon
+                GameEvents.instance.TriggerOnEntitySheatheWeapon(entity, action.weapon);
 
                 // Stop
                 break;

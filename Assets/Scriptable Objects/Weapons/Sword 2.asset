@@ -20,4 +20,4 @@ MonoBehaviour:
   actions:
   - {fileID: 11400000, guid: 8497f836d6c463341a285a61e7e215e1, type: 2}
   - {fileID: 11400000, guid: 3d0a5222516c54345861722ba677cba1, type: 2}
-  controller: {fileID: 9100000, guid: f54ec5bca28b2b44295298bcdd372f80, type: 2}
+  weaponPrefab: {fileID: 1251787465029900827, guid: 539046e35f645174093ee495a9e64bd4, type: 3}

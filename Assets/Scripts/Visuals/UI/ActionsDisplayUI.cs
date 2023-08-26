@@ -2,10 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-// Tile highlight -> Preview
-// Arrow Indicator -> Confirmed
-
 public class ActionsDisplayUI : MonoBehaviour
 {
     [Header("Data")]
@@ -30,13 +26,13 @@ public class ActionsDisplayUI : MonoBehaviour
         GameEvents.instance.onWeaponEquip -= UpdateActions;
     }
 
-    private void DisplayActions(Room dungeon)
+    private void DisplayActions(Room room)
     {
-        if (dungeon != null)
+        if (room != null)
         {
             // Save and create actions
-            this.entity = dungeon.player;
-            CreateActions(dungeon.player);
+            this.entity = room.player;
+            CreateActions(room.player);
         }
         else
         {
@@ -72,7 +68,7 @@ public class ActionsDisplayUI : MonoBehaviour
         actionUIs.Clear();
     }
 
-    private void CreateActions(Entity entity) 
+    private void CreateActions(Entity entity)
     {
         // Display all of the player's actions
         foreach (var action in entity.GetActions())

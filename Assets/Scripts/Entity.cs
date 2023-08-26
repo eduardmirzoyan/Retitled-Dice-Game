@@ -36,7 +36,7 @@ public class Entity : ScriptableObject
         this.location = spawnLocation;
     }
 
-    public void EquipPrimary(Weapon weapon)
+    public void EquipMainhand(Weapon weapon)
     {
         this.mainWeapon = weapon;
 
@@ -44,7 +44,7 @@ public class Entity : ScriptableObject
         GameEvents.instance.TriggerOnWeaponEquip(this, weapon);
     }
 
-    public void EquipSecondary(Weapon weapon)
+    public void EquipOffhand(Weapon weapon)
     {
         this.offWeapon = weapon;
 
@@ -126,15 +126,15 @@ public class Entity : ScriptableObject
         // Trigger event
         GameEvents.instance.TriggerOnEntityMove(this);
 
+        // Wait for animation
+        yield return new WaitForSeconds(GameManager.instance.gameSettings.moveBufferTime);
+
         // Interact with new location
         Interact();
 
         // Check for any reactive actions
         if (this is Player)
             yield return GameManager.instance.PerformReactiveAction(location);
-
-        // Wait for animation
-        yield return new WaitForSeconds(EntityModel.moveSpeed); // Refactor into game settings
     }
 
     public IEnumerator WarpTo(Vector3Int location)
@@ -153,7 +153,7 @@ public class Entity : ScriptableObject
             yield return GameManager.instance.PerformReactiveAction(location);
 
         // Wait for animation
-        yield return new WaitForSeconds(EntityModel.warpSpeed);
+        yield return new WaitForSeconds(GameManager.instance.gameSettings.warpBufferTime);
     }
 
     protected virtual void Interact()
@@ -161,34 +161,10 @@ public class Entity : ScriptableObject
         // Does nothing for now
     }
 
-    public void MeleeAttackLocation(Vector3Int location, Weapon weapon = null)
-    {
-        var target = room.GetEntityAtLocation(location);
-        if (target != null)
-        {
-            // Attack target
-            MeleeAttackEntity(target, weapon);
-        }
-        else
-        {
-            // Debug
-            Debug.Log("No enemy at this location to attack.");
-        }
-    }
-
-    public void MeleeAttackEntity(Entity target, Weapon weapon = null)
+    public void MeleeAttackEntity(Entity target)
     {
         // Currently deal 1 damage, but this might change?
         target.TakeDamage(1);
-
-        // Trigger event
-        if (weapon != null)
-        {
-            var direction = target.location - location;
-            direction.Clamp(-Vector3Int.one, Vector3Int.one);
-
-            GameEvents.instance.TriggerOnEntityMeleeAttack(this, weapon, direction);
-        }
     }
 
     public void AddGold(int amount)

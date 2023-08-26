@@ -84,25 +84,19 @@ public class MeleeAction : Action
         Vector3Int direction = targetLocation - entity.location;
         direction.Clamp(-Vector3Int.one, Vector3Int.one);
 
-        // Draw weapon
-        GameEvents.instance.TriggerOnEntityDrawWeapon(entity, direction, weapon);
-
-        // Wait for animation
-        yield return new WaitForSeconds(EntityModel.moveSpeed);
-
         foreach (var location in threatenedLocations)
         {
             var target = room.GetEntityAtLocation(location);
             if (target != null)
             {
-                entity.MeleeAttackEntity(target, weapon);
-
-                // Wait for animation
-                yield return new WaitForSeconds(EntityModel.moveSpeed);
+                entity.MeleeAttackEntity(target);
             }
         }
 
-        // Sheathe weapon
-        GameEvents.instance.TriggerOnEntitySheatheWeapon(entity, weapon);
+        // Trigger event
+        GameEvents.instance.TriggerOnEntityUseWeapon(entity, weapon, direction);
+
+        // Wait for animation
+        yield return new WaitForSeconds(GameManager.instance.gameSettings.weaponMeleeBufferTime);
     }
 }

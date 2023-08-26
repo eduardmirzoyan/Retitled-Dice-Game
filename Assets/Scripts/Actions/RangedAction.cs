@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 [CreateAssetMenu(menuName = "Actions/Ranged")]
 public class RangedAction : Action
@@ -9,37 +10,11 @@ public class RangedAction : Action
     {
         List<Vector3Int> result = new List<Vector3Int>();
 
-        // Scale distanc based on die.value
-        int reach = die.value;
-
-        // Check in 4 cardinal direction based on die value
-
-        // North
-        Vector3Int endLocation = startLocation + new Vector3Int(0, reach, 0);
-        if (room.IsValidPath(startLocation, endLocation, true, false))
+        // For each cardinal direction
+        foreach (var location in room.GetNeighbors(startLocation, true))
         {
-            result.Add(startLocation + new Vector3Int(0, reach, 0));
-        }
-
-        // South
-        endLocation = startLocation + new Vector3Int(0, -reach, 0);
-        if (room.IsValidPath(startLocation, endLocation, true, false))
-        {
-            result.Add(startLocation + new Vector3Int(0, -reach, 0));
-        }
-
-        // East
-        endLocation = startLocation + new Vector3Int(reach, 0, 0);
-        if (room.IsValidPath(startLocation, endLocation, true, false))
-        {
-            result.Add(startLocation + new Vector3Int(reach, 0, 0));
-        }
-
-        // West
-        endLocation = startLocation + new Vector3Int(-reach, 0, 0);
-        if (room.IsValidPath(startLocation, endLocation, true, false))
-        {
-            result.Add(startLocation + new Vector3Int(-reach, 0, 0));
+            Vector3Int direction = location - startLocation;
+            result.Add(room.GetFirstValidLocationWithinRange(startLocation, direction, die.value));
         }
 
         return result;
@@ -47,51 +22,37 @@ public class RangedAction : Action
 
     public override List<Vector3Int> GetThreatenedLocations(Entity entity, Vector3Int targetLocation)
     {
-        throw new System.NotImplementedException();
+        return entity.room.GetAllValidLocationsAlongPath(entity.location, targetLocation);
     }
 
     public override IEnumerator Perform(Entity entity, Vector3Int targetLocation, List<Vector3Int> threatenedLocations, Room room)
     {
         // Calculate direction
         Vector3Int direction = targetLocation - entity.location;
+        direction.Clamp(-Vector3Int.one, Vector3Int.one);
 
-        if (direction.x > 0) // Move right
+        // Wait for animation
+        yield return new WaitForSeconds(GameManager.instance.gameSettings.weaponDrawBufferTime);
+
+        // Logic
+        foreach (var location in threatenedLocations)
         {
-            direction.x = 1;
-        }
-        else if (direction.x < 0) // Move left
-        {
-            direction.x = -1;
-        }
-        else if (direction.y > 0) // Move up
-        {
-            direction.y = 1;
-        }
-        else if (direction.y < 0) // Move down
-        {
-            direction.y = -1;
-        }
-        else
-        {
-            // Debug
-            throw new System.Exception("There was a problem with determining direction.");
+            // Damage first target found
+            var target = room.GetEntityAtLocation(location);
+            if (target != null)
+            {
+                // Damage location
+                entity.MeleeAttackEntity(target);
+
+                // Dip
+                break;
+            }
         }
 
-        // Draw weapon
-        GameEvents.instance.TriggerOnEntityDrawWeapon(entity, direction, weapon);
+        // Trigger event
+        GameEvents.instance.TriggerOnEntityUseWeapon(entity, weapon, direction);
 
-        // Wait for weapon to be drawn
-        yield return new WaitForSeconds(Projectile.drawTime);
-
-        // Spawn thrown weapon
-        yield return GameEvents.instance.TriggerOnEntityRangedAttack(entity, targetLocation, weapon, new ActionInfo());
-
-        // Sheathe weapon
-        // GameEvents.instance.TriggerOnEntitySheatheWeapon(entity, weapon);
-
-        // Damage location
-        entity.MeleeAttackLocation(targetLocation, weapon);
-
-        // Finnish!
+        // Wait for animation
+        yield return new WaitForSeconds(GameManager.instance.gameSettings.weaponMeleeBufferTime);
     }
 }

@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using UnityEngine.XR;
 
 public class ActionIndicator : MonoBehaviour
 {
@@ -15,6 +14,7 @@ public class ActionIndicator : MonoBehaviour
     [SerializeField] private GameObject actionPreviewPrefab;
     [SerializeField] private Tile reactiveIconTile;
     [SerializeField] private Tile delayedIconTile;
+    [SerializeField] private AnimatedTile reactAnimatedTile;
 
     [Header("Settings")]
     [SerializeField] private float alpha = 0.25f;
@@ -54,7 +54,7 @@ public class ActionIndicator : MonoBehaviour
             // Update entry
             threatTable[location] = count + 1;
         }
-        else
+        else // if (action.actionType != ActionType.Instant) // Only Show non-instant actions
         {
             // Highlight tile
             intentionTilemap.SetTile(location, highlightedTile);
@@ -92,7 +92,7 @@ public class ActionIndicator : MonoBehaviour
                 threatTable[location] = count - 1;
             }
         }
-        else
+        else // if (action.actionType != ActionType.Instant)
         {
             throw new System.Exception("TRIED TO UNMARK A LOCATION THAT WAS NEVER MARKED?!");
         }
