@@ -16,7 +16,7 @@ MonoBehaviour:
   maxHealth: 3
   currentHealth: 3
   level: 1
-  experience: 0
+  experience: 1
   gold: 2
   inventory: {fileID: 0}
   modelSprite: {fileID: -78059454, guid: 54fd152cd68b96e49b08c757749bfaca, type: 3}

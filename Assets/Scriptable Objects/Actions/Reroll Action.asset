@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Reroll Action
   m_EditorClassIdentifier: 
   name: Reroll
-  description: Rerolls all of your unsued actions
+  description: Reroll all of your unused actions
   icon: {fileID: 21300000, guid: f4bab609464368244b33b981300ffae5, type: 3}
   background: {fileID: 21300000, guid: acd1e638089edba4aae74ade1eb270c5, type: 3}
   color: {r: 0.9803922, g: 0.6392157, b: 0.10588236, a: 1}

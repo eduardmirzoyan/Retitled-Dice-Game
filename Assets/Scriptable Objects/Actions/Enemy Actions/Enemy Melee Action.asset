@@ -17,6 +17,7 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 2abc9b9e2bdaec84a8d7e2bcb237057b, type: 3}
   background: {fileID: 21300000, guid: d12eabff6b0248c42bcf302efc0df493, type: 3}
   color: {r: 0.87058824, g: 0.24313726, b: 0.13725491, a: 1}
+  actionSpeed: 1
   actionType: 1
   die: {fileID: 11400000, guid: 8458686c5fc89cf46991047e407d7fc1, type: 2}
   weapon: {fileID: 0}

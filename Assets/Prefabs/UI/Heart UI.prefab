@@ -87,7 +87,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   header: Health
-  description: You lose if your health ever reaches 0.
+  description: If your health ever reaches 0, you die.
 --- !u!1 &8999949673327226650
 GameObject:
   m_ObjectHideFlags: 0

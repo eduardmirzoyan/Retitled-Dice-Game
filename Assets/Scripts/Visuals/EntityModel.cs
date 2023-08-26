@@ -257,7 +257,7 @@ public class EntityModel : MonoBehaviour
         if (this.entity == entity && damage > 0)
         {
             // Play animation
-            modelAnimator.Play("Hurt");
+            // modelAnimator.Play("Hurt");
 
             // Display damage flash
             if (GameManager.instance.gameSettings.useHitFlash)

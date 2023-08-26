@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Step Action
   m_EditorClassIdentifier: 
   name: Step
-  description: Move exact tiles equal to the value of the die
+  description: Move a distance, based on the value of the die
   icon: {fileID: 21300000, guid: 5ac614776ef302346af0065d728f6e41, type: 3}
   background: {fileID: 21300000, guid: d3c559b2e7ed77e489dc11e7ac02a26b, type: 3}
   color: {r: 0.3647059, g: 0.7960785, b: 0.22352943, a: 1}

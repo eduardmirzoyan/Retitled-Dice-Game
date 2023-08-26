@@ -88,15 +88,19 @@ public class ActionPreview : MonoBehaviour
 
     private void GeneratePath(Vector3Int start, Vector3Int end, Room room)
     {
+        // OLD CODE
         // Get path
-        var path = room.pathfinder.FindPath(start, end, room);
+        // var path = room.pathfinder.FindPath(start, end, room);
+        // lineRenderer.positionCount = path.Count;
+        // for (int i = 0; i < path.Count; i++)
+        // {
+        //     // Set each vertex
+        //     lineRenderer.SetPosition(i, path[i] + Vector3.one * 0.5f);
+        // }
 
-        lineRenderer.positionCount = path.Count;
-        for (int i = 0; i < path.Count; i++)
-        {
-            // Set each vertex
-            lineRenderer.SetPosition(i, path[i] + Vector3.one * 0.5f);
-        }
+        lineRenderer.positionCount = 2;
+        lineRenderer.SetPosition(0, start + Vector3.one * 0.5f);
+        lineRenderer.SetPosition(1, end + Vector3.one * 0.5f);
 
         // Set color
         lineRenderer.endColor = action.color;

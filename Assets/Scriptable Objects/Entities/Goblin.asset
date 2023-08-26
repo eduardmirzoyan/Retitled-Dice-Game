@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Goblin
   m_EditorClassIdentifier: 
   name: Goblin
-  maxHealth: 5
-  currentHealth: 5
+  maxHealth: 1
+  currentHealth: 1
   level: 1
   experience: 2
-  gold: 0
+  gold: 1
   inventory: {fileID: 0}
   modelSprite: {fileID: 21300000, guid: eb69d914fd8e0e0488086e8dae58e2e3, type: 3}
   modelController: {fileID: 9100000, guid: f094f2d8ff32d664e941cd1f7d3a3217, type: 2}

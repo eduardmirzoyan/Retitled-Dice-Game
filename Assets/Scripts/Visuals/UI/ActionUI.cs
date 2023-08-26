@@ -5,13 +5,14 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
 
-public enum ActionMode { Interact, Display, Inspect }
+public enum ActionMode { Interact, Display }
 
-public class ActionUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class ActionUI : MonoBehaviour
 {
     [Header("Components")]
     [SerializeField] private Image actionIcon;
     [SerializeField] private Image actionBackground;
+    [SerializeField] private TextMeshProUGUI dieMaxLabel;
     [SerializeField] private DieUI diceUI;
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private TooltipTriggerUI tooltipTriggerUI;
@@ -23,7 +24,7 @@ public class ActionUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     [SerializeField] private Action action;
     [SerializeField] private ActionMode actionMode;
     [SerializeField] private Entity entity;
-    
+
 
     // 3 Modes, interactable, display, inspect
 
@@ -46,24 +47,29 @@ public class ActionUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         switch (actionMode)
         {
             case ActionMode.Interact:
+
                 // Initialize die
                 diceUI.Initialize(action, true, false);
                 // Hide description
                 descriptionCanvasGroup.alpha = 0f;
+
+                Destroy(dieMaxLabel.transform.parent.gameObject);
+
                 break;
             case ActionMode.Display:
                 // Initialize die
                 diceUI.Initialize(action, false, true);
                 // Show description
                 descriptionCanvasGroup.alpha = 1f;
-                break;
-            case ActionMode.Inspect:
-                // Initialize die
-                diceUI.Initialize(action, false, false);
-                // Hide description
-                descriptionCanvasGroup.alpha = 0f;
+
+                // Set die label and color
+                dieMaxLabel.text = "MAX\n" + action.die.maxValue;
+                dieMaxLabel.color = action.color;
+
                 break;
         }
+
+
 
         // Sub to events
         GameEvents.instance.onTurnStart += AllowInteraction;
@@ -72,29 +78,8 @@ public class ActionUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         GameEvents.instance.onTurnEnd += PreventInteraction;
     }
 
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        // If the action is in inspect mode
-        if (actionMode == ActionMode.Inspect && entity != null)
-        {
-            // Show preview
-            GameEvents.instance.TriggerOnInspectAction(entity, action, entity.room);
-        }
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        // If the action is in inspect mode
-        if (actionMode == ActionMode.Inspect && entity != null)
-        {
-            // Hide preview
-            GameEvents.instance.TriggerOnInspectAction(entity, null, entity.room);
-        }
-    }
-
     public void Uninitialize()
     {
-        // uninitialize die as well
         diceUI.Uninitialize();
 
         // Unsub from events
@@ -149,3 +134,6 @@ public class ActionUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     }
 
 }
+
+
+

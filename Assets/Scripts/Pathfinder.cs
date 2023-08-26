@@ -5,16 +5,16 @@ using System.Linq;
 
 public class Pathfinder
 {
-    private class Node 
+    private class Node
     {
         public Vector3Int location;
 
         public int G;
         public int H;
-        public int F { get { return G + H; }}
+        public int F { get { return G + H; } }
         public Node previous;
 
-        public Node(Vector3Int location) 
+        public Node(Vector3Int location)
         {
             this.location = location;
             previous = null;
@@ -81,12 +81,12 @@ public class Pathfinder
                     open.Add(neighborNode);
             }
         }
-        
+
         // Return empty list
         return new List<Vector3Int>();
     }
 
-    private List<Vector3Int> GetFinalPath(Node start, Node end) 
+    private List<Vector3Int> GetFinalPath(Node start, Node end)
     {
         List<Vector3Int> result = new List<Vector3Int>();
 

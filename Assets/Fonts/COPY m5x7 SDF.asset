@@ -87,7 +87,7 @@ Material:
     - _TextureWidth: 1024
     - _UnderlayDilate: 0
     - _UnderlayOffsetX: 0
-    - _UnderlayOffsetY: 0
+    - _UnderlayOffsetY: 0.5
     - _UnderlaySoftness: 0
     - _VertexOffsetX: 0
     - _VertexOffsetY: 0
@@ -103,7 +103,7 @@ Material:
     - _ReflectFaceColor: {r: 0, g: 0, b: 0, a: 1}
     - _ReflectOutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
-    - _UnderlayColor: {r: 0, g: 0, b: 0, a: 0.5}
+    - _UnderlayColor: {r: 0.007352941, g: 0.007352941, b: 0.007352941, a: 0.5}
   m_BuildTextureStacks: []
 --- !u!114 &11400000
 MonoBehaviour:
@@ -115,11 +115,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
-  m_Name: m5x7 SDF
+  m_Name: COPY m5x7 SDF
   m_EditorClassIdentifier: 
-  hashCode: -1666411642
+  hashCode: -296852125
   material: {fileID: -29032972246339055}
-  materialHashCode: -928737434
+  materialHashCode: 1223902947
   m_Version: 1.1.0
   m_SourceFontFileGUID: 0b8b37484753b4a4c96b9ceee8557682
   m_SourceFontFile_EditorRef: {fileID: 12800000, guid: 0b8b37484753b4a4c96b9ceee8557682, type: 3}

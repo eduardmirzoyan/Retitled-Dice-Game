@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Melee Action
   m_EditorClassIdentifier: 
   name: Melee Attack
-  description: Move exact tiles equal to the value of the die whilst striking enemies
+  description: Attack an area in front of you, based on the value of the die
   icon: {fileID: 21300000, guid: 2abc9b9e2bdaec84a8d7e2bcb237057b, type: 3}
   background: {fileID: 21300000, guid: d12eabff6b0248c42bcf302efc0df493, type: 3}
   color: {r: 0.8705883, g: 0.24313727, b: 0.13725491, a: 1}
-  actionSpeed: 1
+  actionSpeed: 0
   actionType: 1
   die: {fileID: 11400000, guid: e8d732acdda4b39449630ce6ec7774ab, type: 2}
   weapon: {fileID: 0}

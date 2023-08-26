@@ -81,7 +81,6 @@ public class GameEvents : MonoBehaviour
     public event Action<Entity, Weapon> onUnequipOffhand;
     public event Action<Entity> onEntityInspect;
     public event Action<List<Vector3Int>> onThreatsInspect;
-    public event Action<Entity, Action> onInspectAction;
 
     public static GameEvents instance;
     private void Awake()
@@ -415,14 +414,6 @@ public class GameEvents : MonoBehaviour
         if (onThreatsInspect != null)
         {
             onThreatsInspect(locations);
-        }
-    }
-
-    public void TriggerOnInspectAction(Entity entity, Action action, Room room)
-    {
-        if (onInspectAction != null)
-        {
-            onInspectAction(entity, action);
         }
     }
 
