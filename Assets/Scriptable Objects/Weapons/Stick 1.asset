@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Stick 1
   m_EditorClassIdentifier: 
   name: Walking Cane
-  description: Old age is enemy of every man
+  description: Old age, the enemy of every man
   sprite: {fileID: -916839757, guid: 20597968d5281954482d5d148d07fa12, type: 3}
-  value: 3
+  value: 4
   actions:
   - {fileID: 11400000, guid: 8497f836d6c463341a285a61e7e215e1, type: 2}
   - {fileID: 11400000, guid: 7eba09a60db35f04dba82e978a75c091, type: 2}

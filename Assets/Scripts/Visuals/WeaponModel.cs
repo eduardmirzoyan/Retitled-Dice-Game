@@ -48,8 +48,6 @@ public class WeaponModel : MonoBehaviour
 
     private void Despawn(Entity entity, Weapon weapon)
     {
-        print("Hit");
-
         // If this weapon was un-equipped
         if (this.weapon == weapon)
         {

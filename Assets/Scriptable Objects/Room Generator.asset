@@ -15,7 +15,6 @@ MonoBehaviour:
   roomWidth: 12
   roomHeight: 12
   roomPadding: 8
-  goldSpawnChance: 0
-  barrelSpawnChance: 0
-  wallSpawnChanceDistribution: {x: 7, y: 7}
-  barrel: {fileID: 11400000, guid: 6b0af5af49746404ba2a2897b7bd94ab, type: 2}
+  wallSpawnChance: 10
+  shopWidth: 5
+  shopHeight: 5
