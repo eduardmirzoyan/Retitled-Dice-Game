@@ -5,13 +5,17 @@ using UnityEngine;
 [CreateAssetMenu]
 public class RoomGenerator : ScriptableObject
 {
-    [SerializeField] private int roomWidth = 12;
-    [SerializeField] private int roomHeight = 12;
+    [Header("Regular Data")]
+    [SerializeField] private Vector2Int roomSize = new Vector2Int(10, 10);
     [SerializeField] private int roomPadding = 8;
     [SerializeField] private int wallSpawnChance = 5;
+    [SerializeField] private int chasamSpawnChance = 5;
 
-    [SerializeField] private int shopWidth = 5;
-    [SerializeField] private int shopHeight = 5;
+    [Header("Shop Data")]
+    [SerializeField] private Vector2Int shopSize = new Vector2Int(5, 5);
+
+    [Header("Shop Data")]
+    [SerializeField] private Vector2Int arenaSize = new Vector2Int(10, 10);
 
     public Room GenerateRoom()
     {
@@ -19,7 +23,7 @@ public class RoomGenerator : ScriptableObject
         var room = ScriptableObject.CreateInstance<Room>();
 
         // Initialize
-        room.Initialize(roomWidth, roomHeight, roomPadding, wallSpawnChance);
+        room.Initialize(roomSize.x, roomSize.y, roomPadding, wallSpawnChance, chasamSpawnChance);
 
         return room;
     }
@@ -29,8 +33,19 @@ public class RoomGenerator : ScriptableObject
         // Create new room
         var room = ScriptableObject.CreateInstance<Room>();
 
-        // Initialize with no extra walls
-        room.Initialize(shopWidth, shopHeight, roomPadding + (roomWidth - shopWidth), 0);
+        // Initialize with no extra walls or chasams
+        room.Initialize(shopSize.x, shopSize.y, roomPadding + (roomSize.x - shopSize.x), 0, 0);
+
+        return room;
+    }
+
+    public Room GenerateArena()
+    {
+        // Create new room
+        var room = ScriptableObject.CreateInstance<Room>();
+
+        // Initialize with no extra walls or chasams
+        room.Initialize(arenaSize.x, arenaSize.y, roomPadding + (roomSize.x - arenaSize.x), 0, 0);
 
         return room;
     }

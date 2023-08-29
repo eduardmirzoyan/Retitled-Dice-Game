@@ -6,6 +6,7 @@ using UnityEngine;
 public class EnemyGenerator : ScriptableObject
 {
     public List<Entity> possibleEnemies;
+    public List<Entity> bosses;
     public Entity shopkeeper;
     public Barrel barrel;
 
@@ -41,6 +42,17 @@ public class EnemyGenerator : ScriptableObject
         }
         // Set inventory
         copy.inventory = inventory;
+
+        return copy;
+    }
+
+    public Entity GenerateBoss()
+    {
+        // If no possible enemies return null
+        if (bosses.Count == 0) return null;
+
+        // Return a copy of boss based on stage
+        var copy = bosses[Random.Range(0, bosses.Count)].Copy();
 
         return copy;
     }

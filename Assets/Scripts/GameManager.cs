@@ -58,10 +58,16 @@ public class GameManager : MonoBehaviour
         roundNumber = 1;
 
         // Generate the room
-        yield return GenerateRoom();
+        yield return GenerateFloor();
+
+        // Trigger event
+        GameEvents.instance.TriggerGenerateFloor(room);
 
         // Generate player
         yield return GeneratePlayer();
+
+        // Trigger event
+        GameEvents.instance.TriggerOnEnterFloor(room.player);
 
         // Generate enemies
         yield return GenerateEnemies();
@@ -76,7 +82,7 @@ public class GameManager : MonoBehaviour
         yield return GenerateGold();
 
         // Trigger event
-        GameEvents.instance.TriggerOnEnterFloor(room);
+        // GameEvents.instance.TriggerOnEnterFloor(room);
 
         // Open scene on player
         var location = RoomUI.instance.GetLocationCenter(room.player.location);
@@ -86,26 +92,32 @@ public class GameManager : MonoBehaviour
         yield return StartRound();
     }
 
-    private IEnumerator GenerateRoom()
+    private IEnumerator GenerateFloor()
     {
-        // Use the room index to decide what room to generate
-        int index = DataManager.instance.GetRoomIndex();
-        switch (index)
+        switch (DataManager.instance.GetCurrentRoom())
         {
-            case 1:
+            case RoomType.Normal:
+
                 // Generate a normal room
                 room = roomGenerator.GenerateRoom();
-                // room = roomGenerator.GenerateShop();
+
                 break;
-            case -1:
+            case RoomType.Shop:
+
                 // Generate a shop
                 room = roomGenerator.GenerateShop();
+
+                break;
+            case RoomType.Arena:
+
+                // Generate an arena
+                room = roomGenerator.GenerateArena();
+
                 break;
             default:
-                throw new System.Exception("ERROR CREATING ROOM WITH ROOM INDEX: " + index);
+                throw new System.Exception("ERROR CREATING ROOM WITH ROOM INDEX");
         }
 
-        // Finish
         yield return null;
     }
 
@@ -123,12 +135,12 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator GenerateEnemies()
     {
-        int index = DataManager.instance.GetRoomIndex();
-        switch (index)
+        switch (DataManager.instance.GetCurrentRoom())
         {
-            case 1:
+            case RoomType.Normal:
+
                 // Spawn enemies equal to floor number
-                for (int i = 0; i < DataManager.instance.GetRoomNumber(); i++)
+                for (int i = 0; i < 2; i++)
                 {
                     // Generate a random enemy
                     var enemy = enemyGenerator.GenerateEnemy();
@@ -138,7 +150,7 @@ public class GameManager : MonoBehaviour
                 }
 
                 break;
-            case -1:
+            case RoomType.Shop:
 
                 // Generate a shopkeeper
                 var shopkeeper = enemyGenerator.GenerateShopkeeper();
@@ -150,8 +162,24 @@ public class GameManager : MonoBehaviour
                 CheckShop(shopkeeper.inventory);
 
                 break;
+            case RoomType.Arena:
+
+                // Generate a boss
+                var boss = enemyGenerator.GenerateBoss();
+
+                // Populate the room
+                room.SpawnEntity(boss, true);
+
+                // Generate a random enemy
+                var enem = enemyGenerator.GenerateEnemy();
+
+                // Populate the room
+                room.SpawnEntity(enem);
+
+                break;
+
             default:
-                throw new System.Exception("ERROR CREATING ENEMIES WITH ROOM INDEX: " + index);
+                throw new System.Exception("ERROR CREATING ENEMIES WITH ROOM INDEX: ");
         }
 
         // Finish
@@ -160,22 +188,16 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator GenerateBarrels()
     {
-        int index = DataManager.instance.GetRoomIndex();
-        switch (index)
+        switch (DataManager.instance.GetCurrentRoom())
         {
-            case 1:
+            case RoomType.Normal:
 
                 // Create keys based on room number
-                for (int i = 0; i < DataManager.instance.GetRoomNumber(); i++)
+                for (int i = 0; i < 2; i++)
                 {
                     // Spawn a barrel
                     room.SpawnEntity(enemyGenerator.barrel);
                 }
-
-                break;
-            case -1:
-
-                // No barrels in shop.
 
                 break;
         }
@@ -186,22 +208,16 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator GenerateKeys()
     {
-        int index = DataManager.instance.GetRoomIndex();
-        switch (index)
+        switch (DataManager.instance.GetCurrentRoom())
         {
-            case 1:
+            case RoomType.Normal:
 
                 // Create keys based on room number
-                for (int i = 0; i < DataManager.instance.GetRoomNumber(); i++)
+                for (int i = 0; i < 1; i++)
                 {
                     // Spawn a key
                     room.SpawnPickup(PickUpType.Key);
                 }
-
-                break;
-            case -1:
-
-                // No keys in shop.
 
                 break;
         }
@@ -212,22 +228,16 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator GenerateGold()
     {
-        int index = DataManager.instance.GetRoomIndex();
-        switch (index)
+        switch (DataManager.instance.GetCurrentRoom())
         {
-            case 1:
+            case RoomType.Normal:
 
                 // Create keys based on room number
-                for (int i = 0; i < DataManager.instance.GetRoomNumber(); i++)
+                for (int i = 0; i < 2; i++)
                 {
                     // Spawn a key
                     room.SpawnPickup(PickUpType.Gold);
                 }
-
-                break;
-            case -1:
-
-                // No gold in shop.
 
                 break;
         }
@@ -350,7 +360,7 @@ public class GameManager : MonoBehaviour
                 selectedThreats = null;
             }
 
-            if (selectedLocation != Vector3Int.zero && selectedAction.actionType == ActionType.Offensive)
+            if (selectedLocation != Vector3Int.zero && selectedAction.actionType == ActionType.Attack)
             {
                 // Sheathe weapon
                 GameEvents.instance.TriggerOnEntitySheatheWeapon(selectedEntity, selectedAction.weapon);
@@ -366,7 +376,7 @@ public class GameManager : MonoBehaviour
             // Show threats
             ShowThreats(selectedAction, selectedThreats);
 
-            if (selectedLocation == Vector3Int.zero && selectedAction.actionType == ActionType.Offensive)
+            if (selectedLocation == Vector3Int.zero && selectedAction.actionType == ActionType.Attack)
             {
                 // Calculate direction
                 Vector3Int direction = location - selectedEntity.location;
@@ -542,9 +552,6 @@ public class GameManager : MonoBehaviour
         // Stop any coroutine
         if (coroutine != null) StopCoroutine(coroutine);
         coroutine = null;
-
-        // Trigger event
-        GameEvents.instance.TriggerOnExitFloor(room);
     }
 
     public void TravelToNextFloor()
@@ -552,10 +559,8 @@ public class GameManager : MonoBehaviour
         // Exit current floor
         ExitFloor();
 
-        // We want to consider the exit we chose's number
-        var roomIndex = DataManager.instance.GetNextRoomIndex();
         // Set next room based on exit's index
-        DataManager.instance.SetNextRoom(roomIndex);
+        DataManager.instance.SetNextRoom();
 
         // Reload this scene on player
         var location = RoomUI.instance.GetLocationCenter(room.player.location);
@@ -604,7 +609,7 @@ public class GameManager : MonoBehaviour
         // Clean up selected tiles, etc
         HideThreats(action, threatenedLocations);
 
-        if (action.actionType == ActionType.Offensive)
+        if (action.actionType == ActionType.Attack)
         {
             // Sheathe weapon
             GameEvents.instance.TriggerOnEntitySheatheWeapon(entity, action.weapon);
@@ -685,7 +690,7 @@ public class GameManager : MonoBehaviour
                 HideThreats(action, targets);
 
                 // Sheathe weapon
-                if (action.actionType == ActionType.Offensive)
+                if (action.actionType == ActionType.Attack)
                     GameEvents.instance.TriggerOnEntitySheatheWeapon(entity, action.weapon);
 
                 // Stop
@@ -787,11 +792,11 @@ public class GameManager : MonoBehaviour
         GameEvents.instance.TriggerOnEntityInspect(entity);
     }
 
+    // TEMP SHOP LOGIC
     private void CheckShop(Inventory inventory)
     {
         // If we are currently on a shop floor
-        int index = DataManager.instance.GetRoomIndex();
-        if (index == -1)
+        if (DataManager.instance.GetCurrentRoom() == RoomType.Shop)
         {
             GameEvents.instance.TriggerOnOpenShop(inventory);
         }

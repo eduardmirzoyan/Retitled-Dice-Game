@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum PickUpType { None, Gold, Key }
-public enum TileType { Void, Floor, Wall, Entrance, Exit }
+public enum TileType { Chasam, Floor, Wall, Entrance, Exit }
 
 [System.Serializable]
 public class RoomTile : ScriptableObject
@@ -17,12 +17,14 @@ public class RoomTile : ScriptableObject
     [Header("Parent References")]
     public Room room;
 
-    public void Initialize(Vector3Int location, Room room)
+    public void Initialize(Vector3Int location, TileType tileType, Room room)
     {
         this.location = location;
-        this.tileType = TileType.Floor;
-        this.containedPickup = PickUpType.None;
+        this.tileType = tileType;
         this.room = room;
+
+        // Set contained to empty
+        containedPickup = PickUpType.None;
         containedEntity = null;
 
         // Set name of SO based on coordinate

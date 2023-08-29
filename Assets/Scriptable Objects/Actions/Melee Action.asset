@@ -19,5 +19,5 @@ MonoBehaviour:
   color: {r: 0.8705883, g: 0.24313727, b: 0.13725491, a: 1}
   actionSpeed: 0
   actionType: 1
-  die: {fileID: 11400000, guid: e8d732acdda4b39449630ce6ec7774ab, type: 2}
+  die: {fileID: 11400000, guid: 4f8fd130e5045604b813bb7a89501291, type: 2}
   weapon: {fileID: 0}

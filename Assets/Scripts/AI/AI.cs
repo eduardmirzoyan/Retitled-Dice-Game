@@ -4,7 +4,6 @@ using UnityEngine;
 
 public enum Alignment { Allied, Neutral, Hostile }
 
-[CreateAssetMenu(menuName = "AI/AI")]
 public abstract class AI : ScriptableObject
 {
     public Alignment alignment;

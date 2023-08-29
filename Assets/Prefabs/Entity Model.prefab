@@ -9857,7 +9857,7 @@ MonoBehaviour:
   deathCloud: {fileID: 8511873745700599822, guid: d9adbf62e970a24408f3195a06e0e185, type: 3}
   entity: {fileID: 0}
   isFacingRight: 1
-  weaponPrefab: {fileID: 9140997069136386509, guid: 8525dab3eaf904b468a12364fa44d58a, type: 3}
+  jumpHeight: 5
 --- !u!1 &6406055089092226427
 GameObject:
   m_ObjectHideFlags: 0

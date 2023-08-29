@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 [CreateAssetMenu(menuName = "Actions/Ranged")]
 public class RangedAction : Action
@@ -22,7 +21,7 @@ public class RangedAction : Action
 
     public override List<Vector3Int> GetThreatenedLocations(Entity entity, Vector3Int targetLocation)
     {
-        return entity.room.GetAllValidLocationsAlongPath(entity.location, targetLocation);
+        return entity.room.GetAllValidLocationsAlongPath(entity.location, targetLocation, true);
     }
 
     public override IEnumerator Perform(Entity entity, Vector3Int targetLocation, List<Vector3Int> threatenedLocations, Room room)
@@ -50,7 +49,7 @@ public class RangedAction : Action
         }
 
         // Trigger event
-        GameEvents.instance.TriggerOnEntityUseWeapon(entity, weapon, direction);
+        GameEvents.instance.TriggerOnEntityUseWeapon(entity, weapon);
 
         // Wait for animation
         yield return new WaitForSeconds(GameManager.instance.gameSettings.weaponMeleeBufferTime);

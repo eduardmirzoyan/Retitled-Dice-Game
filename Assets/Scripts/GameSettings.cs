@@ -18,6 +18,7 @@ public class GameSettings : ScriptableObject
     public float aiBufferTime = 0.25f;
     public float moveBufferTime = 0.35f;
     public float warpBufferTime = 0.5f;
+    public float jumpBufferTime = 0.5f;
 
     public float weaponDrawBufferTime;
     public float weaponMeleeBufferTime;

@@ -11,18 +11,15 @@ public class RoomUI : MonoBehaviour
     [SerializeField] private Tilemap wallsTilemap;
     [SerializeField] private Tilemap decorTilemap;
     [SerializeField] private Transform entityTransform;
-    [SerializeField] private Transform projectilesTransform;
 
     [Header("Data")]
-    [SerializeField] private Room room;
-    [SerializeField] private RuleTile floorTile;
+    [SerializeField] private Tile floorTile;
     [SerializeField] private RuleTile wallTile;
     [SerializeField] private Tile entranceTile;
     [SerializeField] private GameObject floorExitPrefab;
     [SerializeField] private GameObject goldPickupPrefab;
     [SerializeField] private GameObject keyPickupPrefab;
     [SerializeField] private GameObject entityModelPrefab;
-    [SerializeField] private GameObject projectileModelPrefab;
 
     public static RoomUI instance;
     private void Awake()
@@ -39,7 +36,7 @@ public class RoomUI : MonoBehaviour
     private void Start()
     {
         // Sub
-        GameEvents.instance.onEnterFloor += DrawRoom;
+        GameEvents.instance.onGenerateFloor += DrawRoom;
         GameEvents.instance.onEntitySpawn += SpawnEntity;
         GameEvents.instance.onPickupSpawn += SpawnPickup;
     }
@@ -47,7 +44,7 @@ public class RoomUI : MonoBehaviour
     private void OnDestroy()
     {
         // Unsub
-        GameEvents.instance.onEnterFloor -= DrawRoom;
+        GameEvents.instance.onGenerateFloor -= DrawRoom;
         GameEvents.instance.onEntitySpawn -= SpawnEntity;
         GameEvents.instance.onPickupSpawn += SpawnPickup;
     }
@@ -58,14 +55,12 @@ public class RoomUI : MonoBehaviour
         if (room == null)
             throw new System.Exception("ROOM IS NULL.");
 
-        this.room = room;
-
         // Loop through each tile
         foreach (var tile in room.tiles)
         {
             switch (tile.tileType)
             {
-                case TileType.Void:
+                case TileType.Chasam:
 
                     // Set tile to empty
                     floorTilemap.SetTile(tile.location, null);
@@ -81,6 +76,7 @@ public class RoomUI : MonoBehaviour
                 case TileType.Wall:
 
                     // Set tile to wall
+                    floorTilemap.SetTile(tile.location, floorTile);
                     wallsTilemap.SetTile(tile.location, wallTile);
 
                     break;
@@ -98,36 +94,10 @@ public class RoomUI : MonoBehaviour
                     floorTilemap.SetTile(tile.location, floorTile);
 
                     // Create room exit
-                    var exit = Instantiate(floorExitPrefab, floorTilemap.GetCellCenterWorld(tile.location), Quaternion.identity, floorTilemap.transform).GetComponent<RoomExitUI>();
-                    if (room.numKeys > 0)
-                    {
-                        exit.Lock();
-                    }
+                    Instantiate(floorExitPrefab, floorTilemap.GetCellCenterWorld(tile.location), Quaternion.identity, floorTilemap.transform).GetComponent<RoomExitUI>();
 
                     break;
             }
-
-            // switch (tile.containedPickup)
-            // {
-            //     case PickUpType.None:
-            //         // Do nothing
-            //         break;
-
-            //     case PickUpType.Gold:
-
-            //         // Spawn gold coin
-            //         var gold = Instantiate(goldPickupPrefab, floorTilemap.GetCellCenterWorld(tile.location), Quaternion.identity, decorTilemap.transform).GetComponent<GoldPickup>();
-            //         gold.Initialize(tile.location);
-
-            //         break;
-            //     case PickUpType.Key:
-
-            //         // Spawn key
-            //         var key = Instantiate(keyPickupPrefab, floorTilemap.GetCellCenterWorld(tile.location), Quaternion.identity, decorTilemap.transform).GetComponent<KeyPickup>();
-            //         key.Initialize(tile.location);
-
-            //         break;
-            // }
         }
 
         // Get center of dungeon

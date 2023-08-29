@@ -7,22 +7,20 @@ using UnityEngine.EventSystems;
 public class ItemSlotUI : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [Header("Components")]
-    [SerializeField] private Image highlightImage;
-    [SerializeField] private Image lockIcon;
-    [SerializeField] private Image afterImageIcon;
-    [SerializeField] private Color defaultColor;
-    [SerializeField] private Color highlightColor;
-    [SerializeField] private Color disabledColor;
+    [SerializeField] protected Image highlightImage;
+    [SerializeField] protected Image afterImageIcon;
+    [SerializeField] protected Color defaultColor;
+    [SerializeField] protected Color highlightColor;
 
     [Header("Data")]
-    [SerializeField] private ItemUI itemUI;
-    [SerializeField] private GameObject itemUIPrefab;
+    [SerializeField] protected ItemUI itemUI;
+    [SerializeField] protected GameObject itemUIPrefab;
 
     [Header("Settings")]
-    [SerializeField] private bool preventInsert = false;
-    [SerializeField] private bool preventRemove = false;
-    [SerializeField] private bool weaponsOnly = false;
-    [SerializeField] private bool mustPurchase = false;
+    [SerializeField] protected bool preventInsert = false;
+    [SerializeField] protected bool preventRemove = false;
+    [SerializeField] protected bool weaponsOnly = false;
+    [SerializeField] protected bool mustPurchase = false;
 
     public void CreateItem(Item item)
     {
@@ -49,38 +47,12 @@ public class ItemSlotUI : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPo
         preventInsert = state;
     }
 
-    public void Lock()
-    {
-        preventRemove = true;
-        preventInsert = true;
-
-        // Show lock icon
-        lockIcon.enabled = true;
-
-        // Set item inside to not interactable
-        if (itemUI != null)
-            itemUI.SetInteractable(false);
-    }
-
-    public void Unlock()
-    {
-        preventRemove = false;
-        preventInsert = false;
-
-        // Hide lock icon
-        lockIcon.enabled = false;
-
-        // Set item inside to not interactable
-        if (itemUI != null)
-            itemUI.SetInteractable(true);
-    }
-
     public bool PreventRemove()
     {
         return preventRemove;
     }
 
-    public void OnDrop(PointerEventData eventData)
+    public virtual void OnDrop(PointerEventData eventData)
     {
         // Remove highlight
         highlightImage.color = defaultColor;
@@ -101,30 +73,34 @@ public class ItemSlotUI : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPo
             if (newItemUI.GetItemSlotUI() != null && newItemUI.GetItemSlotUI().mustPurchase && !Buy(newItemUI.GetItem().GetValue())) return;
 
             // Now we all good, do insertion...
-
-            // If an item already exists, swap
-            if (this.itemUI != null)
-            {
-                // Debugging
-                print("An item exists in this slot, doing a swap :)");
-
-                // Set the old item to where the new one was
-                this.itemUI.ResetTo(newItemUI.GetParent());
-            }
-
-            // Set any previous slots to null;
-            if (newItemUI.GetItemSlotUI() != null)
-            {
-                // Add item to slot, where this.itemUI could be null in which case you are un-equipping
-                newItemUI.GetItemSlotUI().StoreItem(this.itemUI);
-            }
-
-            // Store new item into this slot
-            StoreItem(newItemUI);
+            UpdateSlot(newItemUI);
         }
     }
 
-    public void StoreItem(ItemUI itemUI)
+    private void UpdateSlot(ItemUI newItemUI)
+    {
+        // If an item already exists, swap
+        if (this.itemUI != null)
+        {
+            // Debugging
+            print("An item exists in this slot, doing a swap :)");
+
+            // Set the old item to where the new one was
+            this.itemUI.ResetTo(newItemUI.GetParent());
+        }
+
+        // Set any previous slots to null;
+        if (newItemUI.GetItemSlotUI() != null)
+        {
+            // Add item to slot, where this.itemUI could be null in which case you are un-equipping
+            newItemUI.GetItemSlotUI().StoreItem(this.itemUI);
+        }
+
+        // Store new item into this slot
+        StoreItem(newItemUI);
+    }
+
+    public virtual void StoreItem(ItemUI itemUI)
     {
         // Actual Item
         if (itemUI != null)
@@ -156,7 +132,6 @@ public class ItemSlotUI : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPo
         }
 
         this.itemUI = itemUI;
-
     }
 
     public void OnPointerEnter(PointerEventData eventData)

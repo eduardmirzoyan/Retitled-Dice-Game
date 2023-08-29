@@ -104,7 +104,7 @@ public class PlayerHUDUI : MonoBehaviour
         }
     }
 
-    private void UpdateFloor(Room room)
+    private void UpdateFloor(Player player)
     {
         floorNumberText.text = DataManager.instance.GetRoomDescription();
     }

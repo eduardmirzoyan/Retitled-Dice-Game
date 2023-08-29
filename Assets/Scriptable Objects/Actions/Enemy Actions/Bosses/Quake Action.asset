@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9032486443c08e444a8fa87e5a13ef47, type: 3}
+  m_Name: Quake Action
+  m_EditorClassIdentifier: 
+  name: Quake
+  description: ...
+  icon: {fileID: 21300000, guid: 5011dd7b109c2e443bae59b12f84e7c4, type: 3}
+  background: {fileID: 21300000, guid: d12eabff6b0248c42bcf302efc0df493, type: 3}
+  color: {r: 0.8705883, g: 0.24313727, b: 0.13725491, a: 1}
+  actionSpeed: 1
+  actionType: 1
+  die: {fileID: 11400000, guid: dbb9355000ced3842846106e2dca7d3b, type: 2}
+  weapon: {fileID: 0}
+  radius: 3
+  chance: 10

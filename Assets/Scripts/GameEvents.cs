@@ -2,30 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using Unity.VisualScripting;
-
-public class ActionInfo
-{
-    public float waitTime;
-
-    public ActionInfo()
-    {
-        this.waitTime = 0f;
-    }
-
-    public ActionInfo(float waitTime)
-    {
-        this.waitTime = waitTime;
-    }
-}
 
 public class GameEvents : MonoBehaviour
 {
     // Game state
-    public event Action<Room> onEnterFloor;
-    public event Action<Room> onExitFloor;
+    public event Action<Player> onEnterFloor;
+    public event Action<Room> onGenerateFloor;
     public event Action<Entity> onTurnStart;
     public event Action<Entity> onTurnEnd;
+    public event System.Action onGameWin;
+    public event System.Action onGameLose;
+    public event System.Action onCombatEnter;
+    public event System.Action onCombatExit;
 
     // Action based
     public event Action<Entity, Action> onActionSelect;
@@ -47,17 +35,11 @@ public class GameEvents : MonoBehaviour
     public event Action<Entity> onEntityMoveStop;
     public event Action<Entity, Vector3, Weapon> onEntityDrawWeapon;
     public event Action<Entity, Weapon> onEntitySheatheWeapon;
-    public event Action<Entity, Weapon, Vector3Int> onEntityUseWeapon;
-    public event Action<Entity, Vector3Int, Weapon> onEntityRangedAttack;
-    public event Action<Entity, Vector3Int, Weapon, ActionInfo> onEntityRangedAttackTimed;
+    public event Action<Entity, Weapon> onEntityUseWeapon;
     public event Action<Entity> onEntityWarp;
+    public event Action<Entity> onEntityJump;
     public event Action<Action, Vector3Int> onActionThreatenLocation;
     public event Action<Action, Vector3Int> onActionUnthreatenLocation;
-
-    // Projectile visuals
-    public event Action<Projectil> onProjectileSpawn;
-    public event Action<Projectil> onProjectileMove;
-    public event Action<Projectil> onProjectileDespawn;
 
     // Stat changes
     public event Action<Entity, int> onEntityTakeDamage;
@@ -70,15 +52,12 @@ public class GameEvents : MonoBehaviour
     public event Action<Vector3Int> onPickupDespawn;
     public event System.Action onLockExit;
     public event System.Action onUnlockExit;
-    public event Action<Entity, Vector3Int> onEntityEnterTile;
 
     // UI Based
     public event Action<Inventory> onOpenShop;
     public event Action<ItemUI, ItemSlotUI> onItemInsert;
-    public event Action<Entity, Weapon> onEquipMainhand;
-    public event Action<Entity, Weapon> onEquipOffhand;
-    public event Action<Entity, Weapon> onUnequipMainhand;
-    public event Action<Entity, Weapon> onUnequipOffhand;
+    public event Action<Entity, Weapon, int> onEquipWeapon;
+    public event Action<Entity, Weapon, int> onUnequipWeapon;
     public event Action<Entity> onEntityInspect;
     public event Action<List<Vector3Int>> onThreatsInspect;
 
@@ -95,27 +74,19 @@ public class GameEvents : MonoBehaviour
         instance = this;
     }
 
-    public void TriggerOnOpenShop(Inventory inventory)
+    public void TriggerGenerateFloor(Room room)
     {
-        if (onOpenShop != null)
+        if (onGenerateFloor != null)
         {
-            onOpenShop(inventory);
+            onGenerateFloor(room);
         }
     }
 
-    public void TriggerOnEnterFloor(Room room)
+    public void TriggerOnEnterFloor(Player player)
     {
         if (onEnterFloor != null)
         {
-            onEnterFloor(room);
-        }
-    }
-
-    public void TriggerOnExitFloor(Room room)
-    {
-        if (onExitFloor != null)
-        {
-            onExitFloor(room);
+            onEnterFloor(player);
         }
     }
 
@@ -148,6 +119,38 @@ public class GameEvents : MonoBehaviour
         if (onTurnEnd != null)
         {
             onTurnEnd(entity);
+        }
+    }
+
+    public void TriggerOnGameLose()
+    {
+        if (onGameLose != null)
+        {
+            onGameLose();
+        }
+    }
+
+    public void TriggerOnGameWin()
+    {
+        if (onGameWin != null)
+        {
+            onGameWin();
+        }
+    }
+
+    public void TriggerOnCombatEnter()
+    {
+        if (onCombatEnter != null)
+        {
+            onCombatEnter();
+        }
+    }
+
+    public void TriggerOnCombatExit()
+    {
+        if (onCombatExit != null)
+        {
+            onCombatExit();
         }
     }
 
@@ -222,6 +225,14 @@ public class GameEvents : MonoBehaviour
         }
     }
 
+    public void TriggerOnEntityJump(Entity entity)
+    {
+        if (onEntityJump != null)
+        {
+            onEntityJump(entity);
+        }
+    }
+
     public void TriggerOnDieRoll(Die die)
     {
         if (onDieRoll != null)
@@ -254,29 +265,11 @@ public class GameEvents : MonoBehaviour
         }
     }
 
-    public void TriggerOnEntityUseWeapon(Entity entity, Weapon weapon, Vector3Int direction)
+    public void TriggerOnEntityUseWeapon(Entity entity, Weapon weapon)
     {
         if (onEntityUseWeapon != null)
         {
-            onEntityUseWeapon(entity, weapon, direction);
-        }
-    }
-
-    public IEnumerator TriggerOnEntityRangedAttack(Entity entity, Vector3Int targetLocation, Weapon weapon, ActionInfo info)
-    {
-        // If there are any subscribers
-        if (onEntityRangedAttackTimed != null)
-        {
-            // Invoke all the subscribers
-            foreach (var invocation in onEntityRangedAttackTimed.GetInvocationList())
-            {
-                // Call invokation and update info values
-                invocation.DynamicInvoke(entity, targetLocation, weapon, info);
-                // Wait an amount of time
-                yield return new WaitForSeconds(info.waitTime);
-                // Reset wait time
-                info.waitTime = 0f;
-            }
+            onEntityUseWeapon(entity, weapon);
         }
     }
 
@@ -324,16 +317,7 @@ public class GameEvents : MonoBehaviour
     {
         if (onLockExit != null)
         {
-            Debug.Log("Trig p2");
             onLockExit();
-        }
-    }
-
-    public void TriggerOnEntityEnterTile(Entity entity, Vector3Int location)
-    {
-        if (onEntityEnterTile != null)
-        {
-            onEntityEnterTile(entity, location);
         }
     }
 
@@ -369,35 +353,19 @@ public class GameEvents : MonoBehaviour
         }
     }
 
-    public void TriggerOnEquipMainhand(Entity entity, Weapon weapon)
+    public void TriggerOnEquipWeapon(Entity entity, Weapon weapon, int index)
     {
-        if (onEquipMainhand != null)
+        if (onEquipWeapon != null)
         {
-            onEquipMainhand(entity, weapon);
+            onEquipWeapon(entity, weapon, index);
         }
     }
 
-    public void TriggerOnEquipOffhand(Entity entity, Weapon weapon)
+    public void TriggerOnUnequipWeapon(Entity entity, Weapon weapon, int index)
     {
-        if (onEquipOffhand != null)
+        if (onUnequipWeapon != null)
         {
-            onEquipOffhand(entity, weapon);
-        }
-    }
-
-    public void TriggerOnUnequipMainhand(Entity entity, Weapon weapon)
-    {
-        if (onUnequipMainhand != null)
-        {
-            onUnequipMainhand(entity, weapon);
-        }
-    }
-
-    public void TriggerOnUnequipOffhand(Entity entity, Weapon weapon)
-    {
-        if (onUnequipOffhand != null)
-        {
-            onUnequipOffhand(entity, weapon);
+            onUnequipWeapon(entity, weapon, index);
         }
     }
 
@@ -433,47 +401,11 @@ public class GameEvents : MonoBehaviour
         }
     }
 
-
-
-    // WORK IN PROGRESS??
-
-    public void TriggerOnProjectileSpawn(Projectil projectile)
+    public void TriggerOnOpenShop(Inventory inventory)
     {
-        if (onProjectileSpawn != null)
+        if (onOpenShop != null)
         {
-            onProjectileSpawn(projectile);
+            onOpenShop(inventory);
         }
-    }
-
-    public void TriggerOnProjectileDespawn(Projectil projectile)
-    {
-        if (onProjectileDespawn != null)
-        {
-            onProjectileDespawn(projectile);
-        }
-    }
-
-    public void TriggerOnProjectileMoveStart(Projectil projectile)
-    {
-        // if (onProjectileMoveStart != null)
-        // {
-        //     onProjectileMoveStart(projectile);
-        // }
-    }
-
-    public void TriggerOnProjectileMove(Projectil projectile)
-    {
-        if (onProjectileMove != null)
-        {
-            onProjectileMove(projectile);
-        }
-    }
-
-    public void TriggerOnProjectileMoveStop(Projectil projectile)
-    {
-        // if (onProjectileMoveStart != null)
-        // {
-        //     onProjectileMoveStart(projectile);
-        // }
     }
 }

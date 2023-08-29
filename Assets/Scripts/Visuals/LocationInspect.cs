@@ -52,7 +52,7 @@ public class LocationInspect : MonoBehaviour
         if (location != Vector3Int.back)
         {
             // Debug
-            print("Selected: " + location);
+            // print("Selected: " + location);
 
             // Set tile
             selectionTilemap.SetTile(location, selectionTile);

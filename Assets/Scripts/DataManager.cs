@@ -2,19 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum RoomType { Normal, Shop } // ENCOPERATE THIS LATER!
+public enum RoomType { Normal, Shop, Arena }
 
 public class DataManager : MonoBehaviour
 {
     [Header("Static Data")]
     [SerializeField] private Player defaultPlayer;
+    [SerializeField] private int maxRooms = 7;
+    [SerializeField] private int maxStages = 3;
 
-    // This is the template that should be copied when making a new player
     [Header("Dynamic Data")]
     [SerializeField] private Player player;
     [SerializeField] private int roomNumber = 1;
     [SerializeField] private int stageNumber = 1;
-    [SerializeField] private int currentRoomIndex = 1;
+    [SerializeField] private RoomType currentRoomType;
+    [SerializeField] public bool hasEquipmentPrompted;
 
     public static DataManager instance;
     private void Awake()
@@ -38,7 +40,8 @@ public class DataManager : MonoBehaviour
         // Reset progess
         stageNumber = 1;
         roomNumber = 1;
-        currentRoomIndex = 1;
+        currentRoomType = RoomType.Normal;
+        hasEquipmentPrompted = false;
     }
 
     public Player GetPlayer()
@@ -46,85 +49,58 @@ public class DataManager : MonoBehaviour
         return player;
     }
 
-    public void SetNextRoom(int roomIndex)
+    public void SetNextRoom()
     {
-        // Check what to do
-        switch (roomIndex)
-        {
-            case 0:
-                throw new System.Exception("ROOM INDEX WAS 0");
-            case 1:
-                // load normal room
-                IncrementRoomNumber();
-                break;
-            case -1:
-                // Load shop
-                // Don't change floor, but load Shop room
-                break;
-            default:
-                throw new System.Exception("ROOM INDEX WAS UNKNOWN: " + roomIndex);
-        }
-
-        // Set room index
-        currentRoomIndex = roomIndex;
-    }
-
-    private void IncrementRoomNumber()
-    {
-        // Incrmenet floor
-        roomNumber = Mathf.Min(roomNumber + 1, 5);
-
-        // If you reach floor 5, then change the stage
-        if (roomNumber == 5)
+        // Increment room number
+        roomNumber++;
+        if (roomNumber > maxRooms)
         {
             stageNumber++;
             roomNumber = 1;
         }
+
+        // Shops on Room 3 and 6
+        if (roomNumber == 3 || roomNumber == 6)
+        {
+            currentRoomType = RoomType.Shop;
+        }
+        // Boss on Room 7
+        else if (roomNumber == maxRooms)
+        {
+            currentRoomType = RoomType.Arena;
+        }
+        else
+        {
+            currentRoomType = RoomType.Normal;
+        }
     }
 
-    public int GetRoomIndex()
+    public RoomType GetCurrentRoom()
     {
-        return currentRoomIndex;
-    }
-
-    public int GetRoomNumber()
-    {
-        return roomNumber;
+        return currentRoomType;
     }
 
     public string GetRoomDescription()
     {
-        if (currentRoomIndex == 1)
+        return "Stage " + stageNumber + " - " + roomNumber;
+    }
+
+    public RoomType GetNextRoom()
+    {
+        // Shops on Room 3 and 6
+        int next = roomNumber + 1;
+        if (next == 3 || next == 6)
         {
-            return "Stage " + stageNumber + " - " + roomNumber;
+            return RoomType.Shop;
         }
-
-        return "Stage " + stageNumber + " - " + "Shop";
-    }
-
-    public int GetNextRoomIndex()
-    {
-        // If you are on stage x - 2 or x - 4
-        if (roomNumber == 2 || roomNumber == 4)
+        // Boss on Room 7
+        else if (next == maxRooms)
         {
-            // And you are in a combat room now
-            if (currentRoomIndex == 1)
-            {
-                // Next room should be a shop
-                return -1;
-            }
+            return RoomType.Arena;
         }
-
-        return 1;
-    }
-
-    public void Save()
-    {
-        // TODO
-    }
-
-    public void Load()
-    {
-        // TODO
+        else
+        {
+            return RoomType.Normal;
+        }
     }
 }

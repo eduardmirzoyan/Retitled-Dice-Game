@@ -21,9 +21,8 @@ public class Entity : ScriptableObject
 
     [Header("Variable Stats")]
     public AI AI;
-    public List<Action> innateActions; // What the entity can do
-    public Weapon mainWeapon;
-    public Weapon offWeapon;
+    public List<Action> innateActions;
+    public List<Weapon> weapons = new List<Weapon>(2);
 
     [Header("Dynamic Data")]
     public Vector3Int location; // Location of this entity on the floor
@@ -35,41 +34,26 @@ public class Entity : ScriptableObject
         this.location = spawnLocation;
     }
 
-    public void EquipMainhand(Weapon weapon)
+    public void EquipWeapon(Weapon weapon, int index)
     {
-        var curWeapon = mainWeapon;
-        this.mainWeapon = weapon;
+        // WORK AROUND
 
-        // If already have equipment
-        if (curWeapon != null)
+        // Set new weapon
+        var oldWeapon = this.weapons[index];
+        this.weapons[index] = weapon;
+
+        // Check if we had a weapon before here
+        if (oldWeapon != null)
         {
             // Trigger event
-            GameEvents.instance.TriggerOnUnequipMainhand(this, curWeapon);
+            GameEvents.instance.TriggerOnUnequipWeapon(this, this.weapons[index], index);
         }
 
-        if (weapon != null)
+        // Check if we have a weapon now
+        if (this.weapons[index] != null)
         {
             // Trigger event
-            GameEvents.instance.TriggerOnEquipMainhand(this, weapon);
-        }
-    }
-
-    public void EquipOffhand(Weapon weapon)
-    {
-        var curWeapon = offWeapon;
-        this.offWeapon = weapon;
-
-        // If already have equipment
-        if (curWeapon != null)
-        {
-            // Trigger event
-            GameEvents.instance.TriggerOnUnequipOffhand(this, curWeapon);
-        }
-
-        if (weapon != null)
-        {
-            // Trigger event
-            GameEvents.instance.TriggerOnEquipOffhand(this, weapon);
+            GameEvents.instance.TriggerOnEquipWeapon(this, this.weapons[index], index);
         }
     }
 
@@ -82,12 +66,12 @@ public class Entity : ScriptableObject
             result.AddRange(innateActions);
 
         // Add actions from primay weapon
-        if (mainWeapon != null)
-            result.AddRange(mainWeapon.actions);
+        if (weapons[0] != null)
+            result.AddRange(weapons[0].actions);
 
         // Add actions from secondary weapon
-        if (offWeapon != null)
-            result.AddRange(offWeapon.actions);
+        if (weapons[1] != null)
+            result.AddRange(weapons[1].actions);
 
         return result;
     }
@@ -177,6 +161,25 @@ public class Entity : ScriptableObject
         yield return new WaitForSeconds(GameManager.instance.gameSettings.warpBufferTime);
     }
 
+    public IEnumerator Jump(Vector3Int location)
+    {
+        // Move
+        room.MoveEntityTo(this, location);
+
+        // Trigger event
+        GameEvents.instance.TriggerOnEntityJump(this);
+
+        // Interact with new location
+        Interact();
+
+        // Check for any reactive actions
+        if (this is Player)
+            yield return GameManager.instance.PerformReactiveAction(location);
+
+        // Wait for animation
+        yield return new WaitForSeconds(GameManager.instance.gameSettings.jumpBufferTime);
+    }
+
     protected virtual void Interact()
     {
         // Does nothing for now
@@ -234,6 +237,9 @@ public class Entity : ScriptableObject
 
     public Entity Copy()
     {
+        if (weapons == null || weapons.Count == 0)
+            throw new System.Exception("Entity " + name + " has not had their weapons intialized.");
+
         // Make a copy of itself
         var copy = Instantiate(this);
 
@@ -244,12 +250,13 @@ public class Entity : ScriptableObject
             copy.innateActions[i] = innateActions[i].Copy();
         }
 
-        // Make copy of weapons
-        if (mainWeapon != null)
-            copy.mainWeapon = (Weapon)mainWeapon.Copy();
-
-        if (offWeapon != null)
-            copy.offWeapon = (Weapon)offWeapon.Copy();
+        // Make a copy of all of it's actions
+        for (int i = 0; i < weapons.Count; i++)
+        {
+            // Set each action to a copy of itself
+            if (weapons[i] != null)
+                copy.weapons[i] = (Weapon)weapons[i].Copy();
+        }
 
         // Copy inventory
         if (inventory != null)

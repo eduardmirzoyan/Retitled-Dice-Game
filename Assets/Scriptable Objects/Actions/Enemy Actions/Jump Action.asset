@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f51b4d5fe38db2149b361a885bef4583, type: 3}
+  m_Name: Jump Action
+  m_EditorClassIdentifier: 
+  name: Jump
+  description: ...
+  icon: {fileID: 21300000, guid: 6e907dd96c8ee52458bb92dae0c55308, type: 3}
+  background: {fileID: 21300000, guid: d3c559b2e7ed77e489dc11e7ac02a26b, type: 3}
+  color: {r: 0.3647059, g: 0.7960785, b: 0.22352943, a: 1}
+  actionSpeed: 0
+  actionType: 0
+  die: {fileID: 11400000, guid: dbb9355000ced3842846106e2dca7d3b, type: 2}
+  weapon: {fileID: 0}
+  radius: 7

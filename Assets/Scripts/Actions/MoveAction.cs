@@ -12,19 +12,14 @@ public class MoveAction : Action
         // Scale distanc based on die.value
         int range = die.value;
 
-        // Check in 4 cardinal direction based on die value
-
         // North
         Vector3Int location = startLocation;
         int count = range;
         while (room.IsValidLocation(location + Vector3Int.up) && count > 0)
         {
             location += Vector3Int.up;
-            count--;
-        }
-        if (location != startLocation)
-        {
             result.Add(location);
+            count--;
         }
 
         // South
@@ -33,11 +28,8 @@ public class MoveAction : Action
         while (room.IsValidLocation(location + Vector3Int.down) && count > 0)
         {
             location += Vector3Int.down;
-            count--;
-        }
-        if (location != startLocation)
-        {
             result.Add(location);
+            count--;
         }
 
         // East
@@ -46,11 +38,8 @@ public class MoveAction : Action
         while (room.IsValidLocation(location + Vector3Int.right) && count > 0)
         {
             location += Vector3Int.right;
-            count--;
-        }
-        if (location != startLocation)
-        {
             result.Add(location);
+            count--;
         }
 
         // West
@@ -59,11 +48,8 @@ public class MoveAction : Action
         while (room.IsValidLocation(location + Vector3Int.left) && count > 0)
         {
             location += Vector3Int.left;
-            count--;
-        }
-        if (location != startLocation)
-        {
             result.Add(location);
+            count--;
         }
 
         return result;
@@ -71,7 +57,7 @@ public class MoveAction : Action
 
     public override List<Vector3Int> GetThreatenedLocations(Entity entity, Vector3Int targetLocation)
     {
-        return new List<Vector3Int> { targetLocation };
+        return new List<Vector3Int>() { targetLocation };
     }
 
 
@@ -93,7 +79,5 @@ public class MoveAction : Action
 
         // Trigger stop move event
         GameEvents.instance.TriggerOnEntityStopMove(entity);
-
-        // Finnish!
     }
 }

@@ -54,7 +54,7 @@ public class ActionIndicator : MonoBehaviour
             // Update entry
             threatTable[location] = count + 1;
         }
-        else if (action.actionType != ActionType.Movement) // Only Show non-movment actions
+        else // if (action.actionType != ActionType.Movement) // Only Show non-movment actions
         {
             // Highlight tile
             intentionTilemap.SetTile(location, highlightedTile);

@@ -28,6 +28,7 @@ public class EntityModel : MonoBehaviour
     [Header("Data")]
     [SerializeField] private Entity entity;
     [SerializeField] private bool isFacingRight = true;
+    [SerializeField] private float jumpHeight = 1f;
 
     private RoomUI roomUI;
     private Coroutine coroutine;
@@ -35,29 +36,6 @@ public class EntityModel : MonoBehaviour
     private void Awake()
     {
         properLayerSort = GetComponentInChildren<ProperLayerSort>();
-    }
-
-    private void Update()
-    {
-        // Testing
-        if (entity is Player)
-        {
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                //mainWeaponAnimator.Play("Draw");
-                GameEvents.instance.TriggerOnEntityDrawWeapon(entity, Vector3.right, entity.offWeapon);
-            }
-            else if (Input.GetKeyDown(KeyCode.S))
-            {
-                //mainWeaponAnimator.Play("Attack");
-                GameEvents.instance.TriggerOnEntityUseWeapon(entity, entity.offWeapon, Vector3Int.right);
-            }
-            else if (Input.GetKeyDown(KeyCode.D))
-            {
-                //mainWeaponAnimator.Play("Sheathe");
-                GameEvents.instance.TriggerOnEntitySheatheWeapon(entity, entity.offWeapon);
-            }
-        }
     }
 
     public void Initialize(Entity entity, RoomUI roomUI)
@@ -73,18 +51,18 @@ public class EntityModel : MonoBehaviour
         properLayerSort.UpdateLayer();
 
         // Spawn weapon models
-        SpawnMainhand(entity, entity.mainWeapon);
-        SpawnOffhand(entity, entity.offWeapon);
+        SpawnWeapon(entity, entity.weapons[0], 0);
+        SpawnWeapon(entity, entity.weapons[1], 1);
 
         // Sub to events
-        GameEvents.instance.onEquipMainhand += SpawnMainhand;
-        GameEvents.instance.onEquipOffhand += SpawnOffhand;
+        GameEvents.instance.onEquipWeapon += SpawnWeapon;
 
         GameEvents.instance.onEntityMoveStart += StartMove;
         GameEvents.instance.onEntityMove += MoveEntity;
         GameEvents.instance.onEntityMoveStop += StopMove;
 
         GameEvents.instance.onEntityWarp += WarpEntity;
+        GameEvents.instance.onEntityJump += JumpEntity;
         GameEvents.instance.onEntityTakeDamage += TakeDamage;
         GameEvents.instance.onEntityDrawWeapon += FaceDirection;
         GameEvents.instance.onEntityDespawn += Despawn;
@@ -96,8 +74,7 @@ public class EntityModel : MonoBehaviour
     private void OnDestroy()
     {
         // Unsub to events
-        GameEvents.instance.onEquipMainhand -= SpawnMainhand;
-        GameEvents.instance.onEquipOffhand -= SpawnOffhand;
+        GameEvents.instance.onEquipWeapon -= SpawnWeapon;
 
         GameEvents.instance.onEntityMoveStart -= StartMove;
         GameEvents.instance.onEntityMove -= MoveEntity;
@@ -121,21 +98,21 @@ public class EntityModel : MonoBehaviour
         }
     }
 
-    private void SpawnMainhand(Entity entity, Weapon weapon)
+    private void SpawnWeapon(Entity entity, Weapon weapon, int index)
     {
         if (this.entity == entity && weapon != null)
         {
-            // Create and Initalize weapon
-            Instantiate(weapon.weaponPrefab, mainWeaponHolder).GetComponent<WeaponModel>().Initialize(weapon);
-        }
-    }
+            if (index == 0)
+            {
+                // Create and Initalize weapon
+                Instantiate(weapon.weaponPrefab, mainWeaponHolder).GetComponent<WeaponModel>().Initialize(weapon);
+            }
+            else if (index == 1)
+            {
+                // Create and Initalize weapon
+                Instantiate(weapon.weaponPrefab, offWeaponHolder).GetComponent<WeaponModel>().Initialize(weapon);
+            }
 
-    private void SpawnOffhand(Entity entity, Weapon weapon)
-    {
-        if (this.entity == entity && weapon != null)
-        {
-            // Create and Initalize weapon
-            Instantiate(weapon.weaponPrefab, offWeaponHolder).GetComponent<WeaponModel>().Initialize(weapon);
         }
     }
 
@@ -193,6 +170,19 @@ public class EntityModel : MonoBehaviour
         }
     }
 
+    private void JumpEntity(Entity entity)
+    {
+        if (this.entity == entity)
+        {
+            Vector3 currentPosition = transform.position;
+            Vector3 newPosition = roomUI.GetLocationCenter(entity.location);
+
+            // Start routine
+            if (coroutine != null) StopCoroutine(coroutine);
+            coroutine = StartCoroutine(Jump(currentPosition, newPosition));
+        }
+    }
+
     private IEnumerator Move(Vector3 startPoint, Vector3 endPoint)
     {
         // Start timer
@@ -235,6 +225,33 @@ public class EntityModel : MonoBehaviour
         transform.position = newLocation;
     }
 
+    private IEnumerator Jump(Vector3 startPoint, Vector3 endPoint)
+    {
+        // Start timer
+        Vector3 position;
+        float elapsed = 0;
+        float duration = GameManager.instance.gameSettings.jumpBufferTime;
+
+        Vector3 control = (endPoint + startPoint) / 2 + Vector3.up * jumpHeight;
+        while (elapsed < duration)
+        {
+            // Projectile motion
+            float ratio = elapsed / duration;
+            Vector3 ac = Vector3.Lerp(startPoint, control, ratio);
+            Vector3 cb = Vector3.Lerp(control, endPoint, ratio);
+
+            position = Vector3.Lerp(ac, cb, ratio);
+            transform.position = position;
+
+            // Increment time
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        // Set to final destination
+        transform.position = endPoint;
+    }
+
     private void FlipModel(Vector3 direction)
     {
         // If you are moving right and facing left, then flip
@@ -256,9 +273,6 @@ public class EntityModel : MonoBehaviour
         // If this entity took damage
         if (this.entity == entity && damage > 0)
         {
-            // Play animation
-            // modelAnimator.Play("Hurt");
-
             // Display damage flash
             if (GameManager.instance.gameSettings.useHitFlash)
                 damageFlash.Flash();

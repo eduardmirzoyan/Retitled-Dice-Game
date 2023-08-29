@@ -23,7 +23,7 @@ public class RoomExitUI : MonoBehaviour
         GameEvents.instance.onUnlockExit -= Unlock;
     }
 
-    public void Lock()
+    private void Lock()
     {
         // Remove icon while locked
         iconRenderer.sprite = null;
@@ -34,16 +34,13 @@ public class RoomExitUI : MonoBehaviour
 
     private void Unlock()
     {
-        // Get next room index
-        var nextRoomIndex = DataManager.instance.GetNextRoomIndex();
-
         // Set sprite based on what the exit is to
-        switch (nextRoomIndex)
+        switch (DataManager.instance.GetNextRoom())
         {
-            case 1:
+            case RoomType.Normal:
                 iconRenderer.sprite = exitIcons[0];
                 break;
-            case -1:
+            case RoomType.Shop:
                 iconRenderer.sprite = exitIcons[1];
                 break;
         }

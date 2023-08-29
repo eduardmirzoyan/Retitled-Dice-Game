@@ -18,14 +18,12 @@ public class MeleeAction : Action
         switch (die.value)
         {
             case 1:
-            case 2:
                 {
                     // Just one target
                     targets.Add(targetLocation);
                 }
                 break;
-            case 3:
-            case 4:
+            case 2:
                 {
                     Vector3Int left = Vector3Int.RoundToInt(Vector3.Cross(forward, Vector3Int.forward));
                     Vector3Int right = Vector3Int.RoundToInt(Vector3.Cross(forward, Vector3Int.back));
@@ -36,8 +34,7 @@ public class MeleeAction : Action
                     targets.Add(targetLocation + right);
                 }
                 break;
-            case 5:
-            case 6:
+            case 3:
                 {
                     Vector3Int left = Vector3Int.RoundToInt(Vector3.Cross(forward, Vector3Int.forward));
                     Vector3Int right = Vector3Int.RoundToInt(Vector3.Cross(forward, Vector3Int.back));
@@ -52,7 +49,7 @@ public class MeleeAction : Action
                     targets.Add(targetLocation + right + rightDown);
                 }
                 break;
-            case 7:
+            case 4:
                 {
                     Vector3Int left = Vector3Int.RoundToInt(Vector3.Cross(forward, Vector3Int.forward));
                     Vector3Int right = Vector3Int.RoundToInt(Vector3.Cross(forward, Vector3Int.back));
@@ -80,10 +77,6 @@ public class MeleeAction : Action
 
     public override IEnumerator Perform(Entity entity, Vector3Int targetLocation, List<Vector3Int> threatenedLocations, Room room)
     {
-        // Calculate direction
-        Vector3Int direction = targetLocation - entity.location;
-        direction.Clamp(-Vector3Int.one, Vector3Int.one);
-
         foreach (var location in threatenedLocations)
         {
             var target = room.GetEntityAtLocation(location);
@@ -94,7 +87,7 @@ public class MeleeAction : Action
         }
 
         // Trigger event
-        GameEvents.instance.TriggerOnEntityUseWeapon(entity, weapon, direction);
+        GameEvents.instance.TriggerOnEntityUseWeapon(entity, weapon);
 
         // Wait for animation
         yield return new WaitForSeconds(GameManager.instance.gameSettings.weaponMeleeBufferTime);
