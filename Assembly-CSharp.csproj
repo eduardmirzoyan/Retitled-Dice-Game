@@ -56,10 +56,12 @@
      <Compile Include="Assets\Scripts\AI\MeleeAI.cs" />
      <Compile Include="Assets\Scripts\Actions\JumpAction.cs" />
      <Compile Include="Assets\Scripts\Visuals\UI\TooltipTriggerUI.cs" />
+     <Compile Include="Assets\Scripts\Visuals\UI\EquipmentSlotUI.cs" />
      <Compile Include="Assets\Scripts\Visuals\ProperLayerSort.cs" />
      <Compile Include="Assets\Scripts\World\ItemGenerator.cs" />
      <Compile Include="Assets\Scripts\Visuals\ActionPreview.cs" />
      <Compile Include="Assets\Scripts\Visuals\UI\TextTooltipUI.cs" />
+     <Compile Include="Assets\Scripts\Visuals\UI\ActionsHandlerUI.cs" />
      <Compile Include="Assets\Scripts\Visuals\UI\HealthbarUI.cs" />
      <Compile Include="Assets\Scripts\Visuals\UI\ShopUI.cs" />
      <Compile Include="Assets\Scripts\Actions\RerollAction.cs" />
@@ -94,11 +96,14 @@
      <Compile Include="Assets\Scripts\Actions\Boss\QuakeAction.cs" />
      <Compile Include="Assets\Scripts\Visuals\UI\ItemSlotUI.cs" />
      <Compile Include="Assets\Scripts\Entity.cs" />
+     <Compile Include="Assets\Scripts\Visuals\UI\InventoryHandlerUI.cs" />
      <Compile Include="Assets\Scripts\Actions\Action.cs" />
      <Compile Include="Assets\Scripts\Main Menu\PauseManager.cs" />
      <Compile Include="Assets\Scripts\Actions\ThrustAction.cs" />
      <Compile Include="Assets\Scripts\Items\Item.cs" />
      <Compile Include="Assets\Scripts\AI\IdleAI.cs" />
+     <Compile Include="Assets\Scripts\Visuals\UI\EquipmentHandlerUI.cs" />
+     <Compile Include="Assets\Scripts\Visuals\UI\ShopSlotUI.cs" />
      <Compile Include="Assets\Scripts\Visuals\UI\GameWinUI.cs" />
      <Compile Include="Assets\Scripts\Pathfinder.cs" />
      <Compile Include="Assets\Scripts\Game Feel\DeathCloud.cs" />
@@ -106,6 +111,8 @@
      <Compile Include="Assets\Scripts\Visuals\UI\EntityInspectUI.cs" />
      <Compile Include="Assets\Scripts\Actions\Boss\RoarAction.cs" />
      <Compile Include="Assets\Scripts\Visuals\UI\GameLoseUI.cs" />
+     <Compile Include="Assets\Scripts\Visuals\UI\EquipmentAlertUI.cs" />
+     <Compile Include="Assets\Scripts\Visuals\UI\InventorySlotUI.cs" />
      <Compile Include="Assets\Scripts\CameraManager.cs" />
      <Compile Include="Assets\Scripts\Visuals\UI\DieUI.cs" />
      <Compile Include="Assets\Scripts\Visuals\UI\CutoutMaskUI.cs" />
@@ -115,13 +122,9 @@
      <Compile Include="Assets\Scripts\Visuals\FloatingText.cs" />
      <Compile Include="Assets\Scripts\AI\AI.cs" />
      <Compile Include="Assets\Scripts\Actions\ShopAction.cs" />
-     <Compile Include="Assets\Scripts\Visuals\UI\EquipmentSlotUI.cs" />
-     <Compile Include="Assets\Scripts\Visuals\UI\EquipmentAlertUI.cs" />
-     <Compile Include="Assets\Scripts\Visuals\UI\InventorySlotUI.cs" />
-     <Compile Include="Assets\Scripts\Visuals\UI\ShopSlotUI.cs" />
-     <Compile Include="Assets\Scripts\Visuals\UI\ActionsHandlerUI.cs" />
-     <Compile Include="Assets\Scripts\Visuals\UI\InventoryHandlerUI.cs" />
-     <Compile Include="Assets\Scripts\Visuals\UI\EquipmentHandlerUI.cs" />
+     <Compile Include="Assets\Scripts\Game Feel\DottedLine.cs" />
+     <Compile Include="Assets\Scripts\Visuals\ActionPathRenderer.cs" />
+     <Compile Include="Assets\Scripts\Actions\PiercingRangedAction.cs" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
@@ -885,6 +888,39 @@
     </Reference>
     <Reference Include="Unity.VisualScripting.State">
         <HintPath>C:\Users\eduar\OneDrive\Desktop\Unity Projects\Retitled-Dice-Game\Library\ScriptAssemblies\Unity.VisualScripting.State.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.RenderPipelines.Universal.Shaders">
+        <HintPath>C:\Users\eduar\OneDrive\Desktop\Unity Projects\Retitled-Dice-Game\Library\ScriptAssemblies\Unity.RenderPipelines.Universal.Shaders.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.RenderPipelines.Core.Runtime">
+        <HintPath>C:\Users\eduar\OneDrive\Desktop\Unity Projects\Retitled-Dice-Game\Library\ScriptAssemblies\Unity.RenderPipelines.Core.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Searcher.Editor">
+        <HintPath>C:\Users\eduar\OneDrive\Desktop\Unity Projects\Retitled-Dice-Game\Library\ScriptAssemblies\Unity.Searcher.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="PPv2URPConverters">
+        <HintPath>C:\Users\eduar\OneDrive\Desktop\Unity Projects\Retitled-Dice-Game\Library\ScriptAssemblies\PPv2URPConverters.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.RenderPipelines.Universal.Editor">
+        <HintPath>C:\Users\eduar\OneDrive\Desktop\Unity Projects\Retitled-Dice-Game\Library\ScriptAssemblies\Unity.RenderPipelines.Universal.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.RenderPipeline.Universal.ShaderLibrary">
+        <HintPath>C:\Users\eduar\OneDrive\Desktop\Unity Projects\Retitled-Dice-Game\Library\ScriptAssemblies\Unity.RenderPipeline.Universal.ShaderLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.RenderPipelines.Core.Editor">
+        <HintPath>C:\Users\eduar\OneDrive\Desktop\Unity Projects\Retitled-Dice-Game\Library\ScriptAssemblies\Unity.RenderPipelines.Core.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.RenderPipelines.Core.ShaderLibrary">
+        <HintPath>C:\Users\eduar\OneDrive\Desktop\Unity Projects\Retitled-Dice-Game\Library\ScriptAssemblies\Unity.RenderPipelines.Core.ShaderLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary">
+        <HintPath>C:\Users\eduar\OneDrive\Desktop\Unity Projects\Retitled-Dice-Game\Library\ScriptAssemblies\Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.ShaderGraph.Editor">
+        <HintPath>C:\Users\eduar\OneDrive\Desktop\Unity Projects\Retitled-Dice-Game\Library\ScriptAssemblies\Unity.ShaderGraph.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.RenderPipelines.Universal.Runtime">
+        <HintPath>C:\Users\eduar\OneDrive\Desktop\Unity Projects\Retitled-Dice-Game\Library\ScriptAssemblies\Unity.RenderPipelines.Universal.Runtime.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

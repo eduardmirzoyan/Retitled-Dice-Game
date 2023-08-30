@@ -15,6 +15,7 @@ public abstract class Action : ScriptableObject
     public Color color;
     public ActionSpeed actionSpeed;
     public ActionType actionType;
+    public GameObject pathPrefab;
 
     [Header("Dynamic Data")]
     public Die die;

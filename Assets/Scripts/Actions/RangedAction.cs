@@ -21,7 +21,7 @@ public class RangedAction : Action
 
     public override List<Vector3Int> GetThreatenedLocations(Entity entity, Vector3Int targetLocation)
     {
-        return entity.room.GetAllValidLocationsAlongPath(entity.location, targetLocation, true);
+        return new List<Vector3Int>() { targetLocation };  //entity.room.GetAllValidLocationsAlongPath(entity.location, targetLocation, true);
     }
 
     public override IEnumerator Perform(Entity entity, Vector3Int targetLocation, List<Vector3Int> threatenedLocations, Room room)

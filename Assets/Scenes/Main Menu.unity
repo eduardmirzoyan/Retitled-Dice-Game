@@ -4251,6 +4251,7 @@ MonoBehaviour:
   roomNumber: 1
   stageNumber: 1
   currentRoomType: 0
+  hasEquipmentPrompted: 0
 --- !u!1 &1382036266
 GameObject:
   m_ObjectHideFlags: 0

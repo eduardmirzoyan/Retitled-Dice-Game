@@ -11,13 +11,17 @@ public class JumpAction : Action
     {
         List<Vector3Int> targets = new List<Vector3Int>();
 
-        for (int i = startLocation.x - radius; i <= startLocation.x + radius; i++)
+        foreach (var direction in new Vector3Int[] { Vector3Int.up, Vector3Int.down, Vector3Int.left, Vector3Int.right })
         {
-            for (int j = startLocation.y - radius; j <= startLocation.y + radius; j++)
+            var location = startLocation + direction;
+            for (int i = 0; i < die.value; i++)
             {
-                var location = new Vector3Int(i, j, 0);
                 if (room.IsValidLocation(location))
+                {
                     targets.Add(location);
+                }
+
+                location += direction;
             }
         }
 

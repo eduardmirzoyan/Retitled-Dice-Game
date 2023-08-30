@@ -17,6 +17,6 @@ MonoBehaviour:
   sprite: {fileID: 86963966, guid: 20597968d5281954482d5d148d07fa12, type: 3}
   value: 8
   actions:
-  - {fileID: 11400000, guid: 870a0caeb466a7e45b2e3d400b6b2180, type: 2}
+  - {fileID: 11400000, guid: 4b644115b5b04554f92e1b23fad0387a, type: 2}
   attackParticlePrefab: {fileID: 0}
   weaponPrefab: {fileID: 9140997069136386509, guid: 8525dab3eaf904b468a12364fa44d58a, type: 3}

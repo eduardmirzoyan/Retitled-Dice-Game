@@ -15,6 +15,7 @@ public class ActionIndicator : MonoBehaviour
     [SerializeField] private Tile reactiveIconTile;
     [SerializeField] private Tile delayedIconTile;
     [SerializeField] private AnimatedTile reactAnimatedTile;
+    [SerializeField] private GameObject lineObject;
 
     [Header("Settings")]
     [SerializeField] private float alpha = 0.25f;
@@ -30,6 +31,7 @@ public class ActionIndicator : MonoBehaviour
     {
         GameEvents.instance.onActionSelect += ShowOptions;
         GameEvents.instance.onLocationSelect += FocusTile;
+        GameEvents.instance.onLocationSelect += DrawPath;
         GameEvents.instance.onActionConfirm += HideOptions;
         GameEvents.instance.onActionThreatenLocation += ThreatenTile;
         GameEvents.instance.onActionUnthreatenLocation += UnthreatenTile;
@@ -40,6 +42,7 @@ public class ActionIndicator : MonoBehaviour
     {
         GameEvents.instance.onActionSelect -= ShowOptions;
         GameEvents.instance.onLocationSelect -= FocusTile;
+        GameEvents.instance.onLocationSelect -= DrawPath;
         GameEvents.instance.onActionConfirm -= HideOptions;
         GameEvents.instance.onActionThreatenLocation -= ThreatenTile;
         GameEvents.instance.onActionUnthreatenLocation -= UnthreatenTile;
@@ -54,15 +57,15 @@ public class ActionIndicator : MonoBehaviour
             // Update entry
             threatTable[location] = count + 1;
         }
-        else // if (action.actionType != ActionType.Movement) // Only Show non-movment actions
+        else if (action.actionType != ActionType.Movement) // Only Show non-movment actions
         {
             // Highlight tile
             intentionTilemap.SetTile(location, highlightedTile);
-            intentionTilemap.SetColor(location, action.color);
+            intentionTilemap.SetColor(location, Color.yellow);
 
             // Set icon
-            intentionIconTilemap.SetTile(location, reactiveIconTile);
-            intentionIconTilemap.SetColor(location, action.color);
+            // intentionIconTilemap.SetTile(location, reactiveIconTile);
+            // intentionIconTilemap.SetColor(location, action.color);
 
             // Add to dict
             threatTable[location] = 1;
@@ -142,7 +145,16 @@ public class ActionIndicator : MonoBehaviour
         previewTilemap.ClearAllTiles();
     }
 
-    private void FocusTile(Action action, Vector3Int location)
+    private void DrawPath(Entity entity, Action action, Vector3Int location)
+    {
+        if (location != Vector3Int.zero && action.pathPrefab != null)
+        {
+            var offset = new Vector3(0.5f, 0.5f, -1);
+            Instantiate(action.pathPrefab, transform).GetComponent<ActionPathRenderer>().Initialize(entity, action, location, entity.location + offset, location + offset, action.color);
+        }
+    }
+
+    private void FocusTile(Entity entity, Action action, Vector3Int location)
     {
         foreach (Vector3Int cellPosition in previewTilemap.cellBounds.allPositionsWithin)
         {

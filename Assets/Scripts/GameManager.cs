@@ -391,7 +391,7 @@ public class GameManager : MonoBehaviour
         this.selectedLocation = location;
 
         // Trigger event
-        GameEvents.instance.TriggerOnLocationSelect(selectedAction, location);
+        GameEvents.instance.TriggerOnLocationSelect(selectedEntity, selectedAction, location);
     }
 
     public void ConfirmAction()
@@ -754,6 +754,9 @@ public class GameManager : MonoBehaviour
         // Get entity at the location
         Entity entity = room.GetEntityAtLocation(location);
 
+        // Trigger event
+        GameEvents.instance.TriggerOnThreatsInspect(null);
+
         if (entity != null)
         {
             // Loop through each pair
@@ -766,6 +769,8 @@ public class GameManager : MonoBehaviour
 
                     // Trigger event
                     GameEvents.instance.TriggerOnThreatsInspect(targets);
+
+                    break;
                 }
             }
 
@@ -779,13 +784,10 @@ public class GameManager : MonoBehaviour
 
                     // Trigger event
                     GameEvents.instance.TriggerOnThreatsInspect(targets);
+
+                    break;
                 }
             }
-        }
-        else
-        {
-            // Trigger event
-            GameEvents.instance.TriggerOnThreatsInspect(null);
         }
 
         // Trigger event
