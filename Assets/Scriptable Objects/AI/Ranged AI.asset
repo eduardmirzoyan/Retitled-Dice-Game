@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Ranged AI
   m_EditorClassIdentifier: 
   alignment: 2
-  targetDistance: 6
+  targetDistance: 5

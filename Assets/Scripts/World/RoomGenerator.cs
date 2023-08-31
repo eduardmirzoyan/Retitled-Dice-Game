@@ -16,6 +16,8 @@ public class RoomGenerator : ScriptableObject
 
     [Header("Shop Data")]
     [SerializeField] private Vector2Int arenaSize = new Vector2Int(10, 10);
+    [SerializeField] private int arenaWallSpawnChance = 0;
+    [SerializeField] private int arenaChasamSpawnChance = 5;
 
     public Room GenerateRoom()
     {
@@ -45,7 +47,7 @@ public class RoomGenerator : ScriptableObject
         var room = ScriptableObject.CreateInstance<Room>();
 
         // Initialize with no extra walls or chasams
-        room.Initialize(arenaSize.x, arenaSize.y, roomPadding + (roomSize.x - arenaSize.x), 0, 0);
+        room.Initialize(arenaSize.x, arenaSize.y, roomPadding + (roomSize.x - arenaSize.x), arenaWallSpawnChance, arenaChasamSpawnChance);
 
         return room;
     }

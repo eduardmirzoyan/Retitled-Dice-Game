@@ -9,7 +9,8 @@ public abstract class Action : ScriptableObject
 {
     [Header("Static Data")]
     public new string name;
-    public string description;
+    public string briefDescription;
+    [TextArea(5, 2)] public string fullDescription;
     public Sprite icon;
     public Sprite background;
     public Color color;

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 // Alive from OnLocationSelect and onwards
@@ -34,7 +35,13 @@ public class ActionPathRenderer : MonoBehaviour
 
         lineRenderer.endColor = color;
         lineRenderer.positionCount = numPoints;
+
+        if (start.x == end.x)
+        {
+            arcHeight = 0f;
+        }
         Vector3 middle = (end + start) / 2 + Vector3.up * arcHeight;
+
         for (int i = 0; i < numPoints; i++)
         {
             float ratio = (float)i / numPoints;
@@ -50,6 +57,7 @@ public class ActionPathRenderer : MonoBehaviour
         // Sub
         GameEvents.instance.onLocationSelect += UnintializeOnLocationChange;
         GameEvents.instance.onActionPerformEnd += UnintializeOnActionEnd;
+        GameEvents.instance.onActionUnthreatenLocation += UnintializeOnUnthreaten;
         GameEvents.instance.onTurnEnd += UnfocusOnTurnEnd;
         GameEvents.instance.onTurnStart += FocusOnTurnStart;
     }
@@ -59,9 +67,18 @@ public class ActionPathRenderer : MonoBehaviour
         // Unsub
         GameEvents.instance.onLocationSelect -= UnintializeOnLocationChange;
         GameEvents.instance.onActionPerformEnd -= UnintializeOnActionEnd;
+        GameEvents.instance.onActionUnthreatenLocation -= UnintializeOnUnthreaten;
         GameEvents.instance.onTurnEnd -= UnfocusOnTurnEnd;
         GameEvents.instance.onTurnStart -= FocusOnTurnStart;
         GameEvents.instance.onEntityInspect -= FocusOnInspect;
+    }
+
+    private void UnintializeOnUnthreaten(Action action, Vector3Int location)
+    {
+        if (this.action == action)
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void UnintializeOnLocationChange(Entity entity, Action action, Vector3Int location)
@@ -108,15 +125,11 @@ public class ActionPathRenderer : MonoBehaviour
 
     private void Focus()
     {
-        // lineRenderer.material = defaultMaterial;
-
         isFocused = true;
     }
 
     private void Unfocus()
     {
-        // lineRenderer.material = unfocusedMaterial;
-
         isFocused = false;
     }
 

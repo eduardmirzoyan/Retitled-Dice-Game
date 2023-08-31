@@ -13,6 +13,8 @@ public class RoomExitUI : MonoBehaviour
 
     private void Start()
     {
+        Unlock();
+
         GameEvents.instance.onLockExit += Lock;
         GameEvents.instance.onUnlockExit += Unlock;
     }
@@ -43,6 +45,11 @@ public class RoomExitUI : MonoBehaviour
             case RoomType.Shop:
                 iconRenderer.sprite = exitIcons[1];
                 break;
+            case RoomType.Arena:
+                iconRenderer.sprite = exitIcons[2];
+                break;
+            default:
+                throw new System.Exception("UNHANDLED ROOM TYPE!");
         }
 
         // Unlock door

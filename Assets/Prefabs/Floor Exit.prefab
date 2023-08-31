@@ -238,10 +238,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 908043781088672006}
   iconRenderer: {fileID: 5943463419857017087}
-  roomExit: {fileID: 0}
   exitIcons:
   - {fileID: 21300000, guid: baacd4f4b22ace34d8c7d1c46e357a4d, type: 3}
   - {fileID: 21300000, guid: 3be5eefb9fa439b4d8f1e121e91eaf64, type: 3}
+  - {fileID: 21300000, guid: b7f8a6022d1d8804aa02896fcd32eccf, type: 3}
 --- !u!1 &6383842147948068785
 GameObject:
   m_ObjectHideFlags: 0

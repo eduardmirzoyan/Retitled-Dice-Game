@@ -36,7 +36,7 @@ public class RangedAI : AI
             moveLocation = entity.location;
 
         // Choose to attack the tile that is closest to target (searching from new location AFTER moving)
-        var rangedLocation = GetClosestLocationToTarget(entity.location, rangedAction.GetValidLocations(moveLocation, room), targetEntity.location);
+        var rangedLocation = GetLocationInDirectionOfTarget(entity.location, rangedAction.GetValidLocations(moveLocation, room), targetEntity.location);
 
         // Add pair
         actionPairSquence.Add((rangedAction, rangedLocation));
@@ -71,8 +71,8 @@ public class RangedAI : AI
         if (result != Vector3Int.back)
             return result;
 
-        closest = Mathf.Abs(Vector3Int.Distance(currentLocation, targetLocation) - targetDistance);
         // Else just give up on line of sight and find optimal distance
+        closest = Mathf.Abs(Vector3Int.Distance(currentLocation, targetLocation) - targetDistance);
         foreach (var location in locations)
         {
             var difference = Mathf.Abs(Vector3Int.Distance(location, targetLocation) - targetDistance);
@@ -94,6 +94,26 @@ public class RangedAI : AI
         foreach (var location in locations)
         {
             var distance = Vector3Int.Distance(location, targetLocation);
+            if (distance < closest)
+            {
+                closest = distance;
+                result = location;
+            }
+        }
+
+        return result;
+    }
+
+    private Vector3Int GetLocationInDirectionOfTarget(Vector3Int currentLocation, List<Vector3Int> locations, Vector3Int targetLocation)
+    {
+        Vector3Int result = Vector3Int.back;
+        Vector3Int targetDirection = targetLocation - currentLocation;
+
+        float closest = float.MaxValue;
+        foreach (var location in locations)
+        {
+            Vector3Int direction = location - currentLocation;
+            var distance = Vector3Int.Distance(targetDirection, direction);
             if (distance < closest)
             {
                 closest = distance;

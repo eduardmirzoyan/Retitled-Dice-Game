@@ -20,7 +20,7 @@ public class InventorySlotUI : ItemSlotUI
             itemUI.Initialize(inventory[index], this);
 
             // Update afterimage
-            afterImageIcon.sprite = itemUI.GetItem().sprite;
+            afterImageIcon.sprite = inventory[index].sprite;
             afterImageIcon.enabled = true;
 
             // Save item
@@ -29,6 +29,26 @@ public class InventorySlotUI : ItemSlotUI
 
         // Update name
         gameObject.name = "Inventory Slot " + index;
+    }
+
+    public override void OnPointerEnter(PointerEventData eventData)
+    {
+        if (preventInsert) return;
+
+        if (eventData.pointerDrag != null && itemUI == null && eventData.pointerDrag.TryGetComponent(out ItemUI newItemUI))
+        {
+            highlightImage.color = highlightColor;
+        }
+    }
+
+    public override void OnPointerExit(PointerEventData eventData)
+    {
+        if (preventInsert) return;
+
+        if (eventData.pointerDrag != null && itemUI == null && eventData.pointerDrag.TryGetComponent(out ItemUI newItemUI))
+        {
+            highlightImage.color = defaultColor;
+        }
     }
 
     public override void OnDrop(PointerEventData eventData)
@@ -108,4 +128,6 @@ public class InventorySlotUI : ItemSlotUI
 
         this.itemUI = itemUI;
     }
+
+
 }

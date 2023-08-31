@@ -199,7 +199,7 @@ public class Entity : ScriptableObject
         gold += amount;
 
         // Trigger event
-        GameEvents.instance.TriggerOnGainGold(this, amount);
+        GameEvents.instance.TriggerOnGoldChange(this, amount);
     }
 
     public void AddExperience(int amount)

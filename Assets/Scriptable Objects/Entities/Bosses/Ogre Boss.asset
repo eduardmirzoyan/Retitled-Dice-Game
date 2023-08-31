@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Ogre Boss
   m_EditorClassIdentifier: 
   name: Ogre
-  maxHealth: 3
-  currentHealth: 1
+  maxHealth: 6
+  currentHealth: 6
   level: 1
   experience: 5
   gold: 0
@@ -24,7 +24,7 @@ MonoBehaviour:
   hitEffectPrefab: {fileID: 7270536486772163001, guid: 335c93a61b62ca84e9f26440c7f3ed0e, type: 3}
   AI: {fileID: 11400000, guid: c347e40babffa5546849919e3ceb3b8b, type: 2}
   innateActions:
-  - {fileID: 11400000, guid: 5e44504d2bb4578418b8addc4ee14f43, type: 2}
+  - {fileID: 11400000, guid: 89e65601c5ed891488123e5ac56b6f73, type: 2}
   weapons:
   - {fileID: 11400000, guid: 2885f6d5977fa394298af86dca1e5922, type: 2}
   - {fileID: 0}

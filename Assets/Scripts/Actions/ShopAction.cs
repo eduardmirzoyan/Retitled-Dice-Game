@@ -56,7 +56,7 @@ public class ShopAction : Action
         if (targetLocation == room.player.location)
         {
             // Open shop menu with inventory
-            GameEvents.instance.TriggerOnOpenShop(entity.inventory);
+            GameEvents.instance.TriggerOnOpenShop(entity, entity.inventory);
         }
 
         // Done!

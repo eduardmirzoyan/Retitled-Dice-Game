@@ -82,7 +82,7 @@ public class ActionsHandlerUI : MonoBehaviour
             // Instaniate as child
             var actionUI = Instantiate(actionUIPrefab, gridLayoutGroup.transform).GetComponent<ActionUI>();
             // Initialize
-            actionUI.Initialize(action, ActionMode.Interact);
+            actionUI.Initialize(action);
             // Save
             actionUIs.Add(actionUI);
         }

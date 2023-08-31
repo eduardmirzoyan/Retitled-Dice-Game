@@ -2,22 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.XR;
 
 public class ShopUI : MonoBehaviour
 {
-    [Header("Components")]
+    [Header("Static Data")]
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private GridLayoutGroup gridLayoutGroup;
+    [SerializeField] private GameObject shopSlotPrefab;
 
     [Header("Data")]
-    [SerializeField] private GameObject itemSlotPrefab;
-    [SerializeField] private List<ItemSlotUI> itemSlots;
     [SerializeField] private Inventory inventory;
 
     private void Awake()
     {
         canvasGroup = GetComponentInChildren<CanvasGroup>();
-        itemSlots = new List<ItemSlotUI>();
     }
 
     private void Start()
@@ -25,78 +24,27 @@ public class ShopUI : MonoBehaviour
         GameEvents.instance.onOpenShop += Open;
     }
 
-    public void Initialize(Inventory inventory)
+    private void OnDestroy()
     {
-        this.inventory = inventory;
-        
-        // Should fill this UI with items based on inventory
-        foreach (var item in inventory.GetItems())
-        {
-            // Create slot
-            var itemSlot = Instantiate(itemSlotPrefab, gridLayoutGroup.transform).GetComponent<ItemSlotUI>();
-
-            // Set slot as shop
-            itemSlot.SetShopSlot(true);
-
-            if (item != null)
-            {
-                // Set item
-                itemSlot.CreateItem(item);
-            }
-
-            // Save
-            itemSlots.Add(itemSlot);
-        }
+        GameEvents.instance.onOpenShop -= Open;
     }
 
-    public void Open(Inventory inventory)
+    public void Open(Entity entity, Inventory inventory)
     {
         // Allow visibiltiy and interaction
         canvasGroup.alpha = 1f;
         canvasGroup.interactable = true;
         canvasGroup.blocksRaycasts = true;
 
-        // If this inventory is different than the one being open
-        if (this.inventory != inventory) {
-            // Clear this inventory
-            ClearInventory();
+        // Open new one
+        this.inventory = inventory;
 
-            // Open new one
-            Initialize(inventory);
-        }
-        
-        // Sub to events
-        GameEvents.instance.onItemInsert += SetItem;
-    }
-
-    private void SetItem(ItemUI itemUI, ItemSlotUI itemSlotUI)
-    {
-        // Check if item was added to any of this inventory's slots
-        for (int i = 0; i < itemSlots.Count; i++)
+        for (int i = 0; i < inventory.maxSize; i++)
         {
-            // If item was inserted into here
-            if (itemSlots[i] == itemSlotUI)
-            {
-                // Set item
-                if (itemUI != null) inventory.SetItem(itemUI.GetItem(), i);
-                else inventory.SetItem(null, i);
-            }
+            // Create slot
+            var shopSlot = Instantiate(shopSlotPrefab, gridLayoutGroup.transform).GetComponent<ShopSlotUI>();
+            shopSlot.Initialize(entity, inventory, i);
         }
-    }
-
-    private void ClearInventory() {
-        // If inventory is already clear, then dip
-        if (itemSlots.Count == 0) return;
-
-        // Delete items
-        foreach (var itemSlot in itemSlots)
-        {
-            Destroy(itemSlot.gameObject);
-        }
-        itemSlots.Clear();
-
-        // Remove inventory
-        inventory = null;
     }
 
     public void Close()
@@ -106,7 +54,7 @@ public class ShopUI : MonoBehaviour
         canvasGroup.interactable = false;
         canvasGroup.blocksRaycasts = false;
 
-        // Unsub
-        GameEvents.instance.onItemInsert -= SetItem;
+        // Trigger event
+        GameEvents.instance.TriggerOnCloseShop(inventory);
     }
 }

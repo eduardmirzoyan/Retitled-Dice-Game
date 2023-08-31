@@ -8,16 +8,16 @@ public class ItemTooltipUI : MonoBehaviour
 {
     public static ItemTooltipUI instance;
 
-    [Header("Displaying Components")]
+    [Header("Static Data")]
     [SerializeField] private RectTransform rectTransform;
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private TextMeshProUGUI itemName;
     [SerializeField] private TextMeshProUGUI itemDescription;
-    [SerializeField] private GameObject actionUIPrefab;
+    [SerializeField] private GameObject actionTooltipPrefab;
     [SerializeField] private LayoutGroup actionsLayoutGroup;
     [SerializeField] private TextMeshProUGUI valueText;
 
-    private List<ActionUI> actionUIs;
+    private List<ActionTooltipUI> actionTooltips;
 
     private void Awake()
     {
@@ -32,7 +32,7 @@ public class ItemTooltipUI : MonoBehaviour
         canvasGroup = GetComponentInChildren<CanvasGroup>();
 
         // lockImage.enabled = false;
-        actionUIs = new List<ActionUI>();
+        actionTooltips = new List<ActionTooltipUI>();
     }
 
     private void Update()
@@ -86,11 +86,24 @@ public class ItemTooltipUI : MonoBehaviour
         // Update information
         itemName.text = item.name;
         itemDescription.text = item.description;
-        
-        // Update selling info, IMPROVE LATER?
-        valueText.text = "Price: " + item.GetValue();
-        valueText.transform.parent.gameObject.SetActive(showPrice);
-        
+
+        // Update selling info
+        if (showPrice)
+        {
+            valueText.gameObject.SetActive(true);
+            valueText.fontSize = 48f;
+            valueText.text = "Price: <sprite name=\"Gold\">" + item.GetValue();
+        }
+        else if (item is Consumable)
+        {
+            valueText.gameObject.SetActive(true);
+            valueText.fontSize = 36f;
+            valueText.text = "[Right Click] to use";
+        }
+        else
+        {
+            valueText.gameObject.SetActive(false);
+        }
 
         // If the item is an equipment item
         if (item is Weapon)
@@ -102,12 +115,12 @@ public class ItemTooltipUI : MonoBehaviour
             foreach (var action in weapon.actions)
             {
                 // Spawn visuals of actions
-                var actionUI = Instantiate(actionUIPrefab, actionsLayoutGroup.transform).GetComponent<ActionUI>();
+                var actionTooltip = Instantiate(actionTooltipPrefab, actionsLayoutGroup.transform).GetComponent<ActionTooltipUI>();
                 // Initialize as display
-                actionUI.Initialize(action, ActionMode.Display);
+                actionTooltip.Initialize(action);
 
                 // Save
-                actionUIs.Add(actionUI);
+                actionTooltips.Add(actionTooltip);
             }
         }
 
@@ -121,14 +134,12 @@ public class ItemTooltipUI : MonoBehaviour
     public void Hide()
     {
         // Destroy all the ui
-        foreach (var ui in actionUIs)
+        foreach (var tooltip in actionTooltips)
         {
-            // Uninit
-            ui.Uninitialize();
             // Destroy
-            Destroy(ui.gameObject);
+            Destroy(tooltip.gameObject);
         }
-        actionUIs.Clear();
+        actionTooltips.Clear();
 
         // Then disable window
         canvasGroup.alpha = 0f;

@@ -103,6 +103,12 @@ public class Room : ScriptableObject
 
         if (asBoss)
         {
+            if (bossEntities.Count == 0)
+            {
+                // Trigger event
+                GameEvents.instance.TriggerOnLockExit();
+            }
+
             bossEntities.Add(entity);
         }
 
@@ -120,6 +126,9 @@ public class Room : ScriptableObject
 
             // Trigger event
             GameEvents.instance.TriggerOnGameLose();
+
+            // Stop game
+            GameManager.instance.gameOver = true;
         }
         else if (hostileEntities.Remove(entity))
         {
@@ -269,15 +278,6 @@ public class Room : ScriptableObject
         tiles[exitLocation.x, exitLocation.y] = tile;
     }
 
-    private void TrySetPadding(RoomTile tile)
-    {
-        // If you are in the padding range then add wall
-        if (tile.location.x < padding || tile.location.x >= width + padding || tile.location.y < padding || tile.location.y >= height + padding)
-        {
-            tile.tileType = TileType.Chasam;
-        }
-    }
-
     public void SpawnPickup(PickUpType pickUpType)
     {
         // Find a random valid location in room
@@ -379,7 +379,6 @@ public class Room : ScriptableObject
             {
                 break;
             }
-
         }
 
         return spawnLocation;
@@ -538,13 +537,16 @@ public class Room : ScriptableObject
         var tile = tiles[location.x, location.y];
 
         // If exit tile then change level
-        if (tile.tileType == TileType.Exit && numKeys == 0)
+        if (tile.tileType == TileType.Exit && numKeys == 0 && bossEntities.Count == 0)
         {
             // If we are leaving the boss room
             if (DataManager.instance.GetCurrentRoom() == RoomType.Arena)
             {
                 // THEN WE HAVE WON THE GAME!
                 GameEvents.instance.TriggerOnGameWin();
+
+                // Stop game
+                GameManager.instance.gameOver = true;
             }
             else
             {

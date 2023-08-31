@@ -85,6 +85,11 @@ public class DataManager : MonoBehaviour
         return "Stage " + stageNumber + " - " + roomNumber;
     }
 
+    public int GetRoomNumber()
+    {
+        return roomNumber;
+    }
+
     public RoomType GetNextRoom()
     {
         // Shops on Room 3 and 6
@@ -93,8 +98,7 @@ public class DataManager : MonoBehaviour
         {
             return RoomType.Shop;
         }
-        // Boss on Room 7
-        else if (next == maxRooms)
+        else if (next == maxRooms) // Boss on Room 7
         {
             return RoomType.Arena;
         }

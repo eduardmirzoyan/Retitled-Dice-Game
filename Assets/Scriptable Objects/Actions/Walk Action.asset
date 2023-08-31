@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d21a12649bebc9c469f8606cb9e43d64, type: 3}
+  m_Name: Walk Action
+  m_EditorClassIdentifier: 
+  name: Walk
+  briefDescription: Move a distance
+  fullDescription: Move up to <sprite name="Die"> tiles.
+  icon: {fileID: 21300000, guid: c6aa1b6b14c9ead479c8e9186db26833, type: 3}
+  background: {fileID: 21300000, guid: d3c559b2e7ed77e489dc11e7ac02a26b, type: 3}
+  color: {r: 0.3647059, g: 0.7960785, b: 0.22352943, a: 1}
+  actionSpeed: 0
+  actionType: 0
+  pathPrefab: {fileID: 5796882529580813460, guid: ef9f5511c8dd74f41931f219e0d037f5, type: 3}
+  die: {fileID: 11400000, guid: e8d732acdda4b39449630ce6ec7774ab, type: 2}
+  weapon: {fileID: 0}

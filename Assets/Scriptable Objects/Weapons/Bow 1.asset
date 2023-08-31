@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Bow 1
   m_EditorClassIdentifier: 
   name: Long Bow
-  description: ...
+  description: Shoot at enemies from afar, sometimes.
   sprite: {fileID: 86963966, guid: 20597968d5281954482d5d148d07fa12, type: 3}
-  value: 5
+  value: 4
   actions:
   - {fileID: 11400000, guid: 2a261ff5250b99d4d8a68c972398d2b0, type: 2}
   attackParticlePrefab: {fileID: 0}

@@ -59,10 +59,6 @@ public class GameLoseUI : MonoBehaviour
 
     public void Restart()
     {
-        // Create new character
-        DataManager.instance.CreateNewPlayer();
-
-        // Load new world
-        GameManager.instance.TravelToNextFloor();
+        GameManager.instance.Restart();
     }
 }

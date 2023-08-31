@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Actions/Boss/Smash")]
 public class SmashAction : Action
 {
-    [SerializeField] private int attackLength = 5;
+    [SerializeField] private int attackLength = 3;
 
     public override List<Vector3Int> GetValidLocations(Vector3Int startLocation, Room room)
     {
@@ -23,18 +23,33 @@ public class SmashAction : Action
         Vector3Int startMiddle = targetLocation;
         Vector3Int startLeft = targetLocation + left;
         Vector3Int startRight = targetLocation + right;
-        for (int i = 0; i < attackLength; i++)
-        {
-            // Add threats
-            targets.Add(startMiddle);
-            targets.Add(startLeft);
-            targets.Add(startRight);
 
-            // Increment
-            startMiddle += forward;
-            startLeft += forward;
-            startRight += forward;
-        }
+        targets.Add(startMiddle);
+        targets.Add(startMiddle + forward);
+        targets.Add(startMiddle + forward + left);
+        targets.Add(startMiddle + forward + right);
+
+        targets.Add(startMiddle + forward + forward);
+        targets.Add(startMiddle + forward + forward + left);
+        targets.Add(startMiddle + forward + forward + right);
+        targets.Add(startMiddle + forward + forward + left + left);
+        targets.Add(startMiddle + forward + forward + right + right);
+
+        // targets.Add(startLeft);
+        // targets.Add(startRight);
+
+        // for (int i = 1; i < attackLength; i++)
+        // {
+        //     // Add threats
+        //     targets.Add(startMiddle);
+        //     targets.Add(startLeft);
+        //     targets.Add(startRight);
+
+        //     // Increment
+        //     startMiddle += forward;
+        //     startLeft += forward;
+        //     startRight += forward;
+        // }
 
         return targets;
     }

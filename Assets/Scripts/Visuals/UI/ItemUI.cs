@@ -12,11 +12,12 @@ public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
     [SerializeField] private Image itemSprite;
     [SerializeField] private Image outlineSprite;
     [SerializeField] private Outline outline;
+    [SerializeField] private Material grayMaterial;
 
     [Header("Data")]
     [SerializeField] private Item item;
     [SerializeField] private ItemSlotUI itemSlotUI;
-    [SerializeField] private bool isInteractable;
+    [SerializeField] private bool preventRemove;
 
     private bool isBeingDragged;
     private Transform currentParent;
@@ -53,15 +54,29 @@ public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
 
         itemSprite.sprite = item.sprite;
         outlineSprite.sprite = item.sprite;
-        isInteractable = true;
+        preventRemove = false;
 
         // Move as second to last
         transform.SetSiblingIndex(2);
+
+        // Set name
+        name = item.name + " Item UI";
     }
 
-    public void SetInteractable(bool state)
+    public void PreventRemove(bool prevent)
     {
-        isInteractable = state;
+        if (prevent)
+        {
+            itemSprite.material = grayMaterial;
+            outline.enabled = false;
+            preventRemove = true;
+        }
+        else
+        {
+            itemSprite.material = null;
+            outline.enabled = true;
+            preventRemove = false;
+        }
     }
 
     public Item GetItem()
@@ -110,7 +125,7 @@ public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
         outline.effectColor = Color.white;
 
         // Show tooltip at this items location
-        ItemTooltipUI.instance.Show(item, itemSlotUI.MustBuy());
+        ItemTooltipUI.instance.Show(item, itemSlotUI is ShopSlotUI);
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -142,17 +157,20 @@ public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
                     // Then delete it
                     Destroy(gameObject);
                 }
-
             }
         }
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (isInteractable && eventData.button == PointerEventData.InputButton.Left)
+        if (eventData.button == PointerEventData.InputButton.Left)
         {
             // Check restrictions
-            if (itemSlotUI != null && itemSlotUI.PreventRemove()) return;
+            if (itemSlotUI == null || preventRemove)
+            {
+                eventData.Reset();
+                return;
+            }
 
             // Toggle flag
             isBeingDragged = true;
@@ -179,7 +197,7 @@ public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (isInteractable)
+        if (isBeingDragged)
         {
             // Stop dragging
             isBeingDragged = false;

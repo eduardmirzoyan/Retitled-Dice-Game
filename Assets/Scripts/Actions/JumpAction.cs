@@ -5,8 +5,6 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Actions/Jump")]
 public class JumpAction : Action
 {
-    [SerializeField] private int radius = 5;
-
     public override List<Vector3Int> GetValidLocations(Vector3Int startLocation, Room room)
     {
         List<Vector3Int> targets = new List<Vector3Int>();

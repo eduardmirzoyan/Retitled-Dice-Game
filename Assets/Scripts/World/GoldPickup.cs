@@ -4,17 +4,9 @@ using UnityEngine;
 
 public class GoldPickup : MonoBehaviour
 {
-    [Header("Components")]
-    [SerializeField] private Animator animator;
-
     [Header("Data")]
     [SerializeField] private Vector3Int location;
     [SerializeField] private GameObject pickupEffect;
-
-    private void Awake()
-    {
-        animator = GetComponentInChildren<Animator>();
-    }
 
     public void Initialize(Vector3Int location)
     {

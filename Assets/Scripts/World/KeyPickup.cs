@@ -4,17 +4,10 @@ using UnityEngine;
 
 public class KeyPickup : MonoBehaviour
 {
-    [Header("Components")]
-    [SerializeField] private Animator animator;
-
     [Header("Data")]
     [SerializeField] private Vector3Int location;
     [SerializeField] private GameObject pickupEffect;
-
-    private void Awake()
-    {
-        animator = GetComponentInChildren<Animator>();
-    }
+    [SerializeField] private Vector3 exitLocation;
 
     public void Initialize(Vector3Int location)
     {
@@ -41,5 +34,14 @@ public class KeyPickup : MonoBehaviour
             // Destroy coin
             Destroy(gameObject);
         }
+    }
+
+    private IEnumerator FlyTowardExit(Vector3 start, Vector3 end, float duration)
+    {
+        // TODO
+        yield return null;
+
+        // Destroy coin
+        Destroy(gameObject);
     }
 }

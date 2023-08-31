@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 959b1b9d584a3b8428ca714a3ebaca51, type: 3}
   m_Name: Bow 2
   m_EditorClassIdentifier: 
-  name: Reinforced Bow
-  description: ...
-  sprite: {fileID: -1500829646, guid: 20597968d5281954482d5d148d07fa12, type: 3}
-  value: 5
+  name: Recurve Bow
+  description: It's a bow, but recursive
+  sprite: {fileID: 220287764, guid: 20597968d5281954482d5d148d07fa12, type: 3}
+  value: 6
   actions:
+  - {fileID: 11400000, guid: 2a261ff5250b99d4d8a68c972398d2b0, type: 2}
   - {fileID: 11400000, guid: 2a261ff5250b99d4d8a68c972398d2b0, type: 2}
   attackParticlePrefab: {fileID: 0}
   weaponPrefab: {fileID: 9140997069136386509, guid: 8525dab3eaf904b468a12364fa44d58a, type: 3}

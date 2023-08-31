@@ -13,6 +13,11 @@ public class EquipmentSlotUI : ItemSlotUI, IDropHandler
     {
         GameEvents.instance.onCombatEnter -= EnterCombat;
         GameEvents.instance.onCombatExit -= ExitCombat;
+
+        GameEvents.instance.onTurnStart -= AllowInteraction;
+        GameEvents.instance.onActionPerformStart -= PreventInteraction;
+        GameEvents.instance.onActionPerformEnd -= AllowInteraction;
+        GameEvents.instance.onTurnEnd -= PreventInteraction;
     }
 
     public void Initialize(Player player, int index)
@@ -48,6 +53,11 @@ public class EquipmentSlotUI : ItemSlotUI, IDropHandler
 
         GameEvents.instance.onCombatEnter += EnterCombat;
         GameEvents.instance.onCombatExit += ExitCombat;
+
+        GameEvents.instance.onTurnStart += AllowInteraction;
+        GameEvents.instance.onActionPerformStart += PreventInteraction;
+        GameEvents.instance.onActionPerformEnd += AllowInteraction;
+        GameEvents.instance.onTurnEnd += PreventInteraction;
     }
 
     private void EnterCombat()
@@ -58,6 +68,60 @@ public class EquipmentSlotUI : ItemSlotUI, IDropHandler
     private void ExitCombat()
     {
         inCombat = false;
+    }
+
+    private void AllowInteraction(Entity entity)
+    {
+        // Allow the touching of dice
+        if (entity is Player)
+        {
+            if (itemUI != null)
+            {
+                itemUI.PreventRemove(false);
+            }
+        }
+    }
+
+    private void AllowInteraction(Entity entity, Action action, Vector3Int location, Room room)
+    {
+        AllowInteraction(entity);
+    }
+
+    private void PreventInteraction(Entity entity)
+    {
+        // Prevent the touching of dice
+        if (entity is Player)
+        {
+            if (itemUI != null)
+            {
+                itemUI.PreventRemove(true);
+            }
+        }
+    }
+
+    private void PreventInteraction(Entity entity, Action action, Vector3Int location, Room room)
+    {
+        PreventInteraction(entity);
+    }
+
+    public override void OnPointerEnter(PointerEventData eventData)
+    {
+        if (preventInsert) return;
+
+        if (eventData.pointerDrag != null && itemUI == null && eventData.pointerDrag.TryGetComponent(out ItemUI newItemUI))
+        {
+            highlightImage.color = highlightColor;
+        }
+    }
+
+    public override void OnPointerExit(PointerEventData eventData)
+    {
+        if (preventInsert) return;
+
+        if (eventData.pointerDrag != null && itemUI == null && eventData.pointerDrag.TryGetComponent(out ItemUI newItemUI))
+        {
+            highlightImage.color = defaultColor;
+        }
     }
 
     public override void OnDrop(PointerEventData eventData)

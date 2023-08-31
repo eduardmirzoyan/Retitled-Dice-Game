@@ -8,7 +8,7 @@ public class EnemyGenerator : ScriptableObject
     public List<Entity> possibleEnemies;
     public List<Entity> bosses;
     public Entity shopkeeper;
-    public Barrel barrel;
+    public Entity barrel;
 
     public ItemGenerator shopItemGenerator;
 

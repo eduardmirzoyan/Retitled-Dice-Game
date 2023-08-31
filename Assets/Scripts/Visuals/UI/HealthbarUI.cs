@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class HealthbarUI : MonoBehaviour
 {
     [Header("Components")]
-    [SerializeField] private HorizontalLayoutGroup heartsLayoutGroup;
+    [SerializeField] private LayoutGroup heartsLayoutGroup;
 
     [Header("Data")]
     [SerializeField] private GameObject heartUIPrefab;

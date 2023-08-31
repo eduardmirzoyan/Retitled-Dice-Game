@@ -61,6 +61,14 @@ public class PauseManager : MonoBehaviour
         canvasGroup.blocksRaycasts = false;
     }
 
+    public void Restart()
+    {
+        Resume();
+
+        // Start a new run
+        GameManager.instance.Restart();
+    }
+
     public void MainMenu()
     {
         // Resume first

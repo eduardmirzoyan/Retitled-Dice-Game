@@ -24,21 +24,18 @@ public class FloatingTextManager : MonoBehaviour
     {
         // Sub
         GameEvents.instance.onEntityTakeDamage += ShowDamageNumber;
-        GameEvents.instance.onEntityGainExperience += ShowExperienceNumber;
-        GameEvents.instance.onEntityGainLevel += ShowLevelUp;
-        GameEvents.instance.onEntityGainGold += ShowGoldNumber;
-        GameEvents.instance.onPickupDespawn += ShowPickup;
-
+        // GameEvents.instance.onEntityGainExperience += ShowExperienceNumber;
+        // GameEvents.instance.onEntityGainLevel += ShowLevelUp;
+        GameEvents.instance.onEntityGoldChange += ShowGoldNumber;
     }
 
     private void OnDestroy()
     {
         // Unsub
         GameEvents.instance.onEntityTakeDamage -= ShowDamageNumber;
-        GameEvents.instance.onEntityGainExperience -= ShowExperienceNumber;
-        GameEvents.instance.onEntityGainLevel -= ShowLevelUp;
-        GameEvents.instance.onEntityGainGold -= ShowGoldNumber;
-        GameEvents.instance.onPickupDespawn -= ShowPickup;
+        // GameEvents.instance.onEntityGainExperience -= ShowExperienceNumber;
+        // GameEvents.instance.onEntityGainLevel -= ShowLevelUp;
+        GameEvents.instance.onEntityGoldChange -= ShowGoldNumber;
     }
 
     private void ShowDamageNumber(Entity entity, int amount)
@@ -64,13 +61,6 @@ public class FloatingTextManager : MonoBehaviour
     private void ShowLevelUp(Entity entity, int amount)
     {
         SpawnFloatingText(entity, "LEVEL UP!", Color.cyan, 0, 3f, 1f);
-    }
-
-    private void ShowPickup(Vector3Int location)
-    {
-        // TODO
-
-        //SpawnFloatingText(null, "+Key", Color.yellow, 0, 3f, 1f);
     }
 
     private void ShowGoldNumber(Entity entity, int amount)

@@ -18,5 +18,5 @@ MonoBehaviour:
   bosses:
   - {fileID: 11400000, guid: 3be0a956ef097ed4e8563b13c3972f0a, type: 2}
   shopkeeper: {fileID: 11400000, guid: 00bce857e2abbbf4abd58c0a57b986c3, type: 2}
-  barrel: {fileID: 11400000, guid: 6b0af5af49746404ba2a2897b7bd94ab, type: 2}
+  barrel: {fileID: 11400000, guid: e5f8516d08a87814ba5ed198402a03f9, type: 2}
   shopItemGenerator: {fileID: 11400000, guid: b642c2acfcb26924ebf7a4b19f3f7fe0, type: 2}

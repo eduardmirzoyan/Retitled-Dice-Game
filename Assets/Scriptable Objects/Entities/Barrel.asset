@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4feac1596c0937746a8bcc8e6107e86d, type: 3}
+  m_Script: {fileID: 11500000, guid: 4c94cd8632690354b999096b2edecee2, type: 3}
   m_Name: Barrel
   m_EditorClassIdentifier: 
   name: Barrel
@@ -27,5 +27,5 @@ MonoBehaviour:
   weapons:
   - {fileID: 0}
   - {fileID: 0}
-  location: {x: 9, y: 10, z: 0}
+  location: {x: 0, y: 0, z: 0}
   room: {fileID: 0}

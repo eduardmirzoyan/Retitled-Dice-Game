@@ -24,7 +24,8 @@ MonoBehaviour:
   hitEffectPrefab: {fileID: 7270536486772163001, guid: 335c93a61b62ca84e9f26440c7f3ed0e, type: 3}
   AI: {fileID: 11400000, guid: 40162ae7c10ce35468b095709952f2c3, type: 2}
   innateActions: []
-  mainWeapon: {fileID: 0}
-  offWeapon: {fileID: 0}
+  weapons:
+  - {fileID: 0}
+  - {fileID: 0}
   location: {x: 0, y: 0, z: 0}
   room: {fileID: 0}

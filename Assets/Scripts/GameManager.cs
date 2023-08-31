@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     [Header("Data")]
     [SerializeField] private int roundNumber = 0;
     [SerializeField] public GameSettings gameSettings;
+    [SerializeField] public bool gameOver;
 
     private Queue<Entity> turnQueue;
     private Entity selectedEntity;
@@ -44,12 +45,22 @@ public class GameManager : MonoBehaviour
         selectedThreats = new List<Vector3Int>();
         reactiveActionsHastable = new Dictionary<(Entity, Action), List<Vector3Int>>();
         delayedActionsHashtable = new Dictionary<(Entity, Action), List<Vector3Int>>();
+
+        gameOver = false;
     }
 
     private void Start()
     {
         // Start the game
         coroutine = StartCoroutine(EnterFloor());
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            GameEvents.instance.TriggerOnEntityTakeDamage(room.player, 1);
+        }
     }
 
     private IEnumerator EnterFloor()
@@ -80,9 +91,6 @@ public class GameManager : MonoBehaviour
 
         // Generate gold
         yield return GenerateGold();
-
-        // Trigger event
-        // GameEvents.instance.TriggerOnEnterFloor(room);
 
         // Open scene on player
         var location = RoomUI.instance.GetLocationCenter(room.player.location);
@@ -139,7 +147,7 @@ public class GameManager : MonoBehaviour
         {
             case RoomType.Normal:
 
-                // Spawn enemies equal to floor number
+                // Spawn enemies
                 for (int i = 0; i < 2; i++)
                 {
                     // Generate a random enemy
@@ -193,7 +201,8 @@ public class GameManager : MonoBehaviour
             case RoomType.Normal:
 
                 // Create keys based on room number
-                for (int i = 0; i < 2; i++)
+                int num = DataManager.instance.GetRoomNumber() > 2 ? 2 : 1;
+                for (int i = 0; i < num; i++)
                 {
                     // Spawn a barrel
                     room.SpawnEntity(enemyGenerator.barrel);
@@ -213,7 +222,8 @@ public class GameManager : MonoBehaviour
             case RoomType.Normal:
 
                 // Create keys based on room number
-                for (int i = 0; i < 1; i++)
+                int num = DataManager.instance.GetRoomNumber() > 2 ? 2 : 1;
+                for (int i = 0; i < num; i++)
                 {
                     // Spawn a key
                     room.SpawnPickup(PickUpType.Key);
@@ -233,7 +243,8 @@ public class GameManager : MonoBehaviour
             case RoomType.Normal:
 
                 // Create keys based on room number
-                for (int i = 0; i < 2; i++)
+                int num = DataManager.instance.GetRoomNumber() > 2 ? 2 : 1;
+                for (int i = 0; i < num; i++)
                 {
                     // Spawn a key
                     room.SpawnPickup(PickUpType.Gold);
@@ -275,7 +286,6 @@ public class GameManager : MonoBehaviour
         result += "END";
         print(result);
 
-
         // Finish
         yield return null;
     }
@@ -285,12 +295,16 @@ public class GameManager : MonoBehaviour
         // Increment round
         roundNumber++;
 
-        // Generate turn order
-        // Need to make queue to decide enemy turn order
-        yield return GenerateTurnQueue();
+        // Check if game is over
+        if (!gameOver)
+        {
+            // Generate turn order
+            // Need to make queue to decide enemy turn order
+            yield return GenerateTurnQueue();
 
-        // Start turn
-        yield return StartTurn();
+            // Start turn
+            yield return StartTurn();
+        }
     }
 
     private IEnumerator StartTurn()
@@ -315,6 +329,9 @@ public class GameManager : MonoBehaviour
 
         // Perform any delayed actions stored by this entity
         yield return PerformDelayedAction(selectedEntity);
+
+        // Perform any reactive actions stored by this entity
+        yield return PerformAnyReactiveActions(selectedEntity);
 
         // Clear any reactive
         ClearReativeActions(selectedEntity);
@@ -347,10 +364,8 @@ public class GameManager : MonoBehaviour
 
     public void SelectLocation(Vector3Int location)
     {
-
         if (location == Vector3Int.zero)
         {
-
             if (selectedThreats != null)
             {
                 // Clean up selected tiles, etc
@@ -444,8 +459,6 @@ public class GameManager : MonoBehaviour
             // Get best choice, then pop from sequence
             var bestChoicePair = bestChoiceSequence[0];
             bestChoiceSequence.RemoveAt(0);
-
-            print("Chose: " + bestChoicePair.Item1.name);
 
             // Wait a bit before performing action
             yield return new WaitForSeconds(gameSettings.aiBufferTime);
@@ -577,6 +590,17 @@ public class GameManager : MonoBehaviour
         TransitionManager.instance.LoadMainMenuScene(location);
     }
 
+    public void Restart()
+    {
+        // Exit current floor
+        ExitFloor();
+
+        DataManager.instance.CreateNewPlayer();
+
+        // Reload this scene with new player
+        TransitionManager.instance.ReloadScene(Vector3.zero);
+    }
+
     private void ReplenishActions(Entity entity)
     {
         // Loop through all actions
@@ -643,6 +667,40 @@ public class GameManager : MonoBehaviour
                 // Stop
                 break;
             }
+        }
+    }
+
+    private IEnumerator PerformAnyReactiveActions(Entity entity)
+    {
+        bool done = false;
+        foreach (var entityActionPair in reactiveActionsHastable)
+        {
+            // Check if this entity has any reactive actions
+            if (entityActionPair.Key.Item1 == entity)
+            {
+                // Check if the locations contain the player
+                foreach (var location in entityActionPair.Value)
+                {
+                    if (room.GetEntityAtLocation(location) is Player)
+                    {
+                        // Parse data
+                        var action = entityActionPair.Key.Item2;
+                        var targets = entityActionPair.Value;
+
+                        // Perform the action
+                        yield return PerformAction(entity, action, targets[0], targets);
+
+                        // Remove entry
+                        reactiveActionsHastable.Remove(entityActionPair.Key);
+
+                        // Stop
+                        done = true;
+                        break;
+                    }
+                }
+            }
+
+            if (done) break;
         }
     }
 
@@ -800,10 +858,9 @@ public class GameManager : MonoBehaviour
         // If we are currently on a shop floor
         if (DataManager.instance.GetCurrentRoom() == RoomType.Shop)
         {
-            GameEvents.instance.TriggerOnOpenShop(inventory);
+            GameEvents.instance.TriggerOnOpenShop(room.player, inventory);
         }
     }
-
 
     // TEMP CURSOR SHIT
     public void SetGrabCursor()

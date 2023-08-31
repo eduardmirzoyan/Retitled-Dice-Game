@@ -45,7 +45,7 @@ public class GameEvents : MonoBehaviour
     public event Action<Entity, int> onEntityTakeDamage;
     public event Action<Entity, int> onEntityGainExperience;
     public event Action<Entity, int> onEntityGainLevel;
-    public event Action<Entity, int> onEntityGainGold;
+    public event Action<Entity, int> onEntityGoldChange;
 
     // Common Events
     public event Action<PickUpType, Vector3Int> onPickupSpawn;
@@ -54,7 +54,8 @@ public class GameEvents : MonoBehaviour
     public event System.Action onUnlockExit;
 
     // UI Based
-    public event Action<Inventory> onOpenShop;
+    public event Action<Entity, Inventory> onOpenShop;
+    public event Action<Inventory> onCloseShop;
     public event Action<ItemUI, ItemSlotUI> onItemInsert;
     public event Action<Entity, Weapon, int> onEquipWeapon;
     public event Action<Entity, Weapon, int> onUnequipWeapon;
@@ -337,11 +338,11 @@ public class GameEvents : MonoBehaviour
         }
     }
 
-    public void TriggerOnGainGold(Entity entity, int amount)
+    public void TriggerOnGoldChange(Entity entity, int amount)
     {
-        if (onEntityGainGold != null)
+        if (onEntityGoldChange != null)
         {
-            onEntityGainGold(entity, amount);
+            onEntityGoldChange(entity, amount);
         }
     }
 
@@ -401,11 +402,19 @@ public class GameEvents : MonoBehaviour
         }
     }
 
-    public void TriggerOnOpenShop(Inventory inventory)
+    public void TriggerOnOpenShop(Entity entity, Inventory inventory)
     {
         if (onOpenShop != null)
         {
-            onOpenShop(inventory);
+            onOpenShop(entity, inventory);
+        }
+    }
+
+    public void TriggerOnCloseShop(Inventory inventory)
+    {
+        if (onCloseShop != null)
+        {
+            onCloseShop(inventory);
         }
     }
 }

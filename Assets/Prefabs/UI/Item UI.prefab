@@ -237,6 +237,8 @@ MonoBehaviour:
   itemSprite: {fileID: 7123551506588363206}
   outlineSprite: {fileID: 7123551505530801262}
   outline: {fileID: 7123551505530801263}
+  grayMaterial: {fileID: 2100000, guid: 93771b9c3b6ecb745839335128e8f4f0, type: 2}
   item: {fileID: 0}
   itemSlotUI: {fileID: 0}
-  isInteractable: 1
+  defaultMaterial: {fileID: 0}
+  preventRemove: 0

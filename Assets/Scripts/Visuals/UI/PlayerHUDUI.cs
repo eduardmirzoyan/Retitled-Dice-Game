@@ -32,7 +32,7 @@ public class PlayerHUDUI : MonoBehaviour
         // Sub
         GameEvents.instance.onEntitySpawn += InitializePlayer;
         GameEvents.instance.onEnterFloor += UpdateFloor;
-        GameEvents.instance.onEntityGainGold += UpdateGold;
+        GameEvents.instance.onEntityGoldChange += UpdateGold;
         GameEvents.instance.onEntityGainExperience += UpdateExperience;
         GameEvents.instance.onEntityGainLevel += UpdateLevel;
     }
@@ -42,7 +42,7 @@ public class PlayerHUDUI : MonoBehaviour
         // Unsub
         GameEvents.instance.onEntitySpawn -= InitializePlayer;
         GameEvents.instance.onEnterFloor -= UpdateFloor;
-        GameEvents.instance.onEntityGainGold -= UpdateGold;
+        GameEvents.instance.onEntityGoldChange -= UpdateGold;
         GameEvents.instance.onEntityGainExperience -= UpdateExperience;
         GameEvents.instance.onEntityGainLevel -= UpdateLevel;
     }
@@ -82,7 +82,7 @@ public class PlayerHUDUI : MonoBehaviour
         // If non-zero gold was gained
         if (this.entity == entity)
         {
-            goldText.text = "" + entity.gold;
+            goldText.text = entity.gold + "<sprite name=\"Gold\">";
         }
     }
 

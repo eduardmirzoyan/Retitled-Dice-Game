@@ -5,17 +5,19 @@ using UnityEngine.Tilemaps;
 
 public class ActionIndicator : MonoBehaviour
 {
-    [Header("Components")]
-    [SerializeField] private Tilemap intentionTilemap;
-    [SerializeField] private Tilemap intentionIconTilemap;
-    [SerializeField] private Tilemap previewTilemap;
+    [Header("Tilemaps")]
+    [SerializeField] private Tilemap actionLocationTilemap;
+    [SerializeField] private Tilemap actionResultTilemap;
+    [SerializeField] private Tilemap intentTilemap;
+    [SerializeField] private Tilemap intentIconTilemap;
     [SerializeField] private Tilemap inspectTilemap;
+
+    [Header("Tiles")]
     [SerializeField] private RuleTile highlightedTile;
     [SerializeField] private GameObject actionPreviewPrefab;
     [SerializeField] private Tile reactiveIconTile;
     [SerializeField] private Tile delayedIconTile;
     [SerializeField] private AnimatedTile reactAnimatedTile;
-    [SerializeField] private GameObject lineObject;
 
     [Header("Settings")]
     [SerializeField] private float alpha = 0.25f;
@@ -30,74 +32,100 @@ public class ActionIndicator : MonoBehaviour
     private void Start()
     {
         GameEvents.instance.onActionSelect += ShowOptions;
-        GameEvents.instance.onLocationSelect += FocusTile;
-        GameEvents.instance.onLocationSelect += DrawPath;
+        GameEvents.instance.onLocationSelect += FadeOptions;
         GameEvents.instance.onActionConfirm += HideOptions;
+
+        GameEvents.instance.onLocationSelect += DrawPath;
         GameEvents.instance.onActionThreatenLocation += ThreatenTile;
         GameEvents.instance.onActionUnthreatenLocation += UnthreatenTile;
-        GameEvents.instance.onThreatsInspect += HighlightTiles;
+
+        GameEvents.instance.onThreatsInspect += OutlineThreats;
     }
 
     private void OnDestroy()
     {
         GameEvents.instance.onActionSelect -= ShowOptions;
-        GameEvents.instance.onLocationSelect -= FocusTile;
-        GameEvents.instance.onLocationSelect -= DrawPath;
+        GameEvents.instance.onLocationSelect -= FadeOptions;
         GameEvents.instance.onActionConfirm -= HideOptions;
+
+        GameEvents.instance.onLocationSelect -= DrawPath;
         GameEvents.instance.onActionThreatenLocation -= ThreatenTile;
         GameEvents.instance.onActionUnthreatenLocation -= UnthreatenTile;
-        GameEvents.instance.onThreatsInspect -= HighlightTiles;
+
+        GameEvents.instance.onThreatsInspect -= OutlineThreats;
     }
 
     private void ThreatenTile(Action action, Vector3Int location)
     {
-        // If value already is marked, then increment count
-        if (threatTable.TryGetValue(location, out int count))
+        // Only Show non-movment actions
+        if (action.actionType != ActionType.Movement)
         {
-            // Update entry
-            threatTable[location] = count + 1;
-        }
-        else if (action.actionType != ActionType.Movement) // Only Show non-movment actions
-        {
-            // Highlight tile
-            intentionTilemap.SetTile(location, highlightedTile);
-            intentionTilemap.SetColor(location, Color.yellow);
+            // If action is not immediate, then use different visuals
+            if (action.actionSpeed != ActionSpeed.Instant)
+            {
+                // If value already is marked, then increment count
+                if (threatTable.TryGetValue(location, out int count))
+                {
+                    // Update entry
+                    threatTable[location] = count + 1;
+                }
+                else
+                {
+                    // Highlight tile
+                    // intentTilemap.SetTile(location, highlightedTile);
+                    // intentTilemap.SetColor(location, action.color);
 
-            // Set icon
-            // intentionIconTilemap.SetTile(location, reactiveIconTile);
-            // intentionIconTilemap.SetColor(location, action.color);
+                    // Set icon
+                    intentIconTilemap.SetTile(location, reactAnimatedTile);
+                    intentIconTilemap.SetColor(location, action.color);
 
-            // Add to dict
-            threatTable[location] = 1;
+                    // Add to dict
+                    threatTable[location] = 1;
+                }
+            }
+            else
+            {
+                // Highlight tile
+                actionResultTilemap.SetTile(location, highlightedTile);
+                actionResultTilemap.SetColor(location, Color.yellow);
+            }
         }
     }
 
     private void UnthreatenTile(Action action, Vector3Int location)
     {
-        // If value already is marked, then increment count
-        if (threatTable.TryGetValue(location, out int count))
+
+        // Only Show non-movment actions
+        if (action.actionType != ActionType.Movement)
         {
-            // Remove entry
-            if (count == 1)
+            // If action is not immediate, then use different visuals
+            if (action.actionSpeed != ActionSpeed.Instant)
             {
-                // Unmark
-                intentionTilemap.SetTile(location, null);
+                // If value already is marked, then increment count
+                if (threatTable.TryGetValue(location, out int count))
+                {
+                    // Remove entry
+                    if (count == 1)
+                    {
+                        // Unmark
+                        intentTilemap.SetTile(location, null);
+                        intentIconTilemap.SetTile(location, null);
 
-                // Remove icon
-                intentionIconTilemap.SetTile(location, null);
-
-                // Remove entry
-                threatTable.Remove(location);
+                        // Remove entry
+                        threatTable.Remove(location);
+                    }
+                    else
+                    {
+                        // Update entry
+                        threatTable[location] = count - 1;
+                    }
+                }
             }
             else
             {
-                // Update entry
-                threatTable[location] = count - 1;
+                // Highlight tile
+                actionResultTilemap.SetTile(location, null);
             }
-        }
-        else if (action.actionType != ActionType.Movement)
-        {
-            throw new System.Exception("TRIED TO UNMARK A LOCATION THAT WAS NEVER MARKED?!");
         }
     }
 
@@ -106,7 +134,7 @@ public class ActionIndicator : MonoBehaviour
         if (entity != null)
         {
             // Clear tiles first
-            previewTilemap.ClearAllTiles();
+            actionLocationTilemap.ClearAllTiles();
 
             if (action != null) // If action was selected
             {
@@ -117,9 +145,9 @@ public class ActionIndicator : MonoBehaviour
                 foreach (var location in validLocations)
                 {
                     // Set tile
-                    previewTilemap.RemoveTileFlags(location, TileFlags.LockColor);
-                    previewTilemap.SetTile(location, highlightedTile);
-                    previewTilemap.SetColor(location, action.color);
+                    actionLocationTilemap.RemoveTileFlags(location, TileFlags.LockColor);
+                    actionLocationTilemap.SetTile(location, highlightedTile);
+                    actionLocationTilemap.SetColor(location, action.color);
 
                     // Spawn a indicator node here if it's a player
                     if (entity is Player)
@@ -129,20 +157,43 @@ public class ActionIndicator : MonoBehaviour
         }
     }
 
-    private void SpawnIndicator(Entity entity, Action action, Vector3Int location)
+    private void FadeOptions(Entity entity, Action action, Vector3Int location)
     {
-        // Get target world position
-        var targetWorldLocation = intentionTilemap.GetCellCenterWorld(location);
-        // Instaniate as child
-        var actionPreview = Instantiate(actionPreviewPrefab, targetWorldLocation, Quaternion.identity, intentionTilemap.transform).GetComponent<ActionPreview>();
-        // Initialize
-        actionPreview.Initialize(entity, location, action);
+        foreach (Vector3Int cellPosition in actionLocationTilemap.cellBounds.allPositionsWithin)
+        {
+            actionLocationTilemap.RemoveTileFlags(cellPosition, TileFlags.LockColor);
+
+            if (actionLocationTilemap.HasTile(cellPosition))
+            {
+                if (location == Vector3Int.zero)
+                {
+                    actionLocationTilemap.SetColor(cellPosition, action.color);
+
+                }
+                else
+                {
+                    var newColor = action.color;
+                    newColor.a = alpha;
+                    actionLocationTilemap.SetColor(cellPosition, newColor);
+                }
+            }
+        }
     }
 
     private void HideOptions(Entity entity, Action action, Vector3Int location)
     {
         // Clear tiles first
-        previewTilemap.ClearAllTiles();
+        actionLocationTilemap.ClearAllTiles();
+    }
+
+    private void SpawnIndicator(Entity entity, Action action, Vector3Int location)
+    {
+        // Get target world position
+        var targetWorldLocation = intentTilemap.GetCellCenterWorld(location);
+        // Instaniate as child
+        var actionPreview = Instantiate(actionPreviewPrefab, targetWorldLocation, Quaternion.identity, intentTilemap.transform).GetComponent<ActionPreview>();
+        // Initialize
+        actionPreview.Initialize(entity, location, action);
     }
 
     private void DrawPath(Entity entity, Action action, Vector3Int location)
@@ -154,30 +205,7 @@ public class ActionIndicator : MonoBehaviour
         }
     }
 
-    private void FocusTile(Entity entity, Action action, Vector3Int location)
-    {
-        foreach (Vector3Int cellPosition in previewTilemap.cellBounds.allPositionsWithin)
-        {
-            previewTilemap.RemoveTileFlags(cellPosition, TileFlags.LockColor);
-
-            if (previewTilemap.HasTile(cellPosition))
-            {
-                if (location == Vector3Int.zero)
-                {
-                    previewTilemap.SetColor(cellPosition, action.color);
-
-                }
-                else
-                {
-                    var newColor = action.color;
-                    newColor.a = alpha;
-                    previewTilemap.SetColor(cellPosition, newColor);
-                }
-            }
-        }
-    }
-
-    private void HighlightTiles(List<Vector3Int> locations)
+    private void OutlineThreats(List<Vector3Int> locations)
     {
         if (locations != null)
         {
@@ -191,7 +219,5 @@ public class ActionIndicator : MonoBehaviour
         {
             inspectTilemap.ClearAllTiles();
         }
-
-
     }
 }

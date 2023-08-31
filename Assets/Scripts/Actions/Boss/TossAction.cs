@@ -21,7 +21,9 @@ public class TossAction : Action
         {
             for (int j = targetLocation.y - radius; j <= targetLocation.y + radius; j++)
             {
-                targets.Add(new Vector3Int(i, j, 0));
+                var location = new Vector3Int(i, j, 0);
+                if (location != targetLocation)
+                    targets.Add(location);
             }
         }
 

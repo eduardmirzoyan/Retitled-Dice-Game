@@ -13,11 +13,13 @@ MonoBehaviour:
   m_Name: Step Action
   m_EditorClassIdentifier: 
   name: Step
-  description: Move a distance, based on the value of the die
+  briefDescription: Move a distance
+  fullDescription: Move up to <sprite name="Die"> tiles.
   icon: {fileID: 21300000, guid: 5ac614776ef302346af0065d728f6e41, type: 3}
   background: {fileID: 21300000, guid: d3c559b2e7ed77e489dc11e7ac02a26b, type: 3}
   color: {r: 0.3647059, g: 0.7960785, b: 0.22352943, a: 1}
   actionSpeed: 0
   actionType: 0
+  pathPrefab: {fileID: 5796882529580813460, guid: ef9f5511c8dd74f41931f219e0d037f5, type: 3}
   die: {fileID: 11400000, guid: 4f8fd130e5045604b813bb7a89501291, type: 2}
   weapon: {fileID: 0}
