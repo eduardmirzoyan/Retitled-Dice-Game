@@ -125,6 +125,9 @@ public class EntityModel : MonoBehaviour
 
             // Start layering
             properLayerSort.SetActive(true);
+
+            // Play sound
+            // AudioManager.instance.PlaySFX("footstep");
         }
     }
 
@@ -154,6 +157,9 @@ public class EntityModel : MonoBehaviour
 
             // Stop layering
             properLayerSort.SetActive(false);
+
+            // Stop sound
+            // AudioManager.instance.StopSFX("footstep");
         }
     }
 

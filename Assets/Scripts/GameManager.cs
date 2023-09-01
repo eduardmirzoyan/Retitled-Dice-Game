@@ -19,9 +19,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] public bool gameOver;
 
     private Queue<Entity> turnQueue;
-    private Entity selectedEntity;
-    private Action selectedAction;
-    private Vector3Int selectedLocation;
+    [SerializeField] private Entity selectedEntity;
+    [SerializeField] private Action selectedAction;
+    [SerializeField] private Vector3Int selectedLocation;
     private List<Vector3Int> selectedThreats;
     private List<(Action, Vector3Int)> bestChoiceSequence;
     private Dictionary<(Entity, Action), List<Vector3Int>> reactiveActionsHastable;
@@ -57,9 +57,15 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F))
+        // If right click anywhere
+        if (Input.GetMouseButtonDown(1))
         {
-            GameEvents.instance.TriggerOnEntityTakeDamage(room.player, 1);
+            // If you have an action selected
+            if (selectedAction != null)
+            {
+                // Then cancel it
+                SelectAction(null);
+            }
         }
     }
 
@@ -205,7 +211,7 @@ public class GameManager : MonoBehaviour
                 for (int i = 0; i < num; i++)
                 {
                     // Spawn a barrel
-                    room.SpawnEntity(enemyGenerator.barrel);
+                    room.SpawnEntity(enemyGenerator.barrel.Copy());
                 }
 
                 break;

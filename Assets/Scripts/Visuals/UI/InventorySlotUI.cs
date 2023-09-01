@@ -64,6 +64,7 @@ public class InventorySlotUI : ItemSlotUI
 
             // Check restrictions
             if (preventInsert) return;
+            if (itemUI != null && newItemUI.GetSlotUI().preventInsert) return;
 
             // Now we all good, do insertion...
             UpdateSlot(newItemUI);
@@ -83,10 +84,10 @@ public class InventorySlotUI : ItemSlotUI
         }
 
         // Set any previous slots to null;
-        if (newItemUI.GetItemSlotUI() != null)
+        if (newItemUI.GetSlotUI() != null)
         {
             // Add item to slot, where this.itemUI could be null in which case you are un-equipping
-            newItemUI.GetItemSlotUI().StoreItem(this.itemUI);
+            newItemUI.GetSlotUI().StoreItem(this.itemUI);
         }
 
         // Store new item into this slot

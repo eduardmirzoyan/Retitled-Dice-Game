@@ -89,7 +89,7 @@ public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
         this.itemSlotUI = itemSlotUI;
     }
 
-    public ItemSlotUI GetItemSlotUI()
+    public ItemSlotUI GetSlotUI()
     {
         return itemSlotUI;
     }

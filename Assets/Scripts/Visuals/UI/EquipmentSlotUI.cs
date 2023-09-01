@@ -132,12 +132,15 @@ public class EquipmentSlotUI : ItemSlotUI, IDropHandler
         // Make sure there already isn't an item and it is an itemUI
         if (eventData.pointerDrag != null && eventData.pointerDrag.TryGetComponent(out ItemUI newItemUI))
         {
+
             // Make sure that the same item isn't added to the same slot
             if (newItemUI == itemUI) return;
 
             // Check restrictions
             if (preventInsert) return;
+            if (itemUI != null && newItemUI.GetSlotUI().preventInsert) return;
             if (newItemUI.GetItem() is not Weapon) return;
+
             if (inCombat && !DataManager.instance.hasEquipmentPrompted)
             {
                 // Open prompt
@@ -153,7 +156,7 @@ public class EquipmentSlotUI : ItemSlotUI, IDropHandler
 
     private void UpdateSlot(ItemUI newItemUI)
     {
-        // If an item already exists, swap
+        // If an item already exists, SWAP
         if (this.itemUI != null)
         {
             // Debugging
@@ -164,10 +167,11 @@ public class EquipmentSlotUI : ItemSlotUI, IDropHandler
         }
 
         // Set any previous slots to null;
-        if (newItemUI.GetItemSlotUI() != null)
+        var newItemSlotUI = newItemUI.GetSlotUI();
+        if (newItemSlotUI != null)
         {
             // Add item to slot, where this.itemUI could be null in which case you are un-equipping
-            newItemUI.GetItemSlotUI().StoreItem(this.itemUI);
+            newItemSlotUI.StoreItem(this.itemUI);
         }
 
         // Store new item into this slot

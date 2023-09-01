@@ -13,8 +13,13 @@ public class ActionUI : MonoBehaviour
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private TooltipTriggerUI tooltipTriggerUI;
 
+    [Header("Dynamic Data")]
+    [SerializeField] private Action action;
+
     public void Initialize(Action action)
     {
+        this.action = action;
+
         // Update Visuals
         actionIcon.sprite = action.icon;
         actionBackground.sprite = action.background;
@@ -23,10 +28,11 @@ public class ActionUI : MonoBehaviour
         tooltipTriggerUI.SetTooltip(action.name, action.briefDescription);
 
         // Initialize die
-        diceUI.Initialize(action, true, false);
+        diceUI.Initialize(action, true);
 
         // Sub to events
         GameEvents.instance.onTurnStart += AllowInteraction;
+        GameEvents.instance.onActionSelect += ToggleInteraction;
         GameEvents.instance.onActionPerformStart += PreventInteraction;
         GameEvents.instance.onActionPerformEnd += AllowInteraction;
         GameEvents.instance.onTurnEnd += PreventInteraction;
@@ -38,6 +44,7 @@ public class ActionUI : MonoBehaviour
 
         // Unsub from events
         GameEvents.instance.onTurnStart -= AllowInteraction;
+        GameEvents.instance.onActionSelect -= ToggleInteraction;
         GameEvents.instance.onActionPerformStart -= PreventInteraction;
         GameEvents.instance.onActionPerformEnd -= AllowInteraction;
         GameEvents.instance.onTurnEnd -= PreventInteraction;
@@ -51,6 +58,8 @@ public class ActionUI : MonoBehaviour
             canvasGroup.alpha = 1f;
             canvasGroup.interactable = true;
             canvasGroup.blocksRaycasts = true;
+
+            diceUI.Pulse();
         }
     }
 
@@ -67,12 +76,33 @@ public class ActionUI : MonoBehaviour
             canvasGroup.alpha = 0.6f;
             canvasGroup.interactable = false;
             canvasGroup.blocksRaycasts = false;
+
+            diceUI.Idle();
         }
     }
 
     private void PreventInteraction(Entity entity, Action action, Vector3Int location, Room room)
     {
         PreventInteraction(entity);
+    }
+
+    private void ToggleInteraction(Entity entity, Action action)
+    {
+        // If un-selected action
+        if (action == null)
+        {
+            AllowInteraction(entity);
+        }
+        // If selected other action
+        else if (this.action != action)
+        {
+            PreventInteraction(entity);
+        }
+        else
+        {
+            // Just remove outline
+            diceUI.Idle();
+        }
     }
 
 }

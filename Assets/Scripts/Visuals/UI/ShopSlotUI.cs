@@ -35,6 +35,9 @@ public class ShopSlotUI : ItemSlotUI
         // Update name
         gameObject.name = "Shop Slot " + index;
 
+        // Don't allow insertions
+        preventInsert = true;
+
         GameEvents.instance.onCloseShop += Uninitialize;
         GameEvents.instance.onEntityGoldChange += UpdateEligibility;
     }
@@ -98,64 +101,4 @@ public class ShopSlotUI : ItemSlotUI
         // Trigger event
         GameEvents.instance.TriggerOnGoldChange(buyer, -inventory[index].value);
     }
-
-    // private void UpdateSlot(ItemUI newItemUI)
-    // {
-    //     // If an item already exists, swap
-    //     if (this.itemUI != null)
-    //     {
-    //         // Debugging
-    //         print("An item exists in this slot, doing a swap :)");
-
-    //         // Set the old item to where the new one was
-    //         this.itemUI.ResetTo(newItemUI.GetParent());
-    //     }
-
-    //     // Set any previous slots to null;
-    //     if (newItemUI.GetItemSlotUI() != null)
-    //     {
-    //         // Add item to slot, where this.itemUI could be null in which case you are un-equipping
-    //         newItemUI.GetItemSlotUI().StoreItem(this.itemUI);
-    //     }
-
-    //     // Store new item into this slot
-    //     StoreItem(newItemUI);
-    // }
-
-    // public override void StoreItem(ItemUI itemUI)
-    // {
-    //     // Actual Item
-    //     if (itemUI != null)
-    //     {
-    //         // Debugging
-    //         // print("Item " + itemUI.name + " has inserted into the slot: " + name);
-
-    //         var item = itemUI.GetItem();
-
-    //         // Change slot
-    //         itemUI.SetParent(gameObject.transform);
-    //         itemUI.SetItemSlot(this);
-
-    //         // Update afterimage
-    //         afterImageIcon.sprite = item.sprite;
-    //         afterImageIcon.enabled = true;
-
-    //         // Update inventory
-    //         inventory.SetItem(item, index);
-    //     }
-    //     else
-    //     {
-    //         // Debugging
-    //         // print("Item was removed from slot: " + name);
-
-    //         // Disable afterimage
-    //         afterImageIcon.enabled = false;
-
-    //         // Update inventory
-    //         inventory.SetItem(null, index);
-    //     }
-
-    //     this.itemUI = itemUI;
-    // }
-
 }

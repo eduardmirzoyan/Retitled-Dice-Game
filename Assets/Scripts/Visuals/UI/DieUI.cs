@@ -4,14 +4,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
+public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
 {
     public static float rollTime = 0.5f;
 
     [Header("Components")]
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private RectTransform rectTransform;
-    [SerializeField] private Outline outline;
+    [SerializeField] private Animator animator;
     [SerializeField] private Image[] pipImages;
 
     [Header("Data")]
@@ -20,6 +20,7 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
     [SerializeField] private float travelRate = 0.1f;
     [SerializeField] private float spinRate = 3f;
     [SerializeField] private bool isInteractable;
+    [SerializeField] private bool isSelected;
 
     private Transform parent;
     private bool isBeingDragged;
@@ -30,13 +31,15 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
     {
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponentInChildren<CanvasGroup>();
+        animator = GetComponentInChildren<Animator>();
     }
 
-    public void Initialize(Action action, bool isInteractable = true, bool displayOnly = false)
+    public void Initialize(Action action, bool isInteractable = true)
     {
         this.die = action.die;
         this.action = action;
         this.isInteractable = isInteractable;
+        isSelected = false;
 
         // Save parent
         parent = transform.parent;
@@ -47,30 +50,21 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
             image.color = action.color;
         }
 
-        // Update visual
-        if (displayOnly)
-        {
-            // Display image based on max value
-            DisplayValue(die.maxValue);
-        }
-        else
-        {
-            // Display image based on current value
-            DisplayValue(die.value);
-        }
+        // Display image based on current value
+        DisplayValue(die.value);
 
         // Check exhaust state
         if (die.isExhausted)
         {
-            canvasGroup.alpha = 0.4f;
-            canvasGroup.blocksRaycasts = false;
+            Exhaust(die);
         }
         else
         {
-            canvasGroup.alpha = 1f;
-            canvasGroup.blocksRaycasts = true;
+            Relpenish(die);
         }
 
+        // Update name
+        gameObject.name = action.name + " Die Model";
 
         // Sub to die events
         GameEvents.instance.onDieRoll += Roll;
@@ -135,6 +129,57 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
         }
     }
 
+    public void Pulse()
+    {
+        if (!die.isExhausted)
+        {
+            animator.Play("Pulse");
+            isSelected = false;
+        }
+
+    }
+
+    public void Idle()
+    {
+        animator.Play("Idle");
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (!isInteractable) return;
+
+        // If die is not exhausted
+        if (!die.isExhausted)
+        {
+            // If this item is left clicked
+            if (eventData.button == PointerEventData.InputButton.Left)
+            {
+                if (isSelected)
+                {
+                    // Unselect this action
+                    GameManager.instance.SelectAction(null);
+
+                    // Stop animation
+                    animator.Play("Pulse");
+
+                    // Update state
+                    isSelected = false;
+                }
+                else
+                {
+                    // Select this action
+                    GameManager.instance.SelectAction(action);
+
+                    // Play animation
+                    animator.Play("Outline");
+
+                    // Update state
+                    isSelected = true;
+                }
+            }
+        }
+    }
+
     public void OnBeginDrag(PointerEventData eventData)
     {
         if (!isInteractable) return;
@@ -145,9 +190,6 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
             // Update visually
             canvasGroup.alpha = 0.4f;
             canvasGroup.blocksRaycasts = false;
-
-            // Enable shadow
-            // shadow.enabled = true;
 
             // Remove from parent
             rectTransform.SetParent(transform.root);
@@ -213,9 +255,6 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
                 canvasGroup.blocksRaycasts = true;
             }
 
-            // Disable shadow
-            // shadow.enabled = false;
-
             // Return to parent
             rectTransform.SetParent(parent);
 
@@ -235,22 +274,6 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
             GameManager.instance.SelectAction(null);
         }
 
-    }
-
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        if (!isInteractable) return;
-
-        // Enable outline
-        outline.enabled = true;
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        if (!isInteractable) return;
-
-        // Disable outline
-        outline.enabled = false;
     }
 
     private void DisplayValue(int value)

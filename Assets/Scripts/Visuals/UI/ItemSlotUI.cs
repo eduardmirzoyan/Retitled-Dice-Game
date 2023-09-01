@@ -17,7 +17,7 @@ public abstract class ItemSlotUI : MonoBehaviour, IDropHandler, IPointerEnterHan
     [SerializeField] protected GameObject itemUIPrefab;
 
     [Header("Settings")]
-    [SerializeField] protected bool preventInsert = false;
+    [SerializeField] public bool preventInsert = false;
 
     public abstract void OnPointerEnter(PointerEventData eventData);
 
@@ -26,5 +26,7 @@ public abstract class ItemSlotUI : MonoBehaviour, IDropHandler, IPointerEnterHan
     public abstract void OnDrop(PointerEventData eventData);
 
     public abstract void StoreItem(ItemUI itemUI);
+
+    public bool PreventingInsert() => preventInsert;
 
 }

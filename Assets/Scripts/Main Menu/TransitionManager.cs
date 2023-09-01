@@ -52,13 +52,13 @@ public class TransitionManager : MonoBehaviour
         animator.Play("Transition In");
 
         // Play background music
-        AudioManager.instance.Play("Background " + GetSceneIndex());
+        AudioManager.instance.PlayOST("OST " + GetSceneIndex());
     }
 
     public void LoadNextScene(Vector3 location)
     {
         // Stop any background music
-        AudioManager.instance.Stop("Background " + GetSceneIndex());
+        AudioManager.instance.StopOST("OST " + GetSceneIndex());
 
         // Stop any transition if one was happening
         if (coroutine != null) StopCoroutine(coroutine);
@@ -71,7 +71,7 @@ public class TransitionManager : MonoBehaviour
     {
         // Stop any background music
         // AudioManager.instance.Stop("Background " + GetSceneIndex());
-        
+
         // Stop any transition if one was happening
         if (coroutine != null) StopCoroutine(coroutine);
 
@@ -82,7 +82,7 @@ public class TransitionManager : MonoBehaviour
     public void LoadMainMenuScene(Vector3 location)
     {
         // Stop any background music
-        AudioManager.instance.Stop("Background " + GetSceneIndex());
+        AudioManager.instance.StopOST("OST " + GetSceneIndex());
 
         // Stop any transition if one was happening
         if (coroutine != null) StopCoroutine(coroutine);
