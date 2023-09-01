@@ -41,6 +41,7 @@
      <Compile Include="Assets\Scripts\Actions\RangedAction.cs" />
      <Compile Include="Assets\Scripts\World\Room.cs" />
      <Compile Include="Assets\Scripts\GameEvents.cs" />
+     <Compile Include="Assets\Scripts\Visuals\AttackParticle.cs" />
      <Compile Include="Assets\Scripts\SettingsManager.cs" />
      <Compile Include="Assets\Scripts\DamageFlash.cs" />
      <Compile Include="Assets\Scripts\Visuals\UI\ActionTooltipUI.cs" />

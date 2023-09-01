@@ -2493,99 +2493,99 @@ MonoBehaviour:
     audioMixerGroup: {fileID: -6432658396356169233, guid: 3f0fc48e3bb6ce84f87756c7cd05bd35, type: 2}
   - name: OST 1
     audioClip: {fileID: 8300000, guid: db510369bdcfa74418361a93f83bdd7b, type: 3}
-    volume: 0.1
+    volume: 0.05
     pitch: 1
     loop: 1
     audioSource: {fileID: 0}
     audioMixerGroup: {fileID: -6432658396356169233, guid: 3f0fc48e3bb6ce84f87756c7cd05bd35, type: 2}
   sfxSounds:
-  - name: coin_pickup
+  - name: gold
     audioClip: {fileID: 8300000, guid: f3a2b0e7276e8d14bb667a8afd08340a, type: 3}
-    volume: 1
+    volume: 0.5
     pitch: 1
     loop: 0
     audioSource: {fileID: 0}
     audioMixerGroup: {fileID: -2258679276098905894, guid: 3f0fc48e3bb6ce84f87756c7cd05bd35, type: 2}
-  - name: coin_pickup
+  - name: gold
     audioClip: {fileID: 8300000, guid: 5db71341f9d7d7c489daed2d0165d2e8, type: 3}
-    volume: 1
+    volume: 0.5
     pitch: 1
     loop: 0
     audioSource: {fileID: 0}
     audioMixerGroup: {fileID: -2258679276098905894, guid: 3f0fc48e3bb6ce84f87756c7cd05bd35, type: 2}
-  - name: bow_shot
+  - name: shoot
     audioClip: {fileID: 8300000, guid: 669febce65e20604389965e155ef569e, type: 3}
-    volume: 1
+    volume: 0.5
     pitch: 1
     loop: 0
     audioSource: {fileID: 0}
     audioMixerGroup: {fileID: -2258679276098905894, guid: 3f0fc48e3bb6ce84f87756c7cd05bd35, type: 2}
   - name: footstep
     audioClip: {fileID: 8300000, guid: ce7756ea03daa0840bd76b7e8f9bb9c8, type: 3}
-    volume: 1
-    pitch: 1
-    loop: 1
-    audioSource: {fileID: 0}
-    audioMixerGroup: {fileID: -2258679276098905894, guid: 3f0fc48e3bb6ce84f87756c7cd05bd35, type: 2}
-  - name: hit
-    audioClip: {fileID: 8300000, guid: 5dd20483f9b66754f867a9ac0bda1cf1, type: 3}
-    volume: 1
-    pitch: 1
-    loop: 0
-    audioSource: {fileID: 0}
-    audioMixerGroup: {fileID: -2258679276098905894, guid: 3f0fc48e3bb6ce84f87756c7cd05bd35, type: 2}
-  - name: hit
-    audioClip: {fileID: 8300000, guid: 4045938125154af46b8f1c4a545a21ce, type: 3}
-    volume: 1
-    pitch: 1
-    loop: 0
-    audioSource: {fileID: 0}
-    audioMixerGroup: {fileID: -2258679276098905894, guid: 3f0fc48e3bb6ce84f87756c7cd05bd35, type: 2}
-  - name: hit
-    audioClip: {fileID: 8300000, guid: 298ecdd27c04abb49bc6f7948523dc73, type: 3}
-    volume: 1
-    pitch: 1
-    loop: 0
-    audioSource: {fileID: 0}
-    audioMixerGroup: {fileID: -2258679276098905894, guid: 3f0fc48e3bb6ce84f87756c7cd05bd35, type: 2}
-  - name: hit
-    audioClip: {fileID: 8300000, guid: 2c6a517eec73eef428bf52addeba36de, type: 3}
-    volume: 1
+    volume: 0.1
     pitch: 1
     loop: 0
     audioSource: {fileID: 0}
     audioMixerGroup: {fileID: -2258679276098905894, guid: 3f0fc48e3bb6ce84f87756c7cd05bd35, type: 2}
   - name: jump
     audioClip: {fileID: 8300000, guid: 15d5c5c6aedf6004095ba69bce7c2dad, type: 3}
-    volume: 1
+    volume: 0.5
     pitch: 1
     loop: 0
     audioSource: {fileID: 0}
     audioMixerGroup: {fileID: -2258679276098905894, guid: 3f0fc48e3bb6ce84f87756c7cd05bd35, type: 2}
   - name: jump
     audioClip: {fileID: 8300000, guid: 177d0dec0b0e7b44eb4116e4f7ea4aa6, type: 3}
-    volume: 1
+    volume: 0.5
     pitch: 1
     loop: 0
     audioSource: {fileID: 0}
     audioMixerGroup: {fileID: -2258679276098905894, guid: 3f0fc48e3bb6ce84f87756c7cd05bd35, type: 2}
   - name: jump
     audioClip: {fileID: 8300000, guid: 59f31cd8f1ea75d42bafaa487524af2d, type: 3}
-    volume: 1
+    volume: 0.5
     pitch: 1
     loop: 0
     audioSource: {fileID: 0}
     audioMixerGroup: {fileID: -2258679276098905894, guid: 3f0fc48e3bb6ce84f87756c7cd05bd35, type: 2}
-  - name: key_pickup
+  - name: key
     audioClip: {fileID: 8300000, guid: 981271f590bdee74683934bc530beaa2, type: 3}
-    volume: 1
+    volume: 0.5
     pitch: 1
     loop: 0
     audioSource: {fileID: 0}
     audioMixerGroup: {fileID: -2258679276098905894, guid: 3f0fc48e3bb6ce84f87756c7cd05bd35, type: 2}
   - name: teleport
     audioClip: {fileID: 8300000, guid: 0fbe9087a2b40254596db11f4d6cab93, type: 3}
-    volume: 1
+    volume: 0.5
+    pitch: 1
+    loop: 0
+    audioSource: {fileID: 0}
+    audioMixerGroup: {fileID: -2258679276098905894, guid: 3f0fc48e3bb6ce84f87756c7cd05bd35, type: 2}
+  - name: slash
+    audioClip: {fileID: 8300000, guid: 6c12153993bebd640ba80064631907ba, type: 3}
+    volume: 0.5
+    pitch: 1
+    loop: 0
+    audioSource: {fileID: 0}
+    audioMixerGroup: {fileID: -2258679276098905894, guid: 3f0fc48e3bb6ce84f87756c7cd05bd35, type: 2}
+  - name: thrust
+    audioClip: {fileID: 8300000, guid: bf02d189c27bb3a4fa442d7ea8ceb3cf, type: 3}
+    volume: 0.5
+    pitch: 1
+    loop: 0
+    audioSource: {fileID: 0}
+    audioMixerGroup: {fileID: -2258679276098905894, guid: 3f0fc48e3bb6ce84f87756c7cd05bd35, type: 2}
+  - name: death
+    audioClip: {fileID: 8300000, guid: f6861926fa332bf4c8fcf39b8c5b8b65, type: 3}
+    volume: 0.5
+    pitch: 1
+    loop: 0
+    audioSource: {fileID: 0}
+    audioMixerGroup: {fileID: -2258679276098905894, guid: 3f0fc48e3bb6ce84f87756c7cd05bd35, type: 2}
+  - name: draw
+    audioClip: {fileID: 8300000, guid: 0ef858c0e8bcded4fa748e7b8d632a1a, type: 3}
+    volume: 0.2
     pitch: 1
     loop: 0
     audioSource: {fileID: 0}
@@ -4303,12 +4303,76 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5215442255076269379, guid: 75a8bb9db38f8f0438376625fbb3cad5, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5215442255076269379, guid: 75a8bb9db38f8f0438376625fbb3cad5, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5215442255076269379, guid: 75a8bb9db38f8f0438376625fbb3cad5, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5215442255076269379, guid: 75a8bb9db38f8f0438376625fbb3cad5, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5215442255900460438, guid: 75a8bb9db38f8f0438376625fbb3cad5, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5215442255900460438, guid: 75a8bb9db38f8f0438376625fbb3cad5, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5215442256139884893, guid: 75a8bb9db38f8f0438376625fbb3cad5, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5215442256139884893, guid: 75a8bb9db38f8f0438376625fbb3cad5, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5215442256139884893, guid: 75a8bb9db38f8f0438376625fbb3cad5, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5215442256139884893, guid: 75a8bb9db38f8f0438376625fbb3cad5, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5215442256272759124, guid: 75a8bb9db38f8f0438376625fbb3cad5, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5215442256272759124, guid: 75a8bb9db38f8f0438376625fbb3cad5, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5215442256272759124, guid: 75a8bb9db38f8f0438376625fbb3cad5, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5215442256272759124, guid: 75a8bb9db38f8f0438376625fbb3cad5, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6097792606613732179, guid: 75a8bb9db38f8f0438376625fbb3cad5, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6097792606613732179, guid: 75a8bb9db38f8f0438376625fbb3cad5, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6097792606613732179, guid: 75a8bb9db38f8f0438376625fbb3cad5, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6097792606613732179, guid: 75a8bb9db38f8f0438376625fbb3cad5, type: 3}
+      propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6131646646758311471, guid: 75a8bb9db38f8f0438376625fbb3cad5, type: 3}

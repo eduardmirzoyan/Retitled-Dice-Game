@@ -28,6 +28,9 @@ public class KeyPickup : MonoBehaviour
         // If this key was picked up destroy it
         if (this.location == location)
         {
+            // Play sound
+            AudioManager.instance.PlaySFX("key");
+
             // Spawn effect
             Instantiate(pickupEffect, transform.position, Quaternion.identity);
 

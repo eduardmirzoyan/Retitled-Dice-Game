@@ -645,11 +645,11 @@ public class GameManager : MonoBehaviour
             GameEvents.instance.TriggerOnEntitySheatheWeapon(entity, action.weapon);
 
             // Wait for animation
-            yield return new WaitForSeconds(gameSettings.weaponSheatheBufferTime);
+            // yield return new WaitForSeconds(gameSettings.weaponSheatheBufferTime);
         }
 
         // Done
-        yield return null;
+        // yield return null;
     }
 
     private IEnumerator PerformDelayedAction(Entity entity)

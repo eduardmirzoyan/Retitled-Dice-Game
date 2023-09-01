@@ -29,6 +29,7 @@ public class EntityModel : MonoBehaviour
     [SerializeField] private Entity entity;
     [SerializeField] private bool isFacingRight = true;
     [SerializeField] private float jumpHeight = 1f;
+    [SerializeField] private float footstepSfxSpeed = 0.25f;
 
     private RoomUI roomUI;
     private Coroutine coroutine;
@@ -90,6 +91,9 @@ public class EntityModel : MonoBehaviour
     {
         if (this.entity == entity)
         {
+            // Play sound
+            AudioManager.instance.PlaySFX("death");
+
             // Spawn death cloud 
             Instantiate(deathCloud, transform.position, Quaternion.identity);
 
@@ -127,7 +131,7 @@ public class EntityModel : MonoBehaviour
             properLayerSort.SetActive(true);
 
             // Play sound
-            // AudioManager.instance.PlaySFX("footstep");
+            InvokeRepeating("FootstepsSFX", 0f, footstepSfxSpeed);
         }
     }
 
@@ -159,8 +163,13 @@ public class EntityModel : MonoBehaviour
             properLayerSort.SetActive(false);
 
             // Stop sound
-            // AudioManager.instance.StopSFX("footstep");
+            CancelInvoke("FootstepsSFX");
         }
+    }
+
+    private void FootstepsSFX()
+    {
+        AudioManager.instance.PlaySFX("footstep");
     }
 
     private void WarpEntity(Entity entity)
@@ -173,6 +182,9 @@ public class EntityModel : MonoBehaviour
             // Start routine
             if (coroutine != null) StopCoroutine(coroutine);
             coroutine = StartCoroutine(Warp(newLocation));
+
+            // Play sound
+            AudioManager.instance.PlaySFX("teleport");
         }
     }
 
@@ -186,6 +198,9 @@ public class EntityModel : MonoBehaviour
             // Start routine
             if (coroutine != null) StopCoroutine(coroutine);
             coroutine = StartCoroutine(Jump(currentPosition, newPosition));
+
+            // Play sound
+            AudioManager.instance.PlaySFX("jump");
         }
     }
 
@@ -284,7 +299,7 @@ public class EntityModel : MonoBehaviour
                 damageFlash.Flash();
 
             // Spawn particle
-            if (GameManager.instance.gameSettings.useHitEffect && entity.hitEffectPrefab != null)
+            if (entity.hitEffectPrefab != null)
             {
                 Instantiate(entity.hitEffectPrefab, transform.position, transform.rotation);
             }
@@ -293,9 +308,6 @@ public class EntityModel : MonoBehaviour
             if (GameManager.instance.gameSettings.useScreenShake)
                 CameraShake.instance.ScreenShake(0.15f);
 
-            // Hit freeze
-            if (GameManager.instance.gameSettings.useHitFreeze)
-                HitFreeze.instance.StartHitFreeze(0.1f);
         }
     }
 

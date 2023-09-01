@@ -85,6 +85,9 @@ public class WeaponModel : MonoBehaviour
 
             // Move weapon up in sorting
             spriteRenderer.sortingLayerName = "Weapons";
+
+            // Play sound
+            AudioManager.instance.PlaySFX("draw");
         }
     }
 
@@ -96,7 +99,7 @@ public class WeaponModel : MonoBehaviour
             animator.Play("Attack");
 
             // Spawn particle in the same orientation as the weapon
-            if (GameManager.instance.gameSettings.useAttackEffect && weapon.attackParticlePrefab != null)
+            if (weapon.attackParticlePrefab != null)
             {
                 Instantiate(weapon.attackParticlePrefab, transform.position + transform.right, transform.rotation);
             }

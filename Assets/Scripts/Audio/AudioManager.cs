@@ -155,4 +155,20 @@ public class AudioManager : MonoBehaviour
         }
         else { throw new System.Exception("No sounds with that name found: " + name); }
     }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            InvokeRepeating("FootstepsSFX", 0f, 0.25f);
+        }
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            // InvokeRepeating("PlayFootsteps", 0f, 1f);
+            CancelInvoke("FootstepsSFX");
+        }
+    }
+
+
+
 }

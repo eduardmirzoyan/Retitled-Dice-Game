@@ -27,6 +27,9 @@ public class GoldPickup : MonoBehaviour
         // If this key was picked up destroy it
         if (this.location == location)
         {
+            // Play sound
+            AudioManager.instance.PlaySFX("gold");
+
             // Spawn effect
             Instantiate(pickupEffect, transform.position, Quaternion.identity);
 

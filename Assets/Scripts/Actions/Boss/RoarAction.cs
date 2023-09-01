@@ -41,7 +41,6 @@ public class RoarAction : Action
         // Trigger event
         GameEvents.instance.TriggerOnEntityUseWeapon(entity, weapon);
 
-        // Wait for animation
-        yield return new WaitForSeconds(GameManager.instance.gameSettings.weaponMeleeBufferTime);
+        yield return null;
     }
 }

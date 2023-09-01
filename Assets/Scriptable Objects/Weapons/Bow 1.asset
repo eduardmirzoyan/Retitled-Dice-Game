@@ -18,5 +18,5 @@ MonoBehaviour:
   value: 4
   actions:
   - {fileID: 11400000, guid: 2a261ff5250b99d4d8a68c972398d2b0, type: 2}
-  attackParticlePrefab: {fileID: 0}
+  attackParticlePrefab: {fileID: 2619012972811128830, guid: 305c791992e7f004cbe3c6b98c2bcc76, type: 3}
   weaponPrefab: {fileID: 9140997069136386509, guid: 8525dab3eaf904b468a12364fa44d58a, type: 3}

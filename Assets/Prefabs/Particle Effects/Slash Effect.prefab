@@ -72,7 +72,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 704134753
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 351d2e1bc9566c74f9855a78b5b767b8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -114,7 +114,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2619012972811128831}
-  - component: {fileID: 2619012972811128828}
+  - component: {fileID: -542102129257768287}
   m_Layer: 0
   m_Name: Slash Effect
   m_TagString: Untagged
@@ -138,7 +138,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2619012972811128828
+--- !u!114 &-542102129257768287
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -147,7 +147,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 2619012972811128830}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78a4b291e3ce58e4aa300f7674c2478a, type: 3}
+  m_Script: {fileID: 11500000, guid: 273cf343c56d83e4aba16dc22a7419f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  duration: 0.2
+  lifetime: 0.25
+  sfxName: slash

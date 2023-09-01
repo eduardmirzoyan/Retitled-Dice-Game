@@ -26,13 +26,6 @@ public class PiercingRangedAction : Action
 
     public override IEnumerator Perform(Entity entity, Vector3Int targetLocation, List<Vector3Int> threatenedLocations, Room room)
     {
-        // Calculate direction
-        Vector3Int direction = targetLocation - entity.location;
-        direction.Clamp(-Vector3Int.one, Vector3Int.one);
-
-        // Wait for animation
-        yield return new WaitForSeconds(GameManager.instance.gameSettings.weaponDrawBufferTime);
-
         // Logic
         foreach (var location in threatenedLocations)
         {
@@ -51,7 +44,6 @@ public class PiercingRangedAction : Action
         // Trigger event
         GameEvents.instance.TriggerOnEntityUseWeapon(entity, weapon);
 
-        // Wait for animation
-        yield return new WaitForSeconds(GameManager.instance.gameSettings.weaponMeleeBufferTime);
+        yield return null;
     }
 }

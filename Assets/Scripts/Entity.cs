@@ -150,25 +150,29 @@ public class Entity : ScriptableObject
         // Trigger event
         GameEvents.instance.TriggerOnEnityWarp(this);
 
+        // Wait for animation
+        yield return new WaitForSeconds(GameManager.instance.gameSettings.warpBufferTime);
+
         // Interact with new location
         Interact();
 
         // Check for any reactive actions
         if (this is Player)
             yield return GameManager.instance.PerformReactiveAction(location);
-
-        // Wait for animation
-        yield return new WaitForSeconds(GameManager.instance.gameSettings.warpBufferTime);
     }
 
     public IEnumerator Jump(Vector3Int location)
     {
+
         // Move
         room.MoveEntityTo(this, location);
 
         // Trigger event
         GameEvents.instance.TriggerOnEntityJump(this);
 
+        // Wait for animation
+        yield return new WaitForSeconds(GameManager.instance.gameSettings.jumpBufferTime);
+
         // Interact with new location
         Interact();
 
@@ -176,8 +180,7 @@ public class Entity : ScriptableObject
         if (this is Player)
             yield return GameManager.instance.PerformReactiveAction(location);
 
-        // Wait for animation
-        yield return new WaitForSeconds(GameManager.instance.gameSettings.jumpBufferTime);
+
     }
 
     protected virtual void Interact()

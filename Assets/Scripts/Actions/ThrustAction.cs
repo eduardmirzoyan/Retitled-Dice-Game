@@ -26,6 +26,7 @@ public class ThrustAction : Action
 
     public override IEnumerator Perform(Entity entity, Vector3Int targetLocation, List<Vector3Int> threatenedLocations, Room room)
     {
+        // Attack each location
         foreach (var location in threatenedLocations)
         {
             var target = room.GetEntityAtLocation(location);
@@ -38,7 +39,6 @@ public class ThrustAction : Action
         // Trigger event
         GameEvents.instance.TriggerOnEntityUseWeapon(entity, weapon);
 
-        // Wait for animation
-        yield return new WaitForSeconds(GameManager.instance.gameSettings.weaponMeleeBufferTime);
+        yield return null;
     }
 }

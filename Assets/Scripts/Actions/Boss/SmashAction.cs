@@ -35,22 +35,6 @@ public class SmashAction : Action
         targets.Add(startMiddle + forward + forward + left + left);
         targets.Add(startMiddle + forward + forward + right + right);
 
-        // targets.Add(startLeft);
-        // targets.Add(startRight);
-
-        // for (int i = 1; i < attackLength; i++)
-        // {
-        //     // Add threats
-        //     targets.Add(startMiddle);
-        //     targets.Add(startLeft);
-        //     targets.Add(startRight);
-
-        //     // Increment
-        //     startMiddle += forward;
-        //     startLeft += forward;
-        //     startRight += forward;
-        // }
-
         return targets;
     }
 
@@ -68,7 +52,6 @@ public class SmashAction : Action
         // Trigger event
         GameEvents.instance.TriggerOnEntityUseWeapon(entity, weapon);
 
-        // Wait for animation
-        yield return new WaitForSeconds(GameManager.instance.gameSettings.weaponMeleeBufferTime);
+        yield return null;
     }
 }
