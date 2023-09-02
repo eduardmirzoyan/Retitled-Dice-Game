@@ -9,11 +9,27 @@ public class RangedAction : Action
     {
         List<Vector3Int> result = new List<Vector3Int>();
 
-        // For each cardinal direction
         foreach (var location in room.GetNeighbors(startLocation, true))
         {
+            int range = die.value;
             Vector3Int direction = location - startLocation;
-            result.Add(room.GetFirstValidLocationWithinRange(startLocation, direction, die.value));
+            Vector3Int start = location;
+
+            while (room.IsValidLocation(start, true, true, true) && range > 0)
+            {
+                if (room.IsEntity(start))
+                {
+                    result.Add(start);
+                    start = startLocation;
+                    break;
+                }
+
+                start += direction;
+                range--;
+            }
+
+            if (start != startLocation && room.IsValidLocation(start - direction, true))
+                result.Add(start - direction);
         }
 
         return result;

@@ -16,7 +16,7 @@ public class ActionUI : MonoBehaviour
     [Header("Dynamic Data")]
     [SerializeField] private Action action;
 
-    public void Initialize(Action action)
+    public void Initialize(Action action, KeyCode shortcut = KeyCode.None)
     {
         this.action = action;
 
@@ -28,11 +28,16 @@ public class ActionUI : MonoBehaviour
         tooltipTriggerUI.SetTooltip(action.name, action.briefDescription);
 
         // Initialize die
-        diceUI.Initialize(action, true);
+        diceUI.Initialize(action, shortcut);
+
+        // Update name
+        gameObject.name = action.name + " Action UI";
 
         // Sub to events
         GameEvents.instance.onTurnStart += AllowInteraction;
         GameEvents.instance.onActionSelect += ToggleInteraction;
+
+
         GameEvents.instance.onActionPerformStart += PreventInteraction;
         GameEvents.instance.onActionPerformEnd += AllowInteraction;
         GameEvents.instance.onTurnEnd += PreventInteraction;
@@ -88,21 +93,28 @@ public class ActionUI : MonoBehaviour
 
     private void ToggleInteraction(Entity entity, Action action)
     {
-        // If un-selected action
-        if (action == null)
+        if (entity is Player)
         {
-            AllowInteraction(entity);
+            // If un-selected action
+            if (action == null)
+            {
+                AllowInteraction(entity);
+            }
+            // If this action was selected
+            else if (this.action == action)
+            {
+                canvasGroup.alpha = 1f;
+                canvasGroup.interactable = true;
+                canvasGroup.blocksRaycasts = true;
+
+                diceUI.Highlight();
+            }
+            else
+            {
+                PreventInteraction(entity);
+            }
         }
-        // If selected other action
-        else if (this.action != action)
-        {
-            PreventInteraction(entity);
-        }
-        else
-        {
-            // Just remove outline
-            diceUI.Idle();
-        }
+
     }
 
 }

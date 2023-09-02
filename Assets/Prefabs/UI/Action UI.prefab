@@ -468,6 +468,7 @@ MonoBehaviour:
   diceUI: {fileID: 4400176594013170716}
   canvasGroup: {fileID: 9005905621918515662}
   tooltipTriggerUI: {fileID: 8719552577159774013}
+  action: {fileID: 0}
 --- !u!114 &3604336057507588643
 MonoBehaviour:
   m_ObjectHideFlags: 0

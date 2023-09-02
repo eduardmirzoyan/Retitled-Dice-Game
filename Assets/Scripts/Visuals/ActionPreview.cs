@@ -51,7 +51,7 @@ public class ActionPreview : MonoBehaviour
     private void UnintializeOnSelect(Entity entity, Action action)
     {
         // If no action was selected, destroy this
-        if (this.entity == entity && action == null && !actionIcon.enabled)
+        if (this.entity == entity && action == null)
         {
             // Destroy self
             Destroy(gameObject);

@@ -20,15 +20,32 @@ public class EntityInspectUI : MonoBehaviour
     {
         // Sub
         GameEvents.instance.onEntityInspect += InspectEntity;
+        GameEvents.instance.onEntityDespawn += Uninspect;
     }
 
     private void OnDestroy()
     {
         // Unsub
         GameEvents.instance.onEntityInspect -= InspectEntity;
+        GameEvents.instance.onEntityDespawn -= Uninspect;
     }
 
-    public void InspectEntity(Entity entity)
+    private void Uninspect(Entity entity)
+    {
+        // If you are inspecting this entity, stop
+        if (this.entity == entity)
+        {
+            // Hide visuals
+            canvasGroup.alpha = 0;
+            canvasGroup.interactable = false;
+            canvasGroup.blocksRaycasts = false;
+
+            // Remove any visuals
+            healthbarUI.Uninitialize();
+        }
+    }
+
+    private void InspectEntity(Entity entity)
     {
         // If entity is different, you need to make some changes
         if (this.entity != entity)

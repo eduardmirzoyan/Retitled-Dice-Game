@@ -17,6 +17,7 @@ public class GameEvents : MonoBehaviour
 
     // Action based
     public event Action<Entity, Action> onActionSelect;
+    public event Action<Entity, Action> onActionDeselect;
     public event Action<Entity, Action, Vector3Int> onLocationSelect;
     public event Action<Entity, Action, Vector3Int> onActionConfirm;
     public event Action<Entity, Action, Vector3Int, Room> onActionPerformStart;
@@ -162,6 +163,15 @@ public class GameEvents : MonoBehaviour
             onActionSelect(entity, action);
         }
     }
+
+    public void TriggerOnActionDeselect(Entity entity, Action action)
+    {
+        if (onActionDeselect != null)
+        {
+            onActionDeselect(entity, action);
+        }
+    }
+
     public void TriggerOnLocationSelect(Entity entity, Action action, Vector3Int location)
     {
         if (onLocationSelect != null)

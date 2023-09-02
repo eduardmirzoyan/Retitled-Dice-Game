@@ -142,7 +142,7 @@ public class Room : ScriptableObject
         else if (neutralEntities.Remove(entity))
         {
             // Barrel was removed
-            Debug.Log("Bareel was killed :(");
+            Debug.Log("Barel was killed :(");
         }
         else
         {
@@ -416,16 +416,26 @@ public class Room : ScriptableObject
         return neighbors;
     }
 
-    public bool IsValidLocation(Vector3Int location, bool ignoreEntity = false, bool ignorePickup = true)
+    public bool IsEntity(Vector3Int location)
     {
-        // Debug.Log(location);
+        return TileFromLocation(location).containedEntity != null;
+    }
 
+
+    public bool IsValidLocation(Vector3Int location, bool ignoreEntity = false, bool ignorePickup = true, bool ignoreChasam = false)
+    {
         var tile = TileFromLocation(location);
 
         // Make sure there is no wall or void
-        if (tile.tileType == TileType.Wall || tile.tileType == TileType.Chasam)
+        if (tile.tileType == TileType.Wall)
         {
             return false;
+        }
+
+        if (!ignoreChasam)
+        {
+            if (tile.tileType == TileType.Chasam)
+                return false;
         }
 
         // Make sure there is no entity
@@ -462,7 +472,7 @@ public class Room : ScriptableObject
         direction.Clamp(-Vector3Int.one, Vector3Int.one);
 
         // Debug
-        Debug.Log("Direction: " + direction);
+        // Debug.Log("Direction: " + direction);
 
         // Keep looping until start is at the end 
         while (start != end - direction)

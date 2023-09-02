@@ -15,8 +15,6 @@ public class ActionIndicator : MonoBehaviour
     [Header("Tiles")]
     [SerializeField] private RuleTile highlightedTile;
     [SerializeField] private GameObject actionPreviewPrefab;
-    [SerializeField] private Tile reactiveIconTile;
-    [SerializeField] private Tile delayedIconTile;
     [SerializeField] private AnimatedTile reactAnimatedTile;
 
     [Header("Settings")]
@@ -40,6 +38,7 @@ public class ActionIndicator : MonoBehaviour
         GameEvents.instance.onActionUnthreatenLocation += UnthreatenTile;
 
         GameEvents.instance.onThreatsInspect += OutlineThreats;
+        GameEvents.instance.onEntityDespawn += ClearOutline;
     }
 
     private void OnDestroy()
@@ -53,6 +52,7 @@ public class ActionIndicator : MonoBehaviour
         GameEvents.instance.onActionUnthreatenLocation -= UnthreatenTile;
 
         GameEvents.instance.onThreatsInspect -= OutlineThreats;
+        GameEvents.instance.onEntityDespawn -= ClearOutline;
     }
 
     private void ThreatenTile(Action action, Vector3Int location)
@@ -71,10 +71,6 @@ public class ActionIndicator : MonoBehaviour
                 }
                 else
                 {
-                    // Highlight tile
-                    // intentTilemap.SetTile(location, highlightedTile);
-                    // intentTilemap.SetColor(location, action.color);
-
                     // Set icon
                     intentIconTilemap.SetTile(location, reactAnimatedTile);
                     intentIconTilemap.SetColor(location, action.color);
@@ -94,7 +90,6 @@ public class ActionIndicator : MonoBehaviour
 
     private void UnthreatenTile(Action action, Vector3Int location)
     {
-
         // Only Show non-movment actions
         if (action.actionType != ActionType.Movement)
         {
@@ -219,5 +214,10 @@ public class ActionIndicator : MonoBehaviour
         {
             inspectTilemap.ClearAllTiles();
         }
+    }
+
+    private void ClearOutline(Entity entity)
+    {
+        // TODO?
     }
 }

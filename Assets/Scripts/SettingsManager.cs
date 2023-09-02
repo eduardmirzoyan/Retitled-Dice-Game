@@ -6,17 +6,20 @@ using TMPro;
 
 public class SettingsManager : MonoBehaviour
 {
-    public static SettingsManager instance;
+
     [SerializeField] private AudioMixer audioMixer;
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private TMP_Dropdown resolutionsDropdown;
+    [SerializeField] private KeyCode toggleKey = KeyCode.Tab;
+    [SerializeField] private bool isOpen;
 
     private Resolution[] resolutions;
 
+    public static SettingsManager instance;
     private void Awake()
     {
         // Singleton logic
-        if (instance != null)
+        if (SettingsManager.instance != null)
         {
             Destroy(this);
             return;
@@ -55,6 +58,16 @@ public class SettingsManager : MonoBehaviour
         resolutionsDropdown.value = currentResIndex;
         // Update the options
         resolutionsDropdown.RefreshShownValue();
+
+        Close();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(toggleKey) && isOpen)
+        {
+            Close();
+        }
     }
 
     public void Open()
@@ -62,6 +75,7 @@ public class SettingsManager : MonoBehaviour
         canvasGroup.alpha = 1f;
         canvasGroup.interactable = true;
         canvasGroup.blocksRaycasts = true;
+        isOpen = true;
     }
 
     public void Close()
@@ -69,6 +83,7 @@ public class SettingsManager : MonoBehaviour
         canvasGroup.alpha = 0f;
         canvasGroup.interactable = false;
         canvasGroup.blocksRaycasts = false;
+        isOpen = false;
     }
 
     /// ~~~~~ Functionality Here ~~~~~
@@ -100,7 +115,7 @@ public class SettingsManager : MonoBehaviour
         Debug.Log("SFX volume set to: " + volume);
     }
 
-    public void SetQuality(int qualityIndex) 
+    public void SetQuality(int qualityIndex)
     {
         // Not used yet...
 

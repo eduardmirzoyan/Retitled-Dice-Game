@@ -55,6 +55,7 @@ public class ActionPathRenderer : MonoBehaviour
         Focus();
 
         // Sub
+        GameEvents.instance.onActionSelect += UnintializeOnActionSelect;
         GameEvents.instance.onLocationSelect += UnintializeOnLocationChange;
         GameEvents.instance.onActionPerformEnd += UnintializeOnActionEnd;
         GameEvents.instance.onActionUnthreatenLocation += UnintializeOnUnthreaten;
@@ -65,12 +66,19 @@ public class ActionPathRenderer : MonoBehaviour
     private void OnDestroy()
     {
         // Unsub
+        GameEvents.instance.onActionSelect -= UnintializeOnActionSelect;
         GameEvents.instance.onLocationSelect -= UnintializeOnLocationChange;
         GameEvents.instance.onActionPerformEnd -= UnintializeOnActionEnd;
         GameEvents.instance.onActionUnthreatenLocation -= UnintializeOnUnthreaten;
         GameEvents.instance.onTurnEnd -= UnfocusOnTurnEnd;
         GameEvents.instance.onTurnStart -= FocusOnTurnStart;
-        GameEvents.instance.onEntityInspect -= FocusOnInspect;
+    }
+    private void UnintializeOnActionSelect(Entity entity, Action action)
+    {
+        if (this.entity == entity && action == null)
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void UnintializeOnUnthreaten(Action action, Vector3Int location)

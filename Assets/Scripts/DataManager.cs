@@ -90,6 +90,11 @@ public class DataManager : MonoBehaviour
         return roomNumber;
     }
 
+    public bool IsTutorial()
+    {
+        return roomNumber < 2 && stageNumber == 1;
+    }
+
     public RoomType GetNextRoom()
     {
         // Shops on Room 3 and 6

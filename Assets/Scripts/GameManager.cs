@@ -112,8 +112,14 @@ public class GameManager : MonoBehaviour
         {
             case RoomType.Normal:
 
-                // Generate a normal room
-                room = roomGenerator.GenerateRoom();
+                if (DataManager.instance.IsTutorial())
+                {
+                    room = roomGenerator.GenerateRoom(RoomSize.Small);
+                }
+                else
+                {
+                    room = roomGenerator.GenerateRoom(RoomSize.Medium);
+                }
 
                 break;
             case RoomType.Shop:
@@ -154,7 +160,8 @@ public class GameManager : MonoBehaviour
             case RoomType.Normal:
 
                 // Spawn enemies
-                for (int i = 0; i < 2; i++)
+                int num = DataManager.instance.IsTutorial() ? 1 : 2;
+                for (int i = 0; i < num; i++)
                 {
                     // Generate a random enemy
                     var enemy = enemyGenerator.GenerateEnemy();
@@ -207,7 +214,7 @@ public class GameManager : MonoBehaviour
             case RoomType.Normal:
 
                 // Create keys based on room number
-                int num = DataManager.instance.GetRoomNumber() > 2 ? 2 : 1;
+                int num = DataManager.instance.IsTutorial() ? 1 : 2;
                 for (int i = 0; i < num; i++)
                 {
                     // Spawn a barrel
@@ -228,7 +235,7 @@ public class GameManager : MonoBehaviour
             case RoomType.Normal:
 
                 // Create keys based on room number
-                int num = DataManager.instance.GetRoomNumber() > 2 ? 2 : 1;
+                int num = DataManager.instance.IsTutorial() ? 1 : 2;
                 for (int i = 0; i < num; i++)
                 {
                     // Spawn a key
@@ -249,7 +256,7 @@ public class GameManager : MonoBehaviour
             case RoomType.Normal:
 
                 // Create keys based on room number
-                int num = DataManager.instance.GetRoomNumber() > 2 ? 2 : 1;
+                int num = DataManager.instance.IsTutorial() ? 1 : 2;
                 for (int i = 0; i < num; i++)
                 {
                     // Spawn a key
@@ -358,8 +365,19 @@ public class GameManager : MonoBehaviour
 
     public void SelectAction(Action action)
     {
-        // Dip if u already have location selected
-        if (selectedLocation != Vector3Int.zero) return;
+        // If you already have a selected location
+        if (selectedLocation != Vector3Int.zero)
+        {
+            // Unselect it
+            SelectLocation(Vector3Int.zero);
+        }
+
+        // If you have a previous action
+        if (selectedAction != null)
+        {
+            // Un-select it
+            GameEvents.instance.TriggerOnActionSelect(selectedEntity, null);
+        }
 
         // Update selected action (could be null)
         this.selectedAction = action;
@@ -386,11 +404,9 @@ public class GameManager : MonoBehaviour
                 // Sheathe weapon
                 GameEvents.instance.TriggerOnEntitySheatheWeapon(selectedEntity, selectedAction.weapon);
             }
-
         }
         else
         {
-
             // Add threatened locations to table
             selectedThreats = selectedAction.GetThreatenedLocations(selectedEntity, location);
 

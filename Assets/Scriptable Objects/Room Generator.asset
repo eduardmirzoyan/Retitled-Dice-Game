@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a91d1ff8a5a30a4eba4a2f49527e6ea, type: 3}
   m_Name: Room Generator
   m_EditorClassIdentifier: 
-  roomSize: {x: 10, y: 10}
-  roomPadding: 8
+  roomSize: {x: 12, y: 12}
+  roomPadding: 10
   wallSpawnChance: 5
   chasamSpawnChance: 5
-  shopSize: {x: 5, y: 5}
+  shopSize: {x: 6, y: 6}
   arenaSize: {x: 10, y: 10}
+  arenaWallSpawnChance: 0
+  arenaChasamSpawnChance: 5

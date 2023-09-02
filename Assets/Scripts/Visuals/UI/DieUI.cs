@@ -11,7 +11,8 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
     [Header("Components")]
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private RectTransform rectTransform;
-    [SerializeField] private Animator animator;
+    [SerializeField] private Outline highlightOutline;
+    [SerializeField] private Outline pulseOutline;
     [SerializeField] private Image[] pipImages;
 
     [Header("Data")]
@@ -19,8 +20,8 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
     [SerializeField] private Action action;
     [SerializeField] private float travelRate = 0.1f;
     [SerializeField] private float spinRate = 3f;
-    [SerializeField] private bool isInteractable;
     [SerializeField] private bool isSelected;
+    [SerializeField] private KeyCode shortcut;
 
     private Transform parent;
     private bool isBeingDragged;
@@ -31,14 +32,13 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
     {
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponentInChildren<CanvasGroup>();
-        animator = GetComponentInChildren<Animator>();
     }
 
-    public void Initialize(Action action, bool isInteractable = true)
+    public void Initialize(Action action, KeyCode shortcut = KeyCode.None)
     {
-        this.die = action.die;
         this.action = action;
-        this.isInteractable = isInteractable;
+        this.die = action.die;
+        this.shortcut = shortcut;
         isSelected = false;
 
         // Save parent
@@ -64,7 +64,7 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
         }
 
         // Update name
-        gameObject.name = action.name + " Die Model";
+        gameObject.name = action.name + " Die UI";
 
         // Sub to die events
         GameEvents.instance.onDieRoll += Roll;
@@ -126,6 +126,8 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
         {
             canvasGroup.alpha = 1f;
             canvasGroup.blocksRaycasts = true;
+
+            Pulse();
         }
     }
 
@@ -133,57 +135,70 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
     {
         if (!die.isExhausted)
         {
-            animator.Play("Pulse");
+            pulseOutline.enabled = true;
+            highlightOutline.enabled = false;
             isSelected = false;
         }
+    }
 
+    public void Highlight()
+    {
+        if (isBeingDragged) return;
+
+        pulseOutline.enabled = false;
+        highlightOutline.enabled = true;
     }
 
     public void Idle()
     {
-        animator.Play("Idle");
+        pulseOutline.enabled = false;
+        highlightOutline.enabled = false;
+    }
+
+    private void Update()
+    {
+        // Check if shortcut is selected
+        if (Input.GetKeyDown(shortcut))
+        {
+            ToggleSelect();
+        }
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (!isInteractable) return;
-
         // If die is not exhausted
         if (!die.isExhausted)
         {
             // If this item is left clicked
             if (eventData.button == PointerEventData.InputButton.Left)
             {
-                if (isSelected)
-                {
-                    // Unselect this action
-                    GameManager.instance.SelectAction(null);
-
-                    // Stop animation
-                    animator.Play("Pulse");
-
-                    // Update state
-                    isSelected = false;
-                }
-                else
-                {
-                    // Select this action
-                    GameManager.instance.SelectAction(action);
-
-                    // Play animation
-                    animator.Play("Outline");
-
-                    // Update state
-                    isSelected = true;
-                }
+                ToggleSelect();
             }
+        }
+    }
+
+    private void ToggleSelect()
+    {
+        if (isSelected)
+        {
+            // Unselect this action
+            GameManager.instance.SelectAction(null);
+
+            // Update state
+            isSelected = false;
+        }
+        else
+        {
+            // Select this action
+            GameManager.instance.SelectAction(action);
+
+            // Update state
+            isSelected = true;
         }
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (!isInteractable) return;
-
         // If die is not exhausted
         if (!die.isExhausted)
         {
@@ -244,8 +259,6 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (!isInteractable) return;
-
         if (isBeingDragged)
         {
             if (!die.isExhausted)

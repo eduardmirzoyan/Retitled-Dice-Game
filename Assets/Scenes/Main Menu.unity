@@ -2514,7 +2514,14 @@ MonoBehaviour:
     audioSource: {fileID: 0}
     audioMixerGroup: {fileID: -2258679276098905894, guid: 3f0fc48e3bb6ce84f87756c7cd05bd35, type: 2}
   - name: shoot
-    audioClip: {fileID: 8300000, guid: 669febce65e20604389965e155ef569e, type: 3}
+    audioClip: {fileID: 8300000, guid: 83b30a2e9fbe8914fa7eb4b95f5582e2, type: 3}
+    volume: 0.5
+    pitch: 1
+    loop: 0
+    audioSource: {fileID: 0}
+    audioMixerGroup: {fileID: -2258679276098905894, guid: 3f0fc48e3bb6ce84f87756c7cd05bd35, type: 2}
+  - name: shoot
+    audioClip: {fileID: 8300000, guid: c5e088bc2ae6ae84bbef044e6ba6b950, type: 3}
     volume: 0.5
     pitch: 1
     loop: 0
@@ -2584,7 +2591,7 @@ MonoBehaviour:
     audioSource: {fileID: 0}
     audioMixerGroup: {fileID: -2258679276098905894, guid: 3f0fc48e3bb6ce84f87756c7cd05bd35, type: 2}
   - name: draw
-    audioClip: {fileID: 8300000, guid: 0ef858c0e8bcded4fa748e7b8d632a1a, type: 3}
+    audioClip: {fileID: 8300000, guid: c7716bd2d27e1964e83be0055344c5f7, type: 3}
     volume: 0.2
     pitch: 1
     loop: 0

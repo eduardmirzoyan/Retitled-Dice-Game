@@ -76,15 +76,20 @@ public class ActionsHandlerUI : MonoBehaviour
 
     private void CreateActions(Entity entity)
     {
+        KeyCode code = KeyCode.Alpha1;
+
         // Display all of the player's actions
         foreach (var action in entity.GetActions())
         {
             // Instaniate as child
             var actionUI = Instantiate(actionUIPrefab, gridLayoutGroup.transform).GetComponent<ActionUI>();
             // Initialize
-            actionUI.Initialize(action);
+            actionUI.Initialize(action, code);
             // Save
             actionUIs.Add(actionUI);
+
+            // Increment
+            code++;
         }
     }
 }

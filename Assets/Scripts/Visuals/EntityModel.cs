@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 [RequireComponent(typeof(DamageFlash))]
 public class EntityModel : MonoBehaviour
@@ -23,7 +22,7 @@ public class EntityModel : MonoBehaviour
     [Header("Particles")]
     [SerializeField] private ParticleSystem warpGenerateParticles;
     [SerializeField] private ParticleSystem warpDustParticles;
-    [SerializeField] private GameObject deathCloud;
+    [SerializeField] private GameObject corpsePrefab;
 
     [Header("Data")]
     [SerializeField] private Entity entity;
@@ -37,6 +36,15 @@ public class EntityModel : MonoBehaviour
     private void Awake()
     {
         properLayerSort = GetComponentInChildren<ProperLayerSort>();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            // Spawn corpse
+            Instantiate(corpsePrefab, transform.position, Quaternion.identity).GetComponent<CorpseModel>().Initialize(entity, Vector2.right);
+        }
     }
 
     public void Initialize(Entity entity, RoomUI roomUI)
@@ -94,8 +102,14 @@ public class EntityModel : MonoBehaviour
             // Play sound
             AudioManager.instance.PlaySFX("death");
 
-            // Spawn death cloud 
-            Instantiate(deathCloud, transform.position, Quaternion.identity);
+            // BANDADE SOLUTION
+            Vector2 fromLocation = entity.room.player.location + new Vector3(0.5f, 0.5f, 0);
+            Vector2 direction = (Vector2)transform.position - fromLocation;
+            direction.Normalize();
+
+            // Spawn corpse
+            if (entity.name != "Barrel")
+                Instantiate(corpsePrefab, transform.position, Quaternion.identity).GetComponent<CorpseModel>().Initialize(entity, direction);
 
             // Destroy self
             Destroy(gameObject);

@@ -39,7 +39,7 @@ public class LocationInspect : MonoBehaviour
         }
     }
 
-    public void SelectTile(Vector3Int location)
+    private void SelectTile(Vector3Int location)
     {
         // If selected tile is not undefined 
         if (selectedLocation != Vector3Int.back)

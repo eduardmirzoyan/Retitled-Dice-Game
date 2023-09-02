@@ -1,15 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
 {
-
     [SerializeField] private List<Sound> ostSounds;
     [SerializeField] private List<Sound> sfxSounds;
     [SerializeField] private float fadeTime = 1f;
     private Coroutine coroutine;
+
+    private string song;
 
     public static AudioManager instance;
     private void Awake()
@@ -100,9 +100,13 @@ public class AudioManager : MonoBehaviour
 
     public void PlayOST(string name)
     {
+        if (song == name) return;
+
         Sound sound = ostSounds.Find(sound => sound.name == name);
         if (sound != null)
         {
+            song = name;
+
             if (coroutine != null) StopCoroutine(coroutine);
 
             coroutine = StartCoroutine(FadeInAudio(sound));
