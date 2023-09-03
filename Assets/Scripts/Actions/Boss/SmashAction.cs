@@ -5,11 +5,23 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Actions/Boss/Smash")]
 public class SmashAction : Action
 {
-    [SerializeField] private int attackLength = 3;
-
     public override List<Vector3Int> GetValidLocations(Vector3Int startLocation, Room room)
     {
-        return room.GetNeighbors(startLocation, true);
+        List<Vector3Int> targets = new List<Vector3Int>();
+
+        foreach (var direction in cardinalDirections)
+        {
+            var location = startLocation + direction;
+
+            if (!room.IsWall(location))
+            {
+                targets.Add(location);
+            }
+        }
+
+        return targets;
+
+        // return room.GetNeighbors(startLocation, true);
     }
 
     public override List<Vector3Int> GetThreatenedLocations(Entity entity, Vector3Int targetLocation)

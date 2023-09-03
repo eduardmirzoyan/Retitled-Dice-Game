@@ -9,17 +9,27 @@ public class JumpAction : Action
     {
         List<Vector3Int> targets = new List<Vector3Int>();
 
-        foreach (var direction in new Vector3Int[] { Vector3Int.up, Vector3Int.down, Vector3Int.left, Vector3Int.right })
+        // Search in each direction
+        foreach (var direction in cardinalDirections)
         {
             var location = startLocation + direction;
-            for (int i = 0; i < die.value; i++)
+            var range = die.value;
+
+            // Check range
+            while (range > 0)
             {
-                if (room.IsValidLocation(location))
+                if (room.IsWall(location))
+                {
+                    break;
+                }
+
+                if (!room.IsChasam(location) && !room.HasEntity(location))
                 {
                     targets.Add(location);
                 }
 
                 location += direction;
+                range--;
             }
         }
 

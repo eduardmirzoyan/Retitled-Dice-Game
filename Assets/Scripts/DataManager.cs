@@ -9,7 +9,6 @@ public class DataManager : MonoBehaviour
     [Header("Static Data")]
     [SerializeField] private Player defaultPlayer;
     [SerializeField] private int maxRooms = 7;
-    [SerializeField] private int maxStages = 3;
 
     [Header("Dynamic Data")]
     [SerializeField] private Player player;

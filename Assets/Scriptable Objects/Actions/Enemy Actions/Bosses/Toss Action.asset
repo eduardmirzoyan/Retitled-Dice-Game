@@ -13,11 +13,12 @@ MonoBehaviour:
   m_Name: Toss Action
   m_EditorClassIdentifier: 
   name: Toss
-  description: ...
+  briefDescription: 
+  fullDescription: 
   icon: {fileID: 21300000, guid: ccccafbee6de19a43918433b0415cd5d, type: 3}
   background: {fileID: 21300000, guid: d12eabff6b0248c42bcf302efc0df493, type: 3}
   color: {r: 0.8705883, g: 0.24313727, b: 0.13725491, a: 1}
-  actionSpeed: 1
+  actionSpeed: 2
   actionType: 1
   pathPrefab: {fileID: 5796882529580813460, guid: 083c9cc31f9d52144a037eba6e64eb71, type: 3}
   die: {fileID: 11400000, guid: dbb9355000ced3842846106e2dca7d3b, type: 2}

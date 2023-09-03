@@ -10,7 +10,7 @@ public class HealingPotion : Consumable
 
     public override bool Use(Entity entity)
     {
-        if (entity.IsFullHealth()) return false;
+        if (entity.currentHealth >= entity.maxHealth) return false;
 
         // Heal entity
         entity.Heal(healAmount);

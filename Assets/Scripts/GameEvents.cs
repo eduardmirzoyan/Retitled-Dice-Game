@@ -39,8 +39,10 @@ public class GameEvents : MonoBehaviour
     public event Action<Entity, Weapon> onEntityUseWeapon;
     public event Action<Entity> onEntityWarp;
     public event Action<Entity> onEntityJump;
-    public event Action<Action, Vector3Int> onActionThreatenLocation;
-    public event Action<Action, Vector3Int> onActionUnthreatenLocation;
+    public event Action<Action, List<Vector3Int>> onActionThreatenLocations;
+    public event Action<Action, List<Vector3Int>> onActionUnthreatenLocations;
+    public event Action<Entity> onEntityInDanger;
+    public event Action<Entity> onEntityOutDanger;
 
     // Stat changes
     public event Action<Entity, int> onEntityTakeDamage;
@@ -396,19 +398,35 @@ public class GameEvents : MonoBehaviour
         }
     }
 
-    public void TriggerOnActionThreatenLocation(Action action, Vector3Int location)
+    public void TriggerOnActionThreatenLocation(Action action, List<Vector3Int> locations)
     {
-        if (onActionThreatenLocation != null)
+        if (onActionThreatenLocations != null)
         {
-            onActionThreatenLocation(action, location);
+            onActionThreatenLocations(action, locations);
         }
     }
 
-    public void TriggerOnActionUnthreatenLocation(Action action, Vector3Int location)
+    public void TriggerOnActionUnthreatenLocation(Action action, List<Vector3Int> locations)
     {
-        if (onActionUnthreatenLocation != null)
+        if (onActionUnthreatenLocations != null)
         {
-            onActionUnthreatenLocation(action, location);
+            onActionUnthreatenLocations(action, locations);
+        }
+    }
+
+    public void TriggerOnEntityInDanger(Entity entity)
+    {
+        if (onEntityInDanger != null)
+        {
+            onEntityInDanger(entity);
+        }
+    }
+
+    public void TriggerOnEntityOutDanger(Entity entity)
+    {
+        if (onEntityOutDanger != null)
+        {
+            onEntityOutDanger(entity);
         }
     }
 

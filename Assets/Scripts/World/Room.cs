@@ -374,8 +374,10 @@ public class Room : ScriptableObject
             int randY = padding + Random.Range(0, height);
             spawnLocation = new Vector3Int(randX, randY);
 
+            var tile = tiles[spawnLocation.x, spawnLocation.y];
+
             // Check if everything is good
-            if (IsValidLocation(spawnLocation, false, false) && spawnLocation != entranceTile.location && spawnLocation != exitTile.location)
+            if (IsAllClear(spawnLocation) && tile.tileType != TileType.Entrance && tile.tileType != TileType.Exit)
             {
                 break;
             }
@@ -384,31 +386,31 @@ public class Room : ScriptableObject
         return spawnLocation;
     }
 
-    public List<Vector3Int> GetNeighbors(Vector3Int location, bool ignoreEntity = false)
+    public List<Vector3Int> GetNeighbors(Vector3Int location)
     {
         var neighbors = new List<Vector3Int>();
 
         // Check cardinal directions
         var position = location + Vector3Int.up;
-        if (IsValidLocation(position, ignoreEntity))
+        if (!IsWall(position) && !IsChasam(position) && !HasEntity(position))
         {
             neighbors.Add(position);
         }
 
         position = location + Vector3Int.right;
-        if (IsValidLocation(position, ignoreEntity))
+        if (!IsWall(position) && !IsChasam(position) && !HasEntity(position))
         {
             neighbors.Add(position);
         }
 
         position = location + Vector3Int.down;
-        if (IsValidLocation(position, ignoreEntity))
+        if (!IsWall(position) && !IsChasam(position) && !HasEntity(position))
         {
             neighbors.Add(position);
         }
 
         position = location + Vector3Int.left;
-        if (IsValidLocation(position, ignoreEntity))
+        if (!IsWall(position) && !IsChasam(position) && !HasEntity(position))
         {
             neighbors.Add(position);
         }
@@ -416,130 +418,29 @@ public class Room : ScriptableObject
         return neighbors;
     }
 
-    public bool IsEntity(Vector3Int location)
+    public bool IsWall(Vector3Int location)
     {
-        return TileFromLocation(location).containedEntity != null;
+        return tiles[location.x, location.y].tileType == TileType.Wall;
     }
 
-
-    public bool IsValidLocation(Vector3Int location, bool ignoreEntity = false, bool ignorePickup = true, bool ignoreChasam = false)
+    public bool IsChasam(Vector3Int location)
     {
-        var tile = TileFromLocation(location);
-
-        // Make sure there is no wall or void
-        if (tile.tileType == TileType.Wall)
-        {
-            return false;
-        }
-
-        if (!ignoreChasam)
-        {
-            if (tile.tileType == TileType.Chasam)
-                return false;
-        }
-
-        // Make sure there is no entity
-        if (!ignoreEntity)
-        {
-            // If there is an entity on this tile, dip
-            if (tile.containedEntity != null)
-                return false;
-        }
-
-        if (!ignorePickup)
-        {
-            // If there is a pickup
-            if (tile.containedPickup != PickUpType.None)
-                return false;
-        }
-
-        // Else you're good to go :)
-        return true;
+        return tiles[location.x, location.y].tileType == TileType.Chasam;
     }
 
-    public bool IsValidPath(Vector3Int start, Vector3Int end, bool ignoreEntity = false, bool endMustBeClear = true)
+    public bool HasEntity(Vector3Int location)
     {
-        // Get path between start and end
-        Vector3Int direction = end - start;
-
-        // Make sure path is straight
-        if (!(direction.x == 0 || direction.y == 0))
-        {
-            return false;
-        }
-
-        // Normalize direction
-        direction.Clamp(-Vector3Int.one, Vector3Int.one);
-
-        // Debug
-        // Debug.Log("Direction: " + direction);
-
-        // Keep looping until start is at the end 
-        while (start != end - direction)
-        {
-            // Check to see if the location is valid
-            if (!IsValidLocation(start + direction, ignoreEntity))
-            {
-                return false;
-            }
-
-            // Increment start
-            start += direction;
-        }
-
-        // Check if you need to ignore the end
-        if (endMustBeClear)
-        {
-            // Make sure there is no enemy on the last tile regardless of conditions
-            if (!IsValidLocation(end, ignoreEntity))
-            {
-                return false;
-            }
-        }
-        // Check end normally
-        else if (!IsValidLocation(end, ignoreEntity))
-        {
-            return false;
-        }
-
-
-        // Else we good :)
-        return true;
+        return tiles[location.x, location.y].containedEntity != null;
     }
 
-    public Vector3Int GetFirstValidLocationWithinRange(Vector3Int start, Vector3Int direction, int range)
+    public bool HasPickup(Vector3Int location)
     {
-        while (IsValidLocation(start + direction, true) && range > 0)
-        {
-            start += direction;
-            range--;
-        }
-
-        return start;
+        return tiles[location.x, location.y].containedPickup != PickUpType.None;
     }
 
-    public List<Vector3Int> GetAllValidLocationsAlongPath(Vector3Int start, Vector3Int end, bool ignoreEntity = false)
+    public bool IsAllClear(Vector3Int location)
     {
-        List<Vector3Int> result = new List<Vector3Int>();
-
-        Vector3Int direction = end - start;
-        direction.Clamp(-Vector3Int.one, Vector3Int.one);
-
-        while (start != end)
-        {
-            // Increment start
-            start += direction;
-
-            // Check to see if the location is valid
-            if (!IsValidLocation(start, ignoreEntity))
-            {
-                break;
-            }
-
-            result.Add(start);
-        }
-
-        return result;
+        return !IsWall(location) && !IsChasam(location) && !HasEntity(location) && !HasPickup(location);
     }
 
     public void InteractWithLocation(Entity entity, Vector3Int location)
@@ -572,10 +473,5 @@ public class Room : ScriptableObject
             DespawnPickup(entity, tile);
         }
 
-    }
-
-    public bool HasHostileEntities()
-    {
-        return hostileEntities.Count > 0;
     }
 }

@@ -7,32 +7,47 @@ public class RangedAction : Action
 {
     public override List<Vector3Int> GetValidLocations(Vector3Int startLocation, Room room)
     {
-        List<Vector3Int> result = new List<Vector3Int>();
+        List<Vector3Int> targets = new List<Vector3Int>();
 
-        foreach (var location in room.GetNeighbors(startLocation, true))
+        // Search in each direction
+        foreach (var direction in cardinalDirections)
         {
-            int range = die.value;
-            Vector3Int direction = location - startLocation;
-            Vector3Int start = location;
+            var location = startLocation + direction;
+            var range = die.value;
 
-            while (room.IsValidLocation(start, true, true, true) && range > 0)
+            // Check range
+            while (range > 0)
             {
-                if (room.IsEntity(start))
+                // If we hit a wall
+                if (room.IsWall(location))
                 {
-                    result.Add(start);
-                    start = startLocation;
+                    location -= direction;
+                    if (location != startLocation)
+                        targets.Add(location);
+
                     break;
                 }
 
-                start += direction;
+                // If we find a target
+                if (room.HasEntity(location))
+                {
+                    targets.Add(location);
+                    break;
+                }
+
+                // If we reach end of range
+                if (range == 1)
+                {
+                    targets.Add(location);
+                    break;
+                }
+
+                location += direction;
                 range--;
             }
-
-            if (start != startLocation && room.IsValidLocation(start - direction, true))
-                result.Add(start - direction);
         }
 
-        return result;
+        return targets;
     }
 
     public override List<Vector3Int> GetThreatenedLocations(Entity entity, Vector3Int targetLocation)

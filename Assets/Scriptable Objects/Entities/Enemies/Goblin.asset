@@ -22,7 +22,7 @@ MonoBehaviour:
   modelSprite: {fileID: -1458138177, guid: 4c771eba37960cb439c9c133f3a44bc4, type: 3}
   modelController: {fileID: 9100000, guid: f094f2d8ff32d664e941cd1f7d3a3217, type: 2}
   hitEffectPrefab: {fileID: 7270536486772163001, guid: 335c93a61b62ca84e9f26440c7f3ed0e, type: 3}
-  AI: {fileID: 11400000, guid: 426243b476e8e474395352c1841f5506, type: 2}
+  AI: {fileID: 11400000, guid: c03f1bf904a2a15459539b8e3ee94d35, type: 2}
   innateActions:
   - {fileID: 11400000, guid: 5e44504d2bb4578418b8addc4ee14f43, type: 2}
   weapons:

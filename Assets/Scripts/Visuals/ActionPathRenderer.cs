@@ -58,7 +58,7 @@ public class ActionPathRenderer : MonoBehaviour
         GameEvents.instance.onActionSelect += UnintializeOnActionSelect;
         GameEvents.instance.onLocationSelect += UnintializeOnLocationChange;
         GameEvents.instance.onActionPerformEnd += UnintializeOnActionEnd;
-        GameEvents.instance.onActionUnthreatenLocation += UnintializeOnUnthreaten;
+        GameEvents.instance.onActionUnthreatenLocations += UnintializeOnUnthreaten;
         GameEvents.instance.onTurnEnd += UnfocusOnTurnEnd;
         GameEvents.instance.onTurnStart += FocusOnTurnStart;
     }
@@ -69,7 +69,7 @@ public class ActionPathRenderer : MonoBehaviour
         GameEvents.instance.onActionSelect -= UnintializeOnActionSelect;
         GameEvents.instance.onLocationSelect -= UnintializeOnLocationChange;
         GameEvents.instance.onActionPerformEnd -= UnintializeOnActionEnd;
-        GameEvents.instance.onActionUnthreatenLocation -= UnintializeOnUnthreaten;
+        GameEvents.instance.onActionUnthreatenLocations -= UnintializeOnUnthreaten;
         GameEvents.instance.onTurnEnd -= UnfocusOnTurnEnd;
         GameEvents.instance.onTurnStart -= FocusOnTurnStart;
     }
@@ -81,7 +81,7 @@ public class ActionPathRenderer : MonoBehaviour
         }
     }
 
-    private void UnintializeOnUnthreaten(Action action, Vector3Int location)
+    private void UnintializeOnUnthreaten(Action action, List<Vector3Int> locations)
     {
         if (this.action == action)
         {

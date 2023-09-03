@@ -18,6 +18,9 @@ MonoBehaviour:
   value: 99
   actions:
   - {fileID: 11400000, guid: d5016ce26fb35c345bc9fc23353dbdcb, type: 2}
-  - {fileID: 11400000, guid: 3d0a5222516c54345861722ba677cba1, type: 2}
+  - {fileID: 11400000, guid: a341cf06ac4c81749a4641bccae03916, type: 2}
+  - {fileID: 11400000, guid: 71851c411d5bf9f49b8648deef40a4fb, type: 2}
+  - {fileID: 11400000, guid: 2a261ff5250b99d4d8a68c972398d2b0, type: 2}
+  - {fileID: 11400000, guid: dd89abfc189aaaf409a608df1e8fdd50, type: 2}
   attackParticlePrefab: {fileID: 2619012972811128830, guid: 5a5dc67bf95abaf4b8749dfa8920e621, type: 3}
   weaponPrefab: {fileID: 1251787465029900827, guid: 539046e35f645174093ee495a9e64bd4, type: 3}

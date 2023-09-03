@@ -7,42 +7,19 @@ public class WarpAction : Action
 {
     public override List<Vector3Int> GetValidLocations(Vector3Int startLocation, Room room)
     {
-        List<Vector3Int> result = new List<Vector3Int>();
+        List<Vector3Int> targets = new List<Vector3Int>();
 
-        // Scale distanc based on die.value
-        int reach = die.value;
-
-        // Check the ENDPOINTS ONLY in the 4 cardinal directions based on die value
-
-        // North
-        Vector3Int endLocation = startLocation + new Vector3Int(0, reach, 0);
-        if (room.IsValidLocation(endLocation))
+        // Search in each direction
+        foreach (var direction in cardinalDirections)
         {
-            result.Add(startLocation + new Vector3Int(0, reach, 0));
+            var location = startLocation + (direction * die.value);
+            if (!room.IsWall(location) && !room.IsChasam(location) && !room.HasEntity(location))
+            {
+                targets.Add(location);
+            }
         }
 
-        // South
-        endLocation = startLocation + new Vector3Int(0, -reach, 0);
-        if (room.IsValidLocation(endLocation))
-        {
-            result.Add(startLocation + new Vector3Int(0, -reach, 0));
-        }
-
-        // East
-        endLocation = startLocation + new Vector3Int(reach, 0, 0);
-        if (room.IsValidLocation(endLocation))
-        {
-            result.Add(startLocation + new Vector3Int(reach, 0, 0));
-        }
-
-        // West
-        endLocation = startLocation + new Vector3Int(-reach, 0, 0);
-        if (room.IsValidLocation(endLocation))
-        {
-            result.Add(startLocation + new Vector3Int(-reach, 0, 0));
-        }
-
-        return result;
+        return targets;
     }
 
     public override List<Vector3Int> GetThreatenedLocations(Entity entity, Vector3Int targetLocation)

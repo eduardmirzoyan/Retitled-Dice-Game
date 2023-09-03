@@ -7,52 +7,30 @@ public class MoveAction : Action
 {
     public override List<Vector3Int> GetValidLocations(Vector3Int startLocation, Room room)
     {
-        List<Vector3Int> result = new List<Vector3Int>();
+        List<Vector3Int> targets = new List<Vector3Int>();
 
-        // Scale distanc based on die.value
-        int range = die.value;
-
-        // North
-        Vector3Int location = startLocation;
-        int count = range;
-        while (room.IsValidLocation(location + Vector3Int.up) && count > 0)
+        // Search in each direction
+        foreach (var direction in cardinalDirections)
         {
-            location += Vector3Int.up;
-            result.Add(location);
-            count--;
+            var location = startLocation + direction;
+            var range = die.value;
+
+            // Check range
+            while (range > 0)
+            {
+                if (room.IsWall(location) || room.IsChasam(location) || room.HasEntity(location))
+                {
+                    break;
+                }
+
+                targets.Add(location);
+
+                location += direction;
+                range--;
+            }
         }
 
-        // South
-        location = startLocation;
-        count = range;
-        while (room.IsValidLocation(location + Vector3Int.down) && count > 0)
-        {
-            location += Vector3Int.down;
-            result.Add(location);
-            count--;
-        }
-
-        // East
-        location = startLocation;
-        count = range;
-        while (room.IsValidLocation(location + Vector3Int.right) && count > 0)
-        {
-            location += Vector3Int.right;
-            result.Add(location);
-            count--;
-        }
-
-        // West
-        location = startLocation;
-        count = range;
-        while (room.IsValidLocation(location + Vector3Int.left) && count > 0)
-        {
-            location += Vector3Int.left;
-            result.Add(location);
-            count--;
-        }
-
-        return result;
+        return targets;
     }
 
     public override List<Vector3Int> GetThreatenedLocations(Entity entity, Vector3Int targetLocation)

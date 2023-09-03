@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Entity selectedEntity;
     [SerializeField] private Action selectedAction;
     [SerializeField] private Vector3Int selectedLocation;
-    private List<Vector3Int> selectedThreats;
+    [SerializeField] private List<Vector3Int> selectedThreats;
     private List<(Action, Vector3Int)> bestChoiceSequence;
     private Dictionary<(Entity, Action), List<Vector3Int>> reactiveActionsHastable;
     private Dictionary<(Entity, Action), List<Vector3Int>> delayedActionsHashtable;
@@ -365,6 +365,8 @@ public class GameManager : MonoBehaviour
 
     public void SelectAction(Action action)
     {
+        if (selectedThreats.Count > 0) return;
+
         // If you already have a selected location
         if (selectedLocation != Vector3Int.zero)
         {
@@ -390,13 +392,14 @@ public class GameManager : MonoBehaviour
     {
         if (location == Vector3Int.zero)
         {
-            if (selectedThreats != null)
+            if (selectedThreats.Count > 0)
             {
                 // Clean up selected tiles, etc
-                HideThreats(selectedAction, selectedThreats);
+                // Trigger event
+                GameEvents.instance.TriggerOnActionUnthreatenLocation(selectedAction, selectedThreats);
 
                 // Remove threats
-                selectedThreats = null;
+                selectedThreats.Clear();
             }
 
             if (selectedLocation != Vector3Int.zero && selectedAction.actionType == ActionType.Attack)
@@ -410,8 +413,10 @@ public class GameManager : MonoBehaviour
             // Add threatened locations to table
             selectedThreats = selectedAction.GetThreatenedLocations(selectedEntity, location);
 
+            print($"Add Action: {selectedAction.name}; Count: {selectedThreats.Count}");
+
             // Show threats
-            ShowThreats(selectedAction, selectedThreats);
+            GameEvents.instance.TriggerOnActionThreatenLocation(selectedAction, selectedThreats);
 
             if (selectedLocation == Vector3Int.zero && selectedAction.actionType == ActionType.Attack)
             {
@@ -428,7 +433,7 @@ public class GameManager : MonoBehaviour
         this.selectedLocation = location;
 
         // Trigger event
-        GameEvents.instance.TriggerOnLocationSelect(selectedEntity, selectedAction, location);
+        GameEvents.instance.TriggerOnLocationSelect(selectedEntity, selectedAction, selectedLocation);
     }
 
     public void ConfirmAction()
@@ -451,7 +456,7 @@ public class GameManager : MonoBehaviour
             case ActionSpeed.Reactive:
 
                 // Save action pair to table
-                reactiveActionsHastable[(selectedEntity, selectedAction)] = selectedThreats;
+                reactiveActionsHastable[(selectedEntity, selectedAction)] = new List<Vector3Int>(selectedThreats);
 
                 // Immediately end turn after
                 coroutine = StartCoroutine(EndTurn());
@@ -460,7 +465,7 @@ public class GameManager : MonoBehaviour
             case ActionSpeed.Delayed:
 
                 // Save action pair to table
-                delayedActionsHashtable[(selectedEntity, selectedAction)] = selectedThreats;
+                delayedActionsHashtable[(selectedEntity, selectedAction)] = new List<Vector3Int>(selectedThreats);
 
                 // Immediately end turn after
                 coroutine = StartCoroutine(EndTurn());
@@ -471,6 +476,7 @@ public class GameManager : MonoBehaviour
         // Reset selected values
         selectedAction = null;
         selectedLocation = Vector3Int.zero;
+        selectedThreats.Clear();
     }
 
     private IEnumerator PerformTurnAI()
@@ -501,6 +507,7 @@ public class GameManager : MonoBehaviour
             // Reset values
             selectedAction = null;
             selectedLocation = Vector3Int.zero;
+            selectedThreats.Clear();
 
             // Check another action
             yield return PerformTurnAI();
@@ -532,13 +539,13 @@ public class GameManager : MonoBehaviour
             case ActionSpeed.Reactive:
 
                 // Save action pair to table
-                reactiveActionsHastable[(selectedEntity, selectedAction)] = selectedThreats;
+                reactiveActionsHastable[(selectedEntity, selectedAction)] = new List<Vector3Int>(selectedThreats);
 
                 break;
             case ActionSpeed.Delayed:
 
                 // Save action pair to table
-                delayedActionsHashtable[(selectedEntity, selectedAction)] = selectedThreats;
+                delayedActionsHashtable[(selectedEntity, selectedAction)] = new List<Vector3Int>(selectedThreats);
 
                 break;
         }
@@ -557,6 +564,7 @@ public class GameManager : MonoBehaviour
         // Reset selected values
         selectedAction = null;
         selectedLocation = Vector3Int.zero;
+        selectedThreats.Clear();
 
         // Debug
         print("Turn End: " + selectedEntity.name);
@@ -653,42 +661,56 @@ public class GameManager : MonoBehaviour
         GameEvents.instance.TriggerOnActionPerformEnd(entity, action, location, room);
 
         // Clean up selected tiles, etc
-        HideThreats(action, threatenedLocations);
+        GameEvents.instance.TriggerOnActionUnthreatenLocation(action, threatenedLocations);
 
         if (action.actionType == ActionType.Attack)
         {
             // Sheathe weapon
             GameEvents.instance.TriggerOnEntitySheatheWeapon(entity, action.weapon);
-
-            // Wait for animation
-            // yield return new WaitForSeconds(gameSettings.weaponSheatheBufferTime);
         }
 
-        // Done
-        // yield return null;
     }
 
     private IEnumerator PerformDelayedAction(Entity entity)
     {
         // Loop through each pair
+        bool done = false;
         foreach (var entityActionPair in delayedActionsHashtable)
         {
+            var action = entityActionPair.Key.Item2;
+            var targets = entityActionPair.Value;
+
             // Check for any matches
             if (entityActionPair.Key.Item1 == entity)
             {
-                // Parse data
-                var action = entityActionPair.Key.Item2;
-                var targets = entityActionPair.Value;
+                foreach (var location in targets)
+                {
+                    if (room.GetEntityAtLocation(location) is Player)
+                    {
 
-                // Perform the action
-                yield return PerformAction(entity, action, targets[0], targets);
+                        // Perform the action
+                        yield return PerformAction(entity, action, targets[0], targets);
+
+                        break;
+                    }
+                }
 
                 // Remove entry
                 delayedActionsHashtable.Remove(entityActionPair.Key);
 
-                // Stop
-                break;
+                print($"Remove Action: {action.name}; Count: {targets.Count}");
+
+                // Hide threats
+                GameEvents.instance.TriggerOnActionUnthreatenLocation(action, targets);
+
+                // Sheathe weapon
+                if (action.actionType == ActionType.Attack)
+                    GameEvents.instance.TriggerOnEntitySheatheWeapon(entity, action.weapon);
+
+                done = true;
             }
+
+            if (done) break;
         }
     }
 
@@ -767,7 +789,7 @@ public class GameManager : MonoBehaviour
                 reactiveActionsHastable.Remove(entityActionPair.Key);
 
                 // Hide threats
-                HideThreats(action, targets);
+                GameEvents.instance.TriggerOnActionUnthreatenLocation(action, targets);
 
                 // Sheathe weapon
                 if (action.actionType == ActionType.Attack)
@@ -795,37 +817,15 @@ public class GameManager : MonoBehaviour
                 delayedActionsHashtable.Remove(entityActionPair.Key);
 
                 // Hide threats
-                HideThreats(action, targets);
+                GameEvents.instance.TriggerOnActionUnthreatenLocation(action, targets);
 
                 // Sheathe weapon
-                GameEvents.instance.TriggerOnEntitySheatheWeapon(entity, action.weapon);
+                if (action.actionType == ActionType.Attack)
+                    GameEvents.instance.TriggerOnEntitySheatheWeapon(entity, action.weapon);
 
                 // Stop
                 break;
             }
-        }
-    }
-
-    private void ShowThreats(Action action, List<Vector3Int> locations)
-    {
-        foreach (var location in locations)
-        {
-            // Trigger event
-            GameEvents.instance.TriggerOnActionThreatenLocation(action, location);
-        }
-    }
-
-    private void HideThreats(Action action, List<Vector3Int> locations)
-    {
-        if (locations == null)
-        {
-            throw new System.Exception("NO THREATS EXIST?");
-        }
-
-        foreach (var location in locations)
-        {
-            // Trigger event
-            GameEvents.instance.TriggerOnActionUnthreatenLocation(action, location);
         }
     }
 

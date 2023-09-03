@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Enemy Generator
   m_EditorClassIdentifier: 
   possibleEnemies:
-  - {fileID: 11400000, guid: f2e6bff7fa56b7c4f839a49b81475266, type: 2}
   - {fileID: 11400000, guid: d27bdacd5dbad8c4c9985e62c890d6e7, type: 2}
   bosses:
   - {fileID: 11400000, guid: 3be0a956ef097ed4e8563b13c3972f0a, type: 2}

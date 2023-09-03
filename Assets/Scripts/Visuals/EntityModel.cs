@@ -8,6 +8,7 @@ public class EntityModel : MonoBehaviour
     [Header("Components")]
     [SerializeField] private SpriteRenderer modelSpriteRenderer;
     [SerializeField] private Animator modelAnimator;
+    [SerializeField] private Animator dangerAnimator;
 
     [Header("Offhand Weapon")]
     [SerializeField] private Transform mainWeaponHolder;
@@ -76,6 +77,9 @@ public class EntityModel : MonoBehaviour
         GameEvents.instance.onEntityDrawWeapon += FaceDirection;
         GameEvents.instance.onEntityDespawn += Despawn;
 
+        GameEvents.instance.onEntityInDanger += InDanger;
+        GameEvents.instance.onEntityOutDanger += OutDanger;
+
         // Set name
         transform.name = entity.name + " Model";
     }
@@ -93,6 +97,9 @@ public class EntityModel : MonoBehaviour
         GameEvents.instance.onEntityTakeDamage -= TakeDamage;
         GameEvents.instance.onEntityDrawWeapon -= FaceDirection;
         GameEvents.instance.onEntityDespawn -= Despawn;
+
+        GameEvents.instance.onEntityInDanger -= InDanger;
+        GameEvents.instance.onEntityOutDanger -= OutDanger;
     }
 
     private void Despawn(Entity entity)
@@ -323,6 +330,18 @@ public class EntityModel : MonoBehaviour
                 CameraShake.instance.ScreenShake(0.15f);
 
         }
+    }
+
+    private void InDanger(Entity entity)
+    {
+        if (this.entity == entity)
+            dangerAnimator.Play("Flash");
+    }
+
+    private void OutDanger(Entity entity)
+    {
+        if (this.entity == entity)
+            dangerAnimator.Play("Idle");
     }
 
     private void FaceDirection(Entity entity, Vector3 direction, Weapon weapon)

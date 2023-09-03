@@ -8948,7 +8948,7 @@ GameObject:
   - component: {fileID: 1166887830}
   - component: {fileID: 1166887829}
   m_Layer: 0
-  m_Name: Intention Icon
+  m_Name: Intention Count
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10399,13 +10399,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actionLocationTilemap: {fileID: 1048152367}
   actionResultTilemap: {fileID: 299412501}
-  intentTilemap: {fileID: 1512760416}
-  intentIconTilemap: {fileID: 1166887830}
+  intentIconTilemap: {fileID: 1512760416}
+  intentCountTilemap: {fileID: 1166887830}
   inspectTilemap: {fileID: 1814198313}
   highlightedTile: {fileID: 11400000, guid: 07608de4f5799c54b91052e680bf19e2, type: 2}
   actionPreviewPrefab: {fileID: 6373107996140578506, guid: bc8c3388e32d7d840a4ae22eb923c928, type: 3}
   reactAnimatedTile: {fileID: 11400000, guid: 65cc1cc357eb81d40b3c4bcda4301bde, type: 2}
+  numberTiles:
+  - {fileID: 0}
+  - {fileID: 11400000, guid: 74aae4a0b3274ae4a8a691d950fe1575, type: 2}
+  - {fileID: 11400000, guid: ff2e147832a9a1d499d44e1ce67e6df1, type: 2}
+  - {fileID: 11400000, guid: 4ec6762039d4b8e4d8c1c8467f9cc985, type: 2}
+  - {fileID: 11400000, guid: 2cb792ab74f95f3428afb743432c534c, type: 2}
+  - {fileID: 11400000, guid: 5b7a971cd67cae74e93b4683123b9aa5, type: 2}
+  - {fileID: 11400000, guid: 77c3652a850936640be83ac22cac07fd, type: 2}
+  - {fileID: 11400000, guid: 3d218974c11a65f47ba3015c7cbdeff9, type: 2}
+  - {fileID: 11400000, guid: e96de79a038c0dd4f8057cd9610a1465, type: 2}
   alpha: 0.5
+  reactiveColor: {r: 0.7739137, g: 1, b: 0.1372549, a: 1}
+  delayedColor: {r: 0.87058824, g: 0.24313726, b: 0.13725491, a: 1}
 --- !u!114 &1383511120
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11393,7 +11405,7 @@ GameObject:
   - component: {fileID: 1512760416}
   - component: {fileID: 1512760415}
   m_Layer: 0
-  m_Name: Intention
+  m_Name: Intention Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

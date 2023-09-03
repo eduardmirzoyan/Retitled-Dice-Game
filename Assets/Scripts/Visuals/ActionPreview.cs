@@ -24,7 +24,7 @@ public class ActionPreview : MonoBehaviour
         isSelected = false;
     }
 
-    public void Initialize(Entity entity, Vector3Int location, Action action, bool isPreview = false)
+    public void Initialize(Entity entity, Vector3Int location, Action action)
     {
         this.entity = entity;
         this.location = location;
@@ -51,7 +51,7 @@ public class ActionPreview : MonoBehaviour
     private void UnintializeOnSelect(Entity entity, Action action)
     {
         // If no action was selected, destroy this
-        if (this.entity == entity && action == null)
+        if (this.entity == entity && action == null && !isHovering)
         {
             // Destroy self
             Destroy(gameObject);
@@ -83,7 +83,7 @@ public class ActionPreview : MonoBehaviour
         if (isSelected) return;
 
         // Debug
-        // print("Entered!");
+        //print("Entered!");
 
         // Highlight
         actionIcon.enabled = true;
@@ -104,7 +104,7 @@ public class ActionPreview : MonoBehaviour
             if (Input.GetMouseButtonUp(0))
             {
                 // Debug
-                // print("Dropped!");
+                //print("Dropped!");
 
                 // Un-highlgiht
                 actionIcon.color = defaultColor;
@@ -123,7 +123,7 @@ public class ActionPreview : MonoBehaviour
         if (isSelected) return;
 
         // Debug
-        // print("Exit!");
+        //print("Exit!");
 
         // Un-highlight
         actionIcon.enabled = false;

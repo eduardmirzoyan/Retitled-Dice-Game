@@ -22,6 +22,8 @@ public abstract class Action : ScriptableObject
     public Die die;
     public Weapon weapon;
 
+    public static Vector3Int[] cardinalDirections = new Vector3Int[] { Vector3Int.up, Vector3Int.right, Vector3Int.down, Vector3Int.left, };
+
     public abstract List<Vector3Int> GetValidLocations(Vector3Int startLocation, Room room);
 
     public abstract List<Vector3Int> GetThreatenedLocations(Entity entity, Vector3Int targetLocation);

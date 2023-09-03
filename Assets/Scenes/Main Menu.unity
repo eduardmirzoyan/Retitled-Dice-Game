@@ -2872,7 +2872,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultPlayer: {fileID: 11400000, guid: 9563230c5a59bdc4792dfe541ab67123, type: 2}
   maxRooms: 7
-  maxStages: 3
   player: {fileID: 0}
   roomNumber: 1
   stageNumber: 1

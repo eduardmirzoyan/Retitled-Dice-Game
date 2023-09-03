@@ -163,7 +163,6 @@ public class Entity : ScriptableObject
 
     public IEnumerator Jump(Vector3Int location)
     {
-
         // Move
         room.MoveEntityTo(this, location);
 
@@ -179,8 +178,6 @@ public class Entity : ScriptableObject
         // Check for any reactive actions
         if (this is Player)
             yield return GameManager.instance.PerformReactiveAction(location);
-
-
     }
 
     protected virtual void Interact()
@@ -222,20 +219,12 @@ public class Entity : ScriptableObject
             // Increment level
             level++;
 
-            // Heal to max
-            Heal(maxHealth);
-
             // Trigger event
             GameEvents.instance.TriggerOnGainLevel(this, 1);
         }
 
         // Trigger event
         GameEvents.instance.TriggerOnGainExperience(this, amount);
-    }
-
-    public bool IsFullHealth()
-    {
-        return currentHealth >= maxHealth;
     }
 
     public Entity Copy()

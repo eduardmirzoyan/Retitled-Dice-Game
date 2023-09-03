@@ -40,6 +40,7 @@
      <Compile Include="Assets\Scripts\Visuals\LocationInspect.cs" />
      <Compile Include="Assets\Scripts\Actions\RangedAction.cs" />
      <Compile Include="Assets\Scripts\World\Room.cs" />
+     <Compile Include="Assets\Scripts\AI\ScaredAI.cs" />
      <Compile Include="Assets\Scripts\GameEvents.cs" />
      <Compile Include="Assets\Scripts\Visuals\AttackParticle.cs" />
      <Compile Include="Assets\Scripts\SettingsManager.cs" />
@@ -55,7 +56,6 @@
      <Compile Include="Assets\Scripts\Visuals\UI\HeartUI.cs" />
      <Compile Include="Assets\Scripts\World\KeyPickup.cs" />
      <Compile Include="Assets\Scripts\Items\Weapon.cs" />
-     <Compile Include="Assets\Scripts\AI\MeleeAI.cs" />
      <Compile Include="Assets\Scripts\Actions\JumpAction.cs" />
      <Compile Include="Assets\Scripts\Visuals\UI\TooltipTriggerUI.cs" />
      <Compile Include="Assets\Scripts\Visuals\UI\EquipmentSlotUI.cs" />
@@ -67,11 +67,12 @@
      <Compile Include="Assets\Scripts\Visuals\UI\HealthbarUI.cs" />
      <Compile Include="Assets\Scripts\Visuals\UI\ShopUI.cs" />
      <Compile Include="Assets\Scripts\Actions\RerollAction.cs" />
-     <Compile Include="Assets\Scripts\Actions\PiercingRangedAction.cs" />
+     <Compile Include="Assets\Scripts\AI\OptimalAI.cs" />
+     <Compile Include="Assets\Scripts\Actions\Enemy\PiercingRangedAction.cs" />
      <Compile Include="Assets\Scripts\Visuals\UI\HowToPlayUI.cs" />
      <Compile Include="Assets\Scripts\Visuals\UI\ActionUI.cs" />
      <Compile Include="Assets\Scripts\Main Menu\MainMenuManager.cs" />
-     <Compile Include="Assets\Scripts\Actions\FreeMoveAction.cs" />
+     <Compile Include="Assets\Scripts\Actions\Enemy\FreeMoveAction.cs" />
      <Compile Include="Assets\Scripts\Visuals\ActionIndicator.cs" />
      <Compile Include="Assets\Scripts\World\RoomGenerator.cs" />
      <Compile Include="Assets\Scripts\Actions\Boss\TossAction.cs" />
@@ -82,6 +83,7 @@
      <Compile Include="Assets\Scripts\Items\HealingPotion.cs" />
      <Compile Include="Assets\Scripts\GameSettings.cs" />
      <Compile Include="Assets\Scripts\World\RoomTile.cs" />
+     <Compile Include="Assets\Scripts\Actions\Enemy\ArtilleryAction.cs" />
      <Compile Include="Assets\Scripts\Actions\MoveAction.cs" />
      <Compile Include="Assets\Scripts\Die.cs" />
      <Compile Include="Assets\Scripts\Game Feel\HitFreeze.cs" />
@@ -90,7 +92,6 @@
      <Compile Include="Assets\Scripts\Inventory.cs" />
      <Compile Include="Assets\Scripts\Visuals\UI\ItemUI.cs" />
      <Compile Include="Assets\Scripts\World\GoldPickup.cs" />
-     <Compile Include="Assets\Scripts\AI\RangedAI.cs" />
      <Compile Include="Assets\Scripts\Visuals\EntityModel.cs" />
      <Compile Include="Assets\Scripts\TimedDestroy.cs" />
      <Compile Include="Assets\Scripts\World\EnemyGenerator.cs" />
@@ -128,6 +129,7 @@
      <Compile Include="Assets\Scripts\Visuals\FloatingText.cs" />
      <Compile Include="Assets\Scripts\AI\AI.cs" />
      <Compile Include="Assets\Scripts\Actions\ShopAction.cs" />
+     <Compile Include="Assets\Scripts\AI\BoldAI.cs" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
