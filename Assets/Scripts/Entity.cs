@@ -9,8 +9,6 @@ public class Entity : ScriptableObject
     public new string name;
     public int maxHealth;
     public int currentHealth;
-    public int level = 1;
-    public int experience = 0;
     public int gold = 0;
     public Inventory inventory;
 
@@ -23,6 +21,7 @@ public class Entity : ScriptableObject
     public AI AI;
     public List<Action> innateActions;
     public List<Weapon> weapons = new List<Weapon>(2);
+    public List<EntityEnchantment> enchantments;
 
     [Header("Dynamic Data")]
     public Vector3Int location; // Location of this entity on the floor
@@ -45,6 +44,12 @@ public class Entity : ScriptableObject
         // Check if we had a weapon before here
         if (oldWeapon != null)
         {
+            // Disable enchantments
+            foreach (var enchantment in oldWeapon.enchantments)
+            {
+                enchantment.Uninitialize(oldWeapon);
+            }
+
             // Trigger event
             GameEvents.instance.TriggerOnUnequipWeapon(this, this.weapons[index], index);
         }
@@ -52,6 +57,12 @@ public class Entity : ScriptableObject
         // Check if we have a weapon now
         if (this.weapons[index] != null)
         {
+            // Enable enchantments
+            foreach (var enchantment in this.weapons[index].enchantments)
+            {
+                enchantment.Initialize(this.weapons[index]);
+            }
+
             // Trigger event
             GameEvents.instance.TriggerOnEquipWeapon(this, this.weapons[index], index);
         }
@@ -104,9 +115,6 @@ public class Entity : ScriptableObject
 
     protected virtual void OnDeath()
     {
-        // Give this entity's experience to player
-        room.player.AddExperience(experience);
-
         // Give this entity's gold to player
         room.player.AddGold(gold);
     }
@@ -202,31 +210,6 @@ public class Entity : ScriptableObject
         GameEvents.instance.TriggerOnGoldChange(this, amount);
     }
 
-    public void AddExperience(int amount)
-    {
-        // If you gain 0, do nothing
-        if (amount == 0) return;
-
-        // Add amount
-        experience += amount;
-
-        // Check if more than threshold, which is 10
-        if (experience >= 10)
-        {
-            // Sub 10
-            experience -= 10;
-
-            // Increment level
-            level++;
-
-            // Trigger event
-            GameEvents.instance.TriggerOnGainLevel(this, 1);
-        }
-
-        // Trigger event
-        GameEvents.instance.TriggerOnGainExperience(this, amount);
-    }
-
     public Entity Copy()
     {
         if (weapons == null || weapons.Count == 0)
@@ -248,6 +231,13 @@ public class Entity : ScriptableObject
             // Set each action to a copy of itself
             if (weapons[i] != null)
                 copy.weapons[i] = (Weapon)weapons[i].Copy();
+        }
+
+        // Make a copy of all of it's enchantments
+        for (int i = 0; i < enchantments.Count; i++)
+        {
+            copy.enchantments[i] = enchantments[i].Copy();
+            copy.enchantments[i].entity = copy;
         }
 
         // Copy inventory

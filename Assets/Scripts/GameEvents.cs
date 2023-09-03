@@ -62,8 +62,7 @@ public class GameEvents : MonoBehaviour
     public event Action<ItemUI, ItemSlotUI> onItemInsert;
     public event Action<Entity, Weapon, int> onEquipWeapon;
     public event Action<Entity, Weapon, int> onUnequipWeapon;
-    public event Action<Entity> onEntityInspect;
-    public event Action<List<Vector3Int>> onThreatsInspect;
+    public event Action<Entity, List<Vector3Int>> onEntityInspect;
 
     public static GameEvents instance;
     private void Awake()
@@ -334,22 +333,6 @@ public class GameEvents : MonoBehaviour
         }
     }
 
-    public void TriggerOnGainExperience(Entity entity, int amount)
-    {
-        if (onEntityGainExperience != null)
-        {
-            onEntityGainExperience(entity, amount);
-        }
-    }
-
-    public void TriggerOnGainLevel(Entity entity, int amount)
-    {
-        if (onEntityGainLevel != null)
-        {
-            onEntityGainLevel(entity, amount);
-        }
-    }
-
     public void TriggerOnGoldChange(Entity entity, int amount)
     {
         if (onEntityGoldChange != null)
@@ -382,19 +365,11 @@ public class GameEvents : MonoBehaviour
         }
     }
 
-    public void TriggerOnEntityInspect(Entity entity)
+    public void TriggerOnEntityInspect(Entity entity, List<Vector3Int> locations)
     {
         if (onEntityInspect != null)
         {
-            onEntityInspect(entity);
-        }
-    }
-
-    public void TriggerOnThreatsInspect(List<Vector3Int> locations)
-    {
-        if (onThreatsInspect != null)
-        {
-            onThreatsInspect(locations);
+            onEntityInspect(entity, locations);
         }
     }
 

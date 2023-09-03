@@ -11,20 +11,14 @@ public class PlayerHUDUI : MonoBehaviour
     [SerializeField] private Image playerIcon;
     [SerializeField] private HealthbarUI healthbarUI;
     [SerializeField] private TextMeshProUGUI goldText;
-    [SerializeField] private TextMeshProUGUI levelText;
-    [SerializeField] private Slider experienceSlider;
-    [SerializeField] private TextMeshProUGUI experienceText;
     [SerializeField] private TextMeshProUGUI floorNumberText;
 
     [Header("Data")]
     [SerializeField] private Entity entity;
 
-    private List<GameObject> heartObjects;
-
     private void Awake()
     {
         canvasGroup = GetComponentInChildren<CanvasGroup>();
-        heartObjects = new List<GameObject>();
     }
 
     private void Start()
@@ -33,8 +27,6 @@ public class PlayerHUDUI : MonoBehaviour
         GameEvents.instance.onEntitySpawn += InitializePlayer;
         GameEvents.instance.onEnterFloor += UpdateFloor;
         GameEvents.instance.onEntityGoldChange += UpdateGold;
-        GameEvents.instance.onEntityGainExperience += UpdateExperience;
-        GameEvents.instance.onEntityGainLevel += UpdateLevel;
     }
 
     private void OnDestroy()
@@ -43,8 +35,6 @@ public class PlayerHUDUI : MonoBehaviour
         GameEvents.instance.onEntitySpawn -= InitializePlayer;
         GameEvents.instance.onEnterFloor -= UpdateFloor;
         GameEvents.instance.onEntityGoldChange -= UpdateGold;
-        GameEvents.instance.onEntityGainExperience -= UpdateExperience;
-        GameEvents.instance.onEntityGainLevel -= UpdateLevel;
     }
 
     private void InitializePlayer(Entity entity)
@@ -61,8 +51,6 @@ public class PlayerHUDUI : MonoBehaviour
             // Update visuals
             UpdateIcon();
             UpdateGold(entity, 0);
-            UpdateExperience(entity, 0);
-            UpdateLevel(entity, 0);
             UpdateFloor(null);
 
             // Display
@@ -83,24 +71,6 @@ public class PlayerHUDUI : MonoBehaviour
         if (this.entity == entity)
         {
             goldText.text = entity.gold + "<sprite name=\"Gold\">";
-        }
-    }
-
-    private void UpdateExperience(Entity entity, int amount)
-    {
-        if (this.entity == entity)
-        {
-            experienceSlider.value = entity.experience;
-            experienceText.text = entity.experience + " / 10 XP";
-
-        }
-    }
-
-    private void UpdateLevel(Entity entity, int amount)
-    {
-        if (this.enabled == entity)
-        {
-            levelText.text = "Lv. " + entity.level;
         }
     }
 

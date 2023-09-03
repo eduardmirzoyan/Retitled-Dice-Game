@@ -102,6 +102,9 @@ public class GameManager : MonoBehaviour
         var location = RoomUI.instance.GetLocationCenter(room.player.location);
         TransitionManager.instance.OpenScene(location);
 
+        // Wait a bit before starting game
+        yield return new WaitForSeconds(gameSettings.gameStartBufferTime);
+
         // Start the first round
         yield return StartRound();
     }
@@ -112,7 +115,7 @@ public class GameManager : MonoBehaviour
         {
             case RoomType.Normal:
 
-                if (DataManager.instance.IsTutorial())
+                if (DataManager.instance.GetRoomNumber() < 3)
                 {
                     room = roomGenerator.GenerateRoom(RoomSize.Small);
                 }
@@ -160,11 +163,11 @@ public class GameManager : MonoBehaviour
             case RoomType.Normal:
 
                 // Spawn enemies
-                int num = DataManager.instance.IsTutorial() ? 1 : 2;
+                int num = Mathf.Min(DataManager.instance.GetRoomNumber(), 3);
                 for (int i = 0; i < num; i++)
                 {
                     // Generate a random enemy
-                    var enemy = enemyGenerator.GenerateEnemy();
+                    var enemy = enemyGenerator.GenerateEnemy(i);
 
                     // Populate the room
                     room.SpawnEntity(enemy);
@@ -214,7 +217,7 @@ public class GameManager : MonoBehaviour
             case RoomType.Normal:
 
                 // Create keys based on room number
-                int num = DataManager.instance.IsTutorial() ? 1 : 2;
+                int num = Mathf.Min(DataManager.instance.GetRoomNumber(), 2);
                 for (int i = 0; i < num; i++)
                 {
                     // Spawn a barrel
@@ -235,7 +238,7 @@ public class GameManager : MonoBehaviour
             case RoomType.Normal:
 
                 // Create keys based on room number
-                int num = DataManager.instance.IsTutorial() ? 1 : 2;
+                int num = Mathf.Min(DataManager.instance.GetRoomNumber(), 2);
                 for (int i = 0; i < num; i++)
                 {
                     // Spawn a key
@@ -256,7 +259,7 @@ public class GameManager : MonoBehaviour
             case RoomType.Normal:
 
                 // Create keys based on room number
-                int num = DataManager.instance.IsTutorial() ? 1 : 2;
+                int num = Mathf.Min(DataManager.instance.GetRoomNumber(), 2);
                 for (int i = 0; i < num; i++)
                 {
                     // Spawn a key
@@ -275,20 +278,26 @@ public class GameManager : MonoBehaviour
         // Initialize
         turnQueue = new Queue<Entity>();
 
-        // First entity is always the player
-        turnQueue.Enqueue(room.player);
-
-        // Now hostile entities from the room
+        // First go enemies
         foreach (var entity in room.hostileEntities)
         {
             turnQueue.Enqueue(entity);
         }
 
-        // Get neutral entities
+        // Next go neutrals
         foreach (var entity in room.neutralEntities)
         {
             turnQueue.Enqueue(entity);
         }
+
+        // Next go allies
+        foreach (var entity in room.alliedEntities)
+        {
+            turnQueue.Enqueue(entity);
+        }
+
+        // Player goes last player
+        turnQueue.Enqueue(room.player);
 
         // Debug
         string result = "Generated Queue: ";
@@ -312,7 +321,6 @@ public class GameManager : MonoBehaviour
         if (!gameOver)
         {
             // Generate turn order
-            // Need to make queue to decide enemy turn order
             yield return GenerateTurnQueue();
 
             // Start turn
@@ -413,8 +421,6 @@ public class GameManager : MonoBehaviour
             // Add threatened locations to table
             selectedThreats = selectedAction.GetThreatenedLocations(selectedEntity, location);
 
-            print($"Add Action: {selectedAction.name}; Count: {selectedThreats.Count}");
-
             // Show threats
             GameEvents.instance.TriggerOnActionThreatenLocation(selectedAction, selectedThreats);
 
@@ -472,11 +478,6 @@ public class GameManager : MonoBehaviour
 
                 break;
         }
-
-        // Reset selected values
-        selectedAction = null;
-        selectedLocation = Vector3Int.zero;
-        selectedThreats.Clear();
     }
 
     private IEnumerator PerformTurnAI()
@@ -669,6 +670,10 @@ public class GameManager : MonoBehaviour
             GameEvents.instance.TriggerOnEntitySheatheWeapon(entity, action.weapon);
         }
 
+        // Reset selected values
+        selectedAction = null;
+        selectedLocation = Vector3Int.zero;
+        selectedThreats.Clear();
     }
 
     private IEnumerator PerformDelayedAction(Entity entity)
@@ -833,37 +838,18 @@ public class GameManager : MonoBehaviour
     {
         // Get entity at the location
         Entity entity = room.GetEntityAtLocation(location);
-
-        // Trigger event
-        GameEvents.instance.TriggerOnThreatsInspect(null);
+        List<Vector3Int> locations = null;
 
         if (entity != null)
         {
             // Loop through each pair
             foreach (var entityActionPair in delayedActionsHashtable)
             {
-                // Check if action threatens this location
+                // Check if action belongs to the entity
                 if (entityActionPair.Key.Item1 == entity)
                 {
-                    var targets = entityActionPair.Value;
-
-                    // Trigger event
-                    GameEvents.instance.TriggerOnThreatsInspect(targets);
-
-                    break;
-                }
-            }
-
-            // Loop through each pair
-            foreach (var entityActionPair in reactiveActionsHastable)
-            {
-                // Check if action threatens this location
-                if (entityActionPair.Key.Item1 == entity)
-                {
-                    var targets = entityActionPair.Value;
-
-                    // Trigger event
-                    GameEvents.instance.TriggerOnThreatsInspect(targets);
+                    // Update targets
+                    locations = entityActionPair.Value;
 
                     break;
                 }
@@ -871,7 +857,7 @@ public class GameManager : MonoBehaviour
         }
 
         // Trigger event
-        GameEvents.instance.TriggerOnEntityInspect(entity);
+        GameEvents.instance.TriggerOnEntityInspect(entity, locations);
     }
 
     // TEMP SHOP LOGIC

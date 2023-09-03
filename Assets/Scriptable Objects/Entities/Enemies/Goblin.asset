@@ -13,11 +13,9 @@ MonoBehaviour:
   m_Name: Goblin
   m_EditorClassIdentifier: 
   name: Goblin
-  maxHealth: 1
-  currentHealth: 1
-  level: 1
-  experience: 2
-  gold: 1
+  maxHealth: 2
+  currentHealth: 2
+  gold: 2
   inventory: {fileID: 0}
   modelSprite: {fileID: -1458138177, guid: 4c771eba37960cb439c9c133f3a44bc4, type: 3}
   modelController: {fileID: 9100000, guid: f094f2d8ff32d664e941cd1f7d3a3217, type: 2}
@@ -28,5 +26,6 @@ MonoBehaviour:
   weapons:
   - {fileID: 11400000, guid: 71752f061859a4d47bc879aa965d371c, type: 2}
   - {fileID: 0}
+  enchantments: []
   location: {x: 0, y: 0, z: 0}
   room: {fileID: 0}

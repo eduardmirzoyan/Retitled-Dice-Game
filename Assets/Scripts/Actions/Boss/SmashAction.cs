@@ -5,6 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Actions/Boss/Smash")]
 public class SmashAction : Action
 {
+    [SerializeField] private int range = 6;
+
     public override List<Vector3Int> GetValidLocations(Vector3Int startLocation, Room room)
     {
         List<Vector3Int> targets = new List<Vector3Int>();
@@ -20,8 +22,6 @@ public class SmashAction : Action
         }
 
         return targets;
-
-        // return room.GetNeighbors(startLocation, true);
     }
 
     public override List<Vector3Int> GetThreatenedLocations(Entity entity, Vector3Int targetLocation)
@@ -36,16 +36,22 @@ public class SmashAction : Action
         Vector3Int startLeft = targetLocation + left;
         Vector3Int startRight = targetLocation + right;
 
-        targets.Add(startMiddle);
-        targets.Add(startMiddle + forward);
-        targets.Add(startMiddle + forward + left);
-        targets.Add(startMiddle + forward + right);
+        // targets.Add(startMiddle);
+        // targets.Add(startLeft);
+        // targets.Add(startRight);
 
-        targets.Add(startMiddle + forward + forward);
-        targets.Add(startMiddle + forward + forward + left);
-        targets.Add(startMiddle + forward + forward + right);
-        targets.Add(startMiddle + forward + forward + left + left);
-        targets.Add(startMiddle + forward + forward + right + right);
+        for (int i = 0; i < range; i++)
+        {
+            // Add threats
+            targets.Add(startMiddle);
+            targets.Add(startLeft);
+            targets.Add(startRight);
+
+            // Increment
+            startMiddle += forward;
+            startLeft += forward;
+            startRight += forward;
+        }
 
         return targets;
     }

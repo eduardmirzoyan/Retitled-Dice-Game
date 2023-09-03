@@ -10,7 +10,6 @@ public class ActionIndicator : MonoBehaviour
     [SerializeField] private Tilemap actionResultTilemap;
     [SerializeField] private Tilemap intentIconTilemap;
     [SerializeField] private Tilemap intentCountTilemap;
-    [SerializeField] private Tilemap inspectTilemap;
 
     [Header("Tiles")]
     [SerializeField] private RuleTile highlightedTile;
@@ -43,9 +42,6 @@ public class ActionIndicator : MonoBehaviour
         GameEvents.instance.onLocationSelect += DrawPath;
         GameEvents.instance.onActionThreatenLocations += ThreatenLocations;
         GameEvents.instance.onActionUnthreatenLocations += UnthreatenLocations;
-
-        GameEvents.instance.onThreatsInspect += OutlineThreats;
-        GameEvents.instance.onEntityDespawn += ClearOutline;
     }
 
     private void OnDestroy()
@@ -61,9 +57,6 @@ public class ActionIndicator : MonoBehaviour
         GameEvents.instance.onLocationSelect -= DrawPath;
         GameEvents.instance.onActionThreatenLocations -= ThreatenLocations;
         GameEvents.instance.onActionUnthreatenLocations -= UnthreatenLocations;
-
-        GameEvents.instance.onThreatsInspect -= OutlineThreats;
-        GameEvents.instance.onEntityDespawn -= ClearOutline;
     }
 
     private void CheckPlayerDanger(Entity entity)
@@ -80,7 +73,6 @@ public class ActionIndicator : MonoBehaviour
             {
                 GameEvents.instance.TriggerOnEntityOutDanger(entity);
             }
-
         }
     }
 
@@ -139,6 +131,9 @@ public class ActionIndicator : MonoBehaviour
 
                             // Add to dict
                             threatTable[location] = 1;
+
+                            // Check if player is in
+                            CheckPlayerDanger(DataManager.instance.GetPlayer());
                         }
 
                         break;
@@ -200,6 +195,8 @@ public class ActionIndicator : MonoBehaviour
 
                                 // Remove entry
                                 threatTable.Remove(location);
+
+                                CheckPlayerDanger(DataManager.instance.GetPlayer());
                             }
                             else
                             {
@@ -290,26 +287,5 @@ public class ActionIndicator : MonoBehaviour
             var offset = new Vector3(0.5f, 0.5f, -1);
             Instantiate(action.pathPrefab, transform).GetComponent<ActionPathRenderer>().Initialize(entity, action, location, entity.location + offset, location + offset, action.color);
         }
-    }
-
-    private void OutlineThreats(List<Vector3Int> locations)
-    {
-        if (locations != null)
-        {
-            foreach (var location in locations)
-            {
-                inspectTilemap.SetTile(location, highlightedTile);
-                inspectTilemap.SetTileFlags(location, TileFlags.None);
-            }
-        }
-        else
-        {
-            inspectTilemap.ClearAllTiles();
-        }
-    }
-
-    private void ClearOutline(Entity entity)
-    {
-        // TODO?
     }
 }

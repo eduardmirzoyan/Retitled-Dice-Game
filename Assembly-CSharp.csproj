@@ -130,6 +130,10 @@
      <Compile Include="Assets\Scripts\AI\AI.cs" />
      <Compile Include="Assets\Scripts\Actions\ShopAction.cs" />
      <Compile Include="Assets\Scripts\AI\BoldAI.cs" />
+     <Compile Include="Assets\Scripts\Enchantments\WeaponEnchantment.cs" />
+     <Compile Include="Assets\Scripts\Enchantments\EntityEnchantment.cs" />
+     <Compile Include="Assets\Scripts\Enchantments\NoneWeaponEnchantment.cs" />
+     <Compile Include="Assets\Scripts\Enchantments\NoneEntityEnchantment.cs" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />

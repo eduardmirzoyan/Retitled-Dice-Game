@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using UnityEngine;
 
 // Alive from OnLocationSelect and onwards
@@ -40,7 +39,14 @@ public class ActionPathRenderer : MonoBehaviour
         {
             arcHeight = 0f;
         }
-        Vector3 middle = (end + start) / 2 + Vector3.up * arcHeight;
+
+        float height;
+        if (arcHeight > 0f)
+            height = Mathf.Max(end.y, start.y) + arcHeight;
+        else
+            height = (end.y + start.y) / 2;
+
+        Vector3 middle = new Vector3((end.x + start.x) / 2, height, 0);
 
         for (int i = 0; i < numPoints; i++)
         {

@@ -154,7 +154,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lineRenderer: {fileID: 0}
   unfocusedMaterial: {fileID: 2100000, guid: 67e28379066efac4c9fc3a1ce6aa257b, type: 2}
-  speed: 1
+  speed: 0.5
   arcHeight: 3
   numPoints: 50
   isAnimated: 1

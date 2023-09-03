@@ -283,8 +283,6 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
             // Reset cursor
             GameManager.instance.SetDefaultCursor();
 
-            print("Deselece");
-
             // Deselect action
             GameManager.instance.SelectAction(null);
         }

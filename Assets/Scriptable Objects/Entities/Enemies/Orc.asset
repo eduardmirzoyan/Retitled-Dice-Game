@@ -13,11 +13,9 @@ MonoBehaviour:
   m_Name: Orc
   m_EditorClassIdentifier: 
   name: Orc
-  maxHealth: 2
-  currentHealth: 2
-  level: 1
-  experience: 3
-  gold: 1
+  maxHealth: 3
+  currentHealth: 3
+  gold: 2
   inventory: {fileID: 0}
   modelSprite: {fileID: 21300000, guid: bc0eea1e86e6f144eb5082bc72d98ef4, type: 3}
   modelController: {fileID: 9100000, guid: 076de24b027615340a2a7baa143130f1, type: 2}
@@ -28,5 +26,6 @@ MonoBehaviour:
   weapons:
   - {fileID: 11400000, guid: 1610aec8d0a5a934ebbd5015d4b681b8, type: 2}
   - {fileID: 0}
+  enchantments: []
   location: {x: 0, y: 0, z: 0}
   room: {fileID: 0}

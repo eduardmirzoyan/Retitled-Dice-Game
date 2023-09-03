@@ -36,11 +36,16 @@ public class ActionUI : MonoBehaviour
         // Sub to events
         GameEvents.instance.onTurnStart += AllowInteraction;
         GameEvents.instance.onActionSelect += ToggleInteraction;
-
-
         GameEvents.instance.onActionPerformStart += PreventInteraction;
         GameEvents.instance.onActionPerformEnd += AllowInteraction;
         GameEvents.instance.onTurnEnd += PreventInteraction;
+
+        // Start prevented
+        canvasGroup.alpha = 0.6f;
+        canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
+
+        diceUI.Idle();
     }
 
     public void Uninitialize()

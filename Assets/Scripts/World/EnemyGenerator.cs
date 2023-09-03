@@ -12,13 +12,16 @@ public class EnemyGenerator : ScriptableObject
 
     public ItemGenerator shopItemGenerator;
 
-    public Entity GenerateEnemy()
+    public Entity GenerateEnemy(int index = -1)
     {
         // If no possible enemies return null
         if (possibleEnemies.Count == 0) return null;
 
+        if (index == -1)
+            index = Random.Range(0, possibleEnemies.Count);
+
         // Return a copy
-        var copy = possibleEnemies[Random.Range(0, possibleEnemies.Count)].Copy();
+        var copy = possibleEnemies[index].Copy();
 
         return copy;
     }

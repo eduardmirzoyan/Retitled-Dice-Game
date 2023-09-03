@@ -23,4 +23,4 @@ MonoBehaviour:
   pathPrefab: {fileID: 5796882529580813460, guid: 083c9cc31f9d52144a037eba6e64eb71, type: 3}
   die: {fileID: 11400000, guid: dbb9355000ced3842846106e2dca7d3b, type: 2}
   weapon: {fileID: 0}
-  radius: 1
+  radius: 2

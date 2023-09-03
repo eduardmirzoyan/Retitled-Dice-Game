@@ -24,8 +24,6 @@ public class FloatingTextManager : MonoBehaviour
     {
         // Sub
         GameEvents.instance.onEntityTakeDamage += ShowDamageNumber;
-        // GameEvents.instance.onEntityGainExperience += ShowExperienceNumber;
-        // GameEvents.instance.onEntityGainLevel += ShowLevelUp;
         GameEvents.instance.onEntityGoldChange += ShowGoldNumber;
     }
 
@@ -33,8 +31,6 @@ public class FloatingTextManager : MonoBehaviour
     {
         // Unsub
         GameEvents.instance.onEntityTakeDamage -= ShowDamageNumber;
-        // GameEvents.instance.onEntityGainExperience -= ShowExperienceNumber;
-        // GameEvents.instance.onEntityGainLevel -= ShowLevelUp;
         GameEvents.instance.onEntityGoldChange -= ShowGoldNumber;
     }
 
@@ -50,17 +46,6 @@ public class FloatingTextManager : MonoBehaviour
             // Spawn as heal number
             SpawnFloatingText(entity, "+" + -amount + " HP", Color.green, 0.5f, 2f, 1f);
         }
-    }
-
-    private void ShowExperienceNumber(Entity entity, int amount)
-    {
-        string message = "+" + amount + " XP";
-        SpawnFloatingText(entity, message, Color.cyan, 0, 3f, 1f);
-    }
-
-    private void ShowLevelUp(Entity entity, int amount)
-    {
-        SpawnFloatingText(entity, "LEVEL UP!", Color.cyan, 0, 3f, 1f);
     }
 
     private void ShowGoldNumber(Entity entity, int amount)

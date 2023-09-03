@@ -8,12 +8,14 @@ public class FloatingText : MonoBehaviour
     [SerializeField] private TextMeshPro textBox;
     [SerializeField] private Rigidbody2D body;
 
-    private void Awake() {
+    private void Awake()
+    {
         textBox = GetComponentInChildren<TextMeshPro>();
         body = GetComponentInChildren<Rigidbody2D>();
     }
 
-    public void Initialize(string message, Color color, float initialXVel = 0f, float intitialYVel = 0f, float duration = 1f) {
+    public void Initialize(string message, Color color, float initialXVel = 0f, float intitialYVel = 0f, float duration = 1f)
+    {
         this.textBox.text = message;
         textBox.color = color;
 

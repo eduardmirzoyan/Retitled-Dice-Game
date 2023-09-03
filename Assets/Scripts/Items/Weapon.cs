@@ -7,6 +7,7 @@ public class Weapon : Item
 {
     [Header("Mechanics")]
     public List<Action> actions;
+    public List<WeaponEnchantment> enchantments;
 
     [Header("Visuals")]
     public GameObject attackParticlePrefab;
@@ -23,6 +24,15 @@ public class Weapon : Item
             copy.actions[i] = actions[i].Copy();
             // Change owner
             copy.actions[i].weapon = copy;
+        }
+
+        // Make a copy of each enchantment
+        for (int i = 0; i < enchantments.Count; i++)
+        {
+            // Make copies
+            copy.enchantments[i] = enchantments[i].Copy();
+            // Change owner
+            copy.enchantments[i].weapon = copy;
         }
 
         return copy;
