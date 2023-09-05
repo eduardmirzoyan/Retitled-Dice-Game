@@ -12,7 +12,7 @@ public abstract class EntityEnchantment : ScriptableObject
     public Entity entity;
 
     public abstract void Initialize(Entity entity);
-    public abstract void Uninitialize(Entity entity);
+    public abstract void Uninitialize();
 
     public EntityEnchantment Copy()
     {

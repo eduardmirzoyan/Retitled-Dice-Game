@@ -37,6 +37,7 @@
   </PropertyGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\GameManager.cs" />
+     <Compile Include="Assets\Scripts\Enchantments\EntityEnchantment.cs" />
      <Compile Include="Assets\Scripts\Visuals\LocationInspect.cs" />
      <Compile Include="Assets\Scripts\Actions\RangedAction.cs" />
      <Compile Include="Assets\Scripts\World\Room.cs" />
@@ -60,6 +61,7 @@
      <Compile Include="Assets\Scripts\Visuals\UI\TooltipTriggerUI.cs" />
      <Compile Include="Assets\Scripts\Visuals\UI\EquipmentSlotUI.cs" />
      <Compile Include="Assets\Scripts\Visuals\ProperLayerSort.cs" />
+     <Compile Include="Assets\Scripts\Enchantments\Weapon\WeaponEnchantment.cs" />
      <Compile Include="Assets\Scripts\World\ItemGenerator.cs" />
      <Compile Include="Assets\Scripts\Visuals\ActionPreview.cs" />
      <Compile Include="Assets\Scripts\Visuals\UI\TextTooltipUI.cs" />
@@ -110,11 +112,13 @@
      <Compile Include="Assets\Scripts\Items\Item.cs" />
      <Compile Include="Assets\Scripts\AI\IdleAI.cs" />
      <Compile Include="Assets\Scripts\Visuals\UI\EquipmentHandlerUI.cs" />
+     <Compile Include="Assets\Scripts\Enchantments\Weapon\NoneWeaponEnchantment.cs" />
      <Compile Include="Assets\Scripts\Visuals\UI\ShopSlotUI.cs" />
      <Compile Include="Assets\Scripts\Visuals\UI\GameWinUI.cs" />
      <Compile Include="Assets\Scripts\Pathfinder.cs" />
-     <Compile Include="Assets\Scripts\Game Feel\DeathCloud.cs" />
+     <Compile Include="Assets\Scripts\Enchantments\NoneEntityEnchantment.cs" />
      <Compile Include="Assets\Scripts\Game Feel\CameraShake.cs" />
+     <Compile Include="Assets\Scripts\Visuals\UI\ButtonAudio.cs" />
      <Compile Include="Assets\Scripts\Visuals\UI\EntityInspectUI.cs" />
      <Compile Include="Assets\Scripts\Actions\Boss\RoarAction.cs" />
      <Compile Include="Assets\Scripts\Visuals\UI\GameLoseUI.cs" />
@@ -130,10 +134,13 @@
      <Compile Include="Assets\Scripts\AI\AI.cs" />
      <Compile Include="Assets\Scripts\Actions\ShopAction.cs" />
      <Compile Include="Assets\Scripts\AI\BoldAI.cs" />
-     <Compile Include="Assets\Scripts\Enchantments\WeaponEnchantment.cs" />
-     <Compile Include="Assets\Scripts\Enchantments\EntityEnchantment.cs" />
-     <Compile Include="Assets\Scripts\Enchantments\NoneWeaponEnchantment.cs" />
-     <Compile Include="Assets\Scripts\Enchantments\NoneEntityEnchantment.cs" />
+     <Compile Include="Assets\Scripts\Enchantments\Weapon\KillGoldWeaponEnchantment.cs" />
+     <Compile Include="Assets\Scripts\Enchantments\Weapon\DieBuffWE.cs" />
+     <Compile Include="Assets\Scripts\Enchantments\Weapon\ReplenishOnKillWE.cs" />
+     <Compile Include="Assets\Scripts\Enchantments\Weapon\DamageOnConsumeWE.cs" />
+     <Compile Include="Assets\Scripts\Enchantments\Weapon\RangeDamageWE.cs" />
+     <Compile Include="Assets\Scripts\Enchantments\Weapon\RollDamageWE.cs" />
+     <Compile Include="Assets\Scripts\Visuals\EntityInspect.cs" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />

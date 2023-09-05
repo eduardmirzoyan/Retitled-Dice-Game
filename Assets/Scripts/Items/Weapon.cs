@@ -5,13 +5,37 @@ using UnityEngine;
 [CreateAssetMenu]
 public class Weapon : Item
 {
-    [Header("Mechanics")]
+    [Header("Static Data")]
+    public int bonusDamage = 0;
     public List<Action> actions;
     public List<WeaponEnchantment> enchantments;
 
     [Header("Visuals")]
     public GameObject attackParticlePrefab;
     public GameObject weaponPrefab;
+
+    [Header("Dynamic Data")]
+    public Entity entity;
+
+    public void Initialize(Entity entity)
+    {
+        this.entity = entity;
+
+        foreach (var enchantment in enchantments)
+        {
+            enchantment.Initialize(this);
+        }
+    }
+
+    public void Uninitialize()
+    {
+        this.entity = null;
+
+        foreach (var enchantment in enchantments)
+        {
+            enchantment.Uninitialize(this);
+        }
+    }
 
     public override Item Copy()
     {

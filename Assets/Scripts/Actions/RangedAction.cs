@@ -65,7 +65,7 @@ public class RangedAction : Action
             if (target != null)
             {
                 // Damage location
-                entity.Attack(target);
+                entity.Attack(target, weapon);
 
                 // Dip
                 break;

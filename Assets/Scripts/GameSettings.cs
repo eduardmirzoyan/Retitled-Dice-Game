@@ -12,6 +12,7 @@ public class GameSettings : ScriptableObject
     public bool useHitFlash = true;
     public bool useScreenShake = true;
 
+    public float diceRollTime = 0.5f;
     public float gameStartBufferTime = 1f;
     public float aiBufferTime = 0.25f;
     public float moveBufferTime = 0.35f;

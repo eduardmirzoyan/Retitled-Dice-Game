@@ -145,8 +145,9 @@ public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
             // And the item is a consumable
             if (item is Consumable)
             {
+                var player = DataManager.instance.GetPlayer();
                 // Use the consumable and store result
-                bool isSucessful = (item as Consumable).Use(DataManager.instance.GetPlayer());
+                bool isSucessful = (item as Consumable).Use(player);
 
                 // Delete item if it was used
                 if (isSucessful)
@@ -156,6 +157,9 @@ public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
 
                     // Then delete it
                     Destroy(gameObject);
+
+                    // Trigger event
+                    GameEvents.instance.TriggerOnEntityUseConsumable(player, item as Consumable);
                 }
             }
         }

@@ -37,6 +37,8 @@ public abstract class Action : ScriptableObject
 
         // Make a copy of its die as well
         copy.die = die.Copy();
+        // Start die exhausted
+        copy.die.Initialize(copy);
 
         return copy;
     }

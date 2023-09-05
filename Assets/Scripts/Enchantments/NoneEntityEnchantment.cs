@@ -10,7 +10,7 @@ public class NoneEntityEnchantment : EntityEnchantment
         Debug.Log("Enabled Entity Enchantment: " + name);
     }
 
-    public override void Uninitialize(Entity entity)
+    public override void Uninitialize()
     {
         Debug.Log("Disabled Entity Enchantment: " + name);
     }

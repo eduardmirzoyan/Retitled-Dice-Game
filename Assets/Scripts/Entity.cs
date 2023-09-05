@@ -9,6 +9,7 @@ public class Entity : ScriptableObject
     public new string name;
     public int maxHealth;
     public int currentHealth;
+    public int baseDamage = 1;
     public int gold = 0;
     public Inventory inventory;
 
@@ -31,6 +32,35 @@ public class Entity : ScriptableObject
     {
         this.room = dungeon;
         this.location = spawnLocation;
+
+        // Initialize all enchantments
+        foreach (var enchantment in enchantments)
+        {
+            enchantment.Initialize(this);
+        }
+
+        // Initialize all weapons
+        foreach (var weapon in weapons)
+        {
+            if (weapon != null)
+                weapon.Initialize(this);
+        }
+    }
+
+    public void Uninitialize()
+    {
+        // Uniitialize all enchantments
+        foreach (var enchantment in enchantments)
+        {
+            enchantment.Uninitialize();
+        }
+
+        // Initialize all weapons
+        foreach (var weapon in weapons)
+        {
+            if (weapon != null)
+                weapon.Uninitialize();
+        }
     }
 
     public void EquipWeapon(Weapon weapon, int index)
@@ -45,10 +75,7 @@ public class Entity : ScriptableObject
         if (oldWeapon != null)
         {
             // Disable enchantments
-            foreach (var enchantment in oldWeapon.enchantments)
-            {
-                enchantment.Uninitialize(oldWeapon);
-            }
+            oldWeapon.Uninitialize();
 
             // Trigger event
             GameEvents.instance.TriggerOnUnequipWeapon(this, this.weapons[index], index);
@@ -58,10 +85,7 @@ public class Entity : ScriptableObject
         if (this.weapons[index] != null)
         {
             // Enable enchantments
-            foreach (var enchantment in this.weapons[index].enchantments)
-            {
-                enchantment.Initialize(this.weapons[index]);
-            }
+            this.weapons[index].Initialize(this);
 
             // Trigger event
             GameEvents.instance.TriggerOnEquipWeapon(this, this.weapons[index], index);
@@ -87,7 +111,7 @@ public class Entity : ScriptableObject
         return result;
     }
 
-    public void TakeDamage(int amount)
+    public void TakeDamageFrom(Entity source, Weapon weapon, int amount)
     {
         // Debug
         Debug.Log(name + " took " + amount + " damage.");
@@ -105,18 +129,15 @@ public class Entity : ScriptableObject
             GameManager.instance.ClearDelayedActions(this);
             GameManager.instance.ClearReativeActions(this);
 
-            // Trigger death
-            OnDeath();
+            // Give gold to killer (usually player)
+            source.AddGold(gold);
+
+            // Trigger event
+            GameEvents.instance.TriggerOnEntityKillEntity(source, weapon, this);
 
             // Remove self from dungeon
             room.DespawnEntity(this);
         }
-    }
-
-    protected virtual void OnDeath()
-    {
-        // Give this entity's gold to player
-        room.player.AddGold(gold);
     }
 
     public void Heal(int amount)
@@ -193,10 +214,9 @@ public class Entity : ScriptableObject
         // Does nothing for now
     }
 
-    public void Attack(Entity target)
+    public void Attack(Entity target, Weapon weapon)
     {
-        // Currently deal 1 damage, but this might change?
-        target.TakeDamage(1);
+        target.TakeDamageFrom(this, weapon, baseDamage + weapon.bonusDamage);
     }
 
     public void AddGold(int amount)

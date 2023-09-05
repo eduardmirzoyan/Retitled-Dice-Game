@@ -6,13 +6,12 @@ using UnityEngine.EventSystems;
 
 public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
 {
-    public static float rollTime = 0.5f;
-
     [Header("Components")]
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private RectTransform rectTransform;
     [SerializeField] private Outline highlightOutline;
-    [SerializeField] private Outline pulseOutline;
+    [SerializeField] private Image pulseImage;
+    [SerializeField] private Animator burstAnimator;
     [SerializeField] private Image[] pipImages;
 
     [Header("Data")]
@@ -20,7 +19,6 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
     [SerializeField] private Action action;
     [SerializeField] private float travelRate = 0.1f;
     [SerializeField] private float spinRate = 3f;
-    [SerializeField] private bool isSelected;
     [SerializeField] private KeyCode shortcut;
 
     private Transform parent;
@@ -39,7 +37,6 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
         this.action = action;
         this.die = action.die;
         this.shortcut = shortcut;
-        isSelected = false;
 
         // Save parent
         parent = transform.parent;
@@ -67,6 +64,7 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
         gameObject.name = action.name + " Die UI";
 
         // Sub to die events
+        GameEvents.instance.onDieLoop += Loop;
         GameEvents.instance.onDieRoll += Roll;
         GameEvents.instance.onDieExhaust += Exhaust;
         GameEvents.instance.onDieReplenish += Relpenish;
@@ -75,19 +73,66 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
     public void Uninitialize()
     {
         // Unsub to die events
+        GameEvents.instance.onDieLoop -= Loop;
         GameEvents.instance.onDieRoll -= Roll;
         GameEvents.instance.onDieExhaust -= Exhaust;
         GameEvents.instance.onDieReplenish -= Relpenish;
     }
 
-    public void Roll(Die die)
+    public void Pulse()
+    {
+        if (!die.isExhausted)
+        {
+            pulseImage.enabled = true;
+            highlightOutline.enabled = false;
+        }
+    }
+
+    public void Highlight()
+    {
+        if (isBeingDragged) return;
+
+        pulseImage.enabled = false;
+        highlightOutline.enabled = true;
+    }
+
+    public void Idle()
+    {
+        pulseImage.enabled = false;
+        highlightOutline.enabled = false;
+    }
+
+    private void Loop(Die die)
     {
         // If this was not the rolled die, the dip
         if (this.die != die) return;
 
         if (rollRoutine != null) StopCoroutine(rollRoutine);
 
-        rollRoutine = StartCoroutine(RollVisuals(rollTime));
+        // Start rolling
+        rollRoutine = StartCoroutine(RollVisuals(GameManager.instance.gameSettings.diceRollTime));
+
+        // Play Sound
+        AudioManager.instance.PlaySFX("die_roll");
+    }
+
+    private void Roll(Die die)
+    {
+        // If this was not the rolled die, the dip
+        if (this.die != die) return;
+
+        // Stop rolling
+        if (rollRoutine != null) StopCoroutine(rollRoutine);
+
+        // At the end, draw the true number that was rolled
+        DisplayValue(die.value);
+
+        // rollRoutine = StartCoroutine(RollVisuals(rollTime));
+
+        burstAnimator.Play("Burst");
+
+        // Play Sound
+        AudioManager.instance.PlaySFX("die_hit");
     }
 
     private IEnumerator RollVisuals(float duration)
@@ -107,8 +152,8 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
             yield return new WaitForSeconds(0.1f);
         }
 
-        // At the end, draw the true number that was rolled
-        DisplayValue(die.value);
+        // // At the end, draw the true number that was rolled
+        // DisplayValue(die.value);
     }
 
     private void Exhaust(Die die)
@@ -131,36 +176,13 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
         }
     }
 
-    public void Pulse()
-    {
-        if (!die.isExhausted)
-        {
-            pulseOutline.enabled = true;
-            highlightOutline.enabled = false;
-            isSelected = false;
-        }
-    }
-
-    public void Highlight()
-    {
-        if (isBeingDragged) return;
-
-        pulseOutline.enabled = false;
-        highlightOutline.enabled = true;
-    }
-
-    public void Idle()
-    {
-        pulseOutline.enabled = false;
-        highlightOutline.enabled = false;
-    }
-
     private void Update()
     {
         // Check if shortcut is selected
         if (Input.GetKeyDown(shortcut))
         {
-            ToggleSelect();
+            // Select this action
+            GameManager.instance.SelectAction(action);
         }
     }
 
@@ -172,28 +194,9 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
             // If this item is left clicked
             if (eventData.button == PointerEventData.InputButton.Left)
             {
-                ToggleSelect();
+                // Select this action
+                GameManager.instance.SelectAction(action);
             }
-        }
-    }
-
-    private void ToggleSelect()
-    {
-        if (isSelected)
-        {
-            // Unselect this action
-            GameManager.instance.SelectAction(null);
-
-            // Update state
-            isSelected = false;
-        }
-        else
-        {
-            // Select this action
-            GameManager.instance.SelectAction(action);
-
-            // Update state
-            isSelected = true;
         }
     }
 

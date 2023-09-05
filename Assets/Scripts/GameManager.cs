@@ -58,14 +58,11 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         // If right click anywhere
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1) && selectedEntity is Player)
         {
-            // If you have an action selected
-            if (selectedAction != null)
-            {
-                // Then cancel it
-                SelectAction(null);
-            }
+            print("hit");
+            // Then cancel it
+            SelectAction(null);
         }
     }
 
@@ -342,23 +339,23 @@ public class GameManager : MonoBehaviour
             yield return EndTurn();
         }
 
-        // Debug
-        print("Turn Start: " + selectedEntity.name);
-
-        // Trigger event 
-        GameEvents.instance.TriggerOnTurnStart(selectedEntity);
-
         // Perform any delayed actions stored by this entity
         yield return PerformDelayedAction(selectedEntity);
 
         // Perform any reactive actions stored by this entity
         yield return PerformAnyReactiveActions(selectedEntity);
 
+        // Debug
+        print("Turn Start: " + selectedEntity.name);
+
+        // Trigger event 
+        GameEvents.instance.TriggerOnTurnStart(selectedEntity);
+
         // Clear any reactive
         ClearReativeActions(selectedEntity);
 
         // Reset actions now
-        ReplenishActions(selectedEntity);
+        yield return ResetActions(selectedEntity);
 
         // Check if the enity has an ai, if so, let them decide their action
         if (selectedEntity.AI != null)
@@ -373,7 +370,7 @@ public class GameManager : MonoBehaviour
 
     public void SelectAction(Action action)
     {
-        if (selectedThreats.Count > 0) return;
+        // if (selectedThreats.Count > 0) return;
 
         // If you already have a selected location
         if (selectedLocation != Vector3Int.zero)
@@ -382,18 +379,48 @@ public class GameManager : MonoBehaviour
             SelectLocation(Vector3Int.zero);
         }
 
-        // If you have a previous action
-        if (selectedAction != null)
+        // Check all 4 cases
+        if (selectedAction == null && action == null)
         {
-            // Un-select it
+            // Do nothing.
+        }
+        else if (selectedAction != null && action == null)
+        {
+            print("De-select current action.");
+
+            selectedAction = null;
+            // Trigger event
             GameEvents.instance.TriggerOnActionSelect(selectedEntity, null);
         }
+        else if (selectedAction == null && action != null)
+        {
+            print("Select new action.");
 
-        // Update selected action (could be null)
-        this.selectedAction = action;
+            selectedAction = action;
+            // Trigger event
+            GameEvents.instance.TriggerOnActionSelect(selectedEntity, action);
+        }
+        else if (selectedAction != null && action != null)
+        {
+            if (selectedAction == action)
+            {
+                print("De-select current action.");
 
-        // Trigger event
-        GameEvents.instance.TriggerOnActionSelect(selectedEntity, selectedAction);
+                selectedAction = null;
+                // Trigger event
+                GameEvents.instance.TriggerOnActionSelect(selectedEntity, null);
+            }
+            else
+            {
+                print("Swap selected actions.");
+
+                selectedAction = action;
+                // Trigger events
+                GameEvents.instance.TriggerOnActionSelect(selectedEntity, null);
+                GameEvents.instance.TriggerOnActionSelect(selectedEntity, action);
+            }
+        }
+        else throw new System.Exception("UNHANDLED ACTION SELECT CASE ENCOUNTER!");
     }
 
     public void SelectLocation(Vector3Int location)
@@ -567,6 +594,12 @@ public class GameManager : MonoBehaviour
         selectedLocation = Vector3Int.zero;
         selectedThreats.Clear();
 
+        // Exhaust all die
+        foreach (var action in selectedEntity.GetActions())
+        {
+            action.die.Exhaust();
+        }
+
         // Debug
         print("Turn End: " + selectedEntity.name);
 
@@ -632,19 +665,49 @@ public class GameManager : MonoBehaviour
         TransitionManager.instance.ReloadScene(Vector3.zero);
     }
 
-    private void ReplenishActions(Entity entity)
+    private IEnumerator ResetActions(Entity entity)
     {
-        // Loop through all actions
-        foreach (var action in entity.GetActions())
+        // Player should have buffer time
+        if (entity is Player)
         {
-            // Replenish die with event
-            action.die.Replenish();
-            GameEvents.instance.TriggerOnDieReplenish(action.die);
+            // Visually loop die
+            foreach (var action in entity.GetActions())
+            {
+                GameEvents.instance.TriggerOnDieLoop(action.die);
+            }
 
-            // Roll die with event
-            action.die.Roll();
-            GameEvents.instance.TriggerOnDieRoll(action.die);
+            // Buffer
+            yield return new WaitForSeconds(gameSettings.diceRollTime);
+
+            // Set new values
+            foreach (var action in entity.GetActions())
+            {
+                // Roll die with event
+                action.die.Roll();
+
+                // Replenish die with event
+                action.die.Replenish();
+
+                // Buffer
+                yield return new WaitForSeconds(0.25f);
+            }
+
+            // Buffer
+            yield return new WaitForSeconds(0.25f);
         }
+        else
+        {
+            // Set new values
+            foreach (var action in entity.GetActions())
+            {
+                // Replenish die with event
+                action.die.Replenish();
+
+                // Roll die with event
+                action.die.Roll();
+            }
+        }
+
     }
 
     private IEnumerator PerformAction(Entity entity, Action action, Vector3Int location, List<Vector3Int> threatenedLocations)
@@ -692,7 +755,6 @@ public class GameManager : MonoBehaviour
                 {
                     if (room.GetEntityAtLocation(location) is Player)
                     {
-
                         // Perform the action
                         yield return PerformAction(entity, action, targets[0], targets);
 
@@ -702,8 +764,6 @@ public class GameManager : MonoBehaviour
 
                 // Remove entry
                 delayedActionsHashtable.Remove(entityActionPair.Key);
-
-                print($"Remove Action: {action.name}; Count: {targets.Count}");
 
                 // Hide threats
                 GameEvents.instance.TriggerOnActionUnthreatenLocation(action, targets);
@@ -838,26 +898,31 @@ public class GameManager : MonoBehaviour
     {
         // Get entity at the location
         Entity entity = room.GetEntityAtLocation(location);
-        List<Vector3Int> locations = null;
 
         if (entity != null)
         {
-            // Loop through each pair
-            foreach (var entityActionPair in delayedActionsHashtable)
-            {
-                // Check if action belongs to the entity
-                if (entityActionPair.Key.Item1 == entity)
-                {
-                    // Update targets
-                    locations = entityActionPair.Value;
+            List<Vector3Int> locations = null;
 
-                    break;
+            if (entity != null)
+            {
+                // Loop through each pair
+                foreach (var entityActionPair in delayedActionsHashtable)
+                {
+                    // Check if action belongs to the entity
+                    if (entityActionPair.Key.Item1 == entity)
+                    {
+                        // Update targets
+                        locations = entityActionPair.Value;
+
+                        break;
+                    }
                 }
             }
+
+            // Trigger event
+            GameEvents.instance.TriggerOnEntityInspect(entity, locations);
         }
 
-        // Trigger event
-        GameEvents.instance.TriggerOnEntityInspect(entity, locations);
     }
 
     // TEMP SHOP LOGIC

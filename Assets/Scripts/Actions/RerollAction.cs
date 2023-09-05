@@ -25,12 +25,10 @@ public class RerollAction : Action
             {
                 // Reroll all die
                 action.die.Roll();
-                // Trigger event
-                GameEvents.instance.TriggerOnDieRoll(action.die);
             }
         }
 
         // Wait for rolling
-        yield return new WaitForSeconds(DieUI.rollTime);
+        yield return new WaitForSeconds(GameManager.instance.gameSettings.diceRollTime);
     }
 }

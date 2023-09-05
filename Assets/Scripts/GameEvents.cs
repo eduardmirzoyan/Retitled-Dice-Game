@@ -16,6 +16,8 @@ public class GameEvents : MonoBehaviour
     public event System.Action onCombatExit;
 
     // Action based
+    public event Action<Action> onActionDisable;
+    public event Action<Action> onActionEnable;
     public event Action<Entity, Action> onActionSelect;
     public event Action<Entity, Action> onActionDeselect;
     public event Action<Entity, Action, Vector3Int> onLocationSelect;
@@ -24,6 +26,7 @@ public class GameEvents : MonoBehaviour
     public event Action<Entity, Action, Vector3Int, Room> onActionPerformEnd;
 
     // Dice based
+    public event Action<Die> onDieLoop;
     public event Action<Die> onDieRoll;
     public event Action<Die> onDieExhaust;
     public event Action<Die> onDieReplenish;
@@ -44,10 +47,11 @@ public class GameEvents : MonoBehaviour
     public event Action<Entity> onEntityInDanger;
     public event Action<Entity> onEntityOutDanger;
 
+    // Events
+    public event Action<Entity, Weapon, Entity> onEntityKillEntity;
+
     // Stat changes
     public event Action<Entity, int> onEntityTakeDamage;
-    public event Action<Entity, int> onEntityGainExperience;
-    public event Action<Entity, int> onEntityGainLevel;
     public event Action<Entity, int> onEntityGoldChange;
 
     // Common Events
@@ -62,6 +66,8 @@ public class GameEvents : MonoBehaviour
     public event Action<ItemUI, ItemSlotUI> onItemInsert;
     public event Action<Entity, Weapon, int> onEquipWeapon;
     public event Action<Entity, Weapon, int> onUnequipWeapon;
+    public event Action<Entity, Consumable> onEntityUseConsumable;
+
     public event Action<Entity, List<Vector3Int>> onEntityInspect;
 
     public static GameEvents instance;
@@ -157,6 +163,22 @@ public class GameEvents : MonoBehaviour
         }
     }
 
+    public void TriggerOnActionEnable(Action action)
+    {
+        if (onActionEnable != null)
+        {
+            onActionEnable(action);
+        }
+    }
+
+    public void TriggerOnActionDisable(Action action)
+    {
+        if (onActionDisable != null)
+        {
+            onActionDisable(action);
+        }
+    }
+
     public void TriggerOnActionSelect(Entity entity, Action action)
     {
         if (onActionSelect != null)
@@ -242,6 +264,14 @@ public class GameEvents : MonoBehaviour
         if (onEntityJump != null)
         {
             onEntityJump(entity);
+        }
+    }
+
+    public void TriggerOnDieLoop(Die die)
+    {
+        if (onDieLoop != null)
+        {
+            onDieLoop(die);
         }
     }
 
@@ -365,6 +395,14 @@ public class GameEvents : MonoBehaviour
         }
     }
 
+    public void TriggerOnEntityUseConsumable(Entity entity, Consumable consumable)
+    {
+        if (onEntityUseConsumable != null)
+        {
+            onEntityUseConsumable(entity, consumable);
+        }
+    }
+
     public void TriggerOnEntityInspect(Entity entity, List<Vector3Int> locations)
     {
         if (onEntityInspect != null)
@@ -402,6 +440,14 @@ public class GameEvents : MonoBehaviour
         if (onEntityOutDanger != null)
         {
             onEntityOutDanger(entity);
+        }
+    }
+
+    public void TriggerOnEntityKillEntity(Entity killer, Weapon weapon, Entity victim)
+    {
+        if (onEntityKillEntity != null)
+        {
+            onEntityKillEntity(killer, weapon, victim);
         }
     }
 

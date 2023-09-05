@@ -21,6 +21,7 @@ public class Room : ScriptableObject
     public List<Entity> hostileEntities;
     public List<Entity> alliedEntities;
     public List<Entity> bossEntities;
+    public List<Entity> allEntities;
     public Player player;
 
     public Pathfinder pathfinder;
@@ -40,6 +41,8 @@ public class Room : ScriptableObject
         alliedEntities = new List<Entity>();
         bossEntities = new List<Entity>();
 
+        allEntities = new List<Entity>();
+
         // Initalize pathfinder
         pathfinder = new Pathfinder();
 
@@ -56,6 +59,9 @@ public class Room : ScriptableObject
 
         // Update tile
         entranceTile.containedEntity = player;
+
+        // Add to total list
+        allEntities.Add(player);
 
         // Trigger event
         GameEvents.instance.TriggerOnEntitySpawn(player);
@@ -112,12 +118,18 @@ public class Room : ScriptableObject
             bossEntities.Add(entity);
         }
 
+        // Add to total list
+        allEntities.Add(entity);
+
         // Trigger event
         GameEvents.instance.TriggerOnEntitySpawn(entity);
     }
 
     public void DespawnEntity(Entity entity)
     {
+        // Stop any enchantments
+        entity.Uninitialize();
+
         // Check if entity is the player
         if (entity == player)
         {
@@ -159,6 +171,9 @@ public class Room : ScriptableObject
 
         // Remove from tile
         TileFromLocation(entity.location).containedEntity = null;
+
+        // Remove from list
+        allEntities.Add(entity);
 
         // Trigger event
         GameEvents.instance.TriggerOnEntityDespawn(entity);
@@ -472,6 +487,10 @@ public class Room : ScriptableObject
             // Despawn any pickups
             DespawnPickup(entity, tile);
         }
+    }
 
+    public static int ManhattanDistance(Vector3Int a, Vector3Int b)
+    {
+        return Mathf.Abs(a.x - b.x) + Mathf.Abs(a.y - b.y);
     }
 }

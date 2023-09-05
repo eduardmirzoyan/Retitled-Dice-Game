@@ -1834,6 +1834,7 @@ GameObject:
   m_Component:
   - component: {fileID: 210654673}
   - component: {fileID: 210654674}
+  - component: {fileID: 210654675}
   m_Layer: 5
   m_Name: Menu Button
   m_TagString: Untagged
@@ -1919,6 +1920,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &210654675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 210654672}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b344c94f41df360418126892531bc401, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  button: {fileID: 0}
 --- !u!1 &220517304
 GameObject:
   m_ObjectHideFlags: 0
@@ -3123,6 +3137,7 @@ GameObject:
   m_Component:
   - component: {fileID: 308328513}
   - component: {fileID: 308328514}
+  - component: {fileID: 308328515}
   m_Layer: 5
   m_Name: Restart Button
   m_TagString: Untagged
@@ -3208,6 +3223,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &308328515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 308328512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b344c94f41df360418126892531bc401, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  button: {fileID: 0}
 --- !u!1 &362170796
 GameObject:
   m_ObjectHideFlags: 0
@@ -3279,6 +3307,7 @@ MonoBehaviour:
   ostSounds: []
   sfxSounds: []
   fadeTime: 1
+  testSFX: 
 --- !u!4 &385730644
 Transform:
   m_ObjectHideFlags: 0
@@ -6621,6 +6650,7 @@ GameObject:
   m_Component:
   - component: {fileID: 905990565}
   - component: {fileID: 905990566}
+  - component: {fileID: 905990567}
   m_Layer: 5
   m_Name: Options Button
   m_TagString: Untagged
@@ -6706,6 +6736,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &905990567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 905990564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b344c94f41df360418126892531bc401, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  button: {fileID: 0}
 --- !u!1 &910612103
 GameObject:
   m_ObjectHideFlags: 0
@@ -10256,7 +10299,7 @@ GameObject:
   - component: {fileID: 1383511116}
   - component: {fileID: 1383511118}
   - component: {fileID: 1383511119}
-  - component: {fileID: 1383511120}
+  - component: {fileID: 1383511121}
   m_Layer: 0
   m_Name: Room Grid
   m_TagString: Untagged
@@ -10355,7 +10398,7 @@ MonoBehaviour:
   alpha: 0.5
   reactiveColor: {r: 0.7739137, g: 1, b: 0.1372549, a: 1}
   delayedColor: {r: 0.87058824, g: 0.24313726, b: 0.13725491, a: 1}
---- !u!114 &1383511120
+--- !u!114 &1383511121
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -10364,7 +10407,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1383511115}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3be11f7f1549114e9a0fc60d0e53553, type: 3}
+  m_Script: {fileID: 11500000, guid: d32c8388c8617324cbc49c6161be8e16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   selectionTilemap: {fileID: 1491582602}
@@ -10832,6 +10875,7 @@ GameObject:
   - component: {fileID: 1477862525}
   - component: {fileID: 1477862526}
   - component: {fileID: 1477862527}
+  - component: {fileID: 1477862528}
   m_Layer: 5
   m_Name: EndTurn Button
   m_TagString: Untagged
@@ -10947,6 +10991,19 @@ MonoBehaviour:
   outline: {fileID: 0}
   button: {fileID: 1477862525}
   endTurnButton: 32
+--- !u!114 &1477862528
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1477862523}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b344c94f41df360418126892531bc401, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  button: {fileID: 0}
 --- !u!1 &1479434361
 GameObject:
   m_ObjectHideFlags: 0
@@ -13255,6 +13312,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1771396642}
   - component: {fileID: 1771396643}
+  - component: {fileID: 1771396644}
   m_Layer: 5
   m_Name: Resume Button
   m_TagString: Untagged
@@ -13340,6 +13398,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1771396644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1771396641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b344c94f41df360418126892531bc401, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  button: {fileID: 0}
 --- !u!1 &1789674394
 GameObject:
   m_ObjectHideFlags: 0

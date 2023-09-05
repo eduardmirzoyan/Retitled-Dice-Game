@@ -15,8 +15,6 @@ MonoBehaviour:
   name: Knight
   maxHealth: 3
   currentHealth: 3
-  level: 1
-  experience: 0
   gold: 0
   inventory: {fileID: 11400000, guid: b8d64f6ca5474a942ac1360be01b684d, type: 2}
   modelSprite: {fileID: 609013636, guid: 721bbd13f0ed4ac4280c2ee7e9ff8b65, type: 3}
@@ -27,7 +25,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 31fb65b37415e9042bc579f491dd2fa1, type: 2}
   weapons:
   - {fileID: 11400000, guid: 74bc2abe0129f6e4489f90c2d2bad8b2, type: 2}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: a8a4c558cc25da7439e783278188eced, type: 2}
   enchantments: []
   location: {x: 0, y: 0, z: 0}
   room: {fileID: 0}

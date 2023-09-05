@@ -5,14 +5,30 @@ using UnityEngine;
 [CreateAssetMenu]
 public class Die : ScriptableObject
 {
-    [Header("Data")]
+    [Header("Dynamic Data")]
     public int maxValue = 6;
+    public int minValue = 1;
     public int value = 1;
     public bool isExhausted = false;
+    public Action action;
 
     [Header("Debugging")]
     public bool neverExhaust = false;
     public bool lockValue = false;
+
+    public void Initialize(Action action)
+    {
+        this.action = action;
+
+        // Start at min value and exhausted
+        value = minValue;
+        isExhausted = true;
+    }
+
+    public void Uninitialize()
+    {
+        this.action = null;
+    }
 
     public void Exhaust()
     {
@@ -27,6 +43,9 @@ public class Die : ScriptableObject
     public void Replenish()
     {
         isExhausted = false;
+
+        // Trigger event
+        GameEvents.instance.TriggerOnDieReplenish(this);
     }
 
     public void Roll()
@@ -34,7 +53,20 @@ public class Die : ScriptableObject
         if (lockValue) return;
 
         // Generate a random value
-        value = Random.Range(1, maxValue + 1);
+        value = Random.Range(minValue, maxValue + 1);
+
+        // Trigger events
+        GameEvents.instance.TriggerOnDieRoll(this);
+    }
+
+    public bool IsHighRoll()
+    {
+        return value == maxValue;
+    }
+
+    public bool IsLowRoll()
+    {
+        return value == minValue;
     }
 
     public Die Copy()

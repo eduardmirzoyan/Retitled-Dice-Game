@@ -9,9 +9,4 @@ public class Player : Entity
     {
         room.InteractWithLocation(this, location);
     }
-
-    protected override void OnDeath()
-    {
-        // Does nothing
-    }
 }

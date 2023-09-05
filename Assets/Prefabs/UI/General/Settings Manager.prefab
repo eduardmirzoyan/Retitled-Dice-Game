@@ -3608,6 +3608,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6132151709680493843}
   - component: {fileID: 6132151709680493836}
+  - component: {fileID: 271351072}
   m_Layer: 5
   m_Name: Back Button
   m_TagString: Untagged
@@ -3693,6 +3694,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &271351072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6132151709680493842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b344c94f41df360418126892531bc401, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  button: {fileID: 0}
 --- !u!1 &6132151709877712697
 GameObject:
   m_ObjectHideFlags: 0
@@ -4070,6 +4084,8 @@ MonoBehaviour:
   audioMixer: {fileID: 24100000, guid: 3f0fc48e3bb6ce84f87756c7cd05bd35, type: 2}
   canvasGroup: {fileID: 6132151711290185371}
   resolutionsDropdown: {fileID: 5215442254754913255}
+  toggleKey: 9
+  isOpen: 0
 --- !u!1 &6132151711227785574
 GameObject:
   m_ObjectHideFlags: 0

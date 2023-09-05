@@ -36,7 +36,7 @@ public class QuakeAction : Action
             var target = room.GetEntityAtLocation(location);
             if (target != null)
             {
-                entity.Attack(target);
+                entity.Attack(target, weapon);
             }
         }
 

@@ -9,6 +9,8 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private float fadeTime = 1f;
     private Coroutine coroutine;
 
+    [SerializeField] private string testSFX;
+
     private string song;
 
     public static AudioManager instance;
@@ -170,6 +172,12 @@ public class AudioManager : MonoBehaviour
         {
             // InvokeRepeating("PlayFootsteps", 0f, 1f);
             CancelInvoke("FootstepsSFX");
+        }
+
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            // Test sound
+            PlaySFX(testSFX);
         }
     }
 
