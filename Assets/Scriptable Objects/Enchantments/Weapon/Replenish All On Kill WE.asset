@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21124eeb472df3d488b26be7ad78b8b6, type: 3}
   m_Name: Replenish All On Kill WE
   m_EditorClassIdentifier: 
-  name: ??
-  description: /??
+  name: Bloodthirsty
+  description: Kills replenish all of this weapon's actions.
   weapon: {fileID: 0}
   replenishAllActions: 1

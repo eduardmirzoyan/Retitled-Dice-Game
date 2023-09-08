@@ -205,7 +205,7 @@ public class EntityModel : MonoBehaviour
             coroutine = StartCoroutine(Warp(newLocation));
 
             // Play sound
-            AudioManager.instance.PlaySFX("teleport");
+            // AudioManager.instance.PlaySFX("teleport");
         }
     }
 

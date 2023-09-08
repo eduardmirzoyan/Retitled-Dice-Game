@@ -17,7 +17,6 @@ MonoBehaviour:
   fullDescription: "Attack the first enemy up to <sprite name=\"Die\"> tiles. \nBlocked
     by walls."
   icon: {fileID: 21300000, guid: 9c9779ae9ffeea342b6ef59ebbd4f64f, type: 3}
-  background: {fileID: 21300000, guid: d12eabff6b0248c42bcf302efc0df493, type: 3}
   color: {r: 0.8705883, g: 0.24313727, b: 0.13725491, a: 1}
   actionSpeed: 0
   actionType: 1

@@ -46,6 +46,11 @@ public class GameManager : MonoBehaviour
         reactiveActionsHastable = new Dictionary<(Entity, Action), List<Vector3Int>>();
         delayedActionsHashtable = new Dictionary<(Entity, Action), List<Vector3Int>>();
 
+        // Initialize values
+        selectedEntity = null;
+        selectedAction = null;
+        selectedLocation = Vector3Int.back;
+
         gameOver = false;
     }
 
@@ -60,7 +65,6 @@ public class GameManager : MonoBehaviour
         // If right click anywhere
         if (Input.GetMouseButtonDown(1) && selectedEntity is Player)
         {
-            print("hit");
             // Then cancel it
             SelectAction(null);
         }
@@ -373,10 +377,10 @@ public class GameManager : MonoBehaviour
         // if (selectedThreats.Count > 0) return;
 
         // If you already have a selected location
-        if (selectedLocation != Vector3Int.zero)
+        if (selectedLocation != Vector3Int.back)
         {
             // Unselect it
-            SelectLocation(Vector3Int.zero);
+            SelectLocation(Vector3Int.back);
         }
 
         // Check all 4 cases
@@ -386,7 +390,7 @@ public class GameManager : MonoBehaviour
         }
         else if (selectedAction != null && action == null)
         {
-            print("De-select current action.");
+            //print("De-select current action.");
 
             selectedAction = null;
             // Trigger event
@@ -394,7 +398,8 @@ public class GameManager : MonoBehaviour
         }
         else if (selectedAction == null && action != null)
         {
-            print("Select new action.");
+            //print("Select new action.");
+            if (action.die.isExhausted) return;
 
             selectedAction = action;
             // Trigger event
@@ -402,9 +407,11 @@ public class GameManager : MonoBehaviour
         }
         else if (selectedAction != null && action != null)
         {
+            if (action.die.isExhausted) return;
+
             if (selectedAction == action)
             {
-                print("De-select current action.");
+                //print("De-select current action.");
 
                 selectedAction = null;
                 // Trigger event
@@ -412,7 +419,7 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                print("Swap selected actions.");
+                //print("Swap selected actions.");
 
                 selectedAction = action;
                 // Trigger events
@@ -425,33 +432,58 @@ public class GameManager : MonoBehaviour
 
     public void SelectLocation(Vector3Int location)
     {
-        if (location == Vector3Int.zero)
+
+        if (selectedLocation == Vector3Int.back && location == Vector3Int.back)
         {
-            if (selectedThreats.Count > 0)
-            {
-                // Clean up selected tiles, etc
-                // Trigger event
-                GameEvents.instance.TriggerOnActionUnthreatenLocation(selectedAction, selectedThreats);
+            // Do nothing.
+        }
+        else if (selectedLocation != Vector3Int.back && location == Vector3Int.back)
+        {
+            print("De-select current location.");
 
-                // Remove threats
-                selectedThreats.Clear();
-            }
+            selectedLocation = Vector3Int.back;
 
-            if (selectedLocation != Vector3Int.zero && selectedAction.actionType == ActionType.Attack)
+            // Trigger event
+            GameEvents.instance.TriggerOnLocationSelect(selectedEntity, selectedAction, Vector3Int.back);
+
+            // Hide threats
+            GameEvents.instance.TriggerOnActionUnthreatenLocation(selectedAction, selectedThreats);
+
+            // Clear
+            selectedThreats.Clear();
+
+            if (selectedAction.actionType == ActionType.Attack)
             {
                 // Sheathe weapon
                 GameEvents.instance.TriggerOnEntitySheatheWeapon(selectedEntity, selectedAction.weapon);
             }
         }
-        else
+        else if (selectedLocation == Vector3Int.back && location != Vector3Int.back)
         {
+            print("Select new location.");
+
+            selectedLocation = location;
+
+            // Trigger event
+            GameEvents.instance.TriggerOnLocationSelect(selectedEntity, selectedAction, location);
+
+            if (selectedAction.actionType == ActionType.Attack)
+            {
+                // Calculate direction
+                Vector3Int direction = location - selectedEntity.location;
+                direction.Clamp(-Vector3Int.one, Vector3Int.one);
+
+                // Draw weapon
+                GameEvents.instance.TriggerOnEntityDrawWeapon(selectedEntity, direction, selectedAction.weapon);
+            }
+
             // Add threatened locations to table
             selectedThreats = selectedAction.GetThreatenedLocations(selectedEntity, location);
 
             // Show threats
             GameEvents.instance.TriggerOnActionThreatenLocation(selectedAction, selectedThreats);
 
-            if (selectedLocation == Vector3Int.zero && selectedAction.actionType == ActionType.Attack)
+            if (selectedAction.actionType == ActionType.Attack)
             {
                 // Calculate direction
                 Vector3Int direction = location - selectedEntity.location;
@@ -461,12 +493,67 @@ public class GameManager : MonoBehaviour
                 GameEvents.instance.TriggerOnEntityDrawWeapon(selectedEntity, direction, selectedAction.weapon);
             }
         }
+        else if (selectedLocation != Vector3Int.back && location != Vector3Int.back)
+        {
+            // If same location was selected
+            if (selectedLocation == location)
+            {
+                print("Same location, so we toggle off.");
 
-        // Update location
-        this.selectedLocation = location;
+                selectedLocation = Vector3Int.back;
 
-        // Trigger event
-        GameEvents.instance.TriggerOnLocationSelect(selectedEntity, selectedAction, selectedLocation);
+                // Trigger event
+                GameEvents.instance.TriggerOnLocationSelect(selectedEntity, selectedAction, Vector3Int.back);
+
+                // Hide threats
+                GameEvents.instance.TriggerOnActionUnthreatenLocation(selectedAction, selectedThreats);
+
+                // Clear
+                selectedThreats.Clear();
+
+                if (selectedAction.actionType == ActionType.Attack)
+                {
+                    // Sheathe weapon
+                    GameEvents.instance.TriggerOnEntitySheatheWeapon(selectedEntity, selectedAction.weapon);
+                }
+            }
+            else
+            {
+                print("Swap locations.");
+
+                selectedLocation = location;
+
+                // Trigger events
+                GameEvents.instance.TriggerOnLocationSelect(selectedEntity, selectedAction, Vector3Int.back);
+                GameEvents.instance.TriggerOnLocationSelect(selectedEntity, selectedAction, location);
+
+                // Hide threats
+                GameEvents.instance.TriggerOnActionUnthreatenLocation(selectedAction, selectedThreats);
+
+                if (selectedAction.actionType == ActionType.Attack)
+                {
+                    // Sheathe weapon
+                    GameEvents.instance.TriggerOnEntitySheatheWeapon(selectedEntity, selectedAction.weapon);
+                }
+
+                // Save new threatened locations 
+                selectedThreats = selectedAction.GetThreatenedLocations(selectedEntity, location);
+
+                // Show threats
+                GameEvents.instance.TriggerOnActionThreatenLocation(selectedAction, selectedThreats);
+
+                if (selectedAction.actionType == ActionType.Attack)
+                {
+                    // Calculate direction
+                    Vector3Int direction = location - selectedEntity.location;
+                    direction.Clamp(-Vector3Int.one, Vector3Int.one);
+
+                    // Draw weapon
+                    GameEvents.instance.TriggerOnEntityDrawWeapon(selectedEntity, direction, selectedAction.weapon);
+                }
+            }
+        }
+        else throw new System.Exception("UNHANDLED LOCATION SELECT CASE ENCOUNTER!");
     }
 
     public void ConfirmAction()
@@ -534,7 +621,7 @@ public class GameManager : MonoBehaviour
 
             // Reset values
             selectedAction = null;
-            selectedLocation = Vector3Int.zero;
+            selectedLocation = Vector3Int.back;
             selectedThreats.Clear();
 
             // Check another action
@@ -591,7 +678,7 @@ public class GameManager : MonoBehaviour
     {
         // Reset selected values
         selectedAction = null;
-        selectedLocation = Vector3Int.zero;
+        selectedLocation = Vector3Int.back;
         selectedThreats.Clear();
 
         // Exhaust all die
@@ -735,7 +822,7 @@ public class GameManager : MonoBehaviour
 
         // Reset selected values
         selectedAction = null;
-        selectedLocation = Vector3Int.zero;
+        selectedLocation = Vector3Int.back;
         selectedThreats.Clear();
     }
 
@@ -899,30 +986,26 @@ public class GameManager : MonoBehaviour
         // Get entity at the location
         Entity entity = room.GetEntityAtLocation(location);
 
+        List<Vector3Int> locations = null;
+
         if (entity != null)
         {
-            List<Vector3Int> locations = null;
-
-            if (entity != null)
+            // Loop through each pair
+            foreach (var entityActionPair in delayedActionsHashtable)
             {
-                // Loop through each pair
-                foreach (var entityActionPair in delayedActionsHashtable)
+                // Check if action belongs to the entity
+                if (entityActionPair.Key.Item1 == entity)
                 {
-                    // Check if action belongs to the entity
-                    if (entityActionPair.Key.Item1 == entity)
-                    {
-                        // Update targets
-                        locations = entityActionPair.Value;
+                    // Update targets
+                    locations = entityActionPair.Value;
 
-                        break;
-                    }
+                    break;
                 }
             }
-
-            // Trigger event
-            GameEvents.instance.TriggerOnEntityInspect(entity, locations);
         }
 
+        // Trigger event
+        GameEvents.instance.TriggerOnEntityInspect(entity, locations);
     }
 
     // TEMP SHOP LOGIC

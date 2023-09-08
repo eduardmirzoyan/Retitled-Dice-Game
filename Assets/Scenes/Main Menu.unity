@@ -2054,8 +2054,8 @@ MonoBehaviour:
 
     When
     you end your turn, it will be the enemies turn to act. Often they will threaten
-    certain tiles, outlined in <color=red>red</color>. Be careful to not move <color=yellow>into</color>
-    these tiles to avoid getting hit.
+    certain tiles, outlined in <color=red>red</color>. Ending your turn in these
+    tiles will cause you to get hit.
 
 
     Collect gold to buy new weapons and travel
@@ -2646,8 +2646,8 @@ MonoBehaviour:
     loop: 0
     audioSource: {fileID: 0}
     audioMixerGroup: {fileID: -2258679276098905894, guid: 3f0fc48e3bb6ce84f87756c7cd05bd35, type: 2}
-  - name: teleport
-    audioClip: {fileID: 8300000, guid: 0fbe9087a2b40254596db11f4d6cab93, type: 3}
+  - name: slash
+    audioClip: {fileID: 8300000, guid: 6c12153993bebd640ba80064631907ba, type: 3}
     volume: 0.5
     pitch: 1
     loop: 0

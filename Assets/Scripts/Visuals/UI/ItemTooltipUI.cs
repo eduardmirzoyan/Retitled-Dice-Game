@@ -13,11 +13,14 @@ public class ItemTooltipUI : MonoBehaviour
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private TextMeshProUGUI itemName;
     [SerializeField] private TextMeshProUGUI itemDescription;
-    [SerializeField] private GameObject actionTooltipPrefab;
     [SerializeField] private LayoutGroup actionsLayoutGroup;
+    [SerializeField] private LayoutGroup enchantmentsLayoutGroup;
     [SerializeField] private TextMeshProUGUI valueText;
+    [SerializeField] private GameObject actionTooltipPrefab;
+    [SerializeField] private GameObject weaponEnchantmentTooltipPrefab;
 
     private List<ActionTooltipUI> actionTooltips;
+    private List<WeaponEnchantmentTooltipUI> enchantmentTooltips;
 
     private void Awake()
     {
@@ -30,9 +33,8 @@ public class ItemTooltipUI : MonoBehaviour
         instance = this;
 
         canvasGroup = GetComponentInChildren<CanvasGroup>();
-
-        // lockImage.enabled = false;
         actionTooltips = new List<ActionTooltipUI>();
+        enchantmentTooltips = new List<WeaponEnchantmentTooltipUI>();
     }
 
     private void Update()
@@ -111,7 +113,7 @@ public class ItemTooltipUI : MonoBehaviour
             // Cast
             var weapon = (Weapon)item;
 
-            // Display all its skills
+            // Display all its actions
             foreach (var action in weapon.actions)
             {
                 // Spawn visuals of actions
@@ -121,6 +123,18 @@ public class ItemTooltipUI : MonoBehaviour
 
                 // Save
                 actionTooltips.Add(actionTooltip);
+            }
+
+            // Display all its actions
+            foreach (var enchantment in weapon.enchantments)
+            {
+                // Spawn visuals of actions
+                var enchantmentTooltip = Instantiate(weaponEnchantmentTooltipPrefab, enchantmentsLayoutGroup.transform).GetComponent<WeaponEnchantmentTooltipUI>();
+                // Initialize as display
+                enchantmentTooltip.Initialize(enchantment);
+
+                // Save
+                enchantmentTooltips.Add(enchantmentTooltip);
             }
         }
 
@@ -140,6 +154,14 @@ public class ItemTooltipUI : MonoBehaviour
             Destroy(tooltip.gameObject);
         }
         actionTooltips.Clear();
+
+        // Destroy all the ui
+        foreach (var tooltip in enchantmentTooltips)
+        {
+            // Destroy
+            Destroy(tooltip.gameObject);
+        }
+        enchantmentTooltips.Clear();
 
         // Then disable window
         canvasGroup.alpha = 0f;

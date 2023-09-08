@@ -12,7 +12,6 @@ public abstract class Action : ScriptableObject
     public string briefDescription;
     [TextArea(5, 2)] public string fullDescription;
     public Sprite icon;
-    public Sprite background;
     public Color color;
     public ActionSpeed actionSpeed;
     public ActionType actionType;

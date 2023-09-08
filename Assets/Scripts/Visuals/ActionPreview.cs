@@ -51,7 +51,7 @@ public class ActionPreview : MonoBehaviour
     private void UnintializeOnSelect(Entity entity, Action action)
     {
         // If no action was selected, destroy this
-        if (this.entity == entity && action == null && !isHovering)
+        if (this.entity == entity && action == null)
         {
             // Destroy self
             Destroy(gameObject);
@@ -104,12 +104,11 @@ public class ActionPreview : MonoBehaviour
             if (Input.GetMouseButtonUp(0))
             {
                 // Debug
-                //print("Dropped!");
+                // print("Dropped!");
 
                 // Un-highlgiht
                 actionIcon.color = defaultColor;
 
-                // Confirm this action at this location
                 GameManager.instance.ConfirmAction();
 
                 // Update state
@@ -130,7 +129,7 @@ public class ActionPreview : MonoBehaviour
         actionIcon.color = defaultColor;
 
         // Select this location
-        GameManager.instance.SelectLocation(Vector3Int.zero);
+        GameManager.instance.SelectLocation(Vector3Int.back);
 
         // Update state
         isHovering = false;

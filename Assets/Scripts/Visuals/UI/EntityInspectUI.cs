@@ -12,8 +12,6 @@ public class EntityInspectUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI entityName;
     [SerializeField] private Image entityIcon;
     [SerializeField] private HealthbarUI healthbarUI;
-    [SerializeField] private Tilemap inspectTilemap;
-    [SerializeField] private RuleTile highlightedTile;
 
     [Header("Data")]
     [SerializeField] private Entity entity;
@@ -45,9 +43,6 @@ public class EntityInspectUI : MonoBehaviour
 
             // Remove any visuals
             healthbarUI.Uninitialize();
-
-            // Clear highlights
-            inspectTilemap.ClearAllTiles();
         }
     }
 
@@ -65,9 +60,6 @@ public class EntityInspectUI : MonoBehaviour
 
                 // Remove any visuals
                 healthbarUI.Uninitialize();
-
-                // Clear highlights
-                inspectTilemap.ClearAllTiles();
             }
 
             if (entity != null)
@@ -85,14 +77,6 @@ public class EntityInspectUI : MonoBehaviour
 
                 // Intialize healthbar
                 healthbarUI.Initialize(entity);
-
-                // Highlight tiles
-                if (locations != null)
-                    foreach (var location in locations)
-                    {
-                        inspectTilemap.SetTile(location, highlightedTile);
-                        inspectTilemap.SetTileFlags(location, TileFlags.None);
-                    }
             }
         }
 

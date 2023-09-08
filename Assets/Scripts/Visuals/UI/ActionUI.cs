@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class ActionUI : MonoBehaviour
 {
@@ -22,10 +21,10 @@ public class ActionUI : MonoBehaviour
 
         // Update Visuals
         actionIcon.sprite = action.icon;
-        actionBackground.sprite = action.background;
+        actionBackground.color = action.color;
 
         // Initalize tooltip
-        tooltipTriggerUI.SetTooltip(action.name, action.briefDescription);
+        tooltipTriggerUI.SetTooltip(action.name + " [" + shortcut + "]", action.briefDescription);
 
         // Initialize die
         diceUI.Initialize(action, shortcut);
@@ -42,12 +41,14 @@ public class ActionUI : MonoBehaviour
         GameEvents.instance.onActionPerformStart += SetUninteractable;
         GameEvents.instance.onTurnEnd += SetUninteractable;
 
-        // Start prevented
-        canvasGroup.alpha = 0.6f;
-        canvasGroup.interactable = false;
-        canvasGroup.blocksRaycasts = false;
+        canvasGroup.alpha = 1f;
+        canvasGroup.interactable = true;
+        canvasGroup.blocksRaycasts = true;
 
-        diceUI.Idle();
+        if (action.die.isExhausted)
+            diceUI.Idle();
+        else
+            diceUI.Pulse();
     }
 
     public void Uninitialize()

@@ -18,7 +18,7 @@ public class ActionTooltipUI : MonoBehaviour
     {
         // Update Visuals
         actionIcon.sprite = action.icon;
-        actionBackground.sprite = action.background;
+        actionBackground.color = action.color;
 
         // Set basic info
         actionNameText.text = action.name;
@@ -28,7 +28,7 @@ public class ActionTooltipUI : MonoBehaviour
         descriptionCanvasGroup.alpha = 1f;
 
         // Set die label and color
-        dieMaxLabel.text = "MAX\n" + action.die.maxValue;
+        dieMaxLabel.text = "Range\n" + action.die.minValue + " - " + action.die.maxValue;
         dieMaxLabel.color = action.color;
     }
 }

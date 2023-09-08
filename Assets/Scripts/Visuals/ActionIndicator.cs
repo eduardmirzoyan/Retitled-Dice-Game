@@ -249,7 +249,7 @@ public class ActionIndicator : MonoBehaviour
 
             if (actionLocationTilemap.HasTile(cellPosition))
             {
-                if (location == Vector3Int.zero)
+                if (location == Vector3Int.back)
                 {
                     actionLocationTilemap.SetColor(cellPosition, action.color);
 
@@ -282,7 +282,7 @@ public class ActionIndicator : MonoBehaviour
 
     private void DrawPath(Entity entity, Action action, Vector3Int location)
     {
-        if (location != Vector3Int.zero && action.pathPrefab != null)
+        if (location != Vector3Int.back && action.pathPrefab != null)
         {
             var offset = new Vector3(0.5f, 0.5f, -1);
             Instantiate(action.pathPrefab, transform).GetComponent<ActionPathRenderer>().Initialize(entity, action, location, entity.location + offset, location + offset, action.color);

@@ -21,13 +21,7 @@ public class Die : ScriptableObject
         this.action = action;
 
         // Start at min value and exhausted
-        value = minValue;
         isExhausted = true;
-    }
-
-    public void Uninitialize()
-    {
-        this.action = null;
     }
 
     public void Exhaust()

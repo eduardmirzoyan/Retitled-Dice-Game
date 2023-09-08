@@ -22,10 +22,15 @@ public class EndTurnUI : MonoBehaviour
 
     private void Start()
     {
+        // Start disabled
+        canvasGroup.alpha = 0.6f;
+        button.interactable = false;
+
         // Sub to events
         GameEvents.instance.onTurnStart += EnableButton;
         GameEvents.instance.onActionPerformStart += DisableButton;
         GameEvents.instance.onActionPerformEnd += EnableButton;
+        GameEvents.instance.onActionPerformEnd += Highlight;
         GameEvents.instance.onTurnEnd += DisableButton;
     }
 
@@ -35,11 +40,14 @@ public class EndTurnUI : MonoBehaviour
         GameEvents.instance.onTurnStart -= EnableButton;
         GameEvents.instance.onActionPerformStart -= DisableButton;
         GameEvents.instance.onActionPerformEnd -= EnableButton;
+        GameEvents.instance.onActionPerformEnd -= Highlight;
         GameEvents.instance.onTurnEnd -= DisableButton;
     }
 
-    private void Update() {
-        if (button.interactable && Input.GetKeyDown(endTurnButton)) {
+    private void Update()
+    {
+        if (button.interactable && Input.GetKeyDown(endTurnButton))
+        {
             // Invoke the button click
             button.onClick.Invoke();
         }
@@ -51,19 +59,7 @@ public class EndTurnUI : MonoBehaviour
         {
             canvasGroup.alpha = 1f;
             button.interactable = true;
-
-            // Check if any possible moves are left, if not, then highlight
-            outline.enabled = entity.GetActions().All(action => action.die.isExhausted);
         }
-    }
-
-    private void EnableButton(Entity entity, Action action, Vector3Int vector3Int, Room dungeon) {
-        EnableButton(entity);
-    }
-
-    private void DisableButton(Entity entity, Action action, Vector3Int vector3Int, Room dungeon)
-    {
-        DisableButton(entity);
     }
 
     private void DisableButton(Entity entity)
@@ -73,8 +69,29 @@ public class EndTurnUI : MonoBehaviour
             canvasGroup.alpha = 0.6f;
             button.interactable = false;
 
-            // Disable highlight
+            // Disable any highlight
             outline.enabled = false;
         }
     }
+
+
+    private void Highlight(Entity entity, Action action, Vector3Int vector3Int, Room room)
+    {
+        // Check if any possible moves are left, if not, then highlight
+        if (entity is Player)
+            outline.enabled = entity.GetActions().All(action => action.die.isExhausted);
+    }
+
+
+    private void EnableButton(Entity entity, Action action, Vector3Int vector3Int, Room room)
+    {
+        EnableButton(entity);
+    }
+
+    private void DisableButton(Entity entity, Action action, Vector3Int vector3Int, Room room)
+    {
+        DisableButton(entity);
+    }
+
+
 }

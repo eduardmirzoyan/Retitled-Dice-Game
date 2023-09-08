@@ -37,12 +37,14 @@
   </PropertyGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\GameManager.cs" />
+     <Compile Include="Assets\Scripts\Enchantments\Weapon\DamageOnConsumeWE.cs" />
      <Compile Include="Assets\Scripts\Enchantments\EntityEnchantment.cs" />
      <Compile Include="Assets\Scripts\Visuals\LocationInspect.cs" />
      <Compile Include="Assets\Scripts\Actions\RangedAction.cs" />
      <Compile Include="Assets\Scripts\World\Room.cs" />
      <Compile Include="Assets\Scripts\AI\ScaredAI.cs" />
      <Compile Include="Assets\Scripts\GameEvents.cs" />
+     <Compile Include="Assets\Scripts\Visuals\UI\WeaponEnchantmentTooltipUI.cs" />
      <Compile Include="Assets\Scripts\Visuals\AttackParticle.cs" />
      <Compile Include="Assets\Scripts\SettingsManager.cs" />
      <Compile Include="Assets\Scripts\DamageFlash.cs" />
@@ -56,12 +58,15 @@
      <Compile Include="Assets\Scripts\Actions\Boss\SmashAction.cs" />
      <Compile Include="Assets\Scripts\Visuals\UI\HeartUI.cs" />
      <Compile Include="Assets\Scripts\World\KeyPickup.cs" />
+     <Compile Include="Assets\Scripts\Enchantments\Weapon\DieBuffWE.cs" />
      <Compile Include="Assets\Scripts\Items\Weapon.cs" />
+     <Compile Include="Assets\Scripts\Enchantments\Weapon\RangeDamageWE.cs" />
      <Compile Include="Assets\Scripts\Actions\JumpAction.cs" />
      <Compile Include="Assets\Scripts\Visuals\UI\TooltipTriggerUI.cs" />
      <Compile Include="Assets\Scripts\Visuals\UI\EquipmentSlotUI.cs" />
      <Compile Include="Assets\Scripts\Visuals\ProperLayerSort.cs" />
      <Compile Include="Assets\Scripts\Enchantments\Weapon\WeaponEnchantment.cs" />
+     <Compile Include="Assets\Scripts\Enchantments\Weapon\KillGoldWeaponEnchantment.cs" />
      <Compile Include="Assets\Scripts\World\ItemGenerator.cs" />
      <Compile Include="Assets\Scripts\Visuals\ActionPreview.cs" />
      <Compile Include="Assets\Scripts\Visuals\UI\TextTooltipUI.cs" />
@@ -83,9 +88,11 @@
      <Compile Include="Assets\Scripts\Visuals\WeaponModel.cs" />
      <Compile Include="Assets\Scripts\AI\Boss1AI.cs" />
      <Compile Include="Assets\Scripts\Items\HealingPotion.cs" />
+     <Compile Include="Assets\Scripts\Visuals\EntityInspect.cs" />
      <Compile Include="Assets\Scripts\GameSettings.cs" />
      <Compile Include="Assets\Scripts\World\RoomTile.cs" />
      <Compile Include="Assets\Scripts\Actions\Enemy\ArtilleryAction.cs" />
+     <Compile Include="Assets\Scripts\Enchantments\Weapon\ReplenishOnKillWE.cs" />
      <Compile Include="Assets\Scripts\Actions\MoveAction.cs" />
      <Compile Include="Assets\Scripts\Die.cs" />
      <Compile Include="Assets\Scripts\Game Feel\HitFreeze.cs" />
@@ -96,6 +103,7 @@
      <Compile Include="Assets\Scripts\World\GoldPickup.cs" />
      <Compile Include="Assets\Scripts\Visuals\EntityModel.cs" />
      <Compile Include="Assets\Scripts\TimedDestroy.cs" />
+     <Compile Include="Assets\Scripts\AI\DefendAI.cs" />
      <Compile Include="Assets\Scripts\World\EnemyGenerator.cs" />
      <Compile Include="Assets\Scripts\Main Menu\TransitionManager.cs" />
      <Compile Include="Assets\Scripts\Visuals\UI\PlayerHUDUI.cs" />
@@ -108,6 +116,7 @@
      <Compile Include="Assets\Scripts\Actions\Action.cs" />
      <Compile Include="Assets\Scripts\Game Feel\DottedLine.cs" />
      <Compile Include="Assets\Scripts\Main Menu\PauseManager.cs" />
+     <Compile Include="Assets\Scripts\Enchantments\Weapon\RollDamageWE.cs" />
      <Compile Include="Assets\Scripts\Actions\ThrustAction.cs" />
      <Compile Include="Assets\Scripts\Items\Item.cs" />
      <Compile Include="Assets\Scripts\AI\IdleAI.cs" />
@@ -117,6 +126,7 @@
      <Compile Include="Assets\Scripts\Visuals\UI\GameWinUI.cs" />
      <Compile Include="Assets\Scripts\Pathfinder.cs" />
      <Compile Include="Assets\Scripts\Enchantments\NoneEntityEnchantment.cs" />
+     <Compile Include="Assets\Scripts\Actions\FireballAction.cs" />
      <Compile Include="Assets\Scripts\Game Feel\CameraShake.cs" />
      <Compile Include="Assets\Scripts\Visuals\UI\ButtonAudio.cs" />
      <Compile Include="Assets\Scripts\Visuals\UI\EntityInspectUI.cs" />
@@ -134,13 +144,6 @@
      <Compile Include="Assets\Scripts\AI\AI.cs" />
      <Compile Include="Assets\Scripts\Actions\ShopAction.cs" />
      <Compile Include="Assets\Scripts\AI\BoldAI.cs" />
-     <Compile Include="Assets\Scripts\Enchantments\Weapon\KillGoldWeaponEnchantment.cs" />
-     <Compile Include="Assets\Scripts\Enchantments\Weapon\DieBuffWE.cs" />
-     <Compile Include="Assets\Scripts\Enchantments\Weapon\ReplenishOnKillWE.cs" />
-     <Compile Include="Assets\Scripts\Enchantments\Weapon\DamageOnConsumeWE.cs" />
-     <Compile Include="Assets\Scripts\Enchantments\Weapon\RangeDamageWE.cs" />
-     <Compile Include="Assets\Scripts\Enchantments\Weapon\RollDamageWE.cs" />
-     <Compile Include="Assets\Scripts\Visuals\EntityInspect.cs" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />

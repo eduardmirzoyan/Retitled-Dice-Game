@@ -21,6 +21,11 @@ public class Weapon : Item
     {
         this.entity = entity;
 
+        foreach (var actions in actions)
+        {
+            actions.die.Exhaust();
+        }
+
         foreach (var enchantment in enchantments)
         {
             enchantment.Initialize(this);

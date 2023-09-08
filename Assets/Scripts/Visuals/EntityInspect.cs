@@ -6,11 +6,11 @@ using UnityEngine.Tilemaps;
 
 public class EntityInspect : MonoBehaviour
 {
-    // TODO FIX THIS!!!!!!!!!!!!!!!!!
-
     [Header("Static Data")]
     [SerializeField] private Tilemap selectionTilemap;
     [SerializeField] private AnimatedTile selectionTile;
+    [SerializeField] private Tilemap inspectTilemap;
+    [SerializeField] private RuleTile highlightedTile;
 
     [Header("Dynamic Data")]
     [SerializeField] private Vector3Int selectedLocation;
@@ -24,17 +24,13 @@ public class EntityInspect : MonoBehaviour
     private void Start()
     {
         GameEvents.instance.onEntityInspect += InspectLocations;
-
-        //GameEvents.instance.onEntityInspect += HighlightLocations;
-        //GameEvents.instance.onEntityDespawn += ClearLocations;
+        GameEvents.instance.onEntityDespawn += ClearLocations;
     }
 
     private void OnDestroy()
     {
         GameEvents.instance.onEntityInspect -= InspectLocations;
-
-        //GameEvents.instance.onEntityInspect -= HighlightLocations;
-        //GameEvents.instance.onEntityDespawn -= ClearLocations;
+        GameEvents.instance.onEntityDespawn -= ClearLocations;
     }
 
     private void Update()
@@ -49,7 +45,7 @@ public class EntityInspect : MonoBehaviour
         cameraLocation.z = 0; // Because camera is -10 from the world
         Vector3Int selectedLocation = selectionTilemap.WorldToCell(cameraLocation);
 
-        if (this.selectedLocation != selectedLocation)
+        if (this.selectedLocation != selectedLocation && IsPositionWithinView(cameraLocation))
         {
             // Inspect tile
             GameManager.instance.InspectLocation(selectedLocation);
@@ -59,11 +55,43 @@ public class EntityInspect : MonoBehaviour
         }
     }
 
-    private void InspectLocations(Entity entity, List<Vector3Int> list)
+    private bool IsPositionWithinView(Vector3 position)
     {
-        // Highlight tile
-        selectionTilemap.SetTile(entity.location, selectionTile);
+        Vector3 view = Camera.main.WorldToViewportPoint(position);
+        return view.x >= 0 && view.x < 1 && view.y >= 0 && view.y < 1;
+    }
 
+    private void InspectLocations(Entity entity, List<Vector3Int> locations)
+    {
+        if (entity != null)
+        {
+            // Highlight tile
+            selectionTilemap.SetTile(entity.location, selectionTile);
+
+            // Highlight tiles
+            if (locations != null)
+                foreach (var location in locations)
+                {
+                    inspectTilemap.SetTile(location, highlightedTile);
+                    inspectTilemap.SetTileFlags(location, TileFlags.None);
+                }
+        }
+        else
+        {
+            // Clear highlights
+            inspectTilemap.ClearAllTiles();
+            selectionTilemap.ClearAllTiles();
+        }
+    }
+
+    private void ClearLocations(Entity entity)
+    {
+        if (entity.location == selectedLocation)
+        {
+            // Clear highlights
+            inspectTilemap.ClearAllTiles();
+            selectionTilemap.ClearAllTiles();
+        }
 
     }
 }

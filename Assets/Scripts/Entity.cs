@@ -39,11 +39,18 @@ public class Entity : ScriptableObject
             enchantment.Initialize(this);
         }
 
+        // Exhaust all actions
+        foreach (var actions in innateActions)
+        {
+            actions.die.Exhaust();
+        }
+
         // Initialize all weapons
         foreach (var weapon in weapons)
         {
             if (weapon != null)
                 weapon.Initialize(this);
+
         }
     }
 
