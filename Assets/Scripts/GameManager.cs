@@ -68,6 +68,12 @@ public class GameManager : MonoBehaviour
             // Then cancel it
             SelectAction(null);
         }
+
+        // FOR TESTING
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            GameEvents.instance.TriggerOnOpenBlacksmith(room.player);
+        }
     }
 
     private IEnumerator EnterFloor()
@@ -439,7 +445,7 @@ public class GameManager : MonoBehaviour
         }
         else if (selectedLocation != Vector3Int.back && location == Vector3Int.back)
         {
-            print("De-select current location.");
+            //print("De-select current location.");
 
             selectedLocation = Vector3Int.back;
 
@@ -460,7 +466,7 @@ public class GameManager : MonoBehaviour
         }
         else if (selectedLocation == Vector3Int.back && location != Vector3Int.back)
         {
-            print("Select new location.");
+            //print("Select new location.");
 
             selectedLocation = location;
 
@@ -498,7 +504,7 @@ public class GameManager : MonoBehaviour
             // If same location was selected
             if (selectedLocation == location)
             {
-                print("Same location, so we toggle off.");
+                //print("Same location, so we toggle off.");
 
                 selectedLocation = Vector3Int.back;
 
@@ -519,7 +525,7 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                print("Swap locations.");
+                //print("Swap locations.");
 
                 selectedLocation = location;
 

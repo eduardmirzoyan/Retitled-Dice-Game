@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Slash Action
   m_EditorClassIdentifier: 
   name: Slash
-  briefDescription: Attack an area around you
-  fullDescription: "Slash an area in front of you. \nArea scales with <sprite name=\"Die\">"
+  rawInactiveDescription: TODO
+  rawActiveDescription: Deal {dmg} damage
   icon: {fileID: 21300000, guid: 2abc9b9e2bdaec84a8d7e2bcb237057b, type: 3}
   color: {r: 0.8705883, g: 0.24313727, b: 0.13725491, a: 1}
   actionSpeed: 0
@@ -22,3 +22,5 @@ MonoBehaviour:
   pathPrefab: {fileID: 0}
   die: {fileID: 11400000, guid: 4f8fd130e5045604b813bb7a89501291, type: 2}
   weapon: {fileID: 0}
+  buffs: []
+  bonusDamage: 0

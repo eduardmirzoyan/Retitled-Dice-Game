@@ -76,7 +76,7 @@ public class DataManager : MonoBehaviour
 
     public RoomType GetCurrentRoom()
     {
-        return currentRoomType;
+        return RoomType.Shop; // currentRoomType;
     }
 
     public string GetRoomDescription()

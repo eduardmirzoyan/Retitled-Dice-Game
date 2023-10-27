@@ -63,6 +63,10 @@ public class GameEvents : MonoBehaviour
     // UI Based
     public event Action<Entity, Inventory> onOpenShop;
     public event Action<Inventory> onCloseShop;
+    public event Action<Entity> onOpenBlacksmith;
+    public event Action<Entity> onCloseBlacksmith;
+    public event Action<Weapon> onInsertBlacksmith;
+    public event Action<Weapon> onRemoveBlacksmith;
     public event Action<ItemUI, ItemSlotUI> onItemInsert;
     public event Action<Entity, Weapon, int> onEquipWeapon;
     public event Action<Entity, Weapon, int> onUnequipWeapon;
@@ -464,6 +468,38 @@ public class GameEvents : MonoBehaviour
         if (onCloseShop != null)
         {
             onCloseShop(inventory);
+        }
+    }
+
+    public void TriggerOnOpenBlacksmith(Entity entity)
+    {
+        if (onOpenBlacksmith != null)
+        {
+            onOpenBlacksmith(entity);
+        }
+    }
+
+    public void TriggerOnCloseBlacksmith(Entity entity)
+    {
+        if (onCloseBlacksmith != null)
+        {
+            onCloseBlacksmith(entity);
+        }
+    }
+
+    public void TriggerOnInsertBlacksmith(Weapon weapon)
+    {
+        if (onInsertBlacksmith != null)
+        {
+            onInsertBlacksmith(weapon);
+        }
+    }
+
+    public void TriggerOnRemoveBlacksmith(Weapon weapon)
+    {
+        if (onRemoveBlacksmith != null)
+        {
+            onRemoveBlacksmith(weapon);
         }
     }
 }

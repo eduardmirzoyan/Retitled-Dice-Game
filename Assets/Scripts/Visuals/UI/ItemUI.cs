@@ -125,7 +125,9 @@ public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
         outline.effectColor = Color.white;
 
         // Show tooltip at this items location
-        ItemTooltipUI.instance.Show(item, itemSlotUI is ShopSlotUI);
+        var corners = new Vector3[4];
+        GetComponent<RectTransform>().GetWorldCorners(corners);
+        ItemTooltipUI.instance.Show(item, corners[1], itemSlotUI is ShopSlotUI);
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -172,7 +174,7 @@ public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
             // Check restrictions
             if (itemSlotUI == null || preventRemove)
             {
-                eventData.Reset();
+                eventData.pointerDrag = null;
                 return;
             }
 

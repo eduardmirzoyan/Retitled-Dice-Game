@@ -42,6 +42,12 @@ public class ShopSlotUI : ItemSlotUI
         GameEvents.instance.onEntityGoldChange += UpdateEligibility;
     }
 
+    private void OnDestroy()
+    {
+        GameEvents.instance.onCloseShop -= Uninitialize;
+        GameEvents.instance.onEntityGoldChange -= UpdateEligibility;
+    }
+
     private void UpdateEligibility(Entity entity, int gain)
     {
         if (this.buyer == entity && this.itemUI != null)
@@ -56,12 +62,6 @@ public class ShopSlotUI : ItemSlotUI
                 itemUI.PreventRemove(true);
             }
         }
-    }
-
-    private void OnDestroy()
-    {
-        GameEvents.instance.onCloseShop -= Uninitialize;
-        GameEvents.instance.onEntityGoldChange -= UpdateEligibility;
     }
 
     private void Uninitialize(Inventory inventory)
@@ -95,10 +95,7 @@ public class ShopSlotUI : ItemSlotUI
         afterImageIcon.enabled = false;
         this.itemUI = null;
 
-        // Remove gold from buyer
-        buyer.gold -= inventory[index].value;
-
-        // Trigger event
-        GameEvents.instance.TriggerOnGoldChange(buyer, -inventory[index].value);
+        // Use gold
+        buyer.AddGold(-inventory[index].value);
     }
 }

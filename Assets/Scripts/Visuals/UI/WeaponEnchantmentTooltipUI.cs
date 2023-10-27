@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+
 public class WeaponEnchantmentTooltipUI : MonoBehaviour
 {
     [Header("Static Data")]

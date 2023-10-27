@@ -15,17 +15,17 @@ MonoBehaviour:
   name: Shopkeeper
   maxHealth: 3
   currentHealth: 3
-  level: 1
-  experience: 1
   gold: 2
   inventory: {fileID: 0}
   modelSprite: {fileID: -78059454, guid: 54fd152cd68b96e49b08c757749bfaca, type: 3}
   modelController: {fileID: 9100000, guid: aa2170dd8bf815843a6fdb1827c6efd1, type: 2}
   hitEffectPrefab: {fileID: 7270536486772163001, guid: 335c93a61b62ca84e9f26440c7f3ed0e, type: 3}
-  AI: {fileID: 11400000, guid: 40162ae7c10ce35468b095709952f2c3, type: 2}
-  innateActions: []
+  AI: {fileID: 11400000, guid: 3b3436262a7edc74cb98fe566468710a, type: 2}
+  innateActions:
+  - {fileID: 11400000, guid: 117dcf4224e3c634c9d145736db1dfaf, type: 2}
   weapons:
   - {fileID: 0}
   - {fileID: 0}
+  enchantments: []
   location: {x: 0, y: 0, z: 0}
   room: {fileID: 0}

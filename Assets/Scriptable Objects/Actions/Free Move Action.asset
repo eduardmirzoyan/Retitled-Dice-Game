@@ -13,13 +13,14 @@ MonoBehaviour:
   m_Name: Free Move Action
   m_EditorClassIdentifier: 
   name: Free Move
-  briefDescription: You should not have this.
-  fullDescription: You really shouldn't have this...
+  rawInactiveDescription: You should not have this...
+  rawActiveDescription: You should not have this...
   icon: {fileID: 21300000, guid: e43b85b7eb63e74498af60c23fd70805, type: 3}
-  background: {fileID: 21300000, guid: d3c559b2e7ed77e489dc11e7ac02a26b, type: 3}
   color: {r: 0.3647059, g: 0.7960785, b: 0.22352943, a: 1}
   actionSpeed: 0
   actionType: 0
   pathPrefab: {fileID: 5796882529580813460, guid: ef9f5511c8dd74f41931f219e0d037f5, type: 3}
   die: {fileID: 11400000, guid: e8d732acdda4b39449630ce6ec7774ab, type: 2}
   weapon: {fileID: 0}
+  buffs: []
+  bonusDamage: 0

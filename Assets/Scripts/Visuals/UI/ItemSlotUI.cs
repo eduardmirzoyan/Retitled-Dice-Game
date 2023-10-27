@@ -26,7 +26,4 @@ public abstract class ItemSlotUI : MonoBehaviour, IDropHandler, IPointerEnterHan
     public abstract void OnDrop(PointerEventData eventData);
 
     public abstract void StoreItem(ItemUI itemUI);
-
-    public bool PreventingInsert() => preventInsert;
-
 }

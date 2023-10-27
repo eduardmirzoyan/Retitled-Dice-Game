@@ -1,33 +1,43 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ActionUI : MonoBehaviour
+public class ActionUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [Header("Static Data")]
     [SerializeField] private Image actionIcon;
     [SerializeField] private Image actionBackground;
     [SerializeField] private DieUI diceUI;
     [SerializeField] private CanvasGroup canvasGroup;
-    [SerializeField] private TooltipTriggerUI tooltipTriggerUI;
+    [SerializeField] private Outline actionOutline;
 
     [Header("Dynamic Data")]
     [SerializeField] private Action action;
+    [SerializeField] private KeyCode hotkey;
 
-    public void Initialize(Action action, KeyCode shortcut = KeyCode.None)
+    public void Initialize(Action action, KeyCode hotkey = KeyCode.None)
     {
         this.action = action;
+        this.hotkey = hotkey;
 
         // Update Visuals
         actionIcon.sprite = action.icon;
         actionBackground.color = action.color;
 
-        // Initalize tooltip
-        tooltipTriggerUI.SetTooltip(action.name + " [" + shortcut + "]", action.briefDescription);
-
         // Initialize die
-        diceUI.Initialize(action, shortcut);
+        diceUI.Initialize(action, hotkey);
+
+        // Show
+        canvasGroup.alpha = 1f;
+        canvasGroup.interactable = true;
+        canvasGroup.blocksRaycasts = true;
+
+        if (action.die.isExhausted)
+            diceUI.Idle();
+        else
+            diceUI.Pulse();
 
         // Update name
         gameObject.name = action.name + " Action UI";
@@ -40,15 +50,6 @@ public class ActionUI : MonoBehaviour
 
         GameEvents.instance.onActionPerformStart += SetUninteractable;
         GameEvents.instance.onTurnEnd += SetUninteractable;
-
-        canvasGroup.alpha = 1f;
-        canvasGroup.interactable = true;
-        canvasGroup.blocksRaycasts = true;
-
-        if (action.die.isExhausted)
-            diceUI.Idle();
-        else
-            diceUI.Pulse();
     }
 
     public void Uninitialize()
@@ -133,6 +134,19 @@ public class ActionUI : MonoBehaviour
         SetUninteractable(entity);
     }
 
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        actionOutline.enabled = true;
+        var corners = new Vector3[4];
+        GetComponent<RectTransform>().GetWorldCorners(corners);
+        ActionTooltipUI.instance.Show(action, hotkey.ToString().Replace("Alpha", ""), corners[3]);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        actionOutline.enabled = false;
+        ActionTooltipUI.instance.Hide();
+    }
 }
 
 

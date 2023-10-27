@@ -3,25 +3,31 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Unity.VisualScripting.ReorderableList.Element_Adder_Menu;
 
 public class ItemTooltipUI : MonoBehaviour
 {
-    public static ItemTooltipUI instance;
-
     [Header("Static Data")]
     [SerializeField] private RectTransform rectTransform;
     [SerializeField] private CanvasGroup canvasGroup;
-    [SerializeField] private TextMeshProUGUI itemName;
-    [SerializeField] private TextMeshProUGUI itemDescription;
-    [SerializeField] private LayoutGroup actionsLayoutGroup;
-    [SerializeField] private LayoutGroup enchantmentsLayoutGroup;
-    [SerializeField] private TextMeshProUGUI valueText;
-    [SerializeField] private GameObject actionTooltipPrefab;
-    [SerializeField] private GameObject weaponEnchantmentTooltipPrefab;
+    [SerializeField] private TextMeshProUGUI itemNameText;
+    [SerializeField] private TextMeshProUGUI itemTypeText;
+    [SerializeField] private TextMeshProUGUI itemDescriptionText;
+    [SerializeField] private TextMeshProUGUI auxiliaryText;
 
-    private List<ActionTooltipUI> actionTooltips;
+    [SerializeField] private LayoutGroup actionsLayoutGroup;
+    [SerializeField] private GameObject actionTooltipPrefab;
+    [SerializeField] private GameObject actionSeperator;
+    [SerializeField] private LayoutGroup enchantmentsLayoutGroup;
+    [SerializeField] private GameObject weaponEnchantmentTooltipPrefab;
+    [SerializeField] private GameObject enchantmentSeperator;
+
+    private List<WeaponActionUI> actionTooltips;
     private List<WeaponEnchantmentTooltipUI> enchantmentTooltips;
 
+    private bool updatePivot;
+
+    public static ItemTooltipUI instance;
     private void Awake()
     {
         // Singleton logic
@@ -32,98 +38,125 @@ public class ItemTooltipUI : MonoBehaviour
         }
         instance = this;
 
+        updatePivot = false;
+
         canvasGroup = GetComponentInChildren<CanvasGroup>();
-        actionTooltips = new List<ActionTooltipUI>();
+        actionTooltips = new List<WeaponActionUI>();
         enchantmentTooltips = new List<WeaponEnchantmentTooltipUI>();
     }
 
-    private void Update()
+    private void LateUpdate()
     {
-        FollowMouse();
+        if (updatePivot)
+        {
+            UpdatePivot();
+        }
+
     }
 
-    private void FollowMouse()
+    // private void Update()
+    // {
+    //     FollowMouse();
+    // }
+
+    // private void FollowMouse()
+    // {
+    //     // Update position
+    //     Vector2 position = Input.mousePosition;
+    //     Vector2 adjustedPosition = Camera.main.ScreenToWorldPoint(position);
+    //     transform.position = adjustedPosition;
+
+    //     UpdatePivot(position);
+    // }
+
+    private void UpdatePivot()
     {
-        // Update position
-        Vector2 position = Input.mousePosition;
-        Vector2 adjustedPosition = Camera.main.ScreenToWorldPoint(position);
-        transform.position = adjustedPosition;
+        var width = rectTransform.sizeDelta.x;
+        var height = rectTransform.sizeDelta.y;
 
-        UpdatePivot(position);
-    }
 
-    private void UpdatePivot(Vector2 mousePosition)
-    {
-        var width = rectTransform.rect.width;
-        var height = rectTransform.rect.height;
+        float pivotX = 1;
+        float pivotY = 1;
 
-        int pivotX = 0;
-        int pivotY = 0;
+        var screenPosition = Camera.main.WorldToScreenPoint(transform.position);
+
+        // Debug.Log($"Y Pos: {screenPosition.y}, Height: {height}, Screen: {Screen.height}");
+        // Debug.Log($"Tras: {rectTransform}");
+        // Debug.Log($"Pos: {rectTransform.position}");
+        // Debug.Log($"Rect: {rectTransform.rect}");
+
 
         // Check if window goes off-screen on x-axis
         // If so, 
-        if (mousePosition.x + width > Screen.width)
+        if (screenPosition.x - width < 0) // if (anchorPosition.x + width > Screen.width)
         {
             // Change pivot to right of window
-            pivotX = 1;
+            pivotX = 0f;
         }
 
         // Check if window goes off-screen on y-axis
         // If so, flip vertically
-        if (mousePosition.y + height > Screen.height)
+        if (screenPosition.y - height < 0) // if (anchorPosition.y + height > Screen.height)
         {
-            // Change pivot to top of window
-            pivotY = 1;
+            // Change pivot to center
+            pivotY = 0.5f;
         }
 
         // Set updated pivot
         rectTransform.pivot = new Vector2(pivotX, pivotY);
+
+        updatePivot = false;
     }
 
-    public void Show(Item item, bool showPrice = false)
+    public void Show(Item item, Vector3 position, bool showPrice = false)
     {
         // Display window
         canvasGroup.alpha = 1f;
 
         // Update information
-        itemName.text = item.name;
-        itemDescription.text = item.description;
+        itemNameText.text = item.name;
 
-        // Update selling info
-        if (showPrice)
+        if (item is Weapon)
         {
-            valueText.gameObject.SetActive(true);
-            valueText.fontSize = 48f;
-            valueText.text = "Price: <sprite name=\"Gold\">" + item.GetValue();
+            itemTypeText.text = "Weapon";
+
+            var weapon = item as Weapon;
+            itemDescriptionText.text = $"Base Damage: <color=yellow>{weapon.baseDamage}</color>";
+            auxiliaryText.text = "";
         }
         else if (item is Consumable)
         {
-            valueText.gameObject.SetActive(true);
-            valueText.fontSize = 36f;
-            valueText.text = "[Right Click] to use";
+            itemTypeText.text = "Consumable";
+            itemDescriptionText.text = item.description;
+            auxiliaryText.text = $"<color=yellow>[Right Click]</color> to Use";
         }
-        else
+
+        if (showPrice)
         {
-            valueText.gameObject.SetActive(false);
+            // Set to show price
+            auxiliaryText.fontSize = 48f;
+            auxiliaryText.text = "Price: <sprite name=\"Gold\">" + item.GetValue();
         }
 
         // If the item is an equipment item
         if (item is Weapon)
         {
             // Cast
-            var weapon = (Weapon)item;
+            var weapon = item as Weapon;
 
             // Display all its actions
             foreach (var action in weapon.actions)
             {
                 // Spawn visuals of actions
-                var actionTooltip = Instantiate(actionTooltipPrefab, actionsLayoutGroup.transform).GetComponent<ActionTooltipUI>();
+                var weaponAction = Instantiate(actionTooltipPrefab, actionsLayoutGroup.transform).GetComponent<WeaponActionUI>();
                 // Initialize as display
-                actionTooltip.Initialize(action);
+                weaponAction.Initialize(action);
 
                 // Save
-                actionTooltips.Add(actionTooltip);
+                actionTooltips.Add(weaponAction);
             }
+            actionsLayoutGroup.gameObject.SetActive(weapon.actions.Count > 0);
+            actionSeperator.SetActive(weapon.actions.Count > 0);
 
             // Display all its actions
             foreach (var enchantment in weapon.enchantments)
@@ -136,13 +169,30 @@ public class ItemTooltipUI : MonoBehaviour
                 // Save
                 enchantmentTooltips.Add(enchantmentTooltip);
             }
+            enchantmentsLayoutGroup.gameObject.SetActive(weapon.enchantments.Count > 0);
+            enchantmentSeperator.SetActive(weapon.enchantments.Count > 0);
         }
+        else if (item is Consumable)
+        {
+            actionsLayoutGroup.gameObject.SetActive(false);
+            actionSeperator.SetActive(false);
+            enchantmentsLayoutGroup.gameObject.SetActive(false);
+            enchantmentSeperator.SetActive(false);
+        }
+
+        // Canvas.ForceUpdateCanvases();
 
         // Update Canvas
         LayoutRebuilder.ForceRebuildLayoutImmediate(actionsLayoutGroup.GetComponent<RectTransform>());
 
         // Update Canvas
         LayoutRebuilder.ForceRebuildLayoutImmediate(rectTransform);
+
+        // Relocate
+        transform.position = position;
+        // UpdatePivot();
+
+        updatePivot = true;
     }
 
     public void Hide()
@@ -167,4 +217,9 @@ public class ItemTooltipUI : MonoBehaviour
         canvasGroup.alpha = 0f;
     }
 
+    private void OnDrawGizmosSelected()
+    {
+        var rectTransform = GetComponent<RectTransform>();
+        Gizmos.DrawWireSphere(rectTransform.pivot, 0.25f);
+    }
 }

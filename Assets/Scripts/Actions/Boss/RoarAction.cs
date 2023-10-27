@@ -34,7 +34,7 @@ public class RoarAction : Action
             var target = room.GetEntityAtLocation(location);
             if (target != null)
             {
-                entity.Attack(target, weapon);
+                entity.AttackEntity(target, weapon, GetTotalDamage());
             }
         }
 

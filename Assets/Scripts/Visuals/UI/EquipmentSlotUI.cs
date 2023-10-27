@@ -3,22 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class EquipmentSlotUI : ItemSlotUI, IDropHandler
+public class EquipmentSlotUI : ItemSlotUI
 {
     [SerializeField] private Player player;
     [SerializeField] private int index;
     [SerializeField] private bool inCombat;
-
-    private void OnDestroy()
-    {
-        GameEvents.instance.onCombatEnter -= EnterCombat;
-        GameEvents.instance.onCombatExit -= ExitCombat;
-
-        GameEvents.instance.onTurnStart -= AllowInteraction;
-        GameEvents.instance.onActionPerformStart -= PreventInteraction;
-        GameEvents.instance.onActionPerformEnd -= AllowInteraction;
-        GameEvents.instance.onTurnEnd -= PreventInteraction;
-    }
 
     public void Initialize(Player player, int index)
     {
@@ -58,6 +47,17 @@ public class EquipmentSlotUI : ItemSlotUI, IDropHandler
         GameEvents.instance.onActionPerformStart += PreventInteraction;
         GameEvents.instance.onActionPerformEnd += AllowInteraction;
         GameEvents.instance.onTurnEnd += PreventInteraction;
+    }
+
+    private void OnDestroy()
+    {
+        GameEvents.instance.onCombatEnter -= EnterCombat;
+        GameEvents.instance.onCombatExit -= ExitCombat;
+
+        GameEvents.instance.onTurnStart -= AllowInteraction;
+        GameEvents.instance.onActionPerformStart -= PreventInteraction;
+        GameEvents.instance.onActionPerformEnd -= AllowInteraction;
+        GameEvents.instance.onTurnEnd -= PreventInteraction;
     }
 
     private void EnterCombat()

@@ -7,28 +7,106 @@ using TMPro;
 public class ActionTooltipUI : MonoBehaviour
 {
     [Header("Static Data")]
-    [SerializeField] private Image actionIcon;
-    [SerializeField] private Image actionBackground;
-    [SerializeField] private TextMeshProUGUI dieMaxLabel;
-    [SerializeField] private CanvasGroup descriptionCanvasGroup;
+    [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private TextMeshProUGUI actionNameText;
+    [SerializeField] private TextMeshProUGUI actionTypeText;
     [SerializeField] private TextMeshProUGUI actionDescriptionText;
+    [SerializeField] private TextMeshProUGUI actionBuffsText;
+    [SerializeField] private TextMeshProUGUI actionSourceText;
+    [SerializeField] private GameObject buffsSeperator;
+    [SerializeField] private TextMeshProUGUI hotkeyText;
 
-    public void Initialize(Action action)
+    public static ActionTooltipUI instance;
+    private void Awake()
     {
-        // Update Visuals
-        actionIcon.sprite = action.icon;
-        actionBackground.color = action.color;
+        // Singleton logic
+        if (ActionTooltipUI.instance != null)
+        {
+            Destroy(this);
+            return;
+        }
+        instance = this;
+    }
 
-        // Set basic info
-        actionNameText.text = action.name;
-        actionDescriptionText.text = action.fullDescription;
+    public void Show(Action action, string hotkey, Vector3 position)
+    {
+        // Set textual info
+        actionNameText.text = action.GetDynamicName();
+        actionTypeText.text = $"{action.actionType} Action";
+        actionTypeText.color = action.color;
+        actionDescriptionText.text = action.GetActiveDescription();
 
-        // Show description
-        descriptionCanvasGroup.alpha = 1f;
+        hotkeyText.text = $"[{hotkey}]";
 
-        // Set die label and color
-        dieMaxLabel.text = "Range\n" + action.die.minValue + " - " + action.die.maxValue;
-        dieMaxLabel.color = action.color;
+        actionBuffsText.text = "";
+        foreach (var buff in action.buffs)
+        {
+            actionBuffsText.text += $"{buff.GetDescription()}\n";
+
+        }
+        buffsSeperator.SetActive(action.buffs.Count > 0);
+
+
+        if (action.weapon != null)
+        {
+            actionSourceText.text = $"Source: {action.weapon.name}";
+        }
+        else
+        {
+            actionSourceText.text = $"Source: Innate";
+        }
+
+        // Show
+        canvasGroup.alpha = 1f;
+
+        // Relocate
+        transform.position = position;
+        UpdatePivot(position);
+
+        // Update Canvas
+        LayoutRebuilder.ForceRebuildLayoutImmediate(transform.GetComponent<RectTransform>());
+    }
+
+    public void Hide()
+    {
+        // Show
+        canvasGroup.alpha = 0f;
+    }
+
+    private void UpdatePivot(Vector2 worldPosition)
+    {
+        var rectTransform = GetComponent<RectTransform>();
+        var width = rectTransform.rect.width;
+        var height = rectTransform.rect.height;
+
+        int pivotX = 0;
+        int pivotY = 0;
+
+        var screenPosition = Camera.main.WorldToScreenPoint(worldPosition);
+
+        // Check if window goes off-screen on x-axis
+        // If so, 
+        if (screenPosition.x + width > Screen.width)
+        {
+            // Change pivot to right of window
+            pivotX = 1;
+        }
+
+        // Check if window goes off-screen on y-axis
+        // If so, flip vertically
+        if (screenPosition.y + height > Screen.height)
+        {
+            // Change pivot to top of window
+            pivotY = 1;
+        }
+
+        // Set updated pivot
+        rectTransform.pivot = new Vector2(pivotX, pivotY);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        var rectTransform = GetComponent<RectTransform>();
+        Gizmos.DrawWireSphere(rectTransform.pivot, 0.25f);
     }
 }

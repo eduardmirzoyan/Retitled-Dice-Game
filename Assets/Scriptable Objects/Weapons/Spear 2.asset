@@ -16,8 +16,11 @@ MonoBehaviour:
   description: Poke, Poke, Poke.
   sprite: {fileID: 1640039353, guid: 20597968d5281954482d5d148d07fa12, type: 3}
   value: 6
+  baseDamage: 1
   actions:
-  - {fileID: 11400000, guid: 8497f836d6c463341a285a61e7e215e1, type: 2}
+  - {fileID: 11400000, guid: 31fb65b37415e9042bc579f491dd2fa1, type: 2}
   - {fileID: 11400000, guid: ae3a11a1021ae1945a48aeb7a76372cb, type: 2}
+  enchantments: []
   attackParticlePrefab: {fileID: 2619012972811128830, guid: 5a5dc67bf95abaf4b8749dfa8920e621, type: 3}
   weaponPrefab: {fileID: 6165511718226775104, guid: 82bddf4fa3aaced4db5ddd4a6890fdc5, type: 3}
+  entity: {fileID: 0}

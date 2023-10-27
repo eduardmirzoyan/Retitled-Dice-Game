@@ -18,7 +18,7 @@ public class EntityInspect : MonoBehaviour
     private void Awake()
     {
         // Set default inspect
-        selectedLocation = Vector3Int.back;
+        selectedLocation = Vector3Int.zero;
     }
 
     private void Start()
@@ -33,7 +33,7 @@ public class EntityInspect : MonoBehaviour
         GameEvents.instance.onEntityDespawn -= ClearLocations;
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         HoverTile();
     }

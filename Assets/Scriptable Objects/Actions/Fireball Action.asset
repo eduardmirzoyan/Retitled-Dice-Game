@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Fireball Action
   m_EditorClassIdentifier: 
   name: Fireball
-  briefDescription: Strike an exact tile
-  fullDescription: TODO
+  rawInactiveDescription: WIP
+  rawActiveDescription: WIP
   icon: {fileID: 21300000, guid: 707081c4e68f27e4b9e3cdca4899f6eb, type: 3}
   color: {r: 0.87058824, g: 0.24313726, b: 0.13725491, a: 1}
   actionSpeed: 0
@@ -22,3 +22,5 @@ MonoBehaviour:
   pathPrefab: {fileID: 5796882529580813460, guid: 083c9cc31f9d52144a037eba6e64eb71, type: 3}
   die: {fileID: 11400000, guid: e8d732acdda4b39449630ce6ec7774ab, type: 2}
   weapon: {fileID: 0}
+  buffs: []
+  bonusDamage: 0

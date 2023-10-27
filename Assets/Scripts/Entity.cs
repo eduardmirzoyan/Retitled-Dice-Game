@@ -9,7 +9,6 @@ public class Entity : ScriptableObject
     public new string name;
     public int maxHealth;
     public int currentHealth;
-    public int baseDamage = 1;
     public int gold = 0;
     public Inventory inventory;
 
@@ -33,40 +32,46 @@ public class Entity : ScriptableObject
         this.room = dungeon;
         this.location = spawnLocation;
 
-        // Initialize all enchantments
-        foreach (var enchantment in enchantments)
-        {
-            enchantment.Initialize(this);
-        }
-
-        // Exhaust all actions
+        // Initialize actions
         foreach (var actions in innateActions)
         {
-            actions.die.Exhaust();
+            actions.Initialize(null);
         }
 
-        // Initialize all weapons
+        // Initialize weapons
         foreach (var weapon in weapons)
         {
             if (weapon != null)
                 weapon.Initialize(this);
 
         }
+
+        // Initialize enchantments
+        foreach (var enchantment in enchantments)
+        {
+            enchantment.Initialize(this);
+        }
     }
 
     public void Uninitialize()
     {
-        // Uniitialize all enchantments
-        foreach (var enchantment in enchantments)
+        // Unintialize actions
+        foreach (var actions in innateActions)
         {
-            enchantment.Uninitialize();
+            actions.Uninitialize();
         }
 
-        // Initialize all weapons
+        // Unintialize weapons
         foreach (var weapon in weapons)
         {
             if (weapon != null)
                 weapon.Uninitialize();
+        }
+
+        // Unintialize all enchantments
+        foreach (var enchantment in enchantments)
+        {
+            enchantment.Uninitialize();
         }
     }
 
@@ -124,7 +129,7 @@ public class Entity : ScriptableObject
         Debug.Log(name + " took " + amount + " damage.");
 
         // Reduce health until 0
-        currentHealth = Mathf.Max(currentHealth - 1, 0);
+        currentHealth = Mathf.Max(currentHealth - amount, 0);
 
         // Trigger event
         GameEvents.instance.TriggerOnEntityTakeDamage(this, amount);
@@ -221,9 +226,9 @@ public class Entity : ScriptableObject
         // Does nothing for now
     }
 
-    public void Attack(Entity target, Weapon weapon)
+    public void AttackEntity(Entity target, Weapon weapon, int amount)
     {
-        target.TakeDamageFrom(this, weapon, baseDamage + weapon.bonusDamage);
+        target.TakeDamageFrom(this, weapon, amount);
     }
 
     public void AddGold(int amount)

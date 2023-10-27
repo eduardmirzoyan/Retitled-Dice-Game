@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 959b1b9d584a3b8428ca714a3ebaca51, type: 3}
+  m_Name: Testing Weapon 2
+  m_EditorClassIdentifier: 
+  name: Testing Weapon
+  description: For testing purposes
+  sprite: {fileID: -363672457, guid: 20597968d5281954482d5d148d07fa12, type: 3}
+  value: 99
+  baseDamage: 1
+  bonusDamage: 0
+  actions:
+  - {fileID: 11400000, guid: 31fb65b37415e9042bc579f491dd2fa1, type: 2}
+  - {fileID: 11400000, guid: 7eba09a60db35f04dba82e978a75c091, type: 2}
+  - {fileID: 11400000, guid: 7eba09a60db35f04dba82e978a75c091, type: 2}
+  enchantments: []
+  attackParticlePrefab: {fileID: 2619012972811128830, guid: 7a8a1a3d35ad8cf47a78c6232b350d75, type: 3}
+  weaponPrefab: {fileID: 1251787465029900827, guid: 539046e35f645174093ee495a9e64bd4, type: 3}
+  entity: {fileID: 0}

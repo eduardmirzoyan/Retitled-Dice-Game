@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7270536486772163005}
   - component: {fileID: 7270536486772163002}
   - component: {fileID: 7270536486772163003}
-  - component: {fileID: 7270536486772163000}
+  - component: {fileID: 6782295919324474379}
   m_Layer: 0
   m_Name: Hit Effect
   m_TagString: Untagged
@@ -106,7 +106,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &7270536486772163000
+--- !u!114 &6782295919324474379
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -115,7 +115,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 7270536486772163001}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78a4b291e3ce58e4aa300f7674c2478a, type: 3}
+  m_Script: {fileID: 11500000, guid: 273cf343c56d83e4aba16dc22a7419f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  duration: 0.3
+  lifetime: 0.25
+  sfxName: 

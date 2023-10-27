@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.XR;
 
 public class ShopUI : MonoBehaviour
 {
@@ -11,7 +10,7 @@ public class ShopUI : MonoBehaviour
     [SerializeField] private GridLayoutGroup gridLayoutGroup;
     [SerializeField] private GameObject shopSlotPrefab;
 
-    [Header("Data")]
+    [Header("Dynamic Data")]
     [SerializeField] private Inventory inventory;
 
     private void Awake()
@@ -29,7 +28,7 @@ public class ShopUI : MonoBehaviour
         GameEvents.instance.onOpenShop -= Open;
     }
 
-    public void Open(Entity entity, Inventory inventory)
+    public void Open(Entity buyer, Inventory shopInventory)
     {
         // Allow visibiltiy and interaction
         canvasGroup.alpha = 1f;
@@ -37,13 +36,13 @@ public class ShopUI : MonoBehaviour
         canvasGroup.blocksRaycasts = true;
 
         // Open new one
-        this.inventory = inventory;
+        this.inventory = shopInventory;
 
-        for (int i = 0; i < inventory.maxSize; i++)
+        for (int i = 0; i < shopInventory.maxSize; i++)
         {
             // Create slot
             var shopSlot = Instantiate(shopSlotPrefab, gridLayoutGroup.transform).GetComponent<ShopSlotUI>();
-            shopSlot.Initialize(entity, inventory, i);
+            shopSlot.Initialize(buyer, shopInventory, i);
         }
     }
 

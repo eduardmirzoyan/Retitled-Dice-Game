@@ -76,6 +76,13 @@ public class Inventory : ScriptableObject
     {
         var copy = Instantiate(this);
 
+        // Copy all items
+        for (int i = 0; i < items.Count; i++)
+        {
+            if (copy.items[i] != null)
+                copy.items[i] = items[i].Copy();
+        }
+
         return copy;
     }
 }

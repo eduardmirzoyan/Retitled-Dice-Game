@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2734280193995054392}
-  - component: {fileID: 2734280193995054395}
+  - component: {fileID: 5282137975395634375}
   m_Layer: 0
   m_Name: Pickup Effect
   m_TagString: Untagged
@@ -33,7 +33,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2734280193995054395
+--- !u!114 &5282137975395634375
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,10 +42,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2734280193995054394}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78a4b291e3ce58e4aa300f7674c2478a, type: 3}
+  m_Script: {fileID: 11500000, guid: 273cf343c56d83e4aba16dc22a7419f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  duration: 0.3
+  lifetime: 0.25
+  sfxName: 
 --- !u!1 &7544062918655919070
 GameObject:
   m_ObjectHideFlags: 0

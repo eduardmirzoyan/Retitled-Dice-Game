@@ -37,17 +37,20 @@
   </PropertyGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\GameManager.cs" />
-     <Compile Include="Assets\Scripts\Enchantments\Weapon\DamageOnConsumeWE.cs" />
+     <Compile Include="Assets\Scripts\AI\MerchantAI.cs" />
      <Compile Include="Assets\Scripts\Enchantments\EntityEnchantment.cs" />
      <Compile Include="Assets\Scripts\Visuals\LocationInspect.cs" />
+     <Compile Include="Assets\Scripts\Buffs\DamageBuff.cs" />
+     <Compile Include="Assets\Scripts\Enchantments\Weapon\OnRerollWE.cs" />
      <Compile Include="Assets\Scripts\Actions\RangedAction.cs" />
      <Compile Include="Assets\Scripts\World\Room.cs" />
      <Compile Include="Assets\Scripts\AI\ScaredAI.cs" />
      <Compile Include="Assets\Scripts\GameEvents.cs" />
      <Compile Include="Assets\Scripts\Visuals\UI\WeaponEnchantmentTooltipUI.cs" />
+     <Compile Include="Assets\Scripts\Visuals\UI\BlacksmithSlot.cs" />
      <Compile Include="Assets\Scripts\Visuals\AttackParticle.cs" />
      <Compile Include="Assets\Scripts\SettingsManager.cs" />
-     <Compile Include="Assets\Scripts\DamageFlash.cs" />
+     <Compile Include="Assets\Scripts\Game Feel\DamageFlash.cs" />
      <Compile Include="Assets\Scripts\Visuals\UI\ActionTooltipUI.cs" />
      <Compile Include="Assets\Scripts\Visuals\RoomUI.cs" />
      <Compile Include="Assets\Scripts\DataManager.cs" />
@@ -66,6 +69,7 @@
      <Compile Include="Assets\Scripts\Visuals\UI\EquipmentSlotUI.cs" />
      <Compile Include="Assets\Scripts\Visuals\ProperLayerSort.cs" />
      <Compile Include="Assets\Scripts\Enchantments\Weapon\WeaponEnchantment.cs" />
+     <Compile Include="Assets\Scripts\Enchantments\Weapon\OnConsumableWE.cs" />
      <Compile Include="Assets\Scripts\Enchantments\Weapon\KillGoldWeaponEnchantment.cs" />
      <Compile Include="Assets\Scripts\World\ItemGenerator.cs" />
      <Compile Include="Assets\Scripts\Visuals\ActionPreview.cs" />
@@ -73,9 +77,11 @@
      <Compile Include="Assets\Scripts\Visuals\UI\ActionsHandlerUI.cs" />
      <Compile Include="Assets\Scripts\Visuals\UI\HealthbarUI.cs" />
      <Compile Include="Assets\Scripts\Visuals\UI\ShopUI.cs" />
+     <Compile Include="Assets\Scripts\Visuals\UI\WeaponActionUI.cs" />
      <Compile Include="Assets\Scripts\Actions\RerollAction.cs" />
      <Compile Include="Assets\Scripts\AI\OptimalAI.cs" />
      <Compile Include="Assets\Scripts\Actions\Enemy\PiercingRangedAction.cs" />
+     <Compile Include="Assets\Scripts\Visuals\UI\ActionUpgradeUI.cs" />
      <Compile Include="Assets\Scripts\Visuals\UI\HowToPlayUI.cs" />
      <Compile Include="Assets\Scripts\Visuals\UI\ActionUI.cs" />
      <Compile Include="Assets\Scripts\Main Menu\MainMenuManager.cs" />
@@ -93,16 +99,19 @@
      <Compile Include="Assets\Scripts\World\RoomTile.cs" />
      <Compile Include="Assets\Scripts\Actions\Enemy\ArtilleryAction.cs" />
      <Compile Include="Assets\Scripts\Enchantments\Weapon\ReplenishOnKillWE.cs" />
+     <Compile Include="Assets\Scripts\Visuals\UI\BlacksmithUI.cs" />
      <Compile Include="Assets\Scripts\Actions\MoveAction.cs" />
      <Compile Include="Assets\Scripts\Die.cs" />
      <Compile Include="Assets\Scripts\Game Feel\HitFreeze.cs" />
      <Compile Include="Assets\Scripts\Visuals\CorpseModel.cs" />
-     <Compile Include="Assets\Scripts\Barrel.cs" />
+     <Compile Include="Assets\Scripts\Visuals\UI\WeaponUpgradeUI.cs" />
+     <Compile Include="Assets\Scripts\Actions\CleaveAction.cs" />
      <Compile Include="Assets\Scripts\Inventory.cs" />
+     <Compile Include="Assets\Scripts\World\ProceduralRoomGenerator.cs" />
+     <Compile Include="Assets\Scripts\Enchantments\Weapon\OnKillWE.cs" />
      <Compile Include="Assets\Scripts\Visuals\UI\ItemUI.cs" />
      <Compile Include="Assets\Scripts\World\GoldPickup.cs" />
      <Compile Include="Assets\Scripts\Visuals\EntityModel.cs" />
-     <Compile Include="Assets\Scripts\TimedDestroy.cs" />
      <Compile Include="Assets\Scripts\AI\DefendAI.cs" />
      <Compile Include="Assets\Scripts\World\EnemyGenerator.cs" />
      <Compile Include="Assets\Scripts\Main Menu\TransitionManager.cs" />
@@ -113,10 +122,11 @@
      <Compile Include="Assets\Scripts\Entity.cs" />
      <Compile Include="Assets\Scripts\Visuals\UI\InventoryHandlerUI.cs" />
      <Compile Include="Assets\Scripts\Visuals\ActionPathRenderer.cs" />
+     <Compile Include="Assets\Scripts\Buffs\NoneBuff.cs" />
      <Compile Include="Assets\Scripts\Actions\Action.cs" />
      <Compile Include="Assets\Scripts\Game Feel\DottedLine.cs" />
+     <Compile Include="Assets\Scripts\Buffs\Buff.cs" />
      <Compile Include="Assets\Scripts\Main Menu\PauseManager.cs" />
-     <Compile Include="Assets\Scripts\Enchantments\Weapon\RollDamageWE.cs" />
      <Compile Include="Assets\Scripts\Actions\ThrustAction.cs" />
      <Compile Include="Assets\Scripts\Items\Item.cs" />
      <Compile Include="Assets\Scripts\AI\IdleAI.cs" />

@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Warp Action
   m_EditorClassIdentifier: 
   name: Warp
-  briefDescription: Teleport an exact distance
-  fullDescription: Teleport exactly <sprite name="Die"> tiles away.
+  rawInactiveDescription: TODO
+  rawActiveDescription: Teleport cardinally exactly {die} tiles
   icon: {fileID: 21300000, guid: 93bf4ba6c8df72c40a312c54d602fa23, type: 3}
   color: {r: 0.3647059, g: 0.79607844, b: 0.22352941, a: 1}
   actionSpeed: 0
@@ -22,3 +22,5 @@ MonoBehaviour:
   pathPrefab: {fileID: 5796882529580813460, guid: efb1a986f0a29b44e9bf48021b5fb919, type: 3}
   die: {fileID: 11400000, guid: e8d732acdda4b39449630ce6ec7774ab, type: 2}
   weapon: {fileID: 0}
+  buffs: []
+  bonusDamage: 0

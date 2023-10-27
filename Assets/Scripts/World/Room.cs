@@ -25,6 +25,7 @@ public class Room : ScriptableObject
     public Player player;
 
     public Pathfinder pathfinder;
+    public ProceduralRoomGenerator roomGenerator;
 
     public void Initialize(int roomWidth, int roomHeight, int padding, int wallSpawnChance, int chasamSpawnChance)
     {
@@ -47,24 +48,35 @@ public class Room : ScriptableObject
         pathfinder = new Pathfinder();
 
         // Generate world tiles
-        GenerateTiles(wallSpawnChance, chasamSpawnChance);
+        // GenerateTiles(wallSpawnChance, chasamSpawnChance);
+        GenerateTilesNew();
     }
 
     public void SpawnPlayer(Player player)
     {
         this.player = player;
 
-        // Set the player's location to be at dungeon entrance
-        player.Initialize(this, entranceTile.location);
+        foreach (var tile in tiles)
+        {
+            if (tile.tileType == TileType.Entrance)
+            {
+                // Set the player's location to be at dungeon entrance
+                player.Initialize(this, tile.location);
 
-        // Update tile
-        entranceTile.containedEntity = player;
+                // Update tile
+                tile.containedEntity = player;
 
-        // Add to total list
-        allEntities.Add(player);
+                // Add to total list
+                allEntities.Add(player);
 
-        // Trigger event
-        GameEvents.instance.TriggerOnEntitySpawn(player);
+                // Trigger event
+                GameEvents.instance.TriggerOnEntitySpawn(player);
+
+                return;
+            }
+        }
+
+        throw new System.Exception("ENTRANCE NOT FOUND!");
     }
 
     public void SpawnEntity(Entity entity, bool asBoss = false)
@@ -291,6 +303,13 @@ public class Room : ScriptableObject
 
         exitTile = tile;
         tiles[exitLocation.x, exitLocation.y] = tile;
+    }
+
+    private void GenerateTilesNew()
+    {
+        roomGenerator = new ProceduralRoomGenerator();
+        roomGenerator.Initialize(width, height, padding);
+        tiles = roomGenerator.GenerateEmptyRoom(0.7f, this);
     }
 
     public void SpawnPickup(PickUpType pickUpType)

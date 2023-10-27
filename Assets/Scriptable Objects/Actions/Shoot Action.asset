@@ -13,9 +13,8 @@ MonoBehaviour:
   m_Name: Shoot Action
   m_EditorClassIdentifier: 
   name: Ranged Attack
-  briefDescription: Attack an enemy from a distance
-  fullDescription: "Attack the first enemy up to <sprite name=\"Die\"> tiles. \nBlocked
-    by walls."
+  rawInactiveDescription: TODO
+  rawActiveDescription: Deal {dmg} damage
   icon: {fileID: 21300000, guid: 9c9779ae9ffeea342b6ef59ebbd4f64f, type: 3}
   color: {r: 0.8705883, g: 0.24313727, b: 0.13725491, a: 1}
   actionSpeed: 0
@@ -23,3 +22,5 @@ MonoBehaviour:
   pathPrefab: {fileID: 5796882529580813460, guid: dc8c538d63ee6fe42aa7af212a6674bc, type: 3}
   die: {fileID: 11400000, guid: e8d732acdda4b39449630ce6ec7774ab, type: 2}
   weapon: {fileID: 0}
+  buffs: []
+  bonusDamage: 0

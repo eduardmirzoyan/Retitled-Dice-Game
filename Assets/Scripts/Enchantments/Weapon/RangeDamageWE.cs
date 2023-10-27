@@ -5,12 +5,12 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Enchantments/Weapon/Range Damage Buff")]
 public class RangeDamageWE : WeaponEnchantment
 {
+    [Header("Static Data")]
     [SerializeField] private int damageBonus = 1;
     [SerializeField] private int range = 2;
     [SerializeField] private int quantity = 2;
     [SerializeField] private bool checkForLongRange;
 
-    private Entity entity;
     public override void Initialize(Weapon weapon)
     {
         this.weapon = weapon;
@@ -30,7 +30,7 @@ public class RangeDamageWE : WeaponEnchantment
             int count = 0;
             foreach (var enemy in entity.room.allEntities)
             {
-                if (Room.ManhattanDistance(entity.location, entity.location) > range)
+                if (entity != enemy && Room.ManhattanDistance(entity.location, enemy.location) > range)
                 {
                     count++;
                 }
@@ -38,11 +38,11 @@ public class RangeDamageWE : WeaponEnchantment
 
             if (count >= quantity)
             {
-                weapon.bonusDamage = damageBonus;
+                weapon.baseDamage = damageBonus;
             }
             else
             {
-                weapon.bonusDamage = 0;
+                weapon.baseDamage = 0;
             }
         }
         else
@@ -50,7 +50,7 @@ public class RangeDamageWE : WeaponEnchantment
             int count = 0;
             foreach (var enemy in entity.room.allEntities)
             {
-                if (Room.ManhattanDistance(entity.location, entity.location) <= range)
+                if (entity != enemy && Room.ManhattanDistance(entity.location, enemy.location) <= range)
                 {
                     count++;
                 }
@@ -58,11 +58,13 @@ public class RangeDamageWE : WeaponEnchantment
 
             if (count >= quantity)
             {
-                weapon.bonusDamage = damageBonus;
+                Debug.Log("Buff Gain!");
+                weapon.baseDamage = damageBonus;
             }
             else
             {
-                weapon.bonusDamage = 0;
+                Debug.Log("Buff Lost!");
+                weapon.baseDamage = 0;
             }
         }
     }

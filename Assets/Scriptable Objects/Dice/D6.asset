@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: D6
   m_EditorClassIdentifier: 
   maxValue: 6
+  minValue: 1
   value: 1
   isExhausted: 0
+  action: {fileID: 0}
   neverExhaust: 0
   lockValue: 0

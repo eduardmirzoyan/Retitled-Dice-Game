@@ -15,3 +15,4 @@ MonoBehaviour:
   name: Nothing
   description: This enchantment does nothing and is only for testing purposes.
   weapon: {fileID: 0}
+  buff: {fileID: 11400000, guid: ff301cf0035e4cf478d6eccf1db3f889, type: 2}

@@ -6,7 +6,7 @@ using UnityEngine;
 public class Weapon : Item
 {
     [Header("Static Data")]
-    public int bonusDamage = 0;
+    public int baseDamage = 1;
     public List<Action> actions;
     public List<WeaponEnchantment> enchantments;
 
@@ -23,7 +23,7 @@ public class Weapon : Item
 
         foreach (var actions in actions)
         {
-            actions.die.Exhaust();
+            actions.Initialize(this);
         }
 
         foreach (var enchantment in enchantments)
@@ -36,10 +36,27 @@ public class Weapon : Item
     {
         this.entity = null;
 
+        foreach (var actions in actions)
+        {
+            actions.Uninitialize();
+        }
+
         foreach (var enchantment in enchantments)
         {
             enchantment.Uninitialize(this);
         }
+    }
+
+    public int UpgradeCost()
+    {
+        return baseDamage * 15;
+    }
+
+    public void IncreaseBaseDamage()
+    {
+        baseDamage += 1;
+
+        name += "+";
     }
 
     public override Item Copy()

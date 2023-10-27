@@ -24,6 +24,11 @@ public class Die : ScriptableObject
         isExhausted = true;
     }
 
+    public void Uninitialize()
+    {
+        this.action = null;
+    }
+
     public void Exhaust()
     {
         if (neverExhaust) return;

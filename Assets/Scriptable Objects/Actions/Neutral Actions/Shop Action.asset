@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c602978d948f2d45a75a58171734440, type: 3}
+  m_Name: Shop Action
+  m_EditorClassIdentifier: 
+  name: Shop
+  rawInactiveDescription: '?'
+  rawActiveDescription: '?'
+  icon: {fileID: 21300000, guid: 3be5eefb9fa439b4d8f1e121e91eaf64, type: 3}
+  color: {r: 0.97647065, g: 0.6392157, b: 0.10588236, a: 1}
+  actionSpeed: 2
+  actionType: 2
+  pathPrefab: {fileID: 0}
+  die: {fileID: 11400000, guid: 5e6c4f0b27552b546956704c46a31ff3, type: 2}
+  weapon: {fileID: 0}
+  buffs: []
+  bonusDamage: 0
