@@ -89,417 +89,261 @@ public class GameEvents : MonoBehaviour
 
     public void TriggerGenerateFloor(Room room)
     {
-        if (onGenerateFloor != null)
-        {
-            onGenerateFloor(room);
-        }
+        onGenerateFloor?.Invoke(room);
     }
 
     public void TriggerOnEnterFloor(Player player)
     {
-        if (onEnterFloor != null)
-        {
-            onEnterFloor(player);
-        }
+        onEnterFloor?.Invoke(player);
     }
 
     public void TriggerOnEntitySpawn(Entity entity)
     {
-        if (onEntitySpawn != null)
-        {
-            onEntitySpawn(entity);
-        }
+        onEntitySpawn?.Invoke(entity);
     }
 
     public void TriggerOnEntityDespawn(Entity entity)
     {
-        if (onEntityDespawn != null)
-        {
-            onEntityDespawn(entity);
-        }
+        onEntityDespawn?.Invoke(entity);
     }
 
     public void TriggerOnTurnStart(Entity entity)
     {
-        if (onTurnStart != null)
-        {
-            onTurnStart(entity);
-        }
+        onTurnStart?.Invoke(entity);
     }
 
     public void TriggerOnTurnEnd(Entity entity)
     {
-        if (onTurnEnd != null)
-        {
-            onTurnEnd(entity);
-        }
+        onTurnEnd?.Invoke(entity);
     }
 
     public void TriggerOnGameLose()
     {
-        if (onGameLose != null)
-        {
-            onGameLose();
-        }
+        onGameLose?.Invoke();
     }
 
     public void TriggerOnGameWin()
     {
-        if (onGameWin != null)
-        {
-            onGameWin();
-        }
+        onGameWin?.Invoke();
     }
 
     public void TriggerOnCombatEnter()
     {
-        if (onCombatEnter != null)
-        {
-            onCombatEnter();
-        }
+        onCombatEnter?.Invoke();
     }
 
     public void TriggerOnCombatExit()
     {
-        if (onCombatExit != null)
-        {
-            onCombatExit();
-        }
+        onCombatExit?.Invoke();
     }
 
     public void TriggerOnActionEnable(Action action)
     {
-        if (onActionEnable != null)
-        {
-            onActionEnable(action);
-        }
+        onActionEnable?.Invoke(action);
     }
 
     public void TriggerOnActionDisable(Action action)
     {
-        if (onActionDisable != null)
-        {
-            onActionDisable(action);
-        }
+        onActionDisable?.Invoke(action);
     }
 
     public void TriggerOnActionSelect(Entity entity, Action action)
     {
-        if (onActionSelect != null)
-        {
-            onActionSelect(entity, action);
-        }
+        onActionSelect?.Invoke(entity, action);
     }
 
     public void TriggerOnActionDeselect(Entity entity, Action action)
     {
-        if (onActionDeselect != null)
-        {
-            onActionDeselect(entity, action);
-        }
+        onActionDeselect?.Invoke(entity, action);
     }
 
     public void TriggerOnLocationSelect(Entity entity, Action action, Vector3Int location)
     {
-        if (onLocationSelect != null)
-        {
-            onLocationSelect(entity, action, location);
-        }
+        onLocationSelect?.Invoke(entity, action, location);
     }
 
     public void TriggerOnActionConfirm(Entity entity, Action action, Vector3Int location)
     {
-        if (onActionConfirm != null)
-        {
-            onActionConfirm(entity, action, location);
-        }
+        onActionConfirm?.Invoke(entity, action, location);
     }
 
     public void TriggerOnActionPerformStart(Entity entity, Action action, Vector3Int location, Room room)
     {
-        if (onActionPerformStart != null)
-        {
-            onActionPerformStart(entity, action, location, room);
-        }
+        onActionPerformStart?.Invoke(entity, action, location, room);
     }
 
     public void TriggerOnActionPerformEnd(Entity entity, Action action, Vector3Int location, Room room)
     {
-        if (onActionPerformEnd != null)
-        {
-            onActionPerformEnd(entity, action, location, room);
-        }
+        onActionPerformEnd?.Invoke(entity, action, location, room);
     }
 
     public void TriggerOnEntityStartMove(Entity entity)
     {
-        if (onEntityMoveStart != null)
-        {
-            onEntityMoveStart(entity);
-        }
+        onEntityMoveStart?.Invoke(entity);
     }
 
     public void TriggerOnEntityMove(Entity entity)
     {
-        if (onEntityMove != null)
-        {
-            onEntityMove(entity);
-        }
+        onEntityMove?.Invoke(entity);
     }
 
     public void TriggerOnEntityStopMove(Entity entity)
     {
-        if (onEntityMoveStop != null)
-        {
-            onEntityMoveStop(entity);
-        }
+        onEntityMoveStop?.Invoke(entity);
     }
 
     public void TriggerOnEnityWarp(Entity entity)
     {
-        if (onEntityWarp != null)
-        {
-            onEntityWarp(entity);
-        }
+        onEntityWarp?.Invoke(entity);
     }
 
     public void TriggerOnEntityJump(Entity entity)
     {
-        if (onEntityJump != null)
-        {
-            onEntityJump(entity);
-        }
+        onEntityJump?.Invoke(entity);
     }
 
     public void TriggerOnDieLoop(Die die)
     {
-        if (onDieLoop != null)
-        {
-            onDieLoop(die);
-        }
+        onDieLoop?.Invoke(die);
     }
 
     public void TriggerOnDieRoll(Die die)
     {
-        if (onDieRoll != null)
-        {
-            onDieRoll(die);
-        }
+        onDieRoll?.Invoke(die);
     }
 
     public void TriggerOnDieExhaust(Die die)
     {
-        if (onDieExhaust != null)
-        {
-            onDieExhaust(die);
-        }
+        onDieExhaust?.Invoke(die);
     }
 
     public void TriggerOnDieReplenish(Die die)
     {
-        if (onDieReplenish != null)
-        {
-            onDieReplenish(die);
-        }
+        onDieReplenish?.Invoke(die);
     }
 
     public void TriggerOnEntityTakeDamage(Entity entity, int damage)
     {
-        if (onEntityTakeDamage != null)
-        {
-            onEntityTakeDamage(entity, damage);
-        }
+        onEntityTakeDamage?.Invoke(entity, damage);
     }
 
     public void TriggerOnEntityUseWeapon(Entity entity, Weapon weapon)
     {
-        if (onEntityUseWeapon != null)
-        {
-            onEntityUseWeapon(entity, weapon);
-        }
+        onEntityUseWeapon?.Invoke(entity, weapon);
     }
 
     public void TriggerOnEntityDrawWeapon(Entity entity, Vector3 direction, Weapon weapon)
     {
-        if (onEntityDrawWeapon != null)
-        {
-            onEntityDrawWeapon(entity, direction, weapon);
-        }
+        onEntityDrawWeapon?.Invoke(entity, direction, weapon);
     }
 
     public void TriggerOnEntitySheatheWeapon(Entity entity, Weapon weapon)
     {
-        if (onEntitySheatheWeapon != null)
-        {
-            onEntitySheatheWeapon(entity, weapon);
-        }
+        onEntitySheatheWeapon?.Invoke(entity, weapon);
     }
 
     public void TriggerOnPickupSpawn(PickUpType pickUpType, Vector3Int location)
     {
-        if (onPickupSpawn != null)
-        {
-            onPickupSpawn(pickUpType, location);
-        }
+        onPickupSpawn?.Invoke(pickUpType, location);
     }
 
     public void TriggerOnPickupDespawn(Vector3Int location)
     {
-        if (onPickupDespawn != null)
-        {
-            onPickupDespawn(location);
-        }
+        onPickupDespawn?.Invoke(location);
     }
 
     public void TriggerOnUnlockExit()
     {
-        if (onUnlockExit != null)
-        {
-            onUnlockExit();
-        }
+        onUnlockExit?.Invoke();
     }
 
     public void TriggerOnLockExit()
     {
-        if (onLockExit != null)
-        {
-            onLockExit();
-        }
+        onLockExit?.Invoke();
     }
 
     public void TriggerOnGoldChange(Entity entity, int amount)
     {
-        if (onEntityGoldChange != null)
-        {
-            onEntityGoldChange(entity, amount);
-        }
+        onEntityGoldChange?.Invoke(entity, amount);
     }
 
     public void TriggerOnItemInsert(ItemUI itemUI, ItemSlotUI itemSlotUI)
     {
-        if (onItemInsert != null)
-        {
-            onItemInsert(itemUI, itemSlotUI);
-        }
+        onItemInsert?.Invoke(itemUI, itemSlotUI);
     }
 
     public void TriggerOnEquipWeapon(Entity entity, Weapon weapon, int index)
     {
-        if (onEquipWeapon != null)
-        {
-            onEquipWeapon(entity, weapon, index);
-        }
+        onEquipWeapon?.Invoke(entity, weapon, index);
     }
 
     public void TriggerOnUnequipWeapon(Entity entity, Weapon weapon, int index)
     {
-        if (onUnequipWeapon != null)
-        {
-            onUnequipWeapon(entity, weapon, index);
-        }
+        onUnequipWeapon?.Invoke(entity, weapon, index);
     }
 
     public void TriggerOnEntityUseConsumable(Entity entity, Consumable consumable)
     {
-        if (onEntityUseConsumable != null)
-        {
-            onEntityUseConsumable(entity, consumable);
-        }
+        onEntityUseConsumable?.Invoke(entity, consumable);
     }
 
     public void TriggerOnEntityInspect(Entity entity, List<Vector3Int> locations)
     {
-        if (onEntityInspect != null)
-        {
-            onEntityInspect(entity, locations);
-        }
+        onEntityInspect?.Invoke(entity, locations);
     }
 
     public void TriggerOnActionThreatenLocation(Action action, List<Vector3Int> locations)
     {
-        if (onActionThreatenLocations != null)
-        {
-            onActionThreatenLocations(action, locations);
-        }
+        onActionThreatenLocations?.Invoke(action, locations);
     }
 
     public void TriggerOnActionUnthreatenLocation(Action action, List<Vector3Int> locations)
     {
-        if (onActionUnthreatenLocations != null)
-        {
-            onActionUnthreatenLocations(action, locations);
-        }
+        onActionUnthreatenLocations?.Invoke(action, locations);
     }
 
     public void TriggerOnEntityInDanger(Entity entity)
     {
-        if (onEntityInDanger != null)
-        {
-            onEntityInDanger(entity);
-        }
+        onEntityInDanger?.Invoke(entity);
     }
 
     public void TriggerOnEntityOutDanger(Entity entity)
     {
-        if (onEntityOutDanger != null)
-        {
-            onEntityOutDanger(entity);
-        }
+        onEntityOutDanger?.Invoke(entity);
     }
 
     public void TriggerOnEntityKillEntity(Entity killer, Weapon weapon, Entity victim)
     {
-        if (onEntityKillEntity != null)
-        {
-            onEntityKillEntity(killer, weapon, victim);
-        }
+        onEntityKillEntity?.Invoke(killer, weapon, victim);
     }
 
     public void TriggerOnOpenShop(Entity entity, Inventory inventory)
     {
-        if (onOpenShop != null)
-        {
-            onOpenShop(entity, inventory);
-        }
+        onOpenShop?.Invoke(entity, inventory);
     }
 
     public void TriggerOnCloseShop(Inventory inventory)
     {
-        if (onCloseShop != null)
-        {
-            onCloseShop(inventory);
-        }
+        onCloseShop?.Invoke(inventory);
     }
 
     public void TriggerOnOpenBlacksmith(Entity entity)
     {
-        if (onOpenBlacksmith != null)
-        {
-            onOpenBlacksmith(entity);
-        }
+        onOpenBlacksmith?.Invoke(entity);
     }
 
     public void TriggerOnCloseBlacksmith(Entity entity)
     {
-        if (onCloseBlacksmith != null)
-        {
-            onCloseBlacksmith(entity);
-        }
+        onCloseBlacksmith?.Invoke(entity);
     }
 
     public void TriggerOnInsertBlacksmith(Weapon weapon)
     {
-        if (onInsertBlacksmith != null)
-        {
-            onInsertBlacksmith(weapon);
-        }
+        onInsertBlacksmith?.Invoke(weapon);
     }
 
     public void TriggerOnRemoveBlacksmith(Weapon weapon)
     {
-        if (onRemoveBlacksmith != null)
-        {
-            onRemoveBlacksmith(weapon);
-        }
+        onRemoveBlacksmith?.Invoke(weapon);
     }
 }

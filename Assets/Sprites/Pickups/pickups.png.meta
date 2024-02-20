@@ -355,7 +355,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -363,6 +363,48 @@ TextureImporter:
       bones: []
       spriteID: 2ae8fc67ee42ee940bc14c17cc60f5ec
       internalID: -688508376
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pickups_1
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 208
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 956124594eb1a004b8eec686476749a4
+      internalID: -472784550
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pickups_2
+      rect:
+        serializedVersion: 2
+        x: 656
+        y: 208
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 57a52fa15db1d55478fbaefb74b8756b
+      internalID: 2144490352
       vertices: []
       indices: 
       edges: []
@@ -388,6 +430,8 @@ TextureImporter:
       general_items_4: 2126495206
       general_items_5: 1938569514
       general_items_10: 997713353
+      pickups_1: -472784550
+      pickups_2: 2144490352
       general_items_2: 1911624470
       general_items_7: -1128016952
   spritePackingTag: 

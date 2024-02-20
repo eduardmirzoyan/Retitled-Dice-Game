@@ -3,24 +3,31 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using Unity.VisualScripting.ReorderableList.Element_Adder_Menu;
 
 public class ItemTooltipUI : MonoBehaviour
 {
     [Header("Static Data")]
     [SerializeField] private RectTransform rectTransform;
     [SerializeField] private CanvasGroup canvasGroup;
+
+    [Header("Text")]
     [SerializeField] private TextMeshProUGUI itemNameText;
     [SerializeField] private TextMeshProUGUI itemTypeText;
     [SerializeField] private TextMeshProUGUI itemDescriptionText;
     [SerializeField] private TextMeshProUGUI auxiliaryText;
 
+    [Header("Layouts")]
     [SerializeField] private LayoutGroup actionsLayoutGroup;
-    [SerializeField] private GameObject actionTooltipPrefab;
-    [SerializeField] private GameObject actionSeperator;
     [SerializeField] private LayoutGroup enchantmentsLayoutGroup;
-    [SerializeField] private GameObject weaponEnchantmentTooltipPrefab;
+
+    [Header("Seperators")]
+    [SerializeField] private GameObject actionSeperator;
     [SerializeField] private GameObject enchantmentSeperator;
+    [SerializeField] private GameObject priceSeperator;
+
+    [Header("Prefabs")]
+    [SerializeField] private GameObject actionTooltipPrefab;
+    [SerializeField] private GameObject weaponEnchantmentTooltipPrefab;
 
     private List<WeaponActionUI> actionTooltips;
     private List<WeaponEnchantmentTooltipUI> enchantmentTooltips;
@@ -51,29 +58,12 @@ public class ItemTooltipUI : MonoBehaviour
         {
             UpdatePivot();
         }
-
     }
-
-    // private void Update()
-    // {
-    //     FollowMouse();
-    // }
-
-    // private void FollowMouse()
-    // {
-    //     // Update position
-    //     Vector2 position = Input.mousePosition;
-    //     Vector2 adjustedPosition = Camera.main.ScreenToWorldPoint(position);
-    //     transform.position = adjustedPosition;
-
-    //     UpdatePivot(position);
-    // }
 
     private void UpdatePivot()
     {
         var width = rectTransform.sizeDelta.x;
         var height = rectTransform.sizeDelta.y;
-
 
         float pivotX = 1;
         float pivotY = 1;
@@ -84,7 +74,6 @@ public class ItemTooltipUI : MonoBehaviour
         // Debug.Log($"Tras: {rectTransform}");
         // Debug.Log($"Pos: {rectTransform.position}");
         // Debug.Log($"Rect: {rectTransform.rect}");
-
 
         // Check if window goes off-screen on x-axis
         // If so, 
@@ -135,7 +124,7 @@ public class ItemTooltipUI : MonoBehaviour
         {
             // Set to show price
             auxiliaryText.fontSize = 48f;
-            auxiliaryText.text = "Price: <sprite name=\"Gold\">" + item.GetValue();
+            auxiliaryText.text = $"Price: {item.GetValue()}<sprite name=\"Gold\">";
         }
 
         // If the item is an equipment item
@@ -163,7 +152,6 @@ public class ItemTooltipUI : MonoBehaviour
             {
                 // Spawn visuals of actions
                 var enchantmentTooltip = Instantiate(weaponEnchantmentTooltipPrefab, enchantmentsLayoutGroup.transform).GetComponent<WeaponEnchantmentTooltipUI>();
-                // Initialize as display
                 enchantmentTooltip.Initialize(enchantment);
 
                 // Save

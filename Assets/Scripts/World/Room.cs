@@ -9,6 +9,7 @@ public class Room : ScriptableObject
     public int width;
     public int height;
     public int padding;
+    public float floorChance;
 
     public RoomTile[,] tiles;
 
@@ -27,12 +28,13 @@ public class Room : ScriptableObject
     public Pathfinder pathfinder;
     public ProceduralRoomGenerator roomGenerator;
 
-    public void Initialize(int roomWidth, int roomHeight, int padding, int wallSpawnChance, int chasamSpawnChance)
+    public void Initialize(int roomWidth, int roomHeight, int padding, float floorChance)
     {
         // Save dimensions
         this.width = roomWidth;
         this.height = roomHeight;
         this.padding = padding;
+        this.floorChance = floorChance;
 
         numKeys = 0;
 
@@ -48,8 +50,14 @@ public class Room : ScriptableObject
         pathfinder = new Pathfinder();
 
         // Generate world tiles
-        // GenerateTiles(wallSpawnChance, chasamSpawnChance);
-        GenerateTilesNew();
+        GenerateTiles();
+    }
+
+    private void GenerateTiles()
+    {
+        roomGenerator = new ProceduralRoomGenerator();
+        roomGenerator.Initialize(width, height, padding, floorChance);
+        tiles = roomGenerator.GenerateEmptyRoom(this);
     }
 
     public void SpawnPlayer(Player player)
@@ -79,16 +87,13 @@ public class Room : ScriptableObject
         throw new System.Exception("ENTRANCE NOT FOUND!");
     }
 
-    public void SpawnEntity(Entity entity, bool asBoss = false)
+    public void SpawnEntity(Entity entity, Vector3Int location, bool asBoss = false)
     {
-        // Get random point in room
-        Vector3Int spawnLocation = GetRandomLocation();
-
         // Intialize entity
-        entity.Initialize(this, spawnLocation);
+        entity.Initialize(this, location);
 
         // Update tile
-        tiles[spawnLocation.x, spawnLocation.y].containedEntity = entity;
+        tiles[location.x, location.y].containedEntity = entity;
 
         switch (entity.AI.alignment)
         {
@@ -135,6 +140,14 @@ public class Room : ScriptableObject
 
         // Trigger event
         GameEvents.instance.TriggerOnEntitySpawn(entity);
+    }
+
+    public void SpawnEntity(Entity entity, bool asBoss = false)
+    {
+        // Get random point in room
+        Vector3Int spawnLocation = GetRandomLocation();
+
+        SpawnEntity(entity, spawnLocation, asBoss);
     }
 
     public void DespawnEntity(Entity entity)
@@ -228,88 +241,6 @@ public class Room : ScriptableObject
 
         // Set to new tile
         newTile.containedEntity = entity;
-    }
-
-    private void GenerateTiles(int wallSpawnChance, int chasamSpawnChance)
-    {
-        // Initialize tiles
-        tiles = new RoomTile[width + 2 * padding, height + 2 * padding];
-
-        for (int i = 0; i < width + 2 * padding; i++)
-        {
-            for (int j = 0; j < height + 2 * padding; j++)
-            {
-                var location = new Vector3Int(i, j);
-                // Create new tile SO
-                var tile = ScriptableObject.CreateInstance<RoomTile>();
-
-                if (WithinPadding(location))
-                {
-                    // Set to wall
-                    tile.Initialize(location, TileType.Wall, this);
-                }
-                else
-                {
-                    // Randomly set to wall
-                    if (Random.Range(0, 100) < wallSpawnChance)
-                    {
-                        // Set to wall
-                        tile.Initialize(location, TileType.Wall, this);
-                    }
-                    // Randomly set to chasam
-                    else if (Random.Range(0, 100) < chasamSpawnChance)
-                    {
-                        // Set to chasam
-                        tile.Initialize(location, TileType.Chasam, this);
-                    }
-                    else
-                    {
-                        // Set to floor
-                        tile.Initialize(location, TileType.Floor, this);
-                    }
-                }
-
-                // Add tile to list
-                tiles[i, j] = tile;
-            }
-        }
-
-        // Get all 4 possible corners
-        Vector3Int[] possibleEntranceCorners = {new Vector3Int(padding + 1, padding + 1), new Vector3Int(padding + 1, padding + height - 2),
-                                                new Vector3Int(padding + width - 2, padding + height - 2), new Vector3Int(padding + width - 2, padding + 1)};
-
-        // Set entrance to a random set of corners
-        var entranceLocation = possibleEntranceCorners[Random.Range(0, possibleEntranceCorners.Length)];
-        SpawnEntrance(entranceLocation);
-
-        // Set exit based on entrance
-        var exitLocation = new Vector3Int(2 * padding + width - entranceLocation.x - 1, 2 * padding + height - entranceLocation.y - 1);
-        SpawnExit(exitLocation);
-    }
-
-    private void SpawnEntrance(Vector3Int entranceLocation)
-    {
-        var tile = ScriptableObject.CreateInstance<RoomTile>();
-        tile.Initialize(entranceLocation, TileType.Entrance, this);
-
-        entranceTile = tile;
-        tiles[entranceLocation.x, entranceLocation.y] = tile;
-    }
-
-    private void SpawnExit(Vector3Int exitLocation)
-    {
-        var tile = ScriptableObject.CreateInstance<RoomTile>();
-        tile.Initialize(exitLocation, TileType.Exit, this);
-
-        exitTile = tile;
-        tiles[exitLocation.x, exitLocation.y] = tile;
-    }
-
-    private void GenerateTilesNew()
-    {
-        roomGenerator = new ProceduralRoomGenerator();
-        roomGenerator.Initialize(width, height, padding);
-        tiles = roomGenerator.GenerateEmptyRoom(0.7f, this);
     }
 
     public void SpawnPickup(PickUpType pickUpType)
@@ -485,7 +416,7 @@ public class Room : ScriptableObject
         if (tile.tileType == TileType.Exit && numKeys == 0 && bossEntities.Count == 0)
         {
             // If we are leaving the boss room
-            if (DataManager.instance.GetCurrentRoom() == RoomType.Arena)
+            if (DataManager.instance.GetCurrentRoom() == RoomType.Boss)
             {
                 // THEN WE HAVE WON THE GAME!
                 GameEvents.instance.TriggerOnGameWin();

@@ -152,7 +152,7 @@ public class EntityModel : MonoBehaviour
             properLayerSort.SetActive(true);
 
             // Play sound
-            InvokeRepeating("FootstepsSFX", 0f, footstepSfxSpeed);
+            InvokeRepeating(nameof(FootstepsSFX), 0f, footstepSfxSpeed);
         }
     }
 
@@ -184,7 +184,7 @@ public class EntityModel : MonoBehaviour
             properLayerSort.SetActive(false);
 
             // Stop sound
-            CancelInvoke("FootstepsSFX");
+            CancelInvoke(nameof(FootstepsSFX));
         }
     }
 

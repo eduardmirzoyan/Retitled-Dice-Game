@@ -17,16 +17,14 @@ public class RoomGenerator : ScriptableObject
     [Header("Regular Data")]
     [SerializeField] private Vector2Int roomSize = new Vector2Int(10, 10);
     [SerializeField] private int roomPadding = 8;
-    [SerializeField] private int wallSpawnChance = 5;
-    [SerializeField] private int chasamSpawnChance = 5;
+    [SerializeField][Range(0f, 1f)] private float floorChance;
 
     [Header("Shop Data")]
     [SerializeField] private Vector2Int shopSize = new Vector2Int(5, 5);
 
     [Header("Shop Data")]
     [SerializeField] private Vector2Int arenaSize = new Vector2Int(10, 10);
-    [SerializeField] private int arenaWallSpawnChance = 0;
-    [SerializeField] private int arenaChasamSpawnChance = 5;
+    [SerializeField][Range(0f, 1f)] private float arenaFloorChance;
 
     public Room GenerateCustomRoom()
     {
@@ -34,7 +32,7 @@ public class RoomGenerator : ScriptableObject
         var room = ScriptableObject.CreateInstance<Room>();
 
         // Initialize
-        room.Initialize(roomSize.x, roomSize.y, roomPadding, wallSpawnChance, chasamSpawnChance);
+        room.Initialize(roomSize.x, roomSize.y, roomPadding, floorChance);
 
         return room;
     }
@@ -45,7 +43,7 @@ public class RoomGenerator : ScriptableObject
         var room = ScriptableObject.CreateInstance<Room>();
 
         // Initialize with no extra walls or chasams
-        room.Initialize(shopSize.x, shopSize.y, roomPadding, 0, 0);
+        room.Initialize(shopSize.x, shopSize.y, roomPadding, 1f);
 
         return room;
     }
@@ -56,7 +54,7 @@ public class RoomGenerator : ScriptableObject
         var room = ScriptableObject.CreateInstance<Room>();
 
         // Initialize with no extra walls or chasams
-        room.Initialize(arenaSize.x, arenaSize.y, roomPadding, arenaWallSpawnChance, arenaChasamSpawnChance);
+        room.Initialize(arenaSize.x, arenaSize.y, roomPadding, arenaFloorChance);
 
         return room;
     }
@@ -70,23 +68,23 @@ public class RoomGenerator : ScriptableObject
         {
             case RoomSize.Tiny:
                 // Initialize
-                room.Initialize(4, 4, roomPadding, wallSpawnChance, chasamSpawnChance);
+                room.Initialize(4, 4, roomPadding, floorChance);
                 break;
             case RoomSize.Small:
                 // Initialize
-                room.Initialize(6, 6, roomPadding, wallSpawnChance, chasamSpawnChance);
+                room.Initialize(6, 6, roomPadding, floorChance);
                 break;
             case RoomSize.Medium:
                 // Initialize
-                room.Initialize(8, 8, roomPadding, wallSpawnChance, chasamSpawnChance);
+                room.Initialize(8, 8, roomPadding, floorChance);
                 break;
             case RoomSize.Large:
                 // Initialize
-                room.Initialize(10, 10, roomPadding, wallSpawnChance, chasamSpawnChance);
+                room.Initialize(10, 10, roomPadding, floorChance);
                 break;
             case RoomSize.Massive:
                 // Initialize
-                room.Initialize(12, 12, roomPadding, wallSpawnChance, chasamSpawnChance);
+                room.Initialize(12, 12, roomPadding, floorChance);
                 break;
         }
 

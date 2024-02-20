@@ -45,7 +45,7 @@ public class RoomExitUI : MonoBehaviour
             case RoomType.Shop:
                 iconRenderer.sprite = exitIcons[1];
                 break;
-            case RoomType.Arena:
+            case RoomType.Boss:
                 iconRenderer.sprite = exitIcons[2];
                 break;
             default:

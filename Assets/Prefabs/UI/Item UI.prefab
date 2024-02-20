@@ -90,7 +90,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EffectColor: {r: 1, g: 1, b: 1, a: 0}
-  m_EffectDistance: {x: 2, y: 2}
+  m_EffectDistance: {x: 4, y: 4}
   m_UseGraphicAlpha: 0
 --- !u!1 &7123551506588363224
 GameObject:
@@ -240,5 +240,4 @@ MonoBehaviour:
   grayMaterial: {fileID: 2100000, guid: 93771b9c3b6ecb745839335128e8f4f0, type: 2}
   item: {fileID: 0}
   itemSlotUI: {fileID: 0}
-  defaultMaterial: {fileID: 0}
   preventRemove: 0

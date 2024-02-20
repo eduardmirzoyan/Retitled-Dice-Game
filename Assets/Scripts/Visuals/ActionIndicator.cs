@@ -120,14 +120,11 @@ public class ActionIndicator : MonoBehaviour
                 break;
         }
 
-
-
         // Only show attacks
         if (action.actionType != ActionType.Movement)
         {
             foreach (var location in locations)
             {
-
                 int damage = action.GetTotalDamage();
 
                 switch (action.actionSpeed)

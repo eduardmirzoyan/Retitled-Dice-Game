@@ -22,7 +22,7 @@ MonoBehaviour:
   hitEffectPrefab: {fileID: 7270536486772163001, guid: 335c93a61b62ca84e9f26440c7f3ed0e, type: 3}
   AI: {fileID: 11400000, guid: 3b3436262a7edc74cb98fe566468710a, type: 2}
   innateActions:
-  - {fileID: 11400000, guid: 117dcf4224e3c634c9d145736db1dfaf, type: 2}
+  - {fileID: 11400000, guid: 423fdd6fb55e2454c88b04fa3804a476, type: 2}
   weapons:
   - {fileID: 0}
   - {fileID: 0}

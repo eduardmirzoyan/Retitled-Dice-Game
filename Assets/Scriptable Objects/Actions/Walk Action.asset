@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Walk Action
   m_EditorClassIdentifier: 
   name: Walk
-  rawInactiveDescription: Move cardinally up to {die} tiles
-  rawActiveDescription: Move cardinally up to {die} tiles
+  rawInactiveDescription: Move up to {die} tiles
+  rawActiveDescription: Move up to {die} tiles
   icon: {fileID: 21300000, guid: c6aa1b6b14c9ead479c8e9186db26833, type: 3}
   color: {r: 0.3647059, g: 0.7960785, b: 0.22352943, a: 1}
   actionSpeed: 0

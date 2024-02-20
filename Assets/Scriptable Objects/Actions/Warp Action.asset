@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Warp Action
   m_EditorClassIdentifier: 
   name: Warp
-  rawInactiveDescription: TODO
-  rawActiveDescription: Teleport cardinally exactly {die} tiles
+  rawInactiveDescription: Teleport exactly {die} tiles
+  rawActiveDescription: Teleport exactly {die} tiles
   icon: {fileID: 21300000, guid: 93bf4ba6c8df72c40a312c54d602fa23, type: 3}
   color: {r: 0.3647059, g: 0.79607844, b: 0.22352941, a: 1}
   actionSpeed: 0

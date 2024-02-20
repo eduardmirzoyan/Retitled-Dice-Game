@@ -18,11 +18,17 @@ public class GameManager : MonoBehaviour
     [SerializeField] public GameSettings gameSettings;
     [SerializeField] public bool gameOver;
 
-    private Queue<Entity> turnQueue;
+    [Header("Debug")]
+    [SerializeField] private List<Entity> turnQueue;
     [SerializeField] private Entity selectedEntity;
     [SerializeField] private Action selectedAction;
     [SerializeField] private Vector3Int selectedLocation;
     [SerializeField] private List<Vector3Int> selectedThreats;
+
+    [Header("Logging")]
+    [SerializeField] private bool logGameStates;
+    [SerializeField] private bool logEntityActions;
+
     private List<(Action, Vector3Int)> bestChoiceSequence;
     private Dictionary<(Entity, Action), List<Vector3Int>> reactiveActionsHastable;
     private Dictionary<(Entity, Action), List<Vector3Int>> delayedActionsHashtable;
@@ -32,7 +38,7 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         // Singleton Logic
-        if (GameManager.instance != null)
+        if (instance != null)
         {
             Destroy(gameObject);
             return;
@@ -138,7 +144,7 @@ public class GameManager : MonoBehaviour
                 room = roomGenerator.GenerateShop();
 
                 break;
-            case RoomType.Arena:
+            case RoomType.Boss:
 
                 // Generate an arena
                 room = roomGenerator.GenerateArena();
@@ -183,17 +189,20 @@ public class GameManager : MonoBehaviour
                 break;
             case RoomType.Shop:
 
-                // Generate a shopkeeper
+                // Generate a shopkeeper in hardcoded location
                 var shopkeeper = enemyGenerator.GenerateShopkeeper();
+                Vector3Int location = new(12, 13);
 
                 // Populate the room
-                room.SpawnEntity(shopkeeper);
+                room.SpawnEntity(shopkeeper, location);
 
-                // Open Shop if shop floor
-                CheckShop(shopkeeper.inventory);
+                // Generate a blacksmith
+                var blacksmith = enemyGenerator.GenerateBlacksmith();
+                location = new(14, 13);
+                room.SpawnEntity(blacksmith, location);
 
                 break;
-            case RoomType.Arena:
+            case RoomType.Boss:
 
                 // Generate a boss
                 var boss = enemyGenerator.GenerateBoss();
@@ -283,37 +292,40 @@ public class GameManager : MonoBehaviour
     private IEnumerator GenerateTurnQueue()
     {
         // Initialize
-        turnQueue = new Queue<Entity>();
+        turnQueue = new List<Entity>();
 
         // First go enemies
         foreach (var entity in room.hostileEntities)
         {
-            turnQueue.Enqueue(entity);
+            turnQueue.Add(entity);
         }
 
         // Next go neutrals
         foreach (var entity in room.neutralEntities)
         {
-            turnQueue.Enqueue(entity);
+            turnQueue.Add(entity);
         }
 
         // Next go allies
         foreach (var entity in room.alliedEntities)
         {
-            turnQueue.Enqueue(entity);
+            turnQueue.Add(entity);
         }
 
-        // Player goes last player
-        turnQueue.Enqueue(room.player);
+        // Player goes last
+        turnQueue.Add(room.player);
 
         // Debug
-        string result = "Generated Queue: ";
-        foreach (var ent in turnQueue.ToArray())
+        if (logGameStates)
         {
-            result += ent.name + " -> ";
+            string result = "Generated Queue: ";
+            foreach (var ent in turnQueue.ToArray())
+            {
+                result += ent.name + " -> ";
+            }
+            result += "END";
+            print(result);
         }
-        result += "END";
-        print(result);
 
         // Finish
         yield return null;
@@ -323,6 +335,9 @@ public class GameManager : MonoBehaviour
     {
         // Increment round
         roundNumber++;
+
+        // Debug
+        if (logGameStates) print("Starting Round: " + roundNumber);
 
         // Check if game is over
         if (!gameOver)
@@ -337,13 +352,14 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator StartTurn()
     {
-        // Remove first entity from queue
-        selectedEntity = turnQueue.Dequeue();
+        // Pop first entity from queue
+        selectedEntity = turnQueue[0];
+        turnQueue.RemoveAt(0);
 
         // If the entity is dead, skip
         if (selectedEntity.currentHealth == 0)
         {
-            print("Entity: " + selectedEntity.name + " is dead so skipping turn.");
+            if (logEntityActions) print("Entity: " + selectedEntity.name + " is dead so skipping turn.");
 
             // End turn
             yield return EndTurn();
@@ -356,7 +372,7 @@ public class GameManager : MonoBehaviour
         yield return PerformAnyReactiveActions(selectedEntity);
 
         // Debug
-        print("Turn Start: " + selectedEntity.name);
+        if (logGameStates) print("Turn Start: " + selectedEntity.name);
 
         // Trigger event 
         GameEvents.instance.TriggerOnTurnStart(selectedEntity);
@@ -397,8 +413,8 @@ public class GameManager : MonoBehaviour
         else if (selectedAction != null && action == null)
         {
             //print("De-select current action.");
-
             selectedAction = null;
+
             // Trigger event
             GameEvents.instance.TriggerOnActionSelect(selectedEntity, null);
         }
@@ -438,7 +454,6 @@ public class GameManager : MonoBehaviour
 
     public void SelectLocation(Vector3Int location)
     {
-
         if (selectedLocation == Vector3Int.back && location == Vector3Int.back)
         {
             // Do nothing.
@@ -565,7 +580,7 @@ public class GameManager : MonoBehaviour
     public void ConfirmAction()
     {
         // Debug
-        print("Player [" + selectedEntity.name + "] used [" + selectedAction.name + "] on location [" + selectedLocation + "]");
+        if (logEntityActions) print("Player [" + selectedEntity.name + "] used [" + selectedAction.name + "] on location [" + selectedLocation + "]");
 
         // Trigger event
         GameEvents.instance.TriggerOnActionConfirm(selectedEntity, selectedAction, selectedLocation);
@@ -643,7 +658,7 @@ public class GameManager : MonoBehaviour
     private IEnumerator ConfirmActionAI()
     {
         // Debug
-        print("AI [" + selectedEntity.name + "] used [" + selectedAction.name + "] on location [" + selectedLocation + "]");
+        if (logEntityActions) print("AI [" + selectedEntity.name + "] used [" + selectedAction.name + "] on location [" + selectedLocation + "]");
 
         // Trigger event
         GameEvents.instance.TriggerOnActionConfirm(selectedEntity, selectedAction, selectedLocation);
@@ -694,7 +709,7 @@ public class GameManager : MonoBehaviour
         }
 
         // Debug
-        print("Turn End: " + selectedEntity.name);
+        if (logGameStates) print("Turn End: " + selectedEntity.name);
 
         // Trigger event
         GameEvents.instance.TriggerOnTurnEnd(selectedEntity);
@@ -702,9 +717,6 @@ public class GameManager : MonoBehaviour
         // Check if queue is empty
         if (turnQueue.Count == 0)
         {
-            // Debug
-            print("Starting New Round: " + (roundNumber + 1));
-
             // Make new round
             yield return StartRound();
         }
@@ -1012,16 +1024,6 @@ public class GameManager : MonoBehaviour
 
         // Trigger event
         GameEvents.instance.TriggerOnEntityInspect(entity, locations);
-    }
-
-    // TEMP SHOP LOGIC
-    private void CheckShop(Inventory inventory)
-    {
-        // If we are currently on a shop floor
-        if (DataManager.instance.GetCurrentRoom() == RoomType.Shop)
-        {
-            GameEvents.instance.TriggerOnOpenShop(room.player, inventory);
-        }
     }
 
     // TEMP CURSOR SHIT

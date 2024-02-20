@@ -96,11 +96,6 @@ public abstract class Action : ScriptableObject
         die.maxValue += 1;
     }
 
-    public void UpgradeMinValue()
-    {
-        die.minValue = Mathf.Min(die.minValue + 1, die.maxValue);
-    }
-
     public void AddBuff(Buff buffToAdd, string source)
     {
         // Check if action already has the buff

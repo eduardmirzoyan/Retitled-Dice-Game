@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbe6b8ca6dad53a4ebde6ae667f895f4, type: 3}
+  m_Name: Enemy Generator
+  m_EditorClassIdentifier: 
+  possibleEnemies:
+  - {fileID: 11400000, guid: f2e6bff7fa56b7c4f839a49b81475266, type: 2}
+  - {fileID: 11400000, guid: d27bdacd5dbad8c4c9985e62c890d6e7, type: 2}
+  - {fileID: 11400000, guid: 71e69b5f136118542be4155885f7b20e, type: 2}
+  bosses:
+  - {fileID: 11400000, guid: 3be0a956ef097ed4e8563b13c3972f0a, type: 2}
+  merchants:
+  - {fileID: 11400000, guid: 00bce857e2abbbf4abd58c0a57b986c3, type: 2}
+  - {fileID: 11400000, guid: a4d542548038fa34cb4972eec41c6ac4, type: 2}
+  barrel: {fileID: 11400000, guid: e5f8516d08a87814ba5ed198402a03f9, type: 2}
+  shopSize: 4
+  shopItemGenerator: {fileID: 11400000, guid: b642c2acfcb26924ebf7a4b19f3f7fe0, type: 2}

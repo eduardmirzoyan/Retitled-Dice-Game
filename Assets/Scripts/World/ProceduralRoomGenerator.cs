@@ -7,29 +7,34 @@ public class ProceduralRoomGenerator
     private int width;
     private int height;
     private int padding;
+    private float floorChance;
 
     private static Vector3Int[] DIRECTIONS = new Vector3Int[4] { Vector3Int.up, Vector3Int.down, Vector3Int.left, Vector3Int.right };
 
-    public void Initialize(int width, int height, int padding)
+    public void Initialize(int width, int height, int padding, float floorChance)
     {
         this.width = width;
         this.height = height;
         this.padding = padding;
+        this.floorChance = floorChance;
     }
 
-    public RoomTile[,] GenerateEmptyRoom(float cullRatio, Room room)
+    public RoomTile[,] GenerateEmptyRoom(Room room)
     {
         // Initialize tiles
         RoomTile[,] tiles = new RoomTile[width + 2 * padding, height + 2 * padding];
 
         // Fill room with walls
         FillRoom(tiles, room);
-        var startLocation = SetPathways(tiles);
 
+        var startLocation = SetPathways(tiles);
         int[,] map = new int[width + 2 * padding, height + 2 * padding];
         do
         {
-            GenerateRandomUniform(tiles, cullRatio);
+            // Randomly set tiles to floor
+            GenerateRandomFloors(tiles);
+
+            // Create a dijkstra map from it
             CreateDijkstraMap(startLocation, map, tiles);
         }
         while (!IsValid(map, tiles));
@@ -44,10 +49,9 @@ public class ProceduralRoomGenerator
             for (int j = 0; j < height + 2 * padding; j++)
             {
                 var location = new Vector3Int(i, j);
-                // Create new tile SO
                 var tile = ScriptableObject.CreateInstance<RoomTile>();
 
-                // If otuside bounds
+                // If outside bounds
                 if (location.x < padding || location.x >= width + padding || location.y < padding || location.y >= height + padding)
                 {
                     // Set to wall
@@ -91,7 +95,7 @@ public class ProceduralRoomGenerator
         return entranceLocation;
     }
 
-    private void GenerateRandomUniform(RoomTile[,] tiles, float percentageCarved)
+    private void GenerateRandomFloors(RoomTile[,] tiles)
     {
         // Now only iterate through 
         System.Random rng = new System.Random();
@@ -100,7 +104,7 @@ public class ProceduralRoomGenerator
             for (int j = padding; j < height + padding; j++)
             {
                 // Set to floor
-                if (percentageCarved > rng.NextDouble() && IsImpassable(new Vector3Int(i, j), tiles))
+                if (floorChance > rng.NextDouble() && IsImpassable(new Vector3Int(i, j), tiles))
                 {
                     tiles[i, j].tileType = TileType.Floor;
                 }
@@ -141,14 +145,12 @@ public class ProceduralRoomGenerator
                 {
                     // Do not explore
                     map[newLocation.x, newLocation.y] = 0;
-
                 }
                 else
                 {
                     // Explore
                     queue.Enqueue(newLocation);
                     map[newLocation.x, newLocation.y] = depth + 1;
-
                 }
 
                 // Mark as visited
@@ -162,7 +164,6 @@ public class ProceduralRoomGenerator
     private bool IsValid(int[,] map, RoomTile[,] tiles)
     {
         // If ANY tile is both a floor and unreachable, then room is not valid
-
         for (int i = padding; i < width + padding; i++)
         {
             for (int j = padding; j < height + padding; j++)

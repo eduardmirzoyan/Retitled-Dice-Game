@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum RoomType { Normal, Shop, Arena }
+public enum RoomType { Normal, Shop, Boss }
 
 public class DataManager : MonoBehaviour
 {
@@ -21,7 +21,7 @@ public class DataManager : MonoBehaviour
     private void Awake()
     {
         // Singleton Logic
-        if (DataManager.instance != null)
+        if (instance != null)
         {
             Destroy(gameObject);
             return;
@@ -66,7 +66,7 @@ public class DataManager : MonoBehaviour
         // Boss on Room 7
         else if (roomNumber == maxRooms)
         {
-            currentRoomType = RoomType.Arena;
+            currentRoomType = RoomType.Boss;
         }
         else
         {
@@ -99,7 +99,7 @@ public class DataManager : MonoBehaviour
         }
         else if (next == maxRooms) // Boss on Room 7
         {
-            return RoomType.Arena;
+            return RoomType.Boss;
         }
         else
         {

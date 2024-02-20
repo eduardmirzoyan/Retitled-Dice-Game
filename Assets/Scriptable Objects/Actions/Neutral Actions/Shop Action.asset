@@ -23,4 +23,5 @@ MonoBehaviour:
   die: {fileID: 11400000, guid: 5e6c4f0b27552b546956704c46a31ff3, type: 2}
   weapon: {fileID: 0}
   buffs: []
-  bonusDamage: 0
+  bonusDamage: 1
+  type: 0
