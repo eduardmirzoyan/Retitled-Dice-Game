@@ -5,8 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Enchantments/Weapon/On Kill")]
 public class OnKillWE : WeaponEnchantment
 {
-    [Header("Static Data")]
-    [SerializeField] private Buff buff;
+    // FIXME
 
     public override void Initialize(Weapon weapon)
     {
@@ -32,7 +31,7 @@ public class OnKillWE : WeaponEnchantment
                 if (action.actionType == ActionType.Attack)
                 {
                     // Give buff
-                    action.AddBuff(buff, name);
+                    // TODO
                     break;
                 }
             }
@@ -47,7 +46,7 @@ public class OnKillWE : WeaponEnchantment
             foreach (var action in weapon.actions)
             {
                 // Remove buff
-                action.RemoveBuff(buff, name);
+                // TODO
             }
         }
     }

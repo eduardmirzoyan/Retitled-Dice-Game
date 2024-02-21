@@ -17,11 +17,10 @@ MonoBehaviour:
   sprite: {fileID: -363672457, guid: 20597968d5281954482d5d148d07fa12, type: 3}
   value: 99
   baseDamage: 1
-  bonusDamage: 0
   actions:
   - {fileID: 11400000, guid: 31fb65b37415e9042bc579f491dd2fa1, type: 2}
   - {fileID: 11400000, guid: ae3a11a1021ae1945a48aeb7a76372cb, type: 2}
-  - {fileID: 11400000, guid: 78df12fbb5ab8424ca9b8c2ddf29cd36, type: 2}
+  - {fileID: 11400000, guid: 7eba09a60db35f04dba82e978a75c091, type: 2}
   enchantments:
   - {fileID: 11400000, guid: e077e282b5939134c9e927e45e37892c, type: 2}
   - {fileID: 11400000, guid: 1ee6b3495b105b2458d40d22b76ed4d4, type: 2}

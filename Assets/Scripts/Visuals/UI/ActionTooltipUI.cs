@@ -10,17 +10,18 @@ public class ActionTooltipUI : MonoBehaviour
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private TextMeshProUGUI actionNameText;
     [SerializeField] private TextMeshProUGUI actionTypeText;
+    [SerializeField] private TextMeshProUGUI actionRangeText;
     [SerializeField] private TextMeshProUGUI actionDescriptionText;
-    [SerializeField] private TextMeshProUGUI actionBuffsText;
+    [SerializeField] private TextMeshProUGUI actionModifiersText;
     [SerializeField] private TextMeshProUGUI actionSourceText;
-    [SerializeField] private GameObject buffsSeperator;
+    [SerializeField] private GameObject modifierSeperator;
     [SerializeField] private TextMeshProUGUI hotkeyText;
 
     public static ActionTooltipUI instance;
     private void Awake()
     {
         // Singleton logic
-        if (ActionTooltipUI.instance != null)
+        if (instance != null)
         {
             Destroy(this);
             return;
@@ -34,18 +35,19 @@ public class ActionTooltipUI : MonoBehaviour
         actionNameText.text = action.GetDynamicName();
         actionTypeText.text = $"{action.actionType} Action";
         actionTypeText.color = action.color;
+
+        actionRangeText.text = $"Range: <color=yellow>{action.die.minValue} - {action.die.maxValue}</color>";
+
         actionDescriptionText.text = action.GetActiveDescription();
 
         hotkeyText.text = $"[{hotkey}]";
 
-        actionBuffsText.text = "";
-        foreach (var buff in action.buffs)
+        actionModifiersText.text = "";
+        foreach (var modifier in action.modifiers)
         {
-            actionBuffsText.text += $"{buff.GetDescription()}\n";
-
+            actionModifiersText.text += $"{modifier}\n";
         }
-        buffsSeperator.SetActive(action.buffs.Count > 0);
-
+        modifierSeperator.SetActive(action.modifiers.Count > 0);
 
         if (action.weapon != null)
         {

@@ -9,11 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c96811f2523ea84e80472e59d3a1601, type: 3}
-  m_Name: Damage Buff
+  m_Script: {fileID: 11500000, guid: f8647f31d3c604d4798b30983f3330de, type: 3}
+  m_Name: Healing Potion 1
   m_EditorClassIdentifier: 
-  maxStacks: 1
-  stacks: 1
-  action: {fileID: 0}
-  source: 
-  bonusAmount: 1
+  name: Healing Potion
+  description: Restores 1 HP
+  sprite: {fileID: -688508376, guid: 15f736e8782f4cc4aba2f05f35baaa7a, type: 3}
+  value: 3
+  healAmount: 1

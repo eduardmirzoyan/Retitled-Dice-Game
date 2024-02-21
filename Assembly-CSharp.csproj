@@ -64,9 +64,8 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\AI\MerchantAI.cs" />
-    <Compile Include="Assets\Scripts\Enchantments\EntityEnchantment.cs" />
+    <Compile Include="Assets\Scripts\Enchantments\Entity\EntityEnchantment.cs" />
     <Compile Include="Assets\Scripts\Visuals\LocationInspect.cs" />
-    <Compile Include="Assets\Scripts\Buffs\DamageBuff.cs" />
     <Compile Include="Assets\Scripts\Enchantments\Weapon\OnRerollWE.cs" />
     <Compile Include="Assets\Scripts\Actions\RangedAction.cs" />
     <Compile Include="Assets\Scripts\World\Room.cs" />
@@ -148,10 +147,8 @@
     <Compile Include="Assets\Scripts\Entity.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\Inventory\InventoryHandlerUI.cs" />
     <Compile Include="Assets\Scripts\Visuals\ActionPathRenderer.cs" />
-    <Compile Include="Assets\Scripts\Buffs\NoneBuff.cs" />
     <Compile Include="Assets\Scripts\Actions\Action.cs" />
     <Compile Include="Assets\Scripts\Game Feel\DottedLine.cs" />
-    <Compile Include="Assets\Scripts\Buffs\Buff.cs" />
     <Compile Include="Assets\Scripts\Main Menu\PauseManager.cs" />
     <Compile Include="Assets\Scripts\Items\Consumables\WarpPotion.cs" />
     <Compile Include="Assets\Scripts\Actions\ThrustAction.cs" />
@@ -162,7 +159,7 @@
     <Compile Include="Assets\Scripts\Visuals\UI\Shop\ShopSlotUI.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\GameWinUI.cs" />
     <Compile Include="Assets\Scripts\Pathfinder.cs" />
-    <Compile Include="Assets\Scripts\Enchantments\NoneEntityEnchantment.cs" />
+    <Compile Include="Assets\Scripts\Enchantments\Entity\NoneEntityEnchantment.cs" />
     <Compile Include="Assets\Scripts\Actions\FireballAction.cs" />
     <Compile Include="Assets\Scripts\Game Feel\CameraShake.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\ButtonAudio.cs" />

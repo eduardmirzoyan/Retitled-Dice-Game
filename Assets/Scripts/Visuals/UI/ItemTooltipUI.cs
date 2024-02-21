@@ -6,6 +6,8 @@ using TMPro;
 
 public class ItemTooltipUI : MonoBehaviour
 {
+    private enum TabMode { Actions, Enchantments }
+
     [Header("Static Data")]
     [SerializeField] private RectTransform rectTransform;
     [SerializeField] private CanvasGroup canvasGroup;
@@ -15,24 +17,30 @@ public class ItemTooltipUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI itemTypeText;
     [SerializeField] private TextMeshProUGUI itemDescriptionText;
     [SerializeField] private TextMeshProUGUI auxiliaryText;
-
-    [Header("Layouts")]
-    [SerializeField] private LayoutGroup actionsLayoutGroup;
-    [SerializeField] private LayoutGroup enchantmentsLayoutGroup;
-
-    [Header("Seperators")]
-    [SerializeField] private GameObject actionSeperator;
-    [SerializeField] private GameObject enchantmentSeperator;
-    [SerializeField] private GameObject priceSeperator;
+    [SerializeField] private TextMeshProUGUI instructionsText;
 
     [Header("Prefabs")]
-    [SerializeField] private GameObject actionTooltipPrefab;
-    [SerializeField] private GameObject weaponEnchantmentTooltipPrefab;
+    [SerializeField] private GameObject weaponActionPrefab;
+    [SerializeField] private GameObject weaponEnchantmentPrefab;
+
+    [Header("Tab Components")]
+    [SerializeField] private GameObject containerObject;
+    [SerializeField] private TabMode tabMode;
+    [SerializeField] private GameObject actionsObject;
+    [SerializeField] private GameObject enchantmentsObject;
+    [SerializeField] private Image actionTabBackground;
+    [SerializeField] private Image enchantmentTabBackground;
+
+    [Header("Settings")]
+    [SerializeField] private KeyCode toggleKey = KeyCode.LeftShift;
+    [SerializeField] private Color activeTabColor;
+    [SerializeField] private Color inactiveTabColor;
+
+    [Header("Debug")]
+    [SerializeField] private bool isVisible;
 
     private List<WeaponActionUI> actionTooltips;
     private List<WeaponEnchantmentTooltipUI> enchantmentTooltips;
-
-    private bool updatePivot;
 
     public static ItemTooltipUI instance;
     private void Awake()
@@ -45,19 +53,138 @@ public class ItemTooltipUI : MonoBehaviour
         }
         instance = this;
 
-        updatePivot = false;
+        tabMode = TabMode.Actions;
+        isVisible = false;
 
         canvasGroup = GetComponentInChildren<CanvasGroup>();
         actionTooltips = new List<WeaponActionUI>();
         enchantmentTooltips = new List<WeaponEnchantmentTooltipUI>();
     }
 
-    private void LateUpdate()
+    private void Update()
     {
-        if (updatePivot)
+        if (isVisible)
         {
-            UpdatePivot();
+            if (Input.GetKey(toggleKey))
+            {
+                if (tabMode == TabMode.Actions)
+                {
+                    actionTabBackground.color = inactiveTabColor;
+                    enchantmentTabBackground.color = activeTabColor;
+
+                    actionsObject.SetActive(false);
+                    enchantmentsObject.SetActive(true);
+
+                    instructionsText.text = "Release [Shift] to switch tabs";
+
+                    LayoutRebuilder.ForceRebuildLayoutImmediate(enchantmentsObject.GetComponent<RectTransform>());
+                    LayoutRebuilder.ForceRebuildLayoutImmediate(rectTransform);
+
+                    tabMode = TabMode.Enchantments;
+                }
+            }
+            else if (tabMode == TabMode.Enchantments)
+            {
+                actionTabBackground.color = activeTabColor;
+                enchantmentTabBackground.color = inactiveTabColor;
+
+                actionsObject.SetActive(true);
+                enchantmentsObject.SetActive(false);
+
+                instructionsText.text = "Hold [Shift] to switch tabs";
+
+                LayoutRebuilder.ForceRebuildLayoutImmediate(actionsObject.GetComponent<RectTransform>());
+                LayoutRebuilder.ForceRebuildLayoutImmediate(rectTransform);
+
+                tabMode = TabMode.Actions;
+            }
         }
+    }
+
+    public void Show(Item item, Vector3 position, bool showPrice = false)
+    {
+        if (isVisible) return;
+
+        if (item is Weapon)
+        {
+            DisplayWeapon(item as Weapon);
+        }
+        else if (item is Consumable)
+        {
+            DisplayConsumable(item as Consumable);
+        }
+
+        if (showPrice)
+        {
+            // Set to show price
+            auxiliaryText.fontSize = 48f;
+            auxiliaryText.text = $"Price: {item.GetValue()}<sprite name=\"Gold\">";
+        }
+
+        // Update any layouts
+        LayoutRebuilder.ForceRebuildLayoutImmediate(actionsObject.GetComponent<RectTransform>());
+        LayoutRebuilder.ForceRebuildLayoutImmediate(enchantmentsObject.GetComponent<RectTransform>());
+        LayoutRebuilder.ForceRebuildLayoutImmediate(rectTransform);
+
+        // Relocate
+        transform.position = position;
+
+        // Delay pivoting
+        StartCoroutine(DelayedReveal());
+
+        isVisible = true;
+    }
+
+    private void DisplayWeapon(Weapon weapon)
+    {
+        itemNameText.text = weapon.name;
+        itemTypeText.text = "Weapon";
+        itemDescriptionText.text = $"Base Damage: <color=yellow>{weapon.baseDamage}</color>";
+        auxiliaryText.text = "";
+
+        containerObject.SetActive(true);
+
+        // Display actions
+        foreach (var action in weapon.actions)
+        {
+            // Spawn visuals of actions
+            var weaponAction = Instantiate(weaponActionPrefab, actionsObject.transform).GetComponent<WeaponActionUI>();
+            weaponAction.Initialize(action);
+
+            // Save
+            actionTooltips.Add(weaponAction);
+        }
+
+        // Display enchantments
+        foreach (var enchantment in weapon.enchantments)
+        {
+            // Spawn visuals of actions
+            var enchantmentTooltip = Instantiate(weaponEnchantmentPrefab, enchantmentsObject.transform).GetComponent<WeaponEnchantmentTooltipUI>();
+            enchantmentTooltip.Initialize(enchantment);
+
+            // Save
+            enchantmentTooltips.Add(enchantmentTooltip);
+        }
+    }
+
+    private void DisplayConsumable(Consumable consumable)
+    {
+        itemNameText.text = consumable.name;
+        itemTypeText.text = "Consumable";
+        itemDescriptionText.text = consumable.description;
+        auxiliaryText.text = $"[Right Click] to use";
+
+        containerObject.SetActive(false);
+    }
+
+    private IEnumerator DelayedReveal()
+    {
+        // Wait until end of frame to make sure content fitter has updated
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForEndOfFrame();
+
+        // Update pivot based on final size of window
+        UpdatePivot();
     }
 
     private void UpdatePivot()
@@ -69,11 +196,6 @@ public class ItemTooltipUI : MonoBehaviour
         float pivotY = 1;
 
         var screenPosition = Camera.main.WorldToScreenPoint(transform.position);
-
-        // Debug.Log($"Y Pos: {screenPosition.y}, Height: {height}, Screen: {Screen.height}");
-        // Debug.Log($"Tras: {rectTransform}");
-        // Debug.Log($"Pos: {rectTransform.position}");
-        // Debug.Log($"Rect: {rectTransform.rect}");
 
         // Check if window goes off-screen on x-axis
         // If so, 
@@ -94,97 +216,14 @@ public class ItemTooltipUI : MonoBehaviour
         // Set updated pivot
         rectTransform.pivot = new Vector2(pivotX, pivotY);
 
-        updatePivot = false;
-    }
-
-    public void Show(Item item, Vector3 position, bool showPrice = false)
-    {
         // Display window
         canvasGroup.alpha = 1f;
-
-        // Update information
-        itemNameText.text = item.name;
-
-        if (item is Weapon)
-        {
-            itemTypeText.text = "Weapon";
-
-            var weapon = item as Weapon;
-            itemDescriptionText.text = $"Base Damage: <color=yellow>{weapon.baseDamage}</color>";
-            auxiliaryText.text = "";
-        }
-        else if (item is Consumable)
-        {
-            itemTypeText.text = "Consumable";
-            itemDescriptionText.text = item.description;
-            auxiliaryText.text = $"<color=yellow>[Right Click]</color> to Use";
-        }
-
-        if (showPrice)
-        {
-            // Set to show price
-            auxiliaryText.fontSize = 48f;
-            auxiliaryText.text = $"Price: {item.GetValue()}<sprite name=\"Gold\">";
-        }
-
-        // If the item is an equipment item
-        if (item is Weapon)
-        {
-            // Cast
-            var weapon = item as Weapon;
-
-            // Display all its actions
-            foreach (var action in weapon.actions)
-            {
-                // Spawn visuals of actions
-                var weaponAction = Instantiate(actionTooltipPrefab, actionsLayoutGroup.transform).GetComponent<WeaponActionUI>();
-                // Initialize as display
-                weaponAction.Initialize(action);
-
-                // Save
-                actionTooltips.Add(weaponAction);
-            }
-            actionsLayoutGroup.gameObject.SetActive(weapon.actions.Count > 0);
-            actionSeperator.SetActive(weapon.actions.Count > 0);
-
-            // Display all its actions
-            foreach (var enchantment in weapon.enchantments)
-            {
-                // Spawn visuals of actions
-                var enchantmentTooltip = Instantiate(weaponEnchantmentTooltipPrefab, enchantmentsLayoutGroup.transform).GetComponent<WeaponEnchantmentTooltipUI>();
-                enchantmentTooltip.Initialize(enchantment);
-
-                // Save
-                enchantmentTooltips.Add(enchantmentTooltip);
-            }
-            enchantmentsLayoutGroup.gameObject.SetActive(weapon.enchantments.Count > 0);
-            enchantmentSeperator.SetActive(weapon.enchantments.Count > 0);
-        }
-        else if (item is Consumable)
-        {
-            actionsLayoutGroup.gameObject.SetActive(false);
-            actionSeperator.SetActive(false);
-            enchantmentsLayoutGroup.gameObject.SetActive(false);
-            enchantmentSeperator.SetActive(false);
-        }
-
-        // Canvas.ForceUpdateCanvases();
-
-        // Update Canvas
-        LayoutRebuilder.ForceRebuildLayoutImmediate(actionsLayoutGroup.GetComponent<RectTransform>());
-
-        // Update Canvas
-        LayoutRebuilder.ForceRebuildLayoutImmediate(rectTransform);
-
-        // Relocate
-        transform.position = position;
-        // UpdatePivot();
-
-        updatePivot = true;
     }
 
     public void Hide()
     {
+        if (!isVisible) return;
+
         // Destroy all the ui
         foreach (var tooltip in actionTooltips)
         {
@@ -203,6 +242,8 @@ public class ItemTooltipUI : MonoBehaviour
 
         // Then disable window
         canvasGroup.alpha = 0f;
+
+        isVisible = false;
     }
 
     private void OnDrawGizmosSelected()

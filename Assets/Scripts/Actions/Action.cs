@@ -23,8 +23,12 @@ public abstract class Action : ScriptableObject
     [Header("Dynamic Data")]
     public Die die;
     public Weapon weapon;
-    public List<Buff> buffs;
+    public List<ModifierTag> modifiers;
+
+    [Header("Bonuses")]
     public int bonusDamage;
+    public int bonusMinRoll;
+    public int bonusMaxRoll;
 
     public void Initialize(Weapon weapon)
     {
@@ -32,8 +36,7 @@ public abstract class Action : ScriptableObject
 
         // Init die
         die.Initialize(this);
-
-        buffs = new List<Buff>();
+        modifiers = new List<ModifierTag>();
     }
 
     public void Uninitialize()
@@ -43,9 +46,8 @@ public abstract class Action : ScriptableObject
         // Uninit die
         die.Uninitialize();
 
-        // Remove all buffs
-        RemoveAllBuffs();
-        buffs = null;
+        // Remove all modifiers
+        modifiers.Clear();
     }
 
     public static Vector3Int[] cardinalDirections = new Vector3Int[] { Vector3Int.up, Vector3Int.right, Vector3Int.down, Vector3Int.left, };
@@ -64,16 +66,16 @@ public abstract class Action : ScriptableObject
     public string GetActiveDescription()
     {
         if (weapon == null)
-            return rawActiveDescription.Replace("{dmg}", $"<color=yellow>{bonusDamage}</color>").Replace("{die}", $"<color=yellow>{die.value}</color>");
+            return rawActiveDescription.Replace("{dmg}", $"<color=#{color.ToHexString()}>{bonusDamage}</color>").Replace("{die}", $"<color=#{color.ToHexString()}>{die.value}</color>");
 
-        return rawActiveDescription.Replace("{dmg}", $"<color=yellow>{GetTotalDamage()}</color>").Replace("{die}", $"<color=yellow>{die.value}</color>");
+        return rawActiveDescription.Replace("{dmg}", $"<color=#{color.ToHexString()}>{GetTotalDamage()}</color>").Replace("{die}", $"<color=#{color.ToHexString()}>{die.value}</color>");
     }
 
     public string GetDynamicName()
     {
         int count = die.maxValue + die.minValue - 2;
         if (count > 0)
-            return $"{name}+{die.maxValue + die.minValue - 2}";
+            return $"{name}<color=yellow>+{die.maxValue + die.minValue - 2}</color>";
 
         return name;
     }
@@ -96,63 +98,38 @@ public abstract class Action : ScriptableObject
         die.maxValue += 1;
     }
 
-    public void AddBuff(Buff buffToAdd, string source)
+    public void AddOrOverwriteModifier(ModifierTag modifier)
     {
-        // Check if action already has the buff
-        foreach (var buff in buffs)
+        for (int i = 0; i < modifiers.Count; i++)
         {
-            // Is the effect the same type and source as the one being added
-            if (buff.GetType() == buffToAdd.GetType() && buff.source == source)
+            // Overwrite
+            if (modifiers[i].source == modifier.source)
             {
-                // Debug
-                Debug.Log(buffToAdd);
-
-                // Then just stack the effect instead of adding new one
-                buff.Stack(buffToAdd);
+                modifiers[i] = modifier;
 
                 // Finish
                 return;
             }
         }
 
-        // Make copy
-        buffToAdd = buffToAdd.Copy();
-
-        // Add to list
-        buffs.Add(buffToAdd);
-
-        // Initialize it
-        buffToAdd.Initialize(this, source);
+        // If not, add to list
+        modifiers.Add(modifier);
     }
 
-    public void RemoveBuff(Buff buffToRemove, string source)
+    public void RemoveModifier(string source)
     {
-        // Check if action has buff
-        foreach (var buff in buffs)
+        foreach (var modifier in modifiers)
         {
-            // Is the effect the same type and source as the one being added
-            if (buff.GetType() == buffToRemove.GetType() && buff.source == source)
+            // Find by source
+            if (modifier.source == source)
             {
-                // Uninit
-                buff.Uninitialize();
-
                 // Remove from list
-                buffs.Remove(buff);
+                modifiers.Remove(modifier);
 
                 // Finish
                 return;
             }
         }
-    }
-
-    private void RemoveAllBuffs()
-    {
-        foreach (var buff in buffs)
-        {
-            // Uninit
-            buff.Uninitialize();
-        }
-        buffs.Clear();
     }
 
     public Action Copy()

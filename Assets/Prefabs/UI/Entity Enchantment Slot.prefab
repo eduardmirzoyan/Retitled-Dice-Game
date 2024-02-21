@@ -215,7 +215,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3827472059655815400}
   m_Layer: 5
-  m_Name: Enchantment Slot
+  m_Name: Entity Enchantment Slot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

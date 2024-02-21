@@ -5,8 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Enchantments/Weapon/On Reroll")]
 public class OnRerollWE : WeaponEnchantment
 {
-    [Header("Static Data")]
-    [SerializeField] private Buff buff;
+    // FIXME
 
     public override void Initialize(Weapon weapon)
     {
@@ -30,7 +29,7 @@ public class OnRerollWE : WeaponEnchantment
             if (action.die == die && action.actionType == ActionType.Attack)
             {
                 // Give buff
-                action.AddBuff(buff, name);
+                // TODO
                 break;
             }
         }
@@ -44,7 +43,7 @@ public class OnRerollWE : WeaponEnchantment
             foreach (var action in weapon.actions)
             {
                 // Remove buff
-                action.RemoveBuff(buff, name);
+                // TODO
             }
         }
     }

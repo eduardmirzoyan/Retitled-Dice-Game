@@ -5,49 +5,61 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Enchantments/Weapon/On Consume")]
 public class OnConsumableWE : WeaponEnchantment
 {
-    [Header("Static Data")]
-    [SerializeField] private Buff buff;
-
-    [Header("Debugging")]
-    [SerializeField] private bool isApplied;
+    [Header("Debug")]
+    [SerializeField] private int numTriggered;
 
     public override void Initialize(Weapon weapon)
     {
         this.weapon = weapon;
-        GameEvents.instance.onEntityUseConsumable += ApplyBuff;
-        GameEvents.instance.onTurnEnd += RemoveBuff;
+        numTriggered = 0;
+
+        GameEvents.instance.onEntityUseConsumable += Activate;
+        GameEvents.instance.onTurnEnd += Deactivate;
     }
 
     public override void Uninitialize(Weapon weapon)
     {
         this.weapon = null;
-        GameEvents.instance.onEntityUseConsumable -= ApplyBuff;
-        GameEvents.instance.onTurnEnd -= RemoveBuff;
+        numTriggered = 0;
+
+        GameEvents.instance.onEntityUseConsumable -= Activate;
+        GameEvents.instance.onTurnEnd -= Deactivate;
     }
 
-    private void ApplyBuff(Entity entity, Consumable consumable)
+    private void Activate(Entity entity, Consumable consumable)
     {
-        if (!isApplied && entity.weapons.Contains(weapon))
+        if (entity.weapons.Contains(weapon))
         {
             foreach (var action in weapon.actions)
             {
                 if (action.actionType == ActionType.Attack)
                 {
-                    action.AddBuff(buff, name);
+                    // Apply bonus
+                    action.bonusDamage += 1;
+
+                    // Increment
+                    numTriggered++;
+
+                    // Log changes
+                    ModifierTag modifier = new ModifierTag($"+{numTriggered} damage", name);
+                    action.AddOrOverwriteModifier(modifier);
                 }
             }
         }
     }
 
-    private void RemoveBuff(Entity entity)
+    private void Deactivate(Entity entity)
     {
-        if (isApplied && entity.weapons.Contains(weapon))
+        if (numTriggered > 0 && entity.weapons.Contains(weapon))
         {
             foreach (var action in weapon.actions)
             {
                 if (action.actionType == ActionType.Attack)
                 {
-                    action.RemoveBuff(buff, name);
+                    action.bonusDamage -= numTriggered;
+                    numTriggered = 0;
+
+                    action.RemoveModifier(name);
                 }
             }
         }
