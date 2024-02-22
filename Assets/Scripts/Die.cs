@@ -16,6 +16,25 @@ public class Die : ScriptableObject
     public bool neverExhaust = false;
     public bool lockValue = false;
 
+    public int bonusMinRoll;
+    public int bonusMaxRoll;
+
+    public int TrueMax
+    {
+        get
+        {
+            return maxValue + bonusMaxRoll;
+        }
+    }
+
+    public int TrueMin
+    {
+        get
+        {
+            return minValue + bonusMinRoll;
+        }
+    }
+
     public void Initialize(Action action)
     {
         this.action = action;
@@ -52,20 +71,10 @@ public class Die : ScriptableObject
         if (lockValue) return;
 
         // Generate a random value
-        value = Random.Range(minValue, maxValue + 1);
+        value = Random.Range(TrueMin, TrueMax + 1);
 
         // Trigger events
         GameEvents.instance.TriggerOnDieRoll(this);
-    }
-
-    public bool IsHighRoll()
-    {
-        return value == maxValue;
-    }
-
-    public bool IsLowRoll()
-    {
-        return value == minValue;
     }
 
     public Die Copy()

@@ -5,7 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Enchantments/Weapon/On Reroll")]
 public class OnRerollWE : WeaponEnchantment
 {
-    // FIXME
+    [Header("Debug")]
+    [SerializeField] private int numTriggered;
 
     public override void Initialize(Weapon weapon)
     {
@@ -28,8 +29,16 @@ public class OnRerollWE : WeaponEnchantment
         {
             if (action.die == die && action.actionType == ActionType.Attack)
             {
-                // Give buff
-                // TODO
+                // Apply bonus
+                action.bonusDamage += 1;
+
+                // Increment
+                numTriggered++;
+
+                // Log changes
+                ModifierTag modifier = new ModifierTag($"+{numTriggered} damage", name);
+                action.AddOrOverwriteModifier(modifier);
+
                 break;
             }
         }

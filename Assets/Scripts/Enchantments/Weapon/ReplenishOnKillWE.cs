@@ -19,6 +19,8 @@ public class ReplenishOnKillWE : WeaponEnchantment
 
     private void ReplenishActions(Entity killer, Weapon weapon, Entity victim)
     {
+        // FIXME: Change to replenish AND reroll
+
         // If this weapon killed someone
         if (this.weapon == weapon)
         {
@@ -32,7 +34,12 @@ public class ReplenishOnKillWE : WeaponEnchantment
             }
             else
             {
-                // TODO
+                foreach (var action in weapon.actions)
+                {
+                    if (action.actionType == ActionType.Attack)
+                        if (action.die.isExhausted)
+                            action.die.Replenish();
+                }
             }
         }
     }

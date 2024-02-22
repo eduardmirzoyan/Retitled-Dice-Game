@@ -36,7 +36,7 @@ public class ActionTooltipUI : MonoBehaviour
         actionTypeText.text = $"{action.actionType} Action";
         actionTypeText.color = action.color;
 
-        actionRangeText.text = $"Range: <color=yellow>{action.die.minValue} - {action.die.maxValue}</color>";
+        actionRangeText.text = $"Range: <color=yellow>{action.die.TrueMin} - {action.die.TrueMax}</color>";
 
         actionDescriptionText.text = action.GetActiveDescription();
 

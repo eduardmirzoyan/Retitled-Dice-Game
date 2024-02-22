@@ -27,8 +27,6 @@ public abstract class Action : ScriptableObject
 
     [Header("Bonuses")]
     public int bonusDamage;
-    public int bonusMinRoll;
-    public int bonusMaxRoll;
 
     public void Initialize(Weapon weapon)
     {

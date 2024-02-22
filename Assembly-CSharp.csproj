@@ -62,7 +62,7 @@
     <Analyzer Include="C:\Users\eduar\.vscode\extensions\visualstudiotoolsforunity.vstuc-0.9.4\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\GameManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\GameManager.cs" />
     <Compile Include="Assets\Scripts\AI\MerchantAI.cs" />
     <Compile Include="Assets\Scripts\Enchantments\Entity\EntityEnchantment.cs" />
     <Compile Include="Assets\Scripts\Visuals\LocationInspect.cs" />
@@ -71,14 +71,14 @@
     <Compile Include="Assets\Scripts\World\Room.cs" />
     <Compile Include="Assets\Scripts\AI\ScaredAI.cs" />
     <Compile Include="Assets\Scripts\GameEvents.cs" />
-    <Compile Include="Assets\Scripts\Visuals\UI\WeaponEnchantmentTooltipUI.cs" />
+    <Compile Include="Assets\Scripts\Visuals\UI\Weapon-Related\WeaponEnchantmentTooltipUI.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\Blacksmith\BlacksmithSlot.cs" />
     <Compile Include="Assets\Scripts\Visuals\AttackParticle.cs" />
-    <Compile Include="Assets\Scripts\SettingsManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\SettingsManager.cs" />
     <Compile Include="Assets\Scripts\Game Feel\DamageFlash.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\ActionTooltipUI.cs" />
     <Compile Include="Assets\Scripts\Visuals\RoomUI.cs" />
-    <Compile Include="Assets\Scripts\DataManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\DataManager.cs" />
     <Compile Include="Assets\Scripts\Audio\Sound.cs" />
     <Compile Include="Assets\Scripts\Actions\WarpAction.cs" />
     <Compile Include="Assets\Scripts\Items\Consumables\Consumable.cs" />
@@ -96,13 +96,13 @@
     <Compile Include="Assets\Scripts\Enchantments\Weapon\WeaponEnchantment.cs" />
     <Compile Include="Assets\Scripts\Enchantments\Weapon\OnConsumableWE.cs" />
     <Compile Include="Assets\Scripts\Enchantments\Weapon\KillGoldWeaponEnchantment.cs" />
-    <Compile Include="Assets\Scripts\World\ItemGenerator.cs" />
+    <Compile Include="Assets\Scripts\Generators\ItemGenerator.cs" />
     <Compile Include="Assets\Scripts\Visuals\ActionPreview.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\TextTooltipUI.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\ActionsHandlerUI.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\HealthbarUI.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\Shop\ShopUI.cs" />
-    <Compile Include="Assets\Scripts\Visuals\UI\WeaponActionUI.cs" />
+    <Compile Include="Assets\Scripts\Visuals\UI\Weapon-Related\WeaponActionUI.cs" />
     <Compile Include="Assets\Scripts\Actions\RerollAction.cs" />
     <Compile Include="Assets\Scripts\AI\OptimalAI.cs" />
     <Compile Include="Assets\Scripts\Actions\Enemy\PiercingRangedAction.cs" />
@@ -112,7 +112,7 @@
     <Compile Include="Assets\Scripts\Main Menu\MainMenuManager.cs" />
     <Compile Include="Assets\Scripts\Actions\Enemy\FreeMoveAction.cs" />
     <Compile Include="Assets\Scripts\Visuals\ActionIndicator.cs" />
-    <Compile Include="Assets\Scripts\World\RoomGenerator.cs" />
+    <Compile Include="Assets\Scripts\Generators\RoomGenerator.cs" />
     <Compile Include="Assets\Scripts\Actions\Boss\TossAction.cs" />
     <Compile Include="Assets\Scripts\Audio\AudioManager.cs" />
     <Compile Include="Assets\Scripts\Game Feel\FloatingTextManager.cs" />
@@ -132,18 +132,18 @@
     <Compile Include="Assets\Scripts\Visuals\UI\Blacksmith\WeaponUpgradeUI.cs" />
     <Compile Include="Assets\Scripts\Actions\CleaveAction.cs" />
     <Compile Include="Assets\Scripts\Inventory.cs" />
-    <Compile Include="Assets\Scripts\World\ProceduralRoomGenerator.cs" />
+    <Compile Include="Assets\Scripts\Generators\ProceduralRoomGenerator.cs" />
     <Compile Include="Assets\Scripts\Enchantments\Weapon\OnKillWE.cs" />
-    <Compile Include="Assets\Scripts\Visuals\UI\ItemUI.cs" />
+    <Compile Include="Assets\Scripts\Visuals\UI\Items\ItemUI.cs" />
     <Compile Include="Assets\Scripts\World\GoldPickup.cs" />
     <Compile Include="Assets\Scripts\Visuals\EntityModel.cs" />
     <Compile Include="Assets\Scripts\AI\DefendAI.cs" />
-    <Compile Include="Assets\Scripts\World\EnemyGenerator.cs" />
+    <Compile Include="Assets\Scripts\Generators\EnemyGenerator.cs" />
     <Compile Include="Assets\Scripts\Main Menu\TransitionManager.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\PlayerHUDUI.cs" />
-    <Compile Include="Assets\Scripts\Visuals\UI\ItemTooltipUI.cs" />
+    <Compile Include="Assets\Scripts\Visuals\UI\Items\ItemTooltipUI.cs" />
     <Compile Include="Assets\Scripts\Actions\Boss\QuakeAction.cs" />
-    <Compile Include="Assets\Scripts\Visuals\UI\ItemSlotUI.cs" />
+    <Compile Include="Assets\Scripts\Visuals\UI\Items\ItemSlotUI.cs" />
     <Compile Include="Assets\Scripts\Entity.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\Inventory\InventoryHandlerUI.cs" />
     <Compile Include="Assets\Scripts\Visuals\ActionPathRenderer.cs" />
@@ -168,7 +168,7 @@
     <Compile Include="Assets\Scripts\Visuals\UI\GameLoseUI.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\Inventory\EquipmentAlertUI.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\Inventory\InventorySlotUI.cs" />
-    <Compile Include="Assets\Scripts\CameraManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\CameraManager.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\DieUI.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\CutoutMaskUI.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
@@ -178,6 +178,13 @@
     <Compile Include="Assets\Scripts\AI\AI.cs" />
     <Compile Include="Assets\Scripts\Actions\MerchantAction.cs" />
     <Compile Include="Assets\Scripts\AI\BoldAI.cs" />
+    <Compile Include="Assets\Scripts\Visuals\UI\Weapon-Related\SlotIconUI.cs" />
+    <Compile Include="Assets\Scripts\Visuals\ColorPalette.cs" />
+    <Compile Include="Assets\Scripts\Visuals\UI\Items\ItemActionsTabUI.cs" />
+    <Compile Include="Assets\Scripts\Visuals\UI\Items\ItemEnchantmentsTabUI.cs" />
+    <Compile Include="Assets\Scripts\Managers\ResourceMananger.cs" />
+    <Compile Include="Assets\Scripts\Generators\WeaponGenerator.cs" />
+    <Compile Include="Assets\Scripts\Enchantments\Weapon\GoldToDamageWE.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

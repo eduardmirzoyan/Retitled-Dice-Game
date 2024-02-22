@@ -11,10 +11,23 @@ public class KillGoldWeaponEnchantment : WeaponEnchantment
     {
         this.weapon = weapon;
         GameEvents.instance.onEntityKillEntity += GrantGold;
+
+        ModifierTag modifier = new ModifierTag($"On Kill: +{goldOnKill} Gold", name);
+        foreach (var action in weapon.actions)
+        {
+            if (action.actionType == ActionType.Attack)
+                action.AddOrOverwriteModifier(modifier);
+        }
     }
 
     public override void Uninitialize(Weapon weapon)
     {
+        foreach (var action in weapon.actions)
+        {
+            if (action.actionType == ActionType.Attack)
+                action.RemoveModifier(name);
+        }
+
         this.weapon = null;
         GameEvents.instance.onEntityKillEntity -= GrantGold;
     }

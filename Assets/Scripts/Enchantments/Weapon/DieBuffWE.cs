@@ -19,15 +19,46 @@ public class DieBuffWE : WeaponEnchantment
         {
             if (buffAttackDice && action.actionType == ActionType.Attack)
             {
-                action.die.maxValue += maxBonus;
-                action.die.minValue += minBonus;
+                if (maxBonus > 0)
+                {
+                    GrantMax(action);
+                }
+                else if (minBonus > 0)
+                {
+                    GrantMin(action);
+                }
+                else throw new System.Exception("Max and Min are both unset.");
+
             }
             else if (buffMovementDice && action.actionType == ActionType.Movement)
             {
-                action.die.maxValue += maxBonus;
-                action.die.minValue += minBonus;
+                if (maxBonus > 0)
+                {
+                    GrantMax(action);
+                }
+                else if (minBonus > 0)
+                {
+                    GrantMin(action);
+                }
+                else throw new System.Exception("Max and Min are both unset.");
             }
         }
+    }
+
+    private void GrantMax(Action action)
+    {
+        action.die.bonusMaxRoll += maxBonus;
+
+        ModifierTag modifier = new ModifierTag($"+{maxBonus} maximum range", name);
+        action.AddOrOverwriteModifier(modifier);
+    }
+
+    private void GrantMin(Action action)
+    {
+        action.die.bonusMinRoll += minBonus;
+
+        ModifierTag modifier = new ModifierTag($"+{minBonus} minimum range", name);
+        action.AddOrOverwriteModifier(modifier);
     }
 
     public override void Uninitialize(Weapon weapon)
@@ -36,15 +67,18 @@ public class DieBuffWE : WeaponEnchantment
         {
             if (buffAttackDice && action.actionType == ActionType.Attack)
             {
-                action.die.maxValue -= maxBonus;
-                action.die.minValue -= minBonus;
+                action.die.bonusMaxRoll -= maxBonus;
+                action.die.bonusMinRoll -= minBonus;
+
+                action.RemoveModifier(name);
             }
             else if (buffMovementDice && action.actionType == ActionType.Movement)
             {
-                action.die.maxValue -= maxBonus;
-                action.die.minValue -= minBonus;
+                action.die.bonusMaxRoll -= maxBonus;
+                action.die.bonusMinRoll -= minBonus;
+
+                action.RemoveModifier(name);
             }
         }
     }
-
 }

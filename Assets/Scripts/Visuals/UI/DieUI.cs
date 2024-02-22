@@ -143,7 +143,7 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
         while (elapsedTime < duration)
         {
             // Lerp target item to its spot
-            int random = Random.Range(1, die.maxValue + 1);
+            int random = Random.Range(die.TrueMin, die.TrueMax + 1);
 
             // Draw the random die value
             DisplayValue(random);
@@ -219,7 +219,7 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
             isBeingDragged = true;
 
             // Set cursor to grab
-            GameManager.instance.SetGrabCursor();
+            ResourceMananger.instance.SetGrabCursor();
 
             // Select this action
             GameManager.instance.SelectAction(action);
@@ -284,7 +284,7 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
             isBeingDragged = false;
 
             // Reset cursor
-            GameManager.instance.SetDefaultCursor();
+            ResourceMananger.instance.SetDefaultCursor();
 
             // Deselect action
             GameManager.instance.SelectAction(null);

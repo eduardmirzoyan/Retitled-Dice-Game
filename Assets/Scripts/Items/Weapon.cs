@@ -9,6 +9,7 @@ public class Weapon : Item
     public int baseDamage = 1;
     public List<Action> actions;
     public List<WeaponEnchantment> enchantments;
+    public int enchantmentCap = 3;
 
     [Header("Visuals")]
     public GameObject attackParticlePrefab;
@@ -28,7 +29,8 @@ public class Weapon : Item
 
         foreach (var enchantment in enchantments)
         {
-            enchantment.Initialize(this);
+            if (enchantment != null)
+                enchantment.Initialize(this);
         }
     }
 
@@ -43,7 +45,8 @@ public class Weapon : Item
 
         foreach (var enchantment in enchantments)
         {
-            enchantment.Uninitialize(this);
+            if (enchantment != null)
+                enchantment.Uninitialize(this);
         }
     }
 
@@ -72,6 +75,8 @@ public class Weapon : Item
             copy.actions[i].weapon = copy;
         }
 
+
+
         // Make a copy of each enchantment
         for (int i = 0; i < enchantments.Count; i++)
         {
@@ -79,6 +84,18 @@ public class Weapon : Item
             copy.enchantments[i] = enchantments[i].Copy();
             // Change owner
             copy.enchantments[i].weapon = copy;
+        }
+
+        // Check if there should be empty slots
+        if (enchantments.Count > enchantmentCap)
+            throw new System.Exception("More enchantments than allowed.");
+        else if (enchantments.Count < enchantmentCap)
+        {
+            // Make up the diff with empty slots
+            for (int i = 0; i < enchantmentCap - enchantments.Count; i++)
+            {
+                copy.enchantments.Add(null);
+            }
         }
 
         return copy;

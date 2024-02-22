@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4171666c1ba96ff4f91d669714b0d164, type: 3}
+  m_Name: '[C] Attack Die Max WE'
+  m_EditorClassIdentifier: 
+  name: Max Attack
+  description: +1 maximum range of attack actions
+  rarity: 0
+  weapon: {fileID: 0}
+  buffAttackDice: 1
+  buffMovementDice: 0
+  maxBonus: 1
+  minBonus: 0
