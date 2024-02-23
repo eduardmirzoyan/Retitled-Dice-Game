@@ -44,6 +44,8 @@ public class ShopUI : MonoBehaviour
             var shopSlot = Instantiate(shopSlotPrefab, gridLayoutGroup.transform).GetComponent<ShopSlotUI>();
             shopSlot.Initialize(buyer, shopInventory, i);
         }
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());
     }
 
     public void Close()

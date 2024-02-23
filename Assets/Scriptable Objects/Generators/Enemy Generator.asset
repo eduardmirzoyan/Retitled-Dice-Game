@@ -22,6 +22,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 00bce857e2abbbf4abd58c0a57b986c3, type: 2}
   - {fileID: 11400000, guid: a4d542548038fa34cb4972eec41c6ac4, type: 2}
   barrel: {fileID: 11400000, guid: e5f8516d08a87814ba5ed198402a03f9, type: 2}
-  shopSize: 4
+  shopSize: 16
   shopItemGenerator: {fileID: 11400000, guid: b642c2acfcb26924ebf7a4b19f3f7fe0, type: 2}
   weaponGenerator: {fileID: 11400000, guid: 718276575fde83b479598ae154e5f4b7, type: 2}

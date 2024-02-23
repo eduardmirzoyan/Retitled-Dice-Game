@@ -22,6 +22,6 @@ MonoBehaviour:
   pathPrefab: {fileID: 0}
   die: {fileID: 11400000, guid: 5e6c4f0b27552b546956704c46a31ff3, type: 2}
   weapon: {fileID: 0}
-  buffs: []
+  modifiers: []
   bonusDamage: 1
   type: 0

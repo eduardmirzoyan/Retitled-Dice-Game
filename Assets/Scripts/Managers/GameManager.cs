@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [Header("Cursor")]
-    [SerializeField] private Texture2D cursorTexture;
-    [SerializeField] private CursorMode cursorMode = CursorMode.Auto;
-
     [Header("Entity Data")]
     [SerializeField] private Room room;
     [SerializeField] private RoomGenerator roomGenerator;

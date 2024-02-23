@@ -85,9 +85,11 @@
     <Compile Include="Assets\Scripts\Visuals\UI\EndTurnUI.cs" />
     <Compile Include="Assets\Scripts\Actions\Boss\SmashAction.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\HeartUI.cs" />
+    <Compile Include="Assets\Scripts\Visuals\UI\Items\ItemEnchantmentsTabUI.cs" />
     <Compile Include="Assets\Scripts\World\KeyPickup.cs" />
     <Compile Include="Assets\Scripts\Enchantments\Weapon\DieBuffWE.cs" />
     <Compile Include="Assets\Scripts\Items\Weapon.cs" />
+    <Compile Include="Assets\Scripts\Visuals\ColorPalette.cs" />
     <Compile Include="Assets\Scripts\Enchantments\Weapon\RangeDamageWE.cs" />
     <Compile Include="Assets\Scripts\Actions\JumpAction.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\TooltipTriggerUI.cs" />
@@ -108,6 +110,7 @@
     <Compile Include="Assets\Scripts\Actions\Enemy\PiercingRangedAction.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\Blacksmith\ActionUpgradeUI.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\HowToPlayUI.cs" />
+    <Compile Include="Assets\Scripts\Generators\WeaponGenerator.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\ActionUI.cs" />
     <Compile Include="Assets\Scripts\Main Menu\MainMenuManager.cs" />
     <Compile Include="Assets\Scripts\Actions\Enemy\FreeMoveAction.cs" />
@@ -136,6 +139,7 @@
     <Compile Include="Assets\Scripts\Enchantments\Weapon\OnKillWE.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\Items\ItemUI.cs" />
     <Compile Include="Assets\Scripts\World\GoldPickup.cs" />
+    <Compile Include="Assets\Scripts\Managers\ResourceMananger.cs" />
     <Compile Include="Assets\Scripts\Visuals\EntityModel.cs" />
     <Compile Include="Assets\Scripts\AI\DefendAI.cs" />
     <Compile Include="Assets\Scripts\Generators\EnemyGenerator.cs" />
@@ -159,6 +163,7 @@
     <Compile Include="Assets\Scripts\Visuals\UI\Shop\ShopSlotUI.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\GameWinUI.cs" />
     <Compile Include="Assets\Scripts\Pathfinder.cs" />
+    <Compile Include="Assets\Scripts\Visuals\UI\Weapon-Related\SlotIconUI.cs" />
     <Compile Include="Assets\Scripts\Enchantments\Entity\NoneEntityEnchantment.cs" />
     <Compile Include="Assets\Scripts\Actions\FireballAction.cs" />
     <Compile Include="Assets\Scripts\Game Feel\CameraShake.cs" />
@@ -174,17 +179,16 @@
     <Compile Include="Assets\Scripts\Player.cs" />
     <Compile Include="Assets\Scripts\Actions\MeleeAction.cs" />
     <Compile Include="Assets\Scripts\Visuals\RoomExitUI.cs" />
+    <Compile Include="Assets\Scripts\Enchantments\Weapon\GoldToDamageWE.cs" />
+    <Compile Include="Assets\Scripts\Visuals\UI\Items\ItemActionsTabUI.cs" />
     <Compile Include="Assets\Scripts\Visuals\FloatingText.cs" />
     <Compile Include="Assets\Scripts\AI\AI.cs" />
     <Compile Include="Assets\Scripts\Actions\MerchantAction.cs" />
     <Compile Include="Assets\Scripts\AI\BoldAI.cs" />
-    <Compile Include="Assets\Scripts\Visuals\UI\Weapon-Related\SlotIconUI.cs" />
-    <Compile Include="Assets\Scripts\Visuals\ColorPalette.cs" />
-    <Compile Include="Assets\Scripts\Visuals\UI\Items\ItemActionsTabUI.cs" />
-    <Compile Include="Assets\Scripts\Visuals\UI\Items\ItemEnchantmentsTabUI.cs" />
-    <Compile Include="Assets\Scripts\Managers\ResourceMananger.cs" />
-    <Compile Include="Assets\Scripts\Generators\WeaponGenerator.cs" />
-    <Compile Include="Assets\Scripts\Enchantments\Weapon\GoldToDamageWE.cs" />
+    <Compile Include="Assets\Scripts\Visuals\UI\Shaman\ShamanUI.cs" />
+    <Compile Include="Assets\Scripts\Visuals\UI\Shaman\ShamanSourceSlotUI.cs" />
+    <Compile Include="Assets\Scripts\Visuals\UI\Shaman\ShamanDestinationSlotUI.cs" />
+    <Compile Include="Assets\Scripts\Visuals\UI\Shaman\ShamanEnchantmentUI.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

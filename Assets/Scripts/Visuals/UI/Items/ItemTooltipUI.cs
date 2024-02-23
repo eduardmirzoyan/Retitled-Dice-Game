@@ -7,6 +7,7 @@ using TMPro;
 public class ItemTooltipUI : MonoBehaviour
 {
     private enum TabMode { Actions, Enchantments }
+    private enum VisibilityState { Visible, Transitioning, Invisible }
 
     [Header("Static Data")]
     [SerializeField] private RectTransform rectTransform;
@@ -27,9 +28,12 @@ public class ItemTooltipUI : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] private KeyCode toggleKey = KeyCode.LeftShift;
+    [SerializeField] private float delay;
 
     [Header("Debug")]
-    [SerializeField] private bool isVisible;
+    [SerializeField] private VisibilityState state;
+    // [SerializeField] private bool isVisible;
+    // [SerializeField] private bool isTransitioning;
 
     public static ItemTooltipUI instance;
     private void Awake()
@@ -43,14 +47,14 @@ public class ItemTooltipUI : MonoBehaviour
         instance = this;
 
         tabMode = TabMode.Actions;
-        isVisible = false;
+        state = VisibilityState.Invisible;
 
         canvasGroup = GetComponentInChildren<CanvasGroup>();
     }
 
     private void Update()
     {
-        if (isVisible)
+        if (state == VisibilityState.Visible)
         {
             if (Input.GetKey(toggleKey))
             {
@@ -82,7 +86,7 @@ public class ItemTooltipUI : MonoBehaviour
 
     public void Show(Item item, Vector3 position, bool showPrice = false)
     {
-        if (isVisible) return;
+        if (state == VisibilityState.Visible) return;
 
         if (item is Weapon)
         {
@@ -133,18 +137,21 @@ public class ItemTooltipUI : MonoBehaviour
         // Delay pivoting
         StartCoroutine(DelayedReveal());
 
-        isVisible = true;
+        state = VisibilityState.Transitioning;
     }
 
     private IEnumerator DelayedReveal()
     {
         // Wait until end of frame to make sure content fitter has updated
-        yield return new WaitForEndOfFrame();
-        yield return new WaitForEndOfFrame();
-        yield return new WaitForEndOfFrame();
+        yield return new WaitForSeconds(delay);
 
         // Update pivot based on final size of window
         UpdatePivot();
+
+        // Display window
+        canvasGroup.alpha = 1f;
+
+        state = VisibilityState.Visible;
     }
 
     private void UpdatePivot()
@@ -175,14 +182,16 @@ public class ItemTooltipUI : MonoBehaviour
 
         // Set updated pivot
         rectTransform.pivot = new Vector2(pivotX, pivotY);
-
-        // Display window
-        canvasGroup.alpha = 1f;
     }
 
     public void Hide()
     {
-        if (!isVisible) return;
+        if (state == VisibilityState.Invisible) return;
+
+        if (state == VisibilityState.Transitioning)
+        {
+            StopAllCoroutines();
+        }
 
         actionsTabUI.Uninitialize();
         enchantmentsTabUI.Uninitialize();
@@ -190,7 +199,7 @@ public class ItemTooltipUI : MonoBehaviour
         // Then disable window
         canvasGroup.alpha = 0f;
 
-        isVisible = false;
+        state = VisibilityState.Invisible;
     }
 
     private void OnDrawGizmosSelected()

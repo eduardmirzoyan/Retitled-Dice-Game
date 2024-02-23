@@ -78,50 +78,89 @@ public class ActionIndicator : MonoBehaviour
 
     private void ThreatenLocations(Action action, List<Vector3Int> locations)
     {
-        switch (action.actionSpeed)
-        {
-            case ActionSpeed.Instant:
+        // FIXME 
 
-                switch (action.actionType)
-                {
-                    case ActionType.Movement:
-                        break;
-                    case ActionType.Attack:
-                        int damage = action.GetTotalDamage();
+        // // Parse based on type
+        // switch (action.actionType)
+        // {
+        //     case ActionType.Attack:
 
-                        foreach (var location in locations)
-                        {
-                            actionResultTilemap.SetTile(location, highlightedTile);
-                            actionResultTilemap.SetColor(location, Color.yellow);
-                            actionCountTilemap.SetTile(location, numberTiles[damage - 1]);
-                            actionCountTilemap.SetColor(location, Color.yellow);
-                        }
+        //         int damage = action.GetTotalDamage();
 
-                        break;
-                    case ActionType.Utility:
-                        break;
-                }
+        //         switch (action.actionSpeed)
+        //         {
+        //             case ActionSpeed.Instant: // Instant Attack
 
-                break;
-            case ActionSpeed.Delayed:
+        //                 foreach (var location in locations)
+        //                 {
+        //                     actionResultTilemap.SetTile(location, highlightedTile);
+        //                     actionResultTilemap.SetColor(location, Color.yellow);
+        //                     actionCountTilemap.SetTile(location, numberTiles[damage - 1]);
+        //                     actionCountTilemap.SetColor(location, Color.yellow);
+        //                 }
 
-                switch (action.actionType)
-                {
-                    case ActionType.Movement:
-                        break;
-                    case ActionType.Attack:
-                        int damage = action.GetTotalDamage();
+        //                 break;
+        //             case ActionSpeed.Delayed: // Delayed Attack
 
-                        break;
-                    case ActionType.Utility:
-                        break;
-                }
+        //                 foreach (var location in locations)
+        //                 {
+        //                     // If value already is marked, then increment count
+        //                     if (threatTable.TryGetValue(location, out int count))
+        //                     {
+        //                         // Update entry
+        //                         threatTable[location] = count + damage;
+        //                         intentCountTilemap.SetTile(location, numberTiles[count + damage - 1]);
+        //                     }
+        //                     else
+        //                     {
+        //                         // Add to dict
+        //                         threatTable[location] = damage;
 
-                break;
-        }
+        //                         // Set icon
+        //                         intentIconTilemap.SetTile(location, cautionTile);
+        //                         intentIconTilemap.SetColor(location, action.color);
 
-        // Only show attacks
-        if (action.actionType != ActionType.Movement)
+        //                         intentCountTilemap.SetTile(location, numberTiles[damage - 1]);
+        //                         intentCountTilemap.SetColor(location, action.color);
+
+        //                         // Check if player is in
+        //                         CheckPlayerDanger(DataManager.instance.GetPlayer());
+        //                     }
+        //                 }
+
+        //                 break;
+        //         }
+
+        //         break;
+        //     case ActionType.Utility:
+
+        //         switch (action.actionSpeed)
+        //         {
+        //             case ActionSpeed.Instant: // Instant Utility
+
+        //                 foreach (var location in locations)
+        //                 {
+        //                     actionResultTilemap.SetTile(location, highlightedTile);
+        //                     actionResultTilemap.SetColor(location, Color.yellow);
+        //                 }
+
+        //                 break;
+        //             case ActionSpeed.Delayed: // Delayed Utility
+
+        //                 foreach (var location in locations)
+        //                 {
+        //                     intentIconTilemap.SetTile(location, cautionTile);
+        //                     intentIconTilemap.SetColor(location, action.color);
+        //                 }
+
+        //                 break;
+        //         }
+
+        //         break;
+        // }
+
+        // Only if Attack or Utility
+        if (action.actionType == ActionType.Attack || action.actionType == ActionType.Utility)
         {
             foreach (var location in locations)
             {
@@ -136,6 +175,9 @@ public class ActionIndicator : MonoBehaviour
                         actionResultTilemap.SetColor(location, Color.yellow);
                         actionCountTilemap.SetTile(location, numberTiles[damage - 1]);
                         actionCountTilemap.SetColor(location, Color.yellow);
+
+                        if (action.actionType == ActionType.Utility)
+                            print($"Set damage number!! {damage - 1}");
 
                         break;
                     case ActionSpeed.Delayed:
@@ -156,7 +198,7 @@ public class ActionIndicator : MonoBehaviour
                             intentIconTilemap.SetTile(location, cautionTile);
                             intentIconTilemap.SetColor(location, action.color);
 
-                            intentCountTilemap.SetTile(location, numberTiles[damage - 1]);
+                            intentCountTilemap.SetTile(location, numberTiles[damage - 1]); // Issue
                             intentCountTilemap.SetColor(location, action.color);
 
                             // Check if player is in
@@ -172,8 +214,8 @@ public class ActionIndicator : MonoBehaviour
 
     private void UnthreatenLocations(Action action, List<Vector3Int> locations)
     {
-        // Only Show non-movment actions
-        if (action.actionType != ActionType.Movement)
+        // Only if Attack or Utility
+        if (action.actionType == ActionType.Attack || action.actionType == ActionType.Utility)
         {
             foreach (var location in locations)
             {

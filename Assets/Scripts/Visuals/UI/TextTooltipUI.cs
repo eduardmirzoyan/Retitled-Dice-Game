@@ -22,7 +22,7 @@ public class TextTooltipUI : MonoBehaviour
     private void Awake()
     {
         // Singleton Logic
-        if (TextTooltipUI.instance != null)
+        if (instance != null)
         {
             Destroy(gameObject);
             return;

@@ -33,8 +33,10 @@ MonoBehaviour:
   rareEnchantments:
   - {fileID: 11400000, guid: 43a22dcf30f95154b8398cab6181986b, type: 2}
   - {fileID: 11400000, guid: 38535a6046c791a4dac0d6c3d4bd4eb1, type: 2}
+  minPossibleSlots: 1
   maxPossibleSlots: 3
-  slotChance: 50
-  commonChance: 50
-  uncommonChance: 35
-  rareChance: 15
+  slotChance: 33
+  fillChance: 25
+  commonChance: 70
+  uncommonChance: 20
+  rareChance: 10

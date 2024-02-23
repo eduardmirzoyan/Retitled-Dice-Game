@@ -13,33 +13,50 @@ public class WeaponGenerator : ScriptableObject
     public List<WeaponEnchantment> rareEnchantments;
 
     [Header("Settings")]
+    public int minPossibleSlots;
     public int maxPossibleSlots;
     [Range(0, 100)] public int slotChance;
+    [Range(0, 100)] public int fillChance;
     [Range(0, 100)] public int commonChance;
     [Range(0, 100)] public int uncommonChance;
     [Range(0, 100)] public int rareChance;
 
     public Weapon GenerateWeapon()
     {
+        if (minPossibleSlots > maxPossibleSlots)
+            throw new System.Exception("Min was larger than max.");
+
         // Make a copy of a random weapon
         int randomIndex = Random.Range(0, possibleWeapons.Count);
         Weapon weapon = possibleWeapons[randomIndex].Copy() as Weapon;
 
         System.Random rng = new();
 
-        // First decide how many enchantment slots
+        // Decide how total slots
         List<WeaponEnchantment> enchantments = new List<WeaponEnchantment>();
         for (int i = 0; i < maxPossibleSlots; i++)
         {
-            if (rng.Next(100) > slotChance)
+            // Fill minimum
+            if (i < minPossibleSlots)
+            {
+                enchantments.Add(null);
+            }
+            // Rng the rest
+            else if (rng.Next(100) <= slotChance)
             {
                 enchantments.Add(null);
             }
         }
 
+        // Decide how many are filled
+        int numFill = 0;
         for (int i = 0; i < enchantments.Count; i++)
+            if (rng.Next(100) <= fillChance)
+                numFill++;
+
+        // Decide on which rarity
+        for (int i = 0; i < numFill; i++)
         {
-            // Then decide which type
             int value = rng.Next(100);
             if (value < commonChance)
             {
@@ -58,7 +75,6 @@ public class WeaponGenerator : ScriptableObject
             }
         }
 
-        // Finally decide on each individual rarity
         weapon.enchantmentCap = maxPossibleSlots;
         weapon.enchantments = enchantments;
 

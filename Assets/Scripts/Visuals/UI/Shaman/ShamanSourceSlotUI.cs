@@ -1,9 +1,9 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class BlacksmithSlot : ItemSlotUI, IPointerClickHandler
+public class ShamanSourceSlotUI : ItemSlotUI, IPointerClickHandler
 {
     public void Initialize(Weapon weapon)
     {
@@ -22,16 +22,16 @@ public class BlacksmithSlot : ItemSlotUI, IPointerClickHandler
         }
 
         // Update name
-        gameObject.name = "Blacksmith Slot";
+        gameObject.name = "Source Slot";
 
         // Sub Events
-        GameEvents.instance.onCloseBlacksmith += ClearWeapon;
+        // GameEvents.instance.onCloseBlacksmith += ClearWeapon;
     }
 
     private void OnDestroy()
     {
         // Unsub Events
-        GameEvents.instance.onCloseBlacksmith -= ClearWeapon;
+        // GameEvents.instance.onCloseBlacksmith -= ClearWeapon;
     }
 
     private void ClearWeapon(Entity entity)
@@ -90,6 +90,7 @@ public class BlacksmithSlot : ItemSlotUI, IPointerClickHandler
             if (preventInsert) return;
             if (itemUI != null && newItemUI.GetSlotUI().preventInsert) return;
             if (newItemUI.GetItem() is not Weapon) return;
+            if (!WeaponContainsEnchantments(newItemUI.GetItem() as Weapon)) return;
 
             StoreItem(newItemUI);
         }
@@ -106,8 +107,8 @@ public class BlacksmithSlot : ItemSlotUI, IPointerClickHandler
             // Disable afterimage
             afterImageIcon.enabled = false;
 
-            // Blacksmith logic here
-            GameEvents.instance.TriggerOnRemoveBlacksmith(null);
+            // Shaman logic here
+            // GameEvents.instance.TriggerOnRemoveBlacksmith(null);
         }
 
         // If new item exists
@@ -122,11 +123,25 @@ public class BlacksmithSlot : ItemSlotUI, IPointerClickHandler
             afterImageIcon.sprite = item.sprite;
             afterImageIcon.enabled = true;
 
-            // Blacksmith logic here
-            GameEvents.instance.TriggerOnInsertBlacksmith((Weapon)item);
+            // Shaman logic here
+            // GameEvents.instance.TriggerOnInsertBlacksmith((Weapon)item);
         }
 
 
         this.itemUI = newItemUI;
+    }
+
+    private bool WeaponContainsEnchantments(Weapon weapon)
+    {
+        if (weapon.enchantments.Count == 0)
+            return false;
+
+        foreach (var enchantment in weapon.enchantments)
+        {
+            if (enchantment != null)
+                return true;
+        }
+
+        return false;
     }
 }

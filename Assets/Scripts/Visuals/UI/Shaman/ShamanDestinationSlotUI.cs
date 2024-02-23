@@ -1,9 +1,9 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class BlacksmithSlot : ItemSlotUI, IPointerClickHandler
+public class ShamanDestinationSlotUI : ItemSlotUI, IPointerClickHandler
 {
     public void Initialize(Weapon weapon)
     {
@@ -22,10 +22,10 @@ public class BlacksmithSlot : ItemSlotUI, IPointerClickHandler
         }
 
         // Update name
-        gameObject.name = "Blacksmith Slot";
+        gameObject.name = "Destination Slot";
 
         // Sub Events
-        GameEvents.instance.onCloseBlacksmith += ClearWeapon;
+        // GameEvents.instance.onCloseBlacksmith += ClearWeapon;
     }
 
     private void OnDestroy()
@@ -90,6 +90,7 @@ public class BlacksmithSlot : ItemSlotUI, IPointerClickHandler
             if (preventInsert) return;
             if (itemUI != null && newItemUI.GetSlotUI().preventInsert) return;
             if (newItemUI.GetItem() is not Weapon) return;
+            if (!WeaponContainsSlots(newItemUI.GetItem() as Weapon)) return;
 
             StoreItem(newItemUI);
         }
@@ -128,5 +129,10 @@ public class BlacksmithSlot : ItemSlotUI, IPointerClickHandler
 
 
         this.itemUI = newItemUI;
+    }
+
+    private bool WeaponContainsSlots(Weapon weapon)
+    {
+        return weapon.enchantments.Count > 0;
     }
 }
