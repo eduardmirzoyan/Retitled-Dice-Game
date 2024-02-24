@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 401562c4f6f6aee489a5f4ef19d2261a, type: 3}
+  m_Name: Barrel Toss Action
+  m_EditorClassIdentifier: 
+  name: Barrel Toss
+  rawInactiveDescription: '?'
+  rawActiveDescription: '?'
+  icon: {fileID: 2097033198, guid: 91c6e5420840aa74883dcb2d26dae9ea, type: 3}
+  color: {r: 0.9764706, g: 0.6392157, b: 0.105882354, a: 1}
+  actionSpeed: 0
+  actionType: 2
+  pathPrefab: {fileID: 0}
+  die: {fileID: 11400000, guid: 8458686c5fc89cf46991047e407d7fc1, type: 2}
+  weapon: {fileID: 0}
+  modifiers: []
+  bonusDamage: 0
+  test: {fileID: 0}
+  barrel: {fileID: 11400000, guid: e5f8516d08a87814ba5ed198402a03f9, type: 2}

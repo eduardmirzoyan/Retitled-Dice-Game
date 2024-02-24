@@ -310,11 +310,6 @@ public class Room : ScriptableObject
 
     // ~~~~~~~~~~~~~~ HELPER FUNCTIONS ~~~~~~~~~~~~~~
 
-    private bool WithinPadding(Vector3Int location)
-    {
-        return location.x < padding || location.x >= width + padding || location.y < padding || location.y >= height + padding;
-    }
-
     public Entity GetEntityAtLocation(Vector3Int location)
     {
         if (location.x < 0 || location.x >= 2 * padding + width || location.y < 0 || location.y >= 2 * padding + height)
@@ -381,6 +376,11 @@ public class Room : ScriptableObject
         }
 
         return neighbors;
+    }
+
+    public bool IsInBounds(Vector3Int location)
+    {
+        return location.x >= 0 && location.x < tiles.GetLength(0) && location.y >= 0 && location.y < tiles.GetLength(1);
     }
 
     public bool IsWall(Vector3Int location)

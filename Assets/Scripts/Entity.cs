@@ -232,7 +232,7 @@ public class Entity : ScriptableObject
     public Entity Copy()
     {
         if (weapons == null || weapons.Count == 0)
-            throw new System.Exception("Entity " + name + " has not had their weapons intialized.");
+            throw new System.Exception($"Entity {name} has not had their weapons intialized.");
 
         // Make a copy of itself
         var copy = Instantiate(this);

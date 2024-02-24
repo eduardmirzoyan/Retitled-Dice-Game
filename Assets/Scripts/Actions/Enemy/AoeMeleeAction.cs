@@ -5,8 +5,6 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Actions/Enemy/AoE Melee")]
 public class AoeMeleeAction : Action
 {
-    [SerializeField] private int damage;
-
     public override List<Vector3Int> GetValidLocations(Vector3Int startLocation, Room room)
     {
         List<Vector3Int> targets = new List<Vector3Int>();

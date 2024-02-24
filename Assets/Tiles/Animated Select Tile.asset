@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Animated Select Tile
   m_EditorClassIdentifier: 
   m_AnimatedSprites:
-  - {fileID: 21300000, guid: 95b6e2d393e4d5848970911f2b09486e, type: 3}
-  - {fileID: 21300000, guid: 9d5426ddcef55a245a39da5b7f2e7cb5, type: 3}
-  - {fileID: 21300000, guid: f0800baaca65b1b479ffcddcb99aad96, type: 3}
-  - {fileID: 21300000, guid: 9d5426ddcef55a245a39da5b7f2e7cb5, type: 3}
+  - {fileID: -1255188689, guid: 484e61fbf3fe2ac4c8cde1c0d4070143, type: 3}
+  - {fileID: 714750718, guid: 484e61fbf3fe2ac4c8cde1c0d4070143, type: 3}
+  - {fileID: 1536943640, guid: 484e61fbf3fe2ac4c8cde1c0d4070143, type: 3}
+  - {fileID: 714750718, guid: 484e61fbf3fe2ac4c8cde1c0d4070143, type: 3}
   m_MinSpeed: 3
   m_MaxSpeed: 3
   m_AnimationStartTime: 0

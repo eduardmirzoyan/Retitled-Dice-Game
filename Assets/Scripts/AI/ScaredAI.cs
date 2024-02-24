@@ -18,6 +18,8 @@ public class ScaredAI : AI
 
         // ASSUME FIRST ACTION IS A MOVE ACTION
         var moveAction = possibleActions[0];
+        if (moveAction is not FreeMoveAction)
+            throw new System.Exception("Action in first index must be a free move.");
 
         // Choose the location that places you closest to target
         // NOTE: (0, 0, -1) means action will be ignored

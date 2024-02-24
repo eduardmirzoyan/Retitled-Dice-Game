@@ -18,7 +18,7 @@ public class MerchantAI : AI
         // ASSUME FIRST ACTION IS A SHOP ACTION
         var shopAction = possibleActions[0];
         if (shopAction is not MerchantAction)
-            throw new System.Exception("MERCHANT DOES NOT HAVE MERCHANT ACTION.");
+            throw new System.Exception("Action in first index must be a shop action.");
 
         // Get first location in possible actions
         var shopLocation = shopAction.GetValidLocations(entity.location, room)[0];

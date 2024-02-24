@@ -60,7 +60,7 @@ public class InventoryHandlerUI : MonoBehaviour
         // If non-zero gold was gained
         if (this.entity == entity)
         {
-            goldLabel.text = entity.gold + "<sprite name=\"Gold\">";
+            goldLabel.text = $"{entity.gold}"; // + "<sprite name=\"Gold\">";
         }
     }
 }

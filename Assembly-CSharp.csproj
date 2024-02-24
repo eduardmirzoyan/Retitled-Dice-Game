@@ -86,6 +86,7 @@
     <Compile Include="Assets\Scripts\Visuals\UI\EndTurnUI.cs" />
     <Compile Include="Assets\Scripts\Actions\Boss\SmashAction.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\Items\ItemEnchantmentsTabUI.cs" />
+    <Compile Include="Assets\Scripts\Visuals\DamageIntentIndicator.cs" />
     <Compile Include="Assets\Scripts\World\KeyPickup.cs" />
     <Compile Include="Assets\Scripts\Enchantments\Weapon\DieBuffWE.cs" />
     <Compile Include="Assets\Scripts\Items\Weapon.cs" />
@@ -102,6 +103,7 @@
     <Compile Include="Assets\Scripts\Visuals\ActionPreview.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\TextTooltipUI.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\ActionsHandlerUI.cs" />
+    <Compile Include="Assets\Scripts\Actions\Enemy\AoeMeleeAction.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\HealthbarUI.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\Shop\ShopUI.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\Weapon-Related\WeaponActionUI.cs" />
@@ -187,8 +189,8 @@
     <Compile Include="Assets\Scripts\AI\AI.cs" />
     <Compile Include="Assets\Scripts\Actions\MerchantAction.cs" />
     <Compile Include="Assets\Scripts\AI\BoldAI.cs" />
-    <Compile Include="Assets\Scripts\Visuals\DamageIntentIndicator.cs" />
-    <Compile Include="Assets\Scripts\Actions\Enemy\AoeMeleeAction.cs" />
+    <Compile Include="Assets\Scripts\AI\RandomAI.cs" />
+    <Compile Include="Assets\Scripts\Actions\Enemy\BarrelTossAction.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

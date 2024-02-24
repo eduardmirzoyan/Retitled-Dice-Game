@@ -12,13 +12,13 @@ public class FreeMoveAction : Action
         int range = die.value;
 
         var validLocations = new List<Vector3Int>();
-        int stepCount = 0;
-
-        // Store previous locations
-        var previousLocations = new List<Vector3Int>();
-        previousLocations.Add(startLocation);
+        var previousLocations = new List<Vector3Int>
+        {
+            startLocation
+        };
 
         // Loop based on range
+        int stepCount = 0;
         while (stepCount < range)
         {
             var surrounding = new List<Vector3Int>();
