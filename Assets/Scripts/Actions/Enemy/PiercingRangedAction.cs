@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Actions/Piercing Ranged")]
+[CreateAssetMenu(menuName = "Actions/Enemy/Piercing Ranged")]
 public class PiercingRangedAction : Action
 {
     public override List<Vector3Int> GetValidLocations(Vector3Int startLocation, Room room)
@@ -67,18 +67,14 @@ public class PiercingRangedAction : Action
 
     public override IEnumerator Perform(Entity entity, Vector3Int targetLocation, List<Vector3Int> threatenedLocations, Room room)
     {
-        // Logic
+        // Damage all targets found
         foreach (var location in threatenedLocations)
         {
-            // Damage first target found
             var target = room.GetEntityAtLocation(location);
             if (target != null)
             {
                 // Damage location
                 entity.AttackEntity(target, weapon, GetTotalDamage());
-
-                // Dip
-                break;
             }
         }
 

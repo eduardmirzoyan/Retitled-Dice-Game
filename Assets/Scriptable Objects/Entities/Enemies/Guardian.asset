@@ -15,7 +15,6 @@ MonoBehaviour:
   name: Guardian
   maxHealth: 3
   currentHealth: 3
-  baseDamage: 1
   gold: 0
   inventory: {fileID: 0}
   modelSprite: {fileID: 21300000, guid: 403963694618b5c47b5ff168a3e35f99, type: 3}
@@ -24,6 +23,7 @@ MonoBehaviour:
   AI: {fileID: 11400000, guid: 6e3b1156415b19446bb83b92cc13994e, type: 2}
   innateActions:
   - {fileID: 11400000, guid: 5e44504d2bb4578418b8addc4ee14f43, type: 2}
+  - {fileID: 11400000, guid: 82ba9cfee5c446d44bbef7cf8c208fa1, type: 2}
   weapons:
   - {fileID: 0}
   - {fileID: 0}

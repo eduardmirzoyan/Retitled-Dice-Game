@@ -2,21 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class HealthbarUI : MonoBehaviour
 {
     [Header("Components")]
-    [SerializeField] private LayoutGroup heartsLayoutGroup;
+    [SerializeField] private Image fillImage;
+    [SerializeField] private Image flashImage;
+    [SerializeField] private TextMeshProUGUI healthLabel;
 
-    [Header("Data")]
-    [SerializeField] private GameObject heartUIPrefab;
-    [SerializeField] private List<HeartUI> heartUIs;
+    [Header("Settings")]
+    [SerializeField] private float flashDuration;
+
+    [Header("Debug")]
     [SerializeField] private Entity entity;
-
-    private void Awake()
-    {
-        heartUIs = new List<HeartUI>();
-    }
 
     private void OnDestroy()
     {
@@ -27,15 +26,8 @@ public class HealthbarUI : MonoBehaviour
     {
         this.entity = entity;
 
-        for (int i = 0; i < entity.maxHealth; i++)
-        {
-            // Create UI
-            var heartUI = Instantiate(heartUIPrefab, heartsLayoutGroup.transform).GetComponent<HeartUI>();
-            // Intialize it
-            heartUI.Initialize(i >= entity.currentHealth);
-            // Save it
-            heartUIs.Add(heartUI);
-        }
+        healthLabel.text = $"{entity.currentHealth}/{entity.maxHealth}";
+        fillImage.fillAmount = (float)entity.currentHealth / entity.maxHealth;
 
         // Sub to events
         GameEvents.instance.onEntityTakeDamage += UpdateHealth;
@@ -45,41 +37,31 @@ public class HealthbarUI : MonoBehaviour
     {
         this.entity = null;
 
-        // Destroy hearts
-        for (int i = 0; i < heartUIs.Count; i++)
-        {
-            Destroy(heartUIs[i].gameObject);
-        }
-        heartUIs.Clear();
+        healthLabel.text = $"?/?";
+        fillImage.fillAmount = 0f;
 
         // Unsub
         GameEvents.instance.onEntityTakeDamage -= UpdateHealth;
     }
 
-    public void UpdateHealth(Entity entity, int amount)
+    private void UpdateHealth(Entity entity, int _)
     {
-        // Warning, does not handle increasing max health!
         if (this.entity == entity)
         {
-            // Handle damage
-            if (amount > 0)
-            {
-                for (int i = 0; i < amount; i++)
-                {
-                    // Set the heart to empty
-                    heartUIs[entity.currentHealth + i].Deplete();
-                }
-            }
-            else if (amount < 0)
-            {
-                // Handle healing
-                for (int i = 0; i < -amount; i++)
-                {
-                    // Set the heart to full
-                    heartUIs[entity.currentHealth - i - 1].Restore();
-                }
-            }
+            healthLabel.text = $"{entity.currentHealth}/{entity.maxHealth}";
+            fillImage.fillAmount = (float)entity.currentHealth / entity.maxHealth;
 
+            StopAllCoroutines();
+            StartCoroutine(Flash(flashDuration));
         }
+    }
+
+    private IEnumerator Flash(float duration)
+    {
+        flashImage.enabled = true;
+
+        yield return new WaitForSeconds(duration);
+
+        flashImage.enabled = false;
     }
 }

@@ -9,18 +9,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d649a7a4c989754b830cc23174e0079, type: 3}
-  m_Name: Enemy Melee Action
+  m_Script: {fileID: 11500000, guid: b2be24a0869cde8439e65584d5e43655, type: 3}
+  m_Name: Aoe Melee Action
   m_EditorClassIdentifier: 
-  name: Melee
-  rawInactiveDescription: 
-  rawActiveDescription: 
-  icon: {fileID: 21300000, guid: 2abc9b9e2bdaec84a8d7e2bcb237057b, type: 3}
+  name: AoE Melee
+  rawInactiveDescription: '?'
+  rawActiveDescription: '?'
+  icon: {fileID: 0}
   color: {r: 0.87058824, g: 0.24313726, b: 0.13725491, a: 1}
   actionSpeed: 1
   actionType: 1
   pathPrefab: {fileID: 0}
-  die: {fileID: 11400000, guid: e6e2cf3fbfbb9db4885b877ff1d7f04e, type: 2}
+  die: {fileID: 11400000, guid: 5e6c4f0b27552b546956704c46a31ff3, type: 2}
   weapon: {fileID: 0}
   modifiers: []
-  bonusDamage: 0
+  bonusDamage: 1
+  damage: 0

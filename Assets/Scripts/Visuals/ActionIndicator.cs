@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -15,26 +16,26 @@ public class ActionIndicator : MonoBehaviour
     [Header("Tiles")]
     [SerializeField] private RuleTile highlightedTile;
     [SerializeField] private GameObject actionPreviewPrefab;
-    [SerializeField] private AnimatedTile cautionTile;
+    [SerializeField] private AnimatedTile intentTile;
     [SerializeField] private List<Tile> numberTiles;
+
+    [Header("Prefabs")]
+    [SerializeField] private GameObject damageIntentPrefab;
 
     [Header("Settings")]
     [SerializeField] private float alpha = 0.25f;
-    [SerializeField] private Color delayedColor;
 
-    private Dictionary<Vector3Int, int> threatTable;
+    private Dictionary<Vector3Int, DamageIntentIndicator> attackIntentTable;
+    private Dictionary<Vector3Int, int> utilityIntentTable;
 
     private void Awake()
     {
-        threatTable = new Dictionary<Vector3Int, int>();
+        attackIntentTable = new Dictionary<Vector3Int, DamageIntentIndicator>();
+        utilityIntentTable = new Dictionary<Vector3Int, int>();
     }
 
     private void Start()
     {
-        GameEvents.instance.onEntityMove += CheckPlayerDanger;
-        GameEvents.instance.onEntityWarp += CheckPlayerDanger;
-        GameEvents.instance.onEntityJump += CheckPlayerDanger;
-
         GameEvents.instance.onActionSelect += ShowOptions;
         GameEvents.instance.onLocationSelect += FadeOptions;
         GameEvents.instance.onActionConfirm += HideOptions;
@@ -42,14 +43,14 @@ public class ActionIndicator : MonoBehaviour
         GameEvents.instance.onLocationSelect += DrawPath;
         GameEvents.instance.onActionThreatenLocations += ThreatenLocations;
         GameEvents.instance.onActionUnthreatenLocations += UnthreatenLocations;
+
+        GameEvents.instance.onEntityMove += CheckPlayerDanger;
+        GameEvents.instance.onEntityWarp += CheckPlayerDanger;
+        GameEvents.instance.onEntityJump += CheckPlayerDanger;
     }
 
     private void OnDestroy()
     {
-        GameEvents.instance.onEntityMove -= CheckPlayerDanger;
-        GameEvents.instance.onEntityWarp -= CheckPlayerDanger;
-        GameEvents.instance.onEntityJump -= CheckPlayerDanger;
-
         GameEvents.instance.onActionSelect -= ShowOptions;
         GameEvents.instance.onLocationSelect -= FadeOptions;
         GameEvents.instance.onActionConfirm -= HideOptions;
@@ -57,6 +58,10 @@ public class ActionIndicator : MonoBehaviour
         GameEvents.instance.onLocationSelect -= DrawPath;
         GameEvents.instance.onActionThreatenLocations -= ThreatenLocations;
         GameEvents.instance.onActionUnthreatenLocations -= UnthreatenLocations;
+
+        GameEvents.instance.onEntityMove -= CheckPlayerDanger;
+        GameEvents.instance.onEntityWarp -= CheckPlayerDanger;
+        GameEvents.instance.onEntityJump -= CheckPlayerDanger;
     }
 
     private void CheckPlayerDanger(Entity entity)
@@ -65,7 +70,7 @@ public class ActionIndicator : MonoBehaviour
         if (entity is Player)
         {
             // Trigger proper event
-            if (threatTable.ContainsKey(entity.location))
+            if (attackIntentTable.ContainsKey(entity.location))
             {
                 GameEvents.instance.TriggerOnEntityInDanger(entity);
             }
@@ -78,188 +83,203 @@ public class ActionIndicator : MonoBehaviour
 
     private void ThreatenLocations(Action action, List<Vector3Int> locations)
     {
-        // FIXME 
-
-        // // Parse based on type
-        // switch (action.actionType)
-        // {
-        //     case ActionType.Attack:
-
-        //         int damage = action.GetTotalDamage();
-
-        //         switch (action.actionSpeed)
-        //         {
-        //             case ActionSpeed.Instant: // Instant Attack
-
-        //                 foreach (var location in locations)
-        //                 {
-        //                     actionResultTilemap.SetTile(location, highlightedTile);
-        //                     actionResultTilemap.SetColor(location, Color.yellow);
-        //                     actionCountTilemap.SetTile(location, numberTiles[damage - 1]);
-        //                     actionCountTilemap.SetColor(location, Color.yellow);
-        //                 }
-
-        //                 break;
-        //             case ActionSpeed.Delayed: // Delayed Attack
-
-        //                 foreach (var location in locations)
-        //                 {
-        //                     // If value already is marked, then increment count
-        //                     if (threatTable.TryGetValue(location, out int count))
-        //                     {
-        //                         // Update entry
-        //                         threatTable[location] = count + damage;
-        //                         intentCountTilemap.SetTile(location, numberTiles[count + damage - 1]);
-        //                     }
-        //                     else
-        //                     {
-        //                         // Add to dict
-        //                         threatTable[location] = damage;
-
-        //                         // Set icon
-        //                         intentIconTilemap.SetTile(location, cautionTile);
-        //                         intentIconTilemap.SetColor(location, action.color);
-
-        //                         intentCountTilemap.SetTile(location, numberTiles[damage - 1]);
-        //                         intentCountTilemap.SetColor(location, action.color);
-
-        //                         // Check if player is in
-        //                         CheckPlayerDanger(DataManager.instance.GetPlayer());
-        //                     }
-        //                 }
-
-        //                 break;
-        //         }
-
-        //         break;
-        //     case ActionType.Utility:
-
-        //         switch (action.actionSpeed)
-        //         {
-        //             case ActionSpeed.Instant: // Instant Utility
-
-        //                 foreach (var location in locations)
-        //                 {
-        //                     actionResultTilemap.SetTile(location, highlightedTile);
-        //                     actionResultTilemap.SetColor(location, Color.yellow);
-        //                 }
-
-        //                 break;
-        //             case ActionSpeed.Delayed: // Delayed Utility
-
-        //                 foreach (var location in locations)
-        //                 {
-        //                     intentIconTilemap.SetTile(location, cautionTile);
-        //                     intentIconTilemap.SetColor(location, action.color);
-        //                 }
-
-        //                 break;
-        //         }
-
-        //         break;
-        // }
-
-        // Only if Attack or Utility
-        if (action.actionType == ActionType.Attack || action.actionType == ActionType.Utility)
+        // Parse based on type
+        switch (action.actionType)
         {
-            foreach (var location in locations)
-            {
+            case ActionType.Attack:
+
                 int damage = action.GetTotalDamage();
 
                 switch (action.actionSpeed)
                 {
-                    case ActionSpeed.Instant:
+                    case ActionSpeed.Instant: // Instant Attack
 
-                        // Highlight tile
-                        actionResultTilemap.SetTile(location, highlightedTile);
-                        actionResultTilemap.SetColor(location, Color.yellow);
-                        actionCountTilemap.SetTile(location, numberTiles[damage - 1]);
-                        actionCountTilemap.SetColor(location, Color.yellow);
-
-                        if (action.actionType == ActionType.Utility)
-                            print($"Set damage number!! {damage - 1}");
+                        foreach (var location in locations)
+                        {
+                            actionResultTilemap.SetTile(location, highlightedTile);
+                            actionResultTilemap.SetColor(location, Color.yellow);
+                            actionCountTilemap.SetTile(location, numberTiles[damage - 1]);
+                            actionCountTilemap.SetColor(location, Color.yellow);
+                        }
 
                         break;
-                    case ActionSpeed.Delayed:
+                    case ActionSpeed.Delayed: // Delayed Attack
 
-                        // If value already is marked, then increment count
-                        if (threatTable.TryGetValue(location, out int count))
+                        foreach (var location in locations)
                         {
-                            // Update entry
-                            threatTable[location] = count + damage;
-                            intentCountTilemap.SetTile(location, numberTiles[count + damage - 1]);
-                        }
-                        else
-                        {
-                            // Add to dict
-                            threatTable[location] = damage;
+                            // If value already is marked, then increment count
+                            if (attackIntentTable.TryGetValue(location, out DamageIntentIndicator indicator))
+                            {
+                                // Update entry
+                                int value = indicator.GetValue();
+                                indicator.SetValue(value + damage);
+                            }
+                            else
+                            {
+                                // Set icon
+                                intentIconTilemap.SetTile(location, intentTile);
+                                intentIconTilemap.SetColor(location, action.color);
 
-                            // Set icon
-                            intentIconTilemap.SetTile(location, cautionTile);
-                            intentIconTilemap.SetColor(location, action.color);
+                                // Create indicator
+                                var position = intentIconTilemap.GetCellCenterWorld(location);
+                                var damageIndicator = Instantiate(damageIntentPrefab, position, Quaternion.identity, intentCountTilemap.transform).GetComponent<DamageIntentIndicator>();
+                                damageIndicator.Initialize(damage, action.color);
 
-                            intentCountTilemap.SetTile(location, numberTiles[damage - 1]); // Issue
-                            intentCountTilemap.SetColor(location, action.color);
+                                // Add to dict
+                                attackIntentTable[location] = damageIndicator;
 
-                            // Check if player is in
-                            CheckPlayerDanger(DataManager.instance.GetPlayer());
+                                // Check if player is in
+                                CheckPlayerDanger(DataManager.instance.GetPlayer());
+                            }
                         }
 
                         break;
                 }
-            }
 
+                break;
+            case ActionType.Utility:
+
+                switch (action.actionSpeed)
+                {
+                    case ActionSpeed.Instant: // Instant Utility
+
+                        foreach (var location in locations)
+                        {
+                            actionResultTilemap.SetTile(location, highlightedTile);
+                            actionResultTilemap.SetColor(location, Color.yellow);
+                        }
+
+                        break;
+                    case ActionSpeed.Delayed: // Delayed Utility
+
+                        foreach (var location in locations)
+                        {
+                            // If value already is marked, then increment count
+                            if (utilityIntentTable.TryGetValue(location, out int count))
+                            {
+                                // Update entry
+                                utilityIntentTable[location] = count + 1;
+                            }
+                            else
+                            {
+                                // Add to dict
+                                utilityIntentTable[location] = 1;
+
+                                // Set icon
+                                intentIconTilemap.SetTile(location, intentTile);
+                                intentIconTilemap.SetColor(location, action.color);
+
+                                // Check if player is in
+                                CheckPlayerDanger(DataManager.instance.GetPlayer());
+                            }
+                        }
+
+                        break;
+                }
+
+                break;
         }
     }
 
     private void UnthreatenLocations(Action action, List<Vector3Int> locations)
     {
-        // Only if Attack or Utility
-        if (action.actionType == ActionType.Attack || action.actionType == ActionType.Utility)
+        // Parse based on type
+        switch (action.actionType)
         {
-            foreach (var location in locations)
-            {
+            case ActionType.Attack:
+
+                int damage = action.GetTotalDamage();
+
                 switch (action.actionSpeed)
                 {
-                    case ActionSpeed.Instant:
+                    case ActionSpeed.Instant: // Instant Attack
 
-                        // unhighlight tile
-                        actionResultTilemap.SetTile(location, null);
-                        actionCountTilemap.SetTile(location, null);
+                        foreach (var location in locations)
+                        {
+                            actionResultTilemap.SetTile(location, null);
+                            actionCountTilemap.SetTile(location, null);
+                        }
 
                         break;
-                    case ActionSpeed.Delayed:
+                    case ActionSpeed.Delayed: // Delayed Attack
 
-                        int damage = action.GetTotalDamage();
-
-                        // If value already is marked, then increment count
-                        if (threatTable.TryGetValue(location, out int count))
+                        foreach (var location in locations)
                         {
-                            // Remove entry
-                            if (count <= damage)
+                            // If value already is marked, then increment count
+                            if (attackIntentTable.TryGetValue(location, out DamageIntentIndicator indicator))
                             {
-                                // Unmark
-                                intentIconTilemap.SetTile(location, null);
-                                intentCountTilemap.SetTile(location, null);
-
                                 // Remove entry
-                                threatTable.Remove(location);
+                                if (damage >= indicator.GetValue())
+                                {
+                                    // Unmark
+                                    intentIconTilemap.SetTile(location, null);
 
-                                // Remove player from danger if needed
-                                CheckPlayerDanger(DataManager.instance.GetPlayer());
-                            }
-                            else
-                            {
-                                // Update entry
-                                threatTable[location] = count - damage;
-                                intentCountTilemap.SetTile(location, numberTiles[count - 1]);
+                                    // Destroy object
+                                    Destroy(indicator.gameObject);
+
+                                    // Remove entry
+                                    attackIntentTable.Remove(location);
+
+                                    // Remove player from danger if needed
+                                    CheckPlayerDanger(DataManager.instance.GetPlayer());
+                                }
+                                else
+                                {
+                                    // Update entry
+                                    var damageIndicator = attackIntentTable[location];
+                                    int value = damageIndicator.GetValue();
+                                    damageIndicator.SetValue(value - damage);
+                                }
                             }
                         }
 
                         break;
                 }
-            }
 
+                break;
+            case ActionType.Utility:
+
+                switch (action.actionSpeed)
+                {
+                    case ActionSpeed.Instant: // Instant Utility
+
+                        foreach (var location in locations)
+                        {
+                            actionResultTilemap.SetTile(location, null);
+                        }
+
+                        break;
+                    case ActionSpeed.Delayed: // Delayed Utility
+
+                        foreach (var location in locations)
+                        {
+                            // If value already is marked, then increment count
+                            if (utilityIntentTable.TryGetValue(location, out int count))
+                            {
+                                // Remove entry
+                                if (count == 1)
+                                {
+                                    // Unmark
+                                    intentIconTilemap.SetTile(location, null);
+
+                                    // Remove entry
+                                    utilityIntentTable.Remove(location);
+
+                                    // Remove player from danger if needed
+                                    CheckPlayerDanger(DataManager.instance.GetPlayer());
+                                }
+                                else
+                                {
+                                    // Update entry
+                                    utilityIntentTable[location] = count - 1;
+                                }
+                            }
+                        }
+
+                        break;
+                }
+
+                break;
         }
     }
 

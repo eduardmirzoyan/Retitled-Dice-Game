@@ -13,14 +13,15 @@ MonoBehaviour:
   m_Name: Quake Action
   m_EditorClassIdentifier: 
   name: Quake
-  briefDescription: 
-  fullDescription: 
+  rawInactiveDescription: 
+  rawActiveDescription: 
   icon: {fileID: 21300000, guid: 5011dd7b109c2e443bae59b12f84e7c4, type: 3}
-  background: {fileID: 21300000, guid: d12eabff6b0248c42bcf302efc0df493, type: 3}
   color: {r: 0.8705883, g: 0.24313727, b: 0.13725491, a: 1}
-  actionSpeed: 2
+  actionSpeed: 1
   actionType: 1
   pathPrefab: {fileID: 5796882529580813460, guid: 083c9cc31f9d52144a037eba6e64eb71, type: 3}
   die: {fileID: 11400000, guid: dbb9355000ced3842846106e2dca7d3b, type: 2}
   weapon: {fileID: 0}
+  modifiers: []
+  bonusDamage: 0
   radius: 4

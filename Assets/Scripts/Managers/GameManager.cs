@@ -26,7 +26,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private bool logEntityActions;
 
     private List<(Action, Vector3Int)> bestChoiceSequence;
-    private Dictionary<(Entity, Action), List<Vector3Int>> reactiveActionsHastable;
     private Dictionary<(Entity, Action), List<Vector3Int>> delayedActionsHashtable;
 
     private Coroutine coroutine;
@@ -45,7 +44,6 @@ public class GameManager : MonoBehaviour
         // Initialize lists
         bestChoiceSequence = new List<(Action, Vector3Int)>();
         selectedThreats = new List<Vector3Int>();
-        reactiveActionsHastable = new Dictionary<(Entity, Action), List<Vector3Int>>();
         delayedActionsHashtable = new Dictionary<(Entity, Action), List<Vector3Int>>();
 
         // Initialize values
@@ -364,17 +362,11 @@ public class GameManager : MonoBehaviour
         // Perform any delayed actions stored by this entity
         yield return PerformDelayedAction(selectedEntity);
 
-        // Perform any reactive actions stored by this entity
-        yield return PerformAnyReactiveActions(selectedEntity);
-
         // Debug
         if (logGameStates) print("Turn Start: " + selectedEntity.name);
 
         // Trigger event 
         GameEvents.instance.TriggerOnTurnStart(selectedEntity);
-
-        // Clear any reactive
-        ClearReativeActions(selectedEntity);
 
         // Reset actions now
         yield return ResetActions(selectedEntity);
@@ -590,15 +582,6 @@ public class GameManager : MonoBehaviour
                 coroutine = StartCoroutine(PerformAction(selectedEntity, selectedAction, selectedLocation, selectedThreats));
 
                 break;
-            case ActionSpeed.Reactive:
-
-                // Save action pair to table
-                reactiveActionsHastable[(selectedEntity, selectedAction)] = new List<Vector3Int>(selectedThreats);
-
-                // Immediately end turn after
-                coroutine = StartCoroutine(EndTurn());
-
-                break;
             case ActionSpeed.Delayed:
 
                 // Save action pair to table
@@ -624,7 +607,7 @@ public class GameManager : MonoBehaviour
             yield return new WaitForSeconds(gameSettings.aiBufferTime);
 
             // Make sure choice is a valid location
-            if (bestChoicePair.Item2.z != -1)
+            if (bestChoicePair.Item2 != Vector3Int.back)
             {
                 // Select Action
                 SelectAction(bestChoicePair.Item1);
@@ -666,12 +649,6 @@ public class GameManager : MonoBehaviour
 
                 // Perform immediately
                 yield return PerformAction(selectedEntity, selectedAction, selectedLocation, selectedThreats);
-
-                break;
-            case ActionSpeed.Reactive:
-
-                // Save action pair to table
-                reactiveActionsHastable[(selectedEntity, selectedAction)] = new List<Vector3Int>(selectedThreats);
 
                 break;
             case ActionSpeed.Delayed:
@@ -877,93 +854,6 @@ public class GameManager : MonoBehaviour
             }
 
             if (done) break;
-        }
-    }
-
-    private IEnumerator PerformAnyReactiveActions(Entity entity)
-    {
-        bool done = false;
-        foreach (var entityActionPair in reactiveActionsHastable)
-        {
-            // Check if this entity has any reactive actions
-            if (entityActionPair.Key.Item1 == entity)
-            {
-                // Check if the locations contain the player
-                foreach (var location in entityActionPair.Value)
-                {
-                    if (room.GetEntityAtLocation(location) is Player)
-                    {
-                        // Parse data
-                        var action = entityActionPair.Key.Item2;
-                        var targets = entityActionPair.Value;
-
-                        // Perform the action
-                        yield return PerformAction(entity, action, targets[0], targets);
-
-                        // Remove entry
-                        reactiveActionsHastable.Remove(entityActionPair.Key);
-
-                        // Stop
-                        done = true;
-                        break;
-                    }
-                }
-            }
-
-            if (done) break;
-        }
-    }
-
-    public IEnumerator PerformReactiveAction(Vector3Int location)
-    {
-        // Loop through each pair
-        foreach (var entityActionPair in reactiveActionsHastable)
-        {
-            // Check if action threatens this location
-            if (entityActionPair.Value.Contains(location))
-            {
-                // Parse data
-                var entity = entityActionPair.Key.Item1;
-                var action = entityActionPair.Key.Item2;
-                var targets = entityActionPair.Value;
-
-                // Perform the action
-                yield return PerformAction(entity, action, targets[0], targets);
-
-                // Remove entry
-                reactiveActionsHastable.Remove(entityActionPair.Key);
-
-                // Stop
-                break;
-            }
-        }
-    }
-
-    public void ClearReativeActions(Entity entity)
-    {
-        // Loop through each pair
-        foreach (var entityActionPair in reactiveActionsHastable)
-        {
-            // Check if action threatens this location
-            if (entityActionPair.Key.Item1 == entity)
-            {
-                // Parse data
-                var action = entityActionPair.Key.Item2;
-                var targets = entityActionPair.Value;
-
-                // Remove entry
-                reactiveActionsHastable.Remove(entityActionPair.Key);
-
-                // Hide threats
-                GameEvents.instance.TriggerOnActionUnthreatenLocation(action, targets);
-
-                // Sheathe weapon
-                if (action.actionType == ActionType.Attack)
-                    GameEvents.instance.TriggerOnEntitySheatheWeapon(entity, action.weapon);
-
-                // Stop
-                break;
-            }
         }
     }
 

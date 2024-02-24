@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public enum ActionSpeed { Instant, Reactive, Delayed }
+public enum ActionSpeed { Instant, Delayed }
 public enum ActionType { Movement, Attack, Utility }
 
 public abstract class Action : ScriptableObject

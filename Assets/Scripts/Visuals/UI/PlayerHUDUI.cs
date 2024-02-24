@@ -26,7 +26,7 @@ public class PlayerHUDUI : MonoBehaviour
         // Sub
         GameEvents.instance.onEntitySpawn += InitializePlayer;
         GameEvents.instance.onEnterFloor += UpdateFloor;
-        GameEvents.instance.onEntityGoldChange += UpdateGold;
+
     }
 
     private void OnDestroy()
@@ -34,7 +34,7 @@ public class PlayerHUDUI : MonoBehaviour
         // Unsub
         GameEvents.instance.onEntitySpawn -= InitializePlayer;
         GameEvents.instance.onEnterFloor -= UpdateFloor;
-        GameEvents.instance.onEntityGoldChange -= UpdateGold;
+
     }
 
     private void InitializePlayer(Entity entity)
@@ -50,7 +50,6 @@ public class PlayerHUDUI : MonoBehaviour
 
             // Update visuals
             UpdateIcon();
-            UpdateGold(entity, 0);
             UpdateFloor(null);
 
             // Display
@@ -63,15 +62,6 @@ public class PlayerHUDUI : MonoBehaviour
     private void UpdateIcon()
     {
         playerIcon.sprite = entity.modelSprite;
-    }
-
-    private void UpdateGold(Entity entity, int amount)
-    {
-        // If non-zero gold was gained
-        if (this.entity == entity)
-        {
-            goldText.text = entity.gold + "<sprite name=\"Gold\">";
-        }
     }
 
     private void UpdateFloor(Player player)

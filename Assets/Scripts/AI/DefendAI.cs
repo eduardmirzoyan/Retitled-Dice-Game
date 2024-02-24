@@ -11,6 +11,7 @@ public class DefendAI : AI
     */
     public override List<(Action, Vector3Int)> GenerateSequenceOfActions(Entity entity, Room room, Entity targetEntity)
     {
+        // NOTE: (0, 0, -1) means action will be ignored
         var actionPairSquence = new List<(Action, Vector3Int)>();
 
         // Get all possible actions
@@ -18,18 +19,33 @@ public class DefendAI : AI
 
         // ASSUME FIRST ACTION IS A MOVE ACTION
         var moveAction = possibleActions[0];
+        if (moveAction is not FreeMoveAction)
+            throw new System.Exception("First action of defendAI was not a free-move action.");
+
+        Vector3Int currentPos = entity.location;
 
         var targetLocation = FindClosestPickup(pickupTypeToDefend, entity.location, room);
-        // If no pickup of that type was found, do nothing.
-        if (targetLocation == Vector3Int.back)
-            return actionPairSquence;
+        // If pickup of that type was found AND you are not already on top of it...
+        if (targetLocation != Vector3Int.back && entity.location != targetLocation)
+        {
+            // Choose the location that places you closest to target
+            var moveLocation = GetClosestLocationToTarget(entity.location, targetLocation, moveAction.GetValidLocations(entity.location, room));
+            if (moveLocation == Vector3Int.back)
+                throw new System.Exception("Valid path to target not found.");
 
-        // Choose the location that places you closest to target
-        // NOTE: (0, 0, -1) means action will be ignored
-        var moveLocation = GetClosestLocationToTarget(entity.location, targetLocation, moveAction.GetValidLocations(entity.location, room));
+            actionPairSquence.Add((moveAction, moveLocation));
 
-        // Add pair
-        actionPairSquence.Add((moveAction, moveLocation));
+            // Update location
+            currentPos = moveLocation;
+        }
+
+        // Check if target near you...
+        if (Room.ManhattanDistance(currentPos, targetEntity.location) <= 1)
+        {
+            // Assume second action is attack
+            var attackAction = possibleActions[1];
+            actionPairSquence.Add((attackAction, currentPos));
+        }
 
         // Finish
         return actionPairSquence;
@@ -44,7 +60,7 @@ public class DefendAI : AI
         {
             if (tile.containedPickup == pickUpType)
             {
-                var distance = Vector3Int.Distance(currentLocation, tile.location);
+                var distance = Room.ManhattanDistance(currentLocation, tile.location);
                 if (distance < closest)
                 {
                     closest = distance;

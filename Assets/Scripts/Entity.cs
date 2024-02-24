@@ -139,7 +139,6 @@ public class Entity : ScriptableObject
         {
             // Cancel any actions
             GameManager.instance.ClearDelayedActions(this);
-            GameManager.instance.ClearReativeActions(this);
 
             // Give gold to killer (usually player)
             source.AddGold(gold);
@@ -177,10 +176,6 @@ public class Entity : ScriptableObject
 
         // Interact with new location
         Interact();
-
-        // Check for any reactive actions
-        if (this is Player)
-            yield return GameManager.instance.PerformReactiveAction(location);
     }
 
     public IEnumerator WarpTo(Vector3Int location)
@@ -196,10 +191,6 @@ public class Entity : ScriptableObject
 
         // Interact with new location
         Interact();
-
-        // Check for any reactive actions
-        if (this is Player)
-            yield return GameManager.instance.PerformReactiveAction(location);
     }
 
     public IEnumerator Jump(Vector3Int location)
@@ -215,10 +206,6 @@ public class Entity : ScriptableObject
 
         // Interact with new location
         Interact();
-
-        // Check for any reactive actions
-        if (this is Player)
-            yield return GameManager.instance.PerformReactiveAction(location);
     }
 
     protected virtual void Interact()
