@@ -32,6 +32,7 @@ public class RandomAI : AI
         // ASSUME SECOND ACTION IS AN ATTACK ACTION
         var attackAction = possibleActions[1];
         validLocations = attackAction.GetValidLocations(currentPosition, room);
+        validLocations.Remove(currentPosition);
         if (validLocations.Count > 0)
         {
             var attackLocation = validLocations[Random.Range(0, validLocations.Count)];

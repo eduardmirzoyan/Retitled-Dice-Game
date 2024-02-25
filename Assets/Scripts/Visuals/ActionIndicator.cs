@@ -341,7 +341,7 @@ public class ActionIndicator : MonoBehaviour
     private void CheckPlayerDanger(Entity entity)
     {
         // If player is on a threatened tile
-        if (entity is Player)
+        if (entity is Player && entity.model != null)
         {
             bool inDanger = attackIntentTable.ContainsKey(entity.location);
             entity.model.SetDangerStatus(inDanger);

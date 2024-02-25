@@ -29,10 +29,8 @@ public class WarpAction : Action
 
     public override IEnumerator Perform(Entity entity, Vector3Int targetLocation, List<Vector3Int> threatenedLocations, Room room)
     {
-        // Warp to location
-        // yield return entity.WarpTo(targetLocation);
-
-        yield return entity.model.Warp(entity.location, targetLocation); // new WaitForSeconds(GameManager.instance.gameSettings.jumpBufferTime);
+        // Handle visuals
+        yield return entity.model.Warp(entity.location, targetLocation);
 
         // Relocate
         entity.Relocate(targetLocation);

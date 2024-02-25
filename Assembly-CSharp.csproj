@@ -104,7 +104,7 @@
     <Compile Include="Assets\Scripts\Visuals\ActionPreview.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\TextTooltipUI.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\ActionsHandlerUI.cs" />
-    <Compile Include="Assets\Scripts\Actions\Enemy\AoeMeleeAction.cs" />
+    <Compile Include="Assets\Scripts\Actions\Enemy\CrossMeleeAction.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\HealthbarUI.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\Shop\ShopUI.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\Weapon-Related\WeaponActionUI.cs" />
@@ -117,6 +117,7 @@
     <Compile Include="Assets\Scripts\Visuals\UI\ActionUI.cs" />
     <Compile Include="Assets\Scripts\Main Menu\MainMenuManager.cs" />
     <Compile Include="Assets\Scripts\Actions\Enemy\FreeMoveAction.cs" />
+    <Compile Include="Assets\Scripts\Visuals\BarrelTossModel.cs" />
     <Compile Include="Assets\Scripts\Visuals\ActionIndicator.cs" />
     <Compile Include="Assets\Scripts\Generators\RoomGenerator.cs" />
     <Compile Include="Assets\Scripts\Actions\Boss\TossAction.cs" />
@@ -124,7 +125,7 @@
     <Compile Include="Assets\Scripts\Game Feel\FloatingTextManager.cs" />
     <Compile Include="Assets\Scripts\Visuals\WeaponModel.cs" />
     <Compile Include="Assets\Scripts\AI\Boss1AI.cs" />
-    <Compile Include="Assets\Scripts\Items\Consumables\HealingPotion.cs" />
+    <Compile Include="Assets\Scripts\Items\Consumables\HealingConsumable.cs" />
     <Compile Include="Assets\Scripts\Visuals\EntityInspect.cs" />
     <Compile Include="Assets\Scripts\GameSettings.cs" />
     <Compile Include="Assets\Scripts\AI\RandomAI.cs" />
@@ -157,7 +158,7 @@
     <Compile Include="Assets\Scripts\Actions\Action.cs" />
     <Compile Include="Assets\Scripts\Game Feel\DottedLine.cs" />
     <Compile Include="Assets\Scripts\Main Menu\PauseManager.cs" />
-    <Compile Include="Assets\Scripts\Items\Consumables\WarpPotion.cs" />
+    <Compile Include="Assets\Scripts\Items\Consumables\WarpConsumable.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\Shaman\ShamanUI.cs" />
     <Compile Include="Assets\Scripts\Actions\ThrustAction.cs" />
     <Compile Include="Assets\Scripts\Items\Item.cs" />
@@ -191,7 +192,9 @@
     <Compile Include="Assets\Scripts\AI\AI.cs" />
     <Compile Include="Assets\Scripts\Actions\MerchantAction.cs" />
     <Compile Include="Assets\Scripts\AI\BoldAI.cs" />
-    <Compile Include="Assets\Scripts\Visuals\BarrelTossModel.cs" />
+    <Compile Include="Assets\Scripts\Items\Consumables\DamageConsumable.cs" />
+    <Compile Include="Assets\Scripts\Items\Consumables\LockConsumable.cs" />
+    <Compile Include="Assets\Scripts\Items\Consumables\BumpConsumable.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

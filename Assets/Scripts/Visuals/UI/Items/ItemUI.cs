@@ -147,13 +147,15 @@ public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
             // And the item is a consumable
             if (item is Consumable)
             {
+                var consumable = item as Consumable;
                 var player = DataManager.instance.GetPlayer();
-                // Use the consumable and store result
-                bool sucess = (item as Consumable).Use(player);
 
-                // Delete item if it was used
-                if (sucess)
+                // If it can be used
+                if (consumable.CanUse(player))
                 {
+                    // Use
+                    GameManager.instance.EntityUseConsumble(player, consumable);
+
                     // Remove item
                     itemSlotUI.StoreItem(null);
 
@@ -161,7 +163,7 @@ public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
                     Destroy(gameObject);
 
                     // Trigger event
-                    GameEvents.instance.TriggerOnEntityUseConsumable(player, item as Consumable);
+                    GameEvents.instance.TriggerOnEntityUseConsumable(player, consumable);
                 }
             }
         }

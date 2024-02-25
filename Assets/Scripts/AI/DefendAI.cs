@@ -6,45 +6,73 @@ using UnityEngine;
 public class DefendAI : AI
 {
     [SerializeField] private PickUpType pickupTypeToDefend = PickUpType.Key;
+
     /*
-    Overview: Tries to get close as close as possible to a pickup and stays there. Does not attack.
+    Overview: Beelines to the nearest pickup. Once reached, continously attacks around it.
     */
     public override List<(Action, Vector3Int)> GenerateSequenceOfActions(Entity entity, Room room, Entity targetEntity)
     {
         // NOTE: (0, 0, -1) means action will be ignored
         var actionPairSquence = new List<(Action, Vector3Int)>();
-
-        // Get all possible actions
         var possibleActions = entity.GetActions();
+        Vector3Int currentPosition = entity.location;
 
-        // ASSUME FIRST ACTION IS A MOVE ACTION
-        var moveAction = possibleActions[0];
-        if (moveAction is not FreeMoveAction)
-            throw new System.Exception("First action of defendAI was not a free-move action.");
-
-        Vector3Int currentPos = entity.location;
-
-        var targetLocation = FindClosestPickup(pickupTypeToDefend, entity.location, room);
-        // If pickup of that type was found AND you are not already on top of it...
-        if (targetLocation != Vector3Int.back && entity.location != targetLocation)
+        // Find closest pickup
+        var pickupLocation = FindClosestPickup(pickupTypeToDefend, entity.location, room);
+        if (pickupLocation != Vector3Int.back) // If pickup was found
         {
+            // Chase pickup
+            // Debug.Log($"Chasing {pickupTypeToDefend}");
+
+            // ASSUME FIRST ACTION IS A MOVE ACTION
+            var moveAction = possibleActions[0];
+            if (moveAction is not FreeMoveAction)
+                throw new System.Exception("First action of defendAI was not a free-move action.");
+
             // Choose the location that places you closest to target
-            var moveLocation = GetClosestLocationToTarget(entity.location, targetLocation, moveAction.GetValidLocations(entity.location, room));
-            if (moveLocation == Vector3Int.back)
-                throw new System.Exception("Valid path to target not found.");
+            var moveLocation = GetClosestLocationToTarget(entity.location, pickupLocation, moveAction.GetValidLocations(entity.location, room));
+            if (moveLocation != Vector3Int.back)
+            {
+                actionPairSquence.Add((moveAction, moveLocation));
+                currentPosition = moveLocation;
+            }
 
-            actionPairSquence.Add((moveAction, moveLocation));
+            // Check if on nearest pickup
+            if (currentPosition == pickupLocation)
+            {
+                // If so, defend it...
 
-            // Update location
-            currentPos = moveLocation;
+                // Assume second action is attack
+                var attackAction = possibleActions[1];
+                actionPairSquence.Add((attackAction, targetEntity.location));
+            }
         }
-
-        // Check if target near you...
-        if (Room.ManhattanDistance(currentPos, targetEntity.location) <= 1)
+        else
         {
-            // Assume second action is attack
-            var attackAction = possibleActions[1];
-            actionPairSquence.Add((attackAction, currentPos));
+            // Chase player
+            // Debug.Log($"Chasing {targetEntity.name}");
+
+            // ASSUME FIRST ACTION IS A MOVE ACTION
+            var moveAction = possibleActions[0];
+            if (moveAction is not FreeMoveAction)
+                throw new System.Exception("First action of defendAI was not a free-move action.");
+
+            // Choose the location that places you closest to target
+            var moveLocation = GetClosestLocationToTarget(entity.location, targetEntity.location, moveAction.GetValidLocations(entity.location, room));
+            if (moveLocation != Vector3Int.back)
+            {
+                actionPairSquence.Add((moveAction, moveLocation));
+                currentPosition = moveLocation;
+            }
+
+            // Check if on nearest pickup
+            if (Room.ManhattanDistance(currentPosition, targetEntity.location) <= 1)
+            {
+                // Assume second action is attack
+                var attackAction = possibleActions[1];
+                actionPairSquence.Add((attackAction, targetEntity.location));
+            }
+
         }
 
         // Finish

@@ -885,9 +885,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void UseConsumble()
+    public void EntityUseConsumble(Entity entity, Consumable consumable)
     {
-        // TODO
+        if (logEntityActions) print($"{entity.name} used {consumable.name}");
+
+        // Start routine
+        StartCoroutine(consumable.Use(entity));
     }
 
     public void InspectLocation(Vector3Int location)
