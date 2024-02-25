@@ -149,10 +149,10 @@ public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
             {
                 var player = DataManager.instance.GetPlayer();
                 // Use the consumable and store result
-                bool isSucessful = (item as Consumable).Use(player);
+                bool sucess = (item as Consumable).Use(player);
 
                 // Delete item if it was used
-                if (isSucessful)
+                if (sucess)
                 {
                     // Remove item
                     itemSlotUI.StoreItem(null);

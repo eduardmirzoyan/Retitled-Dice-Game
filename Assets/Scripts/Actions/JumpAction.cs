@@ -44,6 +44,18 @@ public class JumpAction : Action
     public override IEnumerator Perform(Entity entity, Vector3Int targetLocation, List<Vector3Int> threatenedLocations, Room room)
     {
         // Warp to location
-        yield return entity.Jump(targetLocation);
+        // yield return entity.Jump(targetLocation);
+
+        // Move
+        // room.MoveEntityTo(this, location);
+
+        // Trigger event
+        // GameEvents.instance.TriggerOnEntityJump(this);
+
+        // Wait for animation
+        yield return entity.model.Jump(entity.location, targetLocation); // new WaitForSeconds(GameManager.instance.gameSettings.jumpBufferTime);
+
+        // Relocate
+        entity.Relocate(targetLocation);
     }
 }

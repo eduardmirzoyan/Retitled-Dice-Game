@@ -15,7 +15,7 @@ MonoBehaviour:
   name: Barrel Toss
   rawInactiveDescription: '?'
   rawActiveDescription: '?'
-  icon: {fileID: 2097033198, guid: 91c6e5420840aa74883dcb2d26dae9ea, type: 3}
+  icon: {fileID: -892391786, guid: 91c6e5420840aa74883dcb2d26dae9ea, type: 3}
   color: {r: 0.9764706, g: 0.6392157, b: 0.105882354, a: 1}
   actionSpeed: 0
   actionType: 2
@@ -24,5 +24,5 @@ MonoBehaviour:
   weapon: {fileID: 0}
   modifiers: []
   bonusDamage: 0
-  test: {fileID: 0}
+  barrelTossPrefab: {fileID: 4935695747435057182, guid: 7595b140d81afee4f9e2cdb0dccccbdc, type: 3}
   barrel: {fileID: 11400000, guid: e5f8516d08a87814ba5ed198402a03f9, type: 2}

@@ -2099,7 +2099,6 @@ MonoBehaviour:
     audioSource: {fileID: 0}
     audioMixerGroup: {fileID: -2258679276098905894, guid: 3f0fc48e3bb6ce84f87756c7cd05bd35, type: 2}
   fadeTime: 1
-  testSFX: key
 --- !u!1 &1157428991
 GameObject:
   m_ObjectHideFlags: 0

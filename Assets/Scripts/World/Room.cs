@@ -43,7 +43,6 @@ public class Room : ScriptableObject
         neutralEntities = new List<Entity>();
         alliedEntities = new List<Entity>();
         bossEntities = new List<Entity>();
-
         allEntities = new List<Entity>();
 
         // Initalize pathfinder
@@ -68,7 +67,7 @@ public class Room : ScriptableObject
         {
             if (tile.tileType == TileType.Entrance)
             {
-                // Set the player's location to be at dungeon entrance
+                // Set the player's location to be at entrance
                 player.Initialize(this, tile.location);
 
                 // Update tile
@@ -76,6 +75,9 @@ public class Room : ScriptableObject
 
                 // Add to total list
                 allEntities.Add(player);
+
+                // Create in world
+                RoomManager.instance.SpawnEntity(player);
 
                 // Trigger event
                 GameEvents.instance.TriggerOnEntitySpawn(player);
@@ -138,15 +140,17 @@ public class Room : ScriptableObject
         // Add to total list
         allEntities.Add(entity);
 
+        // Create in world
+        RoomManager.instance.SpawnEntity(entity);
+
         // Trigger event
         GameEvents.instance.TriggerOnEntitySpawn(entity);
     }
 
     public void SpawnEntity(Entity entity, bool asBoss = false)
     {
-        // Get random point in room
+        // Spawn at random point
         Vector3Int spawnLocation = GetRandomLocation();
-
         SpawnEntity(entity, spawnLocation, asBoss);
     }
 
@@ -184,7 +188,7 @@ public class Room : ScriptableObject
         else
         {
             // Error
-            throw new System.Exception(entity.name + " was attempted to be removed but didn't exist in dungeon.");
+            throw new System.Exception(entity.name + " was attempted to be removed but didn't exist in room.");
         }
 
         // If all bosses were killed
@@ -198,49 +202,13 @@ public class Room : ScriptableObject
         TileFromLocation(entity.location).containedEntity = null;
 
         // Remove from list
-        allEntities.Add(entity);
+        allEntities.Remove(entity);
+
+        // Create in world
+        RoomManager.instance.DespawnEntity(entity);
 
         // Trigger event
         GameEvents.instance.TriggerOnEntityDespawn(entity);
-    }
-
-    public void MoveEntityToward(Entity entity, Vector3Int direction)
-    {
-        // Make sure you are only moving up to 1 tile at a time
-        if (direction.magnitude > 1)
-            throw new System.Exception("DIRECTION MAG is NOT 1");
-
-        // Determine tile of  next location
-        var newTile = TileFromLocation(entity.location + direction);
-
-        // Move to new location
-        MoveEntity(entity, newTile);
-    }
-
-    public void MoveEntityTo(Entity entity, Vector3Int location)
-    {
-        // Determine tile of next location
-        var newTile = TileFromLocation(location);
-
-        // Move to new location
-        MoveEntity(entity, newTile);
-    }
-
-    public void MoveEntity(Entity entity, RoomTile newTile)
-    {
-        // Error check
-        if (newTile.containedEntity != null)
-            throw new System.Exception("TILE IS ALREADY OCCUPIED BY: " + newTile.containedEntity.name);
-
-        // Remove from old tile
-        var oldTile = TileFromLocation(entity.location);
-        oldTile.containedEntity = null;
-
-        // Set new location
-        entity.location = newTile.location;
-
-        // Set to new tile
-        newTile.containedEntity = entity;
     }
 
     public void SpawnPickup(PickUpType pickUpType)
@@ -320,6 +288,9 @@ public class Room : ScriptableObject
 
     public RoomTile TileFromLocation(Vector3Int location)
     {
+        if (!IsInBounds(location))
+            throw new System.Exception($"Attempted to get out-of-bounds location {location}");
+
         return tiles[location.x, location.y];
     }
 

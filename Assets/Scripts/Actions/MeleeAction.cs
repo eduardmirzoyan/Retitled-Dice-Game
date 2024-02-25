@@ -89,6 +89,8 @@ public class MeleeAction : Action
 
     public override IEnumerator Perform(Entity entity, Vector3Int targetLocation, List<Vector3Int> threatenedLocations, Room room)
     {
+        yield return null;
+
         foreach (var location in threatenedLocations)
         {
             var target = room.GetEntityAtLocation(location);
@@ -100,8 +102,5 @@ public class MeleeAction : Action
 
         // Trigger event
         GameEvents.instance.TriggerOnEntityUseWeapon(entity, weapon);
-
-        // Wait for animation
-        yield return null;
     }
 }

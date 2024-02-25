@@ -26,11 +26,12 @@ public class Entity : ScriptableObject
     [Header("Dynamic Data")]
     public Vector3Int location; // Location of this entity on the floor
     public Room room;
+    public EntityModel model;
 
-    public void Initialize(Room dungeon, Vector3Int spawnLocation)
+    public void Initialize(Room room, Vector3Int location)
     {
-        this.room = dungeon;
-        this.location = spawnLocation;
+        this.room = room;
+        this.location = location;
 
         // Initialize actions
         foreach (var actions in innateActions)
@@ -43,7 +44,6 @@ public class Entity : ScriptableObject
         {
             if (weapon != null)
                 weapon.Initialize(this);
-
         }
 
         // Initialize enchantments
@@ -130,6 +130,7 @@ public class Entity : ScriptableObject
 
         // Reduce health until 0
         currentHealth = Mathf.Max(currentHealth - amount, 0);
+        model.TakeDamage(source, amount);
 
         // Trigger event
         GameEvents.instance.TriggerOnEntityTakeDamage(this, amount);
@@ -163,59 +164,46 @@ public class Entity : ScriptableObject
         GameEvents.instance.TriggerOnEntityTakeDamage(this, -amount);
     }
 
-    public IEnumerator MoveToward(Vector3Int direction)
+    public void Relocate(Vector3Int newLocation)
     {
-        // Move within room
-        room.MoveEntityToward(this, direction);
+        var newTile = room.TileFromLocation(newLocation);
+        var oldTile = room.TileFromLocation(location);
 
-        // Trigger event
-        GameEvents.instance.TriggerOnEntityMove(this);
+        // Error check
+        if (newTile.containedEntity != null)
+            throw new System.Exception($"Tile at {newLocation} is already occupied by {newTile.containedEntity.name}");
 
-        // Wait for animation
-        yield return new WaitForSeconds(GameManager.instance.gameSettings.moveBufferTime);
+        // Update tiles
+        oldTile.containedEntity = null;
+        newTile.containedEntity = this;
+
+        // Update this entity location
+        location = newTile.location;
 
         // Interact with new location
         Interact();
-    }
-
-    public IEnumerator WarpTo(Vector3Int location)
-    {
-        // Move
-        room.MoveEntityTo(this, location);
 
         // Trigger event
-        GameEvents.instance.TriggerOnEnityWarp(this);
-
-        // Wait for animation
-        yield return new WaitForSeconds(GameManager.instance.gameSettings.warpBufferTime);
-
-        // Interact with new location
-        Interact();
-    }
-
-    public IEnumerator Jump(Vector3Int location)
-    {
-        // Move
-        room.MoveEntityTo(this, location);
-
-        // Trigger event
-        GameEvents.instance.TriggerOnEntityJump(this);
-
-        // Wait for animation
-        yield return new WaitForSeconds(GameManager.instance.gameSettings.jumpBufferTime);
-
-        // Interact with new location
-        Interact();
+        GameEvents.instance.TriggerOnEntityRelocate(this);
     }
 
     protected virtual void Interact()
     {
-        // Does nothing for now
+        // Does nothing by default
     }
 
     public void AttackEntity(Entity target, Weapon weapon, int amount)
     {
         target.TakeDamageFrom(this, weapon, amount);
+    }
+
+    public void AttackLocation(Vector3Int location, Weapon weapon, int amount)
+    {
+        var tile = room.TileFromLocation(location);
+        if (tile.containedEntity != null)
+        {
+            tile.containedEntity.TakeDamageFrom(this, weapon, amount);
+        }
     }
 
     public void AddGold(int amount)

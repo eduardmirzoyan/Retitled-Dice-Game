@@ -38,24 +38,24 @@ public class MoveAction : Action
         return new List<Vector3Int>() { targetLocation };
     }
 
-
     public override IEnumerator Perform(Entity entity, Vector3Int targetLocation, List<Vector3Int> threatenedLocations, Room room)
     {
         // Calculate direction
         Vector3Int direction = targetLocation - entity.location;
         direction.Clamp(-Vector3Int.one, Vector3Int.one);
 
-        // Trigger start move event
-        GameEvents.instance.TriggerOnEntityStartMove(entity);
-
-        // Keep looping until entiy makes it to its final location
+        entity.model.MoveSetup();
         while (entity.location != targetLocation)
         {
-            // Move entity
-            yield return entity.MoveToward(direction); // Convert this into IEnumator
-        }
+            // Calculate next location
+            Vector3Int nextLocation = entity.location + direction;
 
-        // Trigger stop move event
-        GameEvents.instance.TriggerOnEntityStopMove(entity);
+            // Run animations
+            yield return entity.model.Move(entity.location, nextLocation);
+
+            // Updatate data
+            entity.Relocate(nextLocation);
+        }
+        entity.model.MoveCleanup();
     }
 }

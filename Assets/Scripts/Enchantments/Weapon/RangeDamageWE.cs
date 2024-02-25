@@ -15,12 +15,12 @@ public class RangeDamageWE : WeaponEnchantment
     {
         this.weapon = weapon;
 
-        GameEvents.instance.onEntityMove += CheckNumberInRange;
+        GameEvents.instance.onEntityRelocate += CheckNumberInRange;
     }
 
     public override void Uninitialize(Weapon weapon)
     {
-        GameEvents.instance.onEntityMove -= CheckNumberInRange;
+        GameEvents.instance.onEntityRelocate -= CheckNumberInRange;
     }
 
     private void CheckNumberInRange(Entity entity)

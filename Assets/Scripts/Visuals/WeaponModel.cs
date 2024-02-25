@@ -23,7 +23,6 @@ public class WeaponModel : MonoBehaviour
 
         // Update components
         spriteRenderer.sprite = weapon.sprite;
-
         spriteRenderer.sortingLayerName = "Entities";
 
         // Set name

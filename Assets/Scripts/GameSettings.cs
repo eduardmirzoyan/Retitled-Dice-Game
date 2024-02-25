@@ -18,4 +18,6 @@ public class GameSettings : ScriptableObject
     public float moveBufferTime = 0.35f;
     public float warpBufferTime = 0.5f;
     public float jumpBufferTime = 0.5f;
+
+    public float actionDuration = 0.5f;
 }

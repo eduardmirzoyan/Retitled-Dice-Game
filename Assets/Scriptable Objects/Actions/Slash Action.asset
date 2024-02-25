@@ -15,12 +15,12 @@ MonoBehaviour:
   name: Slash
   rawInactiveDescription: TODO
   rawActiveDescription: Deal {dmg} damage
-  icon: {fileID: 21300000, guid: 2abc9b9e2bdaec84a8d7e2bcb237057b, type: 3}
+  icon: {fileID: -1875062646, guid: 91c6e5420840aa74883dcb2d26dae9ea, type: 3}
   color: {r: 0.8705883, g: 0.24313727, b: 0.13725491, a: 1}
   actionSpeed: 0
   actionType: 1
   pathPrefab: {fileID: 0}
   die: {fileID: 11400000, guid: 4f8fd130e5045604b813bb7a89501291, type: 2}
   weapon: {fileID: 0}
-  buffs: []
+  modifiers: []
   bonusDamage: 0

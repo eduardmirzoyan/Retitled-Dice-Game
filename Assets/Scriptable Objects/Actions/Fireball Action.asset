@@ -15,12 +15,12 @@ MonoBehaviour:
   name: Fireball
   rawInactiveDescription: WIP
   rawActiveDescription: WIP
-  icon: {fileID: 21300000, guid: 707081c4e68f27e4b9e3cdca4899f6eb, type: 3}
+  icon: {fileID: -892391786, guid: 91c6e5420840aa74883dcb2d26dae9ea, type: 3}
   color: {r: 0.87058824, g: 0.24313726, b: 0.13725491, a: 1}
   actionSpeed: 0
   actionType: 1
   pathPrefab: {fileID: 5796882529580813460, guid: 083c9cc31f9d52144a037eba6e64eb71, type: 3}
   die: {fileID: 11400000, guid: e8d732acdda4b39449630ce6ec7774ab, type: 2}
   weapon: {fileID: 0}
-  buffs: []
+  modifiers: []
   bonusDamage: 0

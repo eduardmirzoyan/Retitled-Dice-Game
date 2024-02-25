@@ -160,7 +160,7 @@ public class EquipmentSlotUI : ItemSlotUI
         if (this.itemUI != null)
         {
             // Debugging
-            print("An item exists in this slot, doing a swap :)");
+            // print("An item exists in this slot, doing a swap :)");
 
             // Set the old item to where the new one was
             this.itemUI.ResetTo(newItemUI.GetParent());

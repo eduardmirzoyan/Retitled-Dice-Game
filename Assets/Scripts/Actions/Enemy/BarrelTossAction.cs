@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Actions/Enemy/Barrel Toss")]
 public class BarrelTossAction : Action
 {
-    [SerializeField] private GameObject test;
+    [SerializeField] private GameObject barrelTossPrefab;
     [SerializeField] private Entity barrel;
 
     public override List<Vector3Int> GetValidLocations(Vector3Int startLocation, Room room)
@@ -37,10 +37,12 @@ public class BarrelTossAction : Action
 
     public override IEnumerator Perform(Entity entity, Vector3Int targetLocation, List<Vector3Int> threatenedLocations, Room room)
     {
-        Debug.Log($"Spawned barrel at {targetLocation}");
+        // Handle visuals
+        var barrelToss = Instantiate(barrelTossPrefab).GetComponent<BarrelTossModel>();
+        yield return barrelToss.Toss(entity.location, targetLocation);
+        Destroy(barrelToss.gameObject);
 
-        yield return new WaitForSeconds(1f);
-
+        // Handle logic after visuals are done
         room.SpawnEntity(barrel.Copy(), targetLocation);
     }
 }

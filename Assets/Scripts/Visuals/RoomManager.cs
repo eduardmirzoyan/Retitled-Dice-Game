@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class RoomUI : MonoBehaviour
+public class RoomManager : MonoBehaviour
 {
     [Header("Components")]
     [SerializeField] private Tilemap floorTilemap;
@@ -12,20 +11,22 @@ public class RoomUI : MonoBehaviour
     [SerializeField] private Tilemap decorTilemap;
     [SerializeField] private Transform entityTransform;
 
-    [Header("Data")]
+    [Header("Tiles")]
     [SerializeField] private Tile floorTile;
     [SerializeField] private RuleTile wallTile;
     [SerializeField] private Tile entranceTile;
+
+    [Header("Prefabs")]
     [SerializeField] private GameObject floorExitPrefab;
     [SerializeField] private GameObject goldPickupPrefab;
     [SerializeField] private GameObject keyPickupPrefab;
     [SerializeField] private GameObject entityModelPrefab;
 
-    public static RoomUI instance;
+    public static RoomManager instance;
     private void Awake()
     {
         // Singleton Logic
-        if (RoomUI.instance != null)
+        if (instance != null)
         {
             Destroy(gameObject);
             return;
@@ -37,7 +38,6 @@ public class RoomUI : MonoBehaviour
     {
         // Sub
         GameEvents.instance.onGenerateFloor += DrawRoom;
-        GameEvents.instance.onEntitySpawn += SpawnEntity;
         GameEvents.instance.onPickupSpawn += SpawnPickup;
     }
 
@@ -45,8 +45,7 @@ public class RoomUI : MonoBehaviour
     {
         // Unsub
         GameEvents.instance.onGenerateFloor -= DrawRoom;
-        GameEvents.instance.onEntitySpawn -= SpawnEntity;
-        GameEvents.instance.onPickupSpawn += SpawnPickup;
+        GameEvents.instance.onPickupSpawn -= SpawnPickup;
     }
 
     private void DrawRoom(Room room)
@@ -100,20 +99,31 @@ public class RoomUI : MonoBehaviour
             }
         }
 
-        // Get center of dungeon
+        // Get center of room
         Vector3 center = floorTilemap.CellToWorld(new Vector3Int(room.width / 2 + room.padding, room.height / 2 + room.padding, 0));
-        // Set camera to center of dungeon
+        // Set camera to center of room
         CameraManager.instance.SetPosition(center);
     }
 
-    private void SpawnEntity(Entity entity)
+    public void SpawnEntity(Entity entity)
     {
-        // Get world position
+        // Spawn entity in the world
         Vector3 worldLocation = floorTilemap.GetCellCenterWorld(entity.location);
-        // Spawn model in container
         var entityModel = Instantiate(entityModelPrefab, worldLocation, Quaternion.identity, entityTransform).GetComponent<EntityModel>();
-        // Initialize
-        entityModel.Initialize(entity, this);
+        entityModel.Initialize(entity);
+
+        // Set reference
+        entity.model = entityModel;
+    }
+
+    public void DespawnEntity(Entity entity)
+    {
+        // Remove from world
+        entity.model.Uninitialize(entity);
+        Destroy(entity.model.gameObject);
+
+        // Remove reference
+        entity.model = null;
     }
 
     private void SpawnPickup(PickUpType pickUpType, Vector3Int location)

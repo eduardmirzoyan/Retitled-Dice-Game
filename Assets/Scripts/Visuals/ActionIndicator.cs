@@ -44,9 +44,7 @@ public class ActionIndicator : MonoBehaviour
         GameEvents.instance.onActionThreatenLocations += ThreatenLocations;
         GameEvents.instance.onActionUnthreatenLocations += UnthreatenLocations;
 
-        GameEvents.instance.onEntityMove += CheckPlayerDanger;
-        GameEvents.instance.onEntityWarp += CheckPlayerDanger;
-        GameEvents.instance.onEntityJump += CheckPlayerDanger;
+        GameEvents.instance.onEntityRelocate += CheckPlayerDanger;
     }
 
     private void OnDestroy()
@@ -59,26 +57,7 @@ public class ActionIndicator : MonoBehaviour
         GameEvents.instance.onActionThreatenLocations -= ThreatenLocations;
         GameEvents.instance.onActionUnthreatenLocations -= UnthreatenLocations;
 
-        GameEvents.instance.onEntityMove -= CheckPlayerDanger;
-        GameEvents.instance.onEntityWarp -= CheckPlayerDanger;
-        GameEvents.instance.onEntityJump -= CheckPlayerDanger;
-    }
-
-    private void CheckPlayerDanger(Entity entity)
-    {
-        // If player is on a threatened tile
-        if (entity is Player)
-        {
-            // Trigger proper event
-            if (attackIntentTable.ContainsKey(entity.location))
-            {
-                GameEvents.instance.TriggerOnEntityInDanger(entity);
-            }
-            else
-            {
-                GameEvents.instance.TriggerOnEntityOutDanger(entity);
-            }
-        }
+        GameEvents.instance.onEntityRelocate -= CheckPlayerDanger;
     }
 
     private void ThreatenLocations(Action action, List<Vector3Int> locations)
@@ -356,6 +335,16 @@ public class ActionIndicator : MonoBehaviour
         {
             var offset = new Vector3(0.5f, 0.5f, -1);
             Instantiate(action.pathPrefab, transform).GetComponent<ActionPathRenderer>().Initialize(entity, action, location, entity.location + offset, location + offset, action.color);
+        }
+    }
+
+    private void CheckPlayerDanger(Entity entity)
+    {
+        // If player is on a threatened tile
+        if (entity is Player)
+        {
+            bool inDanger = attackIntentTable.ContainsKey(entity.location);
+            entity.model.SetDangerStatus(inDanger);
         }
     }
 }

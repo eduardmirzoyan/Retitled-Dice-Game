@@ -106,7 +106,7 @@ public class GameManager : MonoBehaviour
         yield return GenerateGold();
 
         // Open scene on player
-        var location = RoomUI.instance.GetLocationCenter(room.player.location);
+        var location = RoomManager.instance.GetLocationCenter(room.player.location);
         TransitionManager.instance.OpenScene(location);
 
         // Wait a bit before starting game
@@ -718,7 +718,7 @@ public class GameManager : MonoBehaviour
         DataManager.instance.SetNextRoom();
 
         // Reload this scene on player
-        var location = RoomUI.instance.GetLocationCenter(room.player.location);
+        var location = RoomManager.instance.GetLocationCenter(room.player.location);
         TransitionManager.instance.ReloadScene(location);
     }
 
@@ -728,7 +728,7 @@ public class GameManager : MonoBehaviour
         ExitFloor();
 
         // Load main menu on player
-        var location = RoomUI.instance.GetLocationCenter(room.player.location);
+        var location = RoomManager.instance.GetLocationCenter(room.player.location);
         TransitionManager.instance.LoadMainMenuScene(location);
     }
 
@@ -883,6 +883,11 @@ public class GameManager : MonoBehaviour
                 break;
             }
         }
+    }
+
+    public void UseConsumble()
+    {
+        // TODO
     }
 
     public void InspectLocation(Vector3Int location)

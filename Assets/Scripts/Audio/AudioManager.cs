@@ -9,8 +9,6 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private float fadeTime = 1f;
     private Coroutine coroutine;
 
-    [SerializeField] private string testSFX;
-
     private string song;
 
     public static AudioManager instance;
@@ -113,7 +111,7 @@ public class AudioManager : MonoBehaviour
 
             coroutine = StartCoroutine(FadeInAudio(sound));
         }
-        else { throw new System.Exception("Sound with that name not found: " + name); }
+        else throw new System.Exception("Sound with that name not found: " + name);
     }
 
     public void StopOST(string name)
@@ -125,7 +123,7 @@ public class AudioManager : MonoBehaviour
 
             coroutine = StartCoroutine(FadeOutAudio(sound));
         }
-        else { throw new System.Exception("Sound with that name not found: " + name); }
+        else throw new System.Exception("Sound with that name not found: " + name);
     }
 
     public void PlaySFX(string name)
@@ -144,7 +142,7 @@ public class AudioManager : MonoBehaviour
             // Play sound
             sound.audioSource.Play();
         }
-        else { throw new System.Exception("No sounds with that name found: " + name); }
+        else throw new System.Exception("No sounds with that name found: " + name);
     }
 
     public void StopSFX(string name)
@@ -159,25 +157,6 @@ public class AudioManager : MonoBehaviour
             // Play sound
             sound.audioSource.Stop();
         }
-        else { throw new System.Exception("No sounds with that name found: " + name); }
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            InvokeRepeating("FootstepsSFX", 0f, 0.25f);
-        }
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            // InvokeRepeating("PlayFootsteps", 0f, 1f);
-            CancelInvoke("FootstepsSFX");
-        }
-
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            // Test sound
-            PlaySFX(testSFX);
-        }
+        else throw new System.Exception("No sounds with that name found: " + name);
     }
 }

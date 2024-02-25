@@ -10,35 +10,20 @@ public class ProperLayerSort : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] private float offset = 0;
-    [SerializeField] private bool runOnce = false;
-    [SerializeField] private bool isActive;
 
     private void Awake()
     {
         rend = GetComponent<Renderer>();
     }
 
-    private void LateUpdate()
+    private void Start()
     {
-        if (isActive)
-        {
-            // Constantly update layer
-            UpdateLayer();
-
-            // Remove this component after sorting once
-            if (runOnce)
-                Destroy(this);
-        }
+        UpdateLayer();
     }
 
     public void UpdateLayer()
     {
         rend.sortingOrder = -(int)(transform.position.y * 10 - offset);
-    }
-
-    public void SetActive(bool isActive)
-    {
-        this.isActive = isActive;
     }
 
     private void OnDrawGizmosSelected()

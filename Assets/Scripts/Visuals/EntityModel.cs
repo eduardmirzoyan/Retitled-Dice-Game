@@ -16,7 +16,7 @@ public class EntityModel : MonoBehaviour
     [Header("Mainhand Weapon")]
     [SerializeField] private Transform offWeaponHolder;
 
-    [Header("UI")]
+    [Header("QoL")]
     [SerializeField] private DamageFlash damageFlash;
     [SerializeField] private ProperLayerSort properLayerSort;
 
@@ -31,7 +31,6 @@ public class EntityModel : MonoBehaviour
     [SerializeField] private float jumpHeight = 1f;
     [SerializeField] private float footstepSfxSpeed = 0.25f;
 
-    private RoomUI roomUI;
     private Coroutine coroutine;
 
     private void Awake()
@@ -39,25 +38,13 @@ public class EntityModel : MonoBehaviour
         properLayerSort = GetComponentInChildren<ProperLayerSort>();
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            // Spawn corpse
-            Instantiate(corpsePrefab, transform.position, Quaternion.identity).GetComponent<CorpseModel>().Initialize(entity, Vector2.right);
-        }
-    }
-
-    public void Initialize(Entity entity, RoomUI roomUI)
+    public void Initialize(Entity entity)
     {
         this.entity = entity;
-        this.roomUI = roomUI;
 
         // Set up model
         modelSpriteRenderer.sprite = entity.modelSprite;
         modelAnimator.runtimeAnimatorController = entity.modelController;
-
-        // Update sorting layer once
         properLayerSort.UpdateLayer();
 
         // Spawn weapon models
@@ -66,61 +53,35 @@ public class EntityModel : MonoBehaviour
 
         // Sub to events
         GameEvents.instance.onEquipWeapon += SpawnWeapon;
-
-        GameEvents.instance.onEntityMoveStart += StartMove;
-        GameEvents.instance.onEntityMove += MoveEntity;
-        GameEvents.instance.onEntityMoveStop += StopMove;
-
-        GameEvents.instance.onEntityWarp += WarpEntity;
-        GameEvents.instance.onEntityJump += JumpEntity;
-        GameEvents.instance.onEntityTakeDamage += TakeDamage;
         GameEvents.instance.onEntityDrawWeapon += FaceDirection;
-        GameEvents.instance.onEntityDespawn += Despawn;
-
-        GameEvents.instance.onEntityInDanger += InDanger;
-        GameEvents.instance.onEntityOutDanger += OutDanger;
 
         // Set name
-        transform.name = entity.name + " Model";
+        transform.name = $"{entity.name} Renderer";
     }
 
     private void OnDestroy()
     {
         // Unsub to events
         GameEvents.instance.onEquipWeapon -= SpawnWeapon;
-
-        GameEvents.instance.onEntityMoveStart -= StartMove;
-        GameEvents.instance.onEntityMove -= MoveEntity;
-        GameEvents.instance.onEntityMoveStop -= StopMove;
-
-        GameEvents.instance.onEntityWarp -= WarpEntity;
-        GameEvents.instance.onEntityTakeDamage -= TakeDamage;
         GameEvents.instance.onEntityDrawWeapon -= FaceDirection;
-        GameEvents.instance.onEntityDespawn -= Despawn;
-
-        GameEvents.instance.onEntityInDanger -= InDanger;
-        GameEvents.instance.onEntityOutDanger -= OutDanger;
     }
 
-    private void Despawn(Entity entity)
+    public void Uninitialize(Entity entity)
     {
-        if (this.entity == entity)
-        {
-            // Play sound
-            AudioManager.instance.PlaySFX("death");
+        if (this.entity != entity)
+            throw new System.Exception("Unknown entity was chosen to despawn.");
 
-            // BANDADE SOLUTION
-            Vector2 fromLocation = entity.room.player.location + new Vector3(0.5f, 0.5f, 0);
-            Vector2 direction = (Vector2)transform.position - fromLocation;
-            direction.Normalize();
+        // Play sound
+        AudioManager.instance.PlaySFX("death");
 
-            // Spawn corpse
-            if (entity.name != "Barrel")
-                Instantiate(corpsePrefab, transform.position, Quaternion.identity).GetComponent<CorpseModel>().Initialize(entity, direction);
+        // BANDADE SOLUTION
+        Vector2 fromLocation = entity.room.player.location + new Vector3(0.5f, 0.5f, 0);
+        Vector2 direction = (Vector2)transform.position - fromLocation;
+        direction.Normalize();
 
-            // Destroy self
-            Destroy(gameObject);
-        }
+        // Spawn corpse FIXME
+        if (entity.name != "Barrel")
+            Instantiate(corpsePrefab, transform.position, Quaternion.identity).GetComponent<CorpseModel>().Initialize(entity, direction);
     }
 
     private void SpawnWeapon(Entity entity, Weapon weapon, int index)
@@ -137,106 +98,72 @@ public class EntityModel : MonoBehaviour
                 // Create and Initalize weapon
                 Instantiate(weapon.weaponPrefab, offWeaponHolder).GetComponent<WeaponModel>().Initialize(weapon);
             }
-
         }
     }
 
-    private void StartMove(Entity entity)
+    public void MoveSetup()
     {
-        if (this.entity == entity)
-        {
-            // Play proper animation
-            modelAnimator.Play("Run");
-
-            // Start layering
-            properLayerSort.SetActive(true);
-
-            // Play sound
-            InvokeRepeating(nameof(FootstepsSFX), 0f, footstepSfxSpeed);
-        }
+        modelAnimator.Play("Run");
+        InvokeRepeating(nameof(FootstepsSFX), 0f, footstepSfxSpeed);
     }
 
-    private void MoveEntity(Entity entity)
+    public IEnumerator Move(Vector3Int startLocation, Vector3Int endLocation)
     {
-        // If this entity moved, then move it
-        if (this.entity == entity)
-        {
-            Vector3 currentPosition = transform.position;
-            Vector3 newPosition = roomUI.GetLocationCenter(entity.location);
+        Vector3 startPosition = RoomManager.instance.GetLocationCenter(startLocation);
+        Vector3 endPosition = RoomManager.instance.GetLocationCenter(endLocation);
 
-            // Flip model if needed
-            FlipModel(newPosition - currentPosition);
+        FlipModel(endPosition - startPosition);
 
-            // Start moving routine
-            if (coroutine != null) StopCoroutine(coroutine);
-            coroutine = StartCoroutine(Move(currentPosition, newPosition));
-        }
-    }
-
-    private void StopMove(Entity entity)
-    {
-        if (this.entity == entity)
-        {
-            // Stop proper animation
-            modelAnimator.Play("Idle");
-
-            // Stop layering
-            properLayerSort.SetActive(false);
-
-            // Stop sound
-            CancelInvoke(nameof(FootstepsSFX));
-        }
-    }
-
-    private void FootstepsSFX()
-    {
-        AudioManager.instance.PlaySFX("footstep");
-    }
-
-    private void WarpEntity(Entity entity)
-    {
-        if (this.entity == entity)
-        {
-            // Get world location
-            Vector3 newLocation = roomUI.GetLocationCenter(entity.location);
-
-            // Start routine
-            if (coroutine != null) StopCoroutine(coroutine);
-            coroutine = StartCoroutine(Warp(newLocation));
-
-            // Play sound
-            // AudioManager.instance.PlaySFX("teleport");
-        }
-    }
-
-    private void JumpEntity(Entity entity)
-    {
-        if (this.entity == entity)
-        {
-            Vector3 currentPosition = transform.position;
-            Vector3 newPosition = roomUI.GetLocationCenter(entity.location);
-
-            // Start routine
-            if (coroutine != null) StopCoroutine(coroutine);
-            coroutine = StartCoroutine(Jump(currentPosition, newPosition));
-
-            // Play sound
-            AudioManager.instance.PlaySFX("jump");
-        }
-    }
-
-    private IEnumerator Move(Vector3 startPoint, Vector3 endPoint)
-    {
-        // Start timer
-        Vector3 position;
+        Vector3 currentPosition;
         float elapsed = 0;
         float duration = GameManager.instance.gameSettings.moveBufferTime;
-
         while (elapsed < duration)
         {
             // Lerp model position
-            position = Vector3.Lerp(startPoint, endPoint, elapsed / duration);
-            transform.position = position;
+            currentPosition = Vector3.Lerp(startPosition, endPosition, elapsed / duration);
+            transform.position = currentPosition;
+
+            // Update layering
+            properLayerSort.UpdateLayer();
+
+            // Increment time
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        // Cleanup
+        transform.position = endPosition;
+
+    }
+
+    public void MoveCleanup()
+    {
+        modelAnimator.Play("Idle");
+        CancelInvoke(nameof(FootstepsSFX));
+    }
+
+    public IEnumerator Jump(Vector3Int startLocation, Vector3Int endLocation)
+    {
+        // Play sound
+        AudioManager.instance.PlaySFX("jump");
+
+        Vector3 startPosition = RoomManager.instance.GetLocationCenter(startLocation);
+        Vector3 endPosition = RoomManager.instance.GetLocationCenter(endLocation);
+
+        float elapsed = 0;
+        float duration = GameManager.instance.gameSettings.actionDuration;
+
+        Vector3 currentPosition;
+        Vector3 control = (startPosition + endPosition) / 2 + Vector3.up * jumpHeight;
+        while (elapsed < duration)
+        {
+            // Projectile motion
+            float ratio = elapsed / duration;
+            Vector3 ac = Vector3.Lerp(startPosition, control, ratio);
+            Vector3 cb = Vector3.Lerp(control, endPosition, ratio);
+
+            currentPosition = Vector3.Lerp(ac, cb, ratio);
+            transform.position = currentPosition;
 
             // Increment time
             elapsed += Time.deltaTime;
@@ -244,16 +171,18 @@ public class EntityModel : MonoBehaviour
         }
 
         // Set to final destination
-        transform.position = endPoint;
+        transform.position = endPosition;
     }
 
-    private IEnumerator Warp(Vector3 newLocation)
+    public IEnumerator Warp(Vector3Int _, Vector3Int endLocation)
     {
+        Vector3 endPosition = RoomManager.instance.GetLocationCenter(endLocation);
+
         // Start particles
         warpGenerateParticles.Play();
 
         // Wait
-        yield return new WaitForSeconds(GameManager.instance.gameSettings.warpBufferTime);
+        yield return new WaitForSeconds(GameManager.instance.gameSettings.actionDuration);
 
         // Spawn dust
         warpDustParticles.Play();
@@ -261,37 +190,57 @@ public class EntityModel : MonoBehaviour
         // Stop particles
         warpGenerateParticles.Stop();
 
-        yield return null;
-
         // Move transform
-        transform.position = newLocation;
+        transform.position = endPosition;
     }
 
-    private IEnumerator Jump(Vector3 startPoint, Vector3 endPoint)
+    public void TakeDamage(Entity entity, int damage)
     {
-        // Start timer
-        Vector3 position;
-        float elapsed = 0;
-        float duration = GameManager.instance.gameSettings.jumpBufferTime;
-
-        Vector3 control = (endPoint + startPoint) / 2 + Vector3.up * jumpHeight;
-        while (elapsed < duration)
+        // If this entity took damage
+        if (damage > 0)
         {
-            // Projectile motion
-            float ratio = elapsed / duration;
-            Vector3 ac = Vector3.Lerp(startPoint, control, ratio);
-            Vector3 cb = Vector3.Lerp(control, endPoint, ratio);
+            // Display damage flash
+            if (GameManager.instance.gameSettings.useHitFlash)
+                damageFlash.Flash();
 
-            position = Vector3.Lerp(ac, cb, ratio);
-            transform.position = position;
+            // Spawn particle
+            if (entity.hitEffectPrefab != null)
+            {
+                Instantiate(entity.hitEffectPrefab, transform.position, transform.rotation);
+            }
 
-            // Increment time
-            elapsed += Time.deltaTime;
-            yield return null;
+            // Shake screen
+            if (GameManager.instance.gameSettings.useScreenShake)
+                CameraShake.instance.ScreenShake(0.15f);
         }
+    }
 
-        // Set to final destination
-        transform.position = endPoint;
+    public void SetDangerStatus(bool inDanger)
+    {
+        if (inDanger)
+        {
+            dangerAnimator.Play("Flash");
+        }
+        else
+        {
+            dangerAnimator.Play("Idle");
+        }
+    }
+
+    private void FaceDirection(Entity entity, Vector3 direction, Weapon weapon)
+    {
+        if (this.entity == entity)
+        {
+            // Face direction of attack
+            FlipModel(direction);
+        }
+    }
+
+    // ~~~~~ HELPERS ~~~~~
+
+    private void FootstepsSFX()
+    {
+        AudioManager.instance.PlaySFX("footstep");
     }
 
     private void FlipModel(Vector3 direction)
@@ -307,49 +256,6 @@ public class EntityModel : MonoBehaviour
         {
             isFacingRight = false;
             transform.Rotate(0f, 180f, 0f);
-        }
-    }
-
-    private void TakeDamage(Entity entity, int damage)
-    {
-        // If this entity took damage
-        if (this.entity == entity && damage > 0)
-        {
-            // Display damage flash
-            if (GameManager.instance.gameSettings.useHitFlash)
-                damageFlash.Flash();
-
-            // Spawn particle
-            if (entity.hitEffectPrefab != null)
-            {
-                Instantiate(entity.hitEffectPrefab, transform.position, transform.rotation);
-            }
-
-            // Shake screen
-            if (GameManager.instance.gameSettings.useScreenShake)
-                CameraShake.instance.ScreenShake(0.15f);
-
-        }
-    }
-
-    private void InDanger(Entity entity)
-    {
-        if (this.entity == entity)
-            dangerAnimator.Play("Flash");
-    }
-
-    private void OutDanger(Entity entity)
-    {
-        if (this.entity == entity)
-            dangerAnimator.Play("Idle");
-    }
-
-    private void FaceDirection(Entity entity, Vector3 direction, Weapon weapon)
-    {
-        if (this.entity == entity)
-        {
-            // Face direction of attack
-            FlipModel(direction);
         }
     }
 }

@@ -15,13 +15,12 @@ MonoBehaviour:
   name: Walk
   rawInactiveDescription: Move up to {die} tiles
   rawActiveDescription: Move up to {die} tiles
-  icon: {fileID: 21300000, guid: c6aa1b6b14c9ead479c8e9186db26833, type: 3}
+  icon: {fileID: -2126504424, guid: 91c6e5420840aa74883dcb2d26dae9ea, type: 3}
   color: {r: 0.3647059, g: 0.7960785, b: 0.22352943, a: 1}
   actionSpeed: 0
   actionType: 0
   pathPrefab: {fileID: 5796882529580813460, guid: ef9f5511c8dd74f41931f219e0d037f5, type: 3}
   die: {fileID: 11400000, guid: e8d732acdda4b39449630ce6ec7774ab, type: 2}
   weapon: {fileID: 0}
-  buffs: []
   modifiers: []
   bonusDamage: 0

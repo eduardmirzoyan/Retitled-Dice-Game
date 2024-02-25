@@ -34,18 +34,13 @@ public class GameEvents : MonoBehaviour
     // Visuals
     public event Action<Entity> onEntitySpawn;
     public event Action<Entity> onEntityDespawn;
-    public event Action<Entity> onEntityMoveStart;
-    public event Action<Entity> onEntityMove;
-    public event Action<Entity> onEntityMoveStop;
+    public event Action<Entity> onEntityRelocate;
+
     public event Action<Entity, Vector3, Weapon> onEntityDrawWeapon;
     public event Action<Entity, Weapon> onEntitySheatheWeapon;
     public event Action<Entity, Weapon> onEntityUseWeapon;
-    public event Action<Entity> onEntityWarp;
-    public event Action<Entity> onEntityJump;
     public event Action<Action, List<Vector3Int>> onActionThreatenLocations;
     public event Action<Action, List<Vector3Int>> onActionUnthreatenLocations;
-    public event Action<Entity> onEntityInDanger;
-    public event Action<Entity> onEntityOutDanger;
 
     // Events
     public event Action<Entity, Weapon, Entity> onEntityKillEntity;
@@ -177,29 +172,9 @@ public class GameEvents : MonoBehaviour
         onActionPerformEnd?.Invoke(entity, action, location, room);
     }
 
-    public void TriggerOnEntityStartMove(Entity entity)
+    public void TriggerOnEntityRelocate(Entity entity)
     {
-        onEntityMoveStart?.Invoke(entity);
-    }
-
-    public void TriggerOnEntityMove(Entity entity)
-    {
-        onEntityMove?.Invoke(entity);
-    }
-
-    public void TriggerOnEntityStopMove(Entity entity)
-    {
-        onEntityMoveStop?.Invoke(entity);
-    }
-
-    public void TriggerOnEnityWarp(Entity entity)
-    {
-        onEntityWarp?.Invoke(entity);
-    }
-
-    public void TriggerOnEntityJump(Entity entity)
-    {
-        onEntityJump?.Invoke(entity);
+        onEntityRelocate?.Invoke(entity);
     }
 
     public void TriggerOnDieLoop(Die die)
@@ -300,16 +275,6 @@ public class GameEvents : MonoBehaviour
     public void TriggerOnActionUnthreatenLocation(Action action, List<Vector3Int> locations)
     {
         onActionUnthreatenLocations?.Invoke(action, locations);
-    }
-
-    public void TriggerOnEntityInDanger(Entity entity)
-    {
-        onEntityInDanger?.Invoke(entity);
-    }
-
-    public void TriggerOnEntityOutDanger(Entity entity)
-    {
-        onEntityOutDanger?.Invoke(entity);
     }
 
     public void TriggerOnEntityKillEntity(Entity killer, Weapon weapon, Entity victim)

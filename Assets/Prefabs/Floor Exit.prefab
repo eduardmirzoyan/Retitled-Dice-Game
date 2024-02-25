@@ -239,8 +239,8 @@ MonoBehaviour:
   animator: {fileID: 908043781088672006}
   iconRenderer: {fileID: 5943463419857017087}
   exitIcons:
-  - {fileID: 21300000, guid: baacd4f4b22ace34d8c7d1c46e357a4d, type: 3}
-  - {fileID: 21300000, guid: 3be5eefb9fa439b4d8f1e121e91eaf64, type: 3}
+  - {fileID: 21300000, guid: 7507aeb9bb7938a4eb6a3fd85de4f7f8, type: 3}
+  - {fileID: 21300000, guid: 8ace484374b4b1249ad5f1f0211ef5b0, type: 3}
   - {fileID: 21300000, guid: b7f8a6022d1d8804aa02896fcd32eccf, type: 3}
 --- !u!1 &6383842147948068785
 GameObject:
@@ -268,7 +268,7 @@ Transform:
   m_GameObject: {fileID: 6383842147948068785}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 908043782509341750}
@@ -315,7 +315,7 @@ SpriteRenderer:
   m_SortingLayerID: 720893697
   m_SortingLayer: -1
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: baacd4f4b22ace34d8c7d1c46e357a4d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7507aeb9bb7938a4eb6a3fd85de4f7f8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

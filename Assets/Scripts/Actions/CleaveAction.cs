@@ -29,6 +29,8 @@ public class CleaveAction : Action
 
     public override IEnumerator Perform(Entity entity, Vector3Int targetLocation, List<Vector3Int> threatenedLocations, Room room)
     {
+        yield return null;
+
         // Attack each location
         foreach (var location in threatenedLocations)
         {
@@ -44,7 +46,5 @@ public class CleaveAction : Action
 
         // Trigger event
         GameEvents.instance.TriggerOnEntityUseWeapon(entity, weapon);
-
-        yield return null;
     }
 }

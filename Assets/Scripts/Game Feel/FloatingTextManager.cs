@@ -56,7 +56,7 @@ public class FloatingTextManager : MonoBehaviour
 
     private void SpawnFloatingText(Entity entity, string message, Color color, float xVel, float yVel, float duration)
     {
-        var worldLocation = RoomUI.instance.GetLocationCenter(entity.location);
+        var worldLocation = RoomManager.instance.GetLocationCenter(entity.location);
         var ft = Instantiate(floatingTextPrefab, worldLocation, Quaternion.identity).GetComponent<FloatingText>();
         ft.Initialize(message, color, xVel, yVel, duration);
     }

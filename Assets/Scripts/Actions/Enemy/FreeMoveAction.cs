@@ -55,26 +55,26 @@ public class FreeMoveAction : Action
         // Remove the start location
         path.RemoveAt(0);
 
-        // Trigger start move event
-        GameEvents.instance.TriggerOnEntityStartMove(entity);
-
-        // Keep looping while there is a path
+        entity.model.MoveSetup();
         while (path.Count > 0)
         {
-            // Calculate direction
+            // Calculate next direction
             Vector3Int direction = path[0] - entity.location;
+            if (direction.sqrMagnitude > 1)
+                throw new System.Exception($"Improper move direction: {direction}");
 
-            // Move entity
-            yield return entity.MoveToward(direction);
+            // Calculate next location
+            Vector3Int nextLocation = entity.location + direction;
+
+            // Run animations
+            yield return entity.model.Move(entity.location, nextLocation);
+
+            // Updatate data
+            entity.Relocate(nextLocation);
 
             // Pop
             path.RemoveAt(0);
         }
-
-        // Trigger stop move event
-        GameEvents.instance.TriggerOnEntityStopMove(entity);
-
-        // Do nothing for now
-        yield return null;
+        entity.model.MoveCleanup();
     }
 }
