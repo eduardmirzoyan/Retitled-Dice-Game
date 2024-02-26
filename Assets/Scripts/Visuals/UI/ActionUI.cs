@@ -12,6 +12,7 @@ public class ActionUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     [SerializeField] private DieUI diceUI;
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private Outline actionOutline;
+    [SerializeField] private Image lockIcon;
 
     [Header("Dynamic Data")]
     [SerializeField] private Action action;
@@ -28,6 +29,7 @@ public class ActionUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
         // Initialize die
         diceUI.Initialize(action, hotkey);
+        UpdateLock(action.die);
 
         // Show
         canvasGroup.alpha = 1f;
@@ -45,11 +47,12 @@ public class ActionUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         // Sub to events
         GameEvents.instance.onTurnStart += SetInteractable;
         GameEvents.instance.onActionPerformEnd += SetInteractable;
-
         GameEvents.instance.onActionSelect += SetSelected;
-
         GameEvents.instance.onActionPerformStart += SetUninteractable;
         GameEvents.instance.onTurnEnd += SetUninteractable;
+
+        GameEvents.instance.onDieRoll += UpdateLock;
+        GameEvents.instance.onDieLock += UpdateLock;
     }
 
     public void Uninitialize()
@@ -59,11 +62,12 @@ public class ActionUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         // Unsub from events
         GameEvents.instance.onTurnStart -= SetInteractable;
         GameEvents.instance.onActionPerformEnd -= SetInteractable;
-
         GameEvents.instance.onActionSelect -= SetSelected;
-
         GameEvents.instance.onActionPerformStart -= SetUninteractable;
         GameEvents.instance.onTurnEnd -= SetUninteractable;
+
+        GameEvents.instance.onDieRoll -= UpdateLock;
+        GameEvents.instance.onDieLock -= UpdateLock;
     }
 
     private void SetInteractable(Entity entity)
@@ -132,6 +136,14 @@ public class ActionUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     private void SetUninteractable(Entity entity, Action action, Vector3Int location, Room room)
     {
         SetUninteractable(entity);
+    }
+
+    private void UpdateLock(Die die)
+    {
+        if (this.action.die == die)
+        {
+            lockIcon.enabled = die.isLocked;
+        }
     }
 
     public void OnPointerEnter(PointerEventData eventData)

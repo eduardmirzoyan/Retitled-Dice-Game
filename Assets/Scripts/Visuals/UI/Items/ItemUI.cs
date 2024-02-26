@@ -165,6 +165,10 @@ public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
                     // Trigger event
                     GameEvents.instance.TriggerOnEntityUseConsumable(player, consumable);
                 }
+                else
+                {
+                    FloatingTextManager.instance.SpawnFeedbackText(consumable.unusableMessage);
+                }
             }
         }
     }

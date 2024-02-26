@@ -100,6 +100,7 @@
     <Compile Include="Assets\Scripts\Enchantments\Weapon\WeaponEnchantment.cs" />
     <Compile Include="Assets\Scripts\Enchantments\Weapon\OnConsumableWE.cs" />
     <Compile Include="Assets\Scripts\Enchantments\Weapon\KillGoldWeaponEnchantment.cs" />
+    <Compile Include="Assets\Scripts\Visuals\UI\FeedbackTextUI.cs" />
     <Compile Include="Assets\Scripts\Generators\ItemGenerator.cs" />
     <Compile Include="Assets\Scripts\Visuals\ActionPreview.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\TextTooltipUI.cs" />
@@ -169,6 +170,7 @@
     <Compile Include="Assets\Scripts\Visuals\UI\Inventory\EquipmentHandlerUI.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\Shaman\ShamanSourceSlotUI.cs" />
     <Compile Include="Assets\Scripts\Enchantments\Weapon\NoneWeaponEnchantment.cs" />
+    <Compile Include="Assets\Scripts\Items\Consumables\RerollConsumable.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\Shop\ShopSlotUI.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\GameWinUI.cs" />
     <Compile Include="Assets\Scripts\Pathfinder.cs" />
@@ -195,7 +197,6 @@
     <Compile Include="Assets\Scripts\AI\AI.cs" />
     <Compile Include="Assets\Scripts\Actions\MerchantAction.cs" />
     <Compile Include="Assets\Scripts\AI\BoldAI.cs" />
-    <Compile Include="Assets\Scripts\Items\Consumables\RerollConsumable.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

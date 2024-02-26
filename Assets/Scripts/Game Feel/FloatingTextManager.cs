@@ -1,9 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class FloatingTextManager : MonoBehaviour
 {
+    [SerializeField] private Canvas playerScreen;
+
+    [SerializeField] private GameObject floatingUIPrefab;
     [SerializeField] private GameObject floatingTextPrefab;
 
     // Handles the need to display any form of text in the game.
@@ -11,7 +15,7 @@ public class FloatingTextManager : MonoBehaviour
     private void Awake()
     {
         // Singleton Logic
-        if (FloatingTextManager.instance != null)
+        if (instance != null)
         {
             Destroy(gameObject);
             return;
@@ -44,13 +48,13 @@ public class FloatingTextManager : MonoBehaviour
         else
         {
             // Spawn as heal number
-            SpawnFloatingText(entity, "+" + -amount + " HP", Color.green, 0.5f, 2f, 1f);
+            SpawnFloatingText(entity, $"+{-amount} HP", Color.green, 0.5f, 2f, 1f);
         }
     }
 
     private void ShowGoldNumber(Entity entity, int amount)
     {
-        string message = "+" + amount + " G";
+        string message = $"+{amount} G";
         SpawnFloatingText(entity, message, Color.yellow, 0, 3f, 1f);
     }
 
@@ -61,4 +65,11 @@ public class FloatingTextManager : MonoBehaviour
         ft.Initialize(message, color, xVel, yVel, duration);
     }
 
+    public void SpawnFeedbackText(string message)
+    {
+        var mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        mousePosition.z = 0f;
+        var fb = Instantiate(floatingUIPrefab, mousePosition, Quaternion.identity, playerScreen.transform).GetComponent<FeedbackTextUI>();
+        fb.Initialize(message);
+    }
 }

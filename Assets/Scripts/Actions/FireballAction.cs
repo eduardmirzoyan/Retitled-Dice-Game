@@ -5,6 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Actions/Fireball")]
 public class FireballAction : Action
 {
+    [SerializeField] private bool useCrossPattern;
+
     public override List<Vector3Int> GetValidLocations(Vector3Int startLocation, Room room)
     {
         List<Vector3Int> targets = new List<Vector3Int>();
@@ -27,10 +29,21 @@ public class FireballAction : Action
     {
         List<Vector3Int> targets = new List<Vector3Int>() { targetLocation };
 
-        // Add each direction
-        foreach (var direction in cardinalDirections)
+        if (useCrossPattern)
         {
-            targets.Add(targetLocation + direction);
+            // Form + pattern
+            foreach (var direction in cardinalDirections)
+            {
+                targets.Add(targetLocation + direction);
+            }
+        }
+        else
+        {
+            // Form X pattern
+            targets.Add(targetLocation + new Vector3Int(1, 1));
+            targets.Add(targetLocation + new Vector3Int(1, -1));
+            targets.Add(targetLocation + new Vector3Int(-1, 1));
+            targets.Add(targetLocation + new Vector3Int(-1, -1));
         }
 
         return targets;

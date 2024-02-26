@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 137ad60ab6ffe3f4fa84f0b01ec31495, type: 3}
-  m_Name: Fireball Action
+  m_Name: Iceball Action
   m_EditorClassIdentifier: 
-  name: Fireball
-  rawInactiveDescription: Attack with fire
+  name: Iceball
+  rawInactiveDescription: Attack with ice
   rawActiveDescription: Deal {dmg} damage
   icon: {fileID: -892391786, guid: 91c6e5420840aa74883dcb2d26dae9ea, type: 3}
   color: {r: 0.87058824, g: 0.24313726, b: 0.13725491, a: 1}
@@ -24,4 +24,4 @@ MonoBehaviour:
   weapon: {fileID: 0}
   modifiers: []
   bonusDamage: 0
-  useCrossPattern: 1
+  useCrossPattern: 0

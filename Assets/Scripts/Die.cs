@@ -76,11 +76,12 @@ public class Die : ScriptableObject
         if (isLocked)
         {
             isLocked = false;
-            return;
         }
-
-        // Generate a random value
-        value = Random.Range(TrueMin, TrueMax + 1);
+        else
+        {
+            // Generate a random value
+            value = Random.Range(TrueMin, TrueMax + 1);
+        }
 
         // Trigger events
         GameEvents.instance.TriggerOnDieRoll(this);
@@ -95,8 +96,10 @@ public class Die : ScriptableObject
             isLocked = false;
             return;
         }
-
-        value = Mathf.Min(value + amount, TrueMax);
+        else
+        {
+            value = Mathf.Min(value + amount, TrueMax);
+        }
 
         GameEvents.instance.TriggerOnDieBump(this);
     }

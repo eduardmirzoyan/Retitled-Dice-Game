@@ -25,3 +25,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 29e5b24f4b91ba94f923008bf0b2b1c5, type: 2}
   - {fileID: 11400000, guid: ab2261afb87ee584a8f0d0445b8cbe18, type: 2}
   healingPotion: {fileID: 11400000, guid: 3216e5b93d09ae843ac8d7b59b39a103, type: 2}
+  possibleConsumables:
+  - {fileID: 11400000, guid: 9dccedb4ee42e2149b527aebe644b8bc, type: 2}
+  - {fileID: 11400000, guid: 8b726be2a8281784d92b01927b06158f, type: 2}
+  - {fileID: 11400000, guid: a27aa15e4d43a7c468d0c26dce7f2cd8, type: 2}
+  - {fileID: 11400000, guid: fc0f1c5ee3c65da4a8d2ffedb18cd0ac, type: 2}
+  - {fileID: 11400000, guid: 0b398eaf2a10ac64fb5788cfb6c6aa01, type: 2}

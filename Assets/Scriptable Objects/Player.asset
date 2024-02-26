@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Knight
   maxHealth: 3
-  currentHealth: 2
+  currentHealth: 3
   gold: 20
   inventory: {fileID: 11400000, guid: b8d64f6ca5474a942ac1360be01b684d, type: 2}
   modelSprite: {fileID: 609013636, guid: 721bbd13f0ed4ac4280c2ee7e9ff8b65, type: 3}

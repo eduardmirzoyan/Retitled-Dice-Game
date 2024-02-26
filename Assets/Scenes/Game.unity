@@ -3762,7 +3762,6 @@ MonoBehaviour:
   ostSounds: []
   sfxSounds: []
   fadeTime: 1
-  testSFX: 
 --- !u!4 &385730644
 Transform:
   m_ObjectHideFlags: 0
@@ -3894,7 +3893,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -734.99994, y: 0}
+  m_AnchoredPosition: {x: -735, y: 0}
   m_SizeDelta: {x: -1470, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &404998924
@@ -8753,6 +8752,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9c7625d2e73ff842a1596935ed86c91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerScreen: {fileID: 277073726}
+  floatingUIPrefab: {fileID: 4762201233305015566, guid: 024eee00dade89f4eac11064334a045e, type: 3}
   floatingTextPrefab: {fileID: 4781472202705079880, guid: 9c9a6ca82885d074eaac9c2b26a1c1c9, type: 3}
 --- !u!1 &923512866
 GameObject:
