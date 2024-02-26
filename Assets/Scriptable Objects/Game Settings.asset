@@ -13,14 +13,11 @@ MonoBehaviour:
   m_Name: Game Settings
   m_EditorClassIdentifier: 
   useHitFlash: 0
-  useHitFreeze: 0
   useScreenShake: 1
-  useAttackEffect: 1
-  useHitEffect: 1
+  diceRollTime: 1
+  gameStartBufferTime: 1
   aiBufferTime: 0.25
   moveBufferTime: 0.35
   warpBufferTime: 0.5
   jumpBufferTime: 0.5
-  weaponDrawBufferTime: 0.25
-  weaponMeleeBufferTime: 0.25
-  weaponSheatheBufferTime: 0.33
+  actionDuration: 0.5

@@ -13,7 +13,12 @@ MonoBehaviour:
   m_Name: Locked 1
   m_EditorClassIdentifier: 
   maxValue: 6
+  minValue: 1
   value: 1
   isExhausted: 0
+  action: {fileID: 0}
+  bonusMinRoll: 0
+  bonusMaxRoll: 0
+  isLocked: 0
   neverExhaust: 0
-  lockValue: 1
+  alwaysLock: 1

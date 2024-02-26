@@ -14,7 +14,7 @@ public class BoldAI : AI
         var actionPairSquence = new List<(Action, Vector3Int)>();
 
         // Get all possible actions
-        var possibleActions = entity.GetActions();
+        var possibleActions = entity.AllActions();
 
         // ASSUME FIRST ACTION IS A MOVE ACTION
         var moveAction = possibleActions[0];

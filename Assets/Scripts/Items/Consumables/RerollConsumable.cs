@@ -2,11 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Consumables/Bump")]
-public class BumpConsumable : Consumable
+[CreateAssetMenu(menuName = "Consumables/Reroll")]
+public class RerollConsumable : Consumable
 {
-    [SerializeField] private int bumpValue = 1;
-
     public override bool CanUse(Entity entity)
     {
         return true;
@@ -17,7 +15,7 @@ public class BumpConsumable : Consumable
         foreach (var action in entity.AllActions())
         {
             if (!action.die.isExhausted)
-                action.die.Bump(bumpValue);
+                action.die.Roll();
         }
 
         yield return null;

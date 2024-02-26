@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [CreateAssetMenu]
@@ -12,12 +13,14 @@ public class Die : ScriptableObject
     public bool isExhausted = false;
     public Action action;
 
-    [Header("Debugging")]
-    public bool neverExhaust = false;
-    public bool lockValue = false;
-
+    [Header("Bonuses")]
     public int bonusMinRoll;
     public int bonusMaxRoll;
+    public bool isLocked;
+
+    [Header("Debug")]
+    public bool neverExhaust = false;
+    public bool alwaysLock = false;
 
     public int TrueMax
     {
@@ -68,13 +71,41 @@ public class Die : ScriptableObject
 
     public void Roll()
     {
-        if (lockValue) return;
+        if (alwaysLock) return;
+
+        if (isLocked)
+        {
+            isLocked = false;
+            return;
+        }
 
         // Generate a random value
         value = Random.Range(TrueMin, TrueMax + 1);
 
         // Trigger events
         GameEvents.instance.TriggerOnDieRoll(this);
+    }
+
+    public void Bump(int amount)
+    {
+        if (alwaysLock) return;
+
+        if (isLocked)
+        {
+            isLocked = false;
+            return;
+        }
+
+        value = Mathf.Min(value + amount, TrueMax);
+
+        GameEvents.instance.TriggerOnDieBump(this);
+    }
+
+    public void Lock()
+    {
+        isLocked = true;
+
+        GameEvents.instance.TriggerOnDieLock(this);
     }
 
     public Die Copy()

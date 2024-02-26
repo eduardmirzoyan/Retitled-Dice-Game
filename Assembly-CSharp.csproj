@@ -130,6 +130,7 @@
     <Compile Include="Assets\Scripts\GameSettings.cs" />
     <Compile Include="Assets\Scripts\AI\RandomAI.cs" />
     <Compile Include="Assets\Scripts\World\RoomTile.cs" />
+    <Compile Include="Assets\Scripts\Items\Consumables\BumpConsumable.cs" />
     <Compile Include="Assets\Scripts\Actions\Enemy\ArtilleryAction.cs" />
     <Compile Include="Assets\Scripts\Enchantments\Weapon\ReplenishOnKillWE.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\Blacksmith\BlacksmithUI.cs" />
@@ -154,6 +155,7 @@
     <Compile Include="Assets\Scripts\Visuals\UI\Items\ItemSlotUI.cs" />
     <Compile Include="Assets\Scripts\Entity.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\Inventory\InventoryHandlerUI.cs" />
+    <Compile Include="Assets\Scripts\Items\Consumables\DamageConsumable.cs" />
     <Compile Include="Assets\Scripts\Visuals\ActionPathRenderer.cs" />
     <Compile Include="Assets\Scripts\Actions\Action.cs" />
     <Compile Include="Assets\Scripts\Game Feel\DottedLine.cs" />
@@ -181,6 +183,7 @@
     <Compile Include="Assets\Scripts\Visuals\UI\Inventory\EquipmentAlertUI.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\Inventory\InventorySlotUI.cs" />
     <Compile Include="Assets\Scripts\Managers\CameraManager.cs" />
+    <Compile Include="Assets\Scripts\Items\Consumables\LockConsumable.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\DieUI.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\CutoutMaskUI.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
@@ -192,9 +195,7 @@
     <Compile Include="Assets\Scripts\AI\AI.cs" />
     <Compile Include="Assets\Scripts\Actions\MerchantAction.cs" />
     <Compile Include="Assets\Scripts\AI\BoldAI.cs" />
-    <Compile Include="Assets\Scripts\Items\Consumables\DamageConsumable.cs" />
-    <Compile Include="Assets\Scripts\Items\Consumables\LockConsumable.cs" />
-    <Compile Include="Assets\Scripts\Items\Consumables\BumpConsumable.cs" />
+    <Compile Include="Assets\Scripts\Items\Consumables\RerollConsumable.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

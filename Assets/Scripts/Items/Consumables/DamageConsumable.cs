@@ -20,7 +20,7 @@ public class DamageConsumable : Consumable
 
         // Buff actions
         ModifierTag modifier = new($"+{damageBoost} damage", name);
-        foreach (var action in entity.GetActions())
+        foreach (var action in entity.AllActions())
         {
             if (action.actionType == ActionType.Attack)
             {
@@ -40,7 +40,7 @@ public class DamageConsumable : Consumable
         if (this.entity == entity)
         {
             // Remove buff and tag
-            foreach (var action in entity.GetActions())
+            foreach (var action in entity.AllActions())
             {
                 if (action.actionType == ActionType.Attack)
                 {

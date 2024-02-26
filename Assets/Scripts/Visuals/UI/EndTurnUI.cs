@@ -79,7 +79,7 @@ public class EndTurnUI : MonoBehaviour
     {
         // Check if any possible moves are left, if not, then highlight
         if (entity is Player)
-            outline.enabled = entity.GetActions().All(action => action.die.isExhausted);
+            outline.enabled = entity.AllActions().All(action => action.die.isExhausted);
     }
 
 

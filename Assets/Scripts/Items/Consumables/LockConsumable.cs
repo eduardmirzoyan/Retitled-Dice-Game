@@ -7,11 +7,18 @@ public class LockConsumable : Consumable
 {
     public override bool CanUse(Entity entity)
     {
-        throw new System.NotImplementedException();
+        // Always available
+        return true;
     }
 
     public override IEnumerator Use(Entity entity)
     {
-        throw new System.NotImplementedException();
+        foreach (var action in entity.AllActions())
+        {
+            if (!action.die.isExhausted)
+                action.die.Lock();
+        }
+
+        yield return null;
     }
 }

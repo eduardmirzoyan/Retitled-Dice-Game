@@ -676,7 +676,7 @@ public class GameManager : MonoBehaviour
         selectedThreats.Clear();
 
         // Exhaust all die
-        foreach (var action in selectedEntity.GetActions())
+        foreach (var action in selectedEntity.AllActions())
         {
             action.die.Exhaust();
         }
@@ -748,17 +748,11 @@ public class GameManager : MonoBehaviour
         // Player should have buffer time
         if (entity is Player)
         {
-            // Visually loop die
-            foreach (var action in entity.GetActions())
-            {
-                GameEvents.instance.TriggerOnDieLoop(action.die);
-            }
-
             // Buffer
             yield return new WaitForSeconds(gameSettings.diceRollTime);
 
             // Set new values
-            foreach (var action in entity.GetActions())
+            foreach (var action in entity.AllActions())
             {
                 // Roll die with event
                 action.die.Roll();
@@ -776,7 +770,7 @@ public class GameManager : MonoBehaviour
         else
         {
             // Set new values
-            foreach (var action in entity.GetActions())
+            foreach (var action in entity.AllActions())
             {
                 // Replenish die with event
                 action.die.Replenish();

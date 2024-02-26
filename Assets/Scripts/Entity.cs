@@ -104,7 +104,7 @@ public class Entity : ScriptableObject
         }
     }
 
-    public List<Action> GetActions()
+    public List<Action> AllActions()
     {
         List<Action> result = new List<Action>();
 

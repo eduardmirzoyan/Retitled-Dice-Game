@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using Unity.VisualScripting;
 
 public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
 {
@@ -64,19 +65,21 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
         gameObject.name = action.name + " Die UI";
 
         // Sub to die events
-        GameEvents.instance.onDieLoop += Loop;
+        GameEvents.instance.onTurnStart += StartRolling;
         GameEvents.instance.onDieRoll += Roll;
         GameEvents.instance.onDieExhaust += Exhaust;
         GameEvents.instance.onDieReplenish += Relpenish;
+        GameEvents.instance.onDieBump += Bump;
     }
 
     public void Uninitialize()
     {
         // Unsub to die events
-        GameEvents.instance.onDieLoop -= Loop;
+        GameEvents.instance.onTurnStart -= StartRolling;
         GameEvents.instance.onDieRoll -= Roll;
         GameEvents.instance.onDieExhaust -= Exhaust;
         GameEvents.instance.onDieReplenish -= Relpenish;
+        GameEvents.instance.onDieBump -= Bump;
     }
 
     public void Pulse()
@@ -102,18 +105,21 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
         highlightOutline.enabled = false;
     }
 
-    private void Loop(Die die)
+    private void StartRolling(Entity entity)
     {
-        // If this was not the rolled die, the dip
-        if (this.die != die) return;
+        // If player's turn started
+        if (entity is Player)
+        {
+            if (die.alwaysLock || die.isLocked)
+                return;
 
-        if (rollRoutine != null) StopCoroutine(rollRoutine);
+            if (rollRoutine != null)
+                StopCoroutine(rollRoutine);
+            rollRoutine = StartCoroutine(RollVisuals(5f));
 
-        // Start rolling
-        rollRoutine = StartCoroutine(RollVisuals(GameManager.instance.gameSettings.diceRollTime));
-
-        // Play Sound
-        AudioManager.instance.PlaySFX("die_roll");
+            // Play Sound
+            AudioManager.instance.PlaySFX("die_roll");
+        }
     }
 
     private void Roll(Die die)
@@ -127,12 +133,8 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
         // At the end, draw the true number that was rolled
         DisplayValue(die.value);
 
-        // rollRoutine = StartCoroutine(RollVisuals(rollTime));
-
-        burstAnimator.Play("Burst");
-
-        // Play Sound
-        AudioManager.instance.PlaySFX("die_hit");
+        // Play VFX
+        Burst();
     }
 
     private IEnumerator RollVisuals(float duration)
@@ -151,9 +153,6 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
             elapsedTime += 0.1f;
             yield return new WaitForSeconds(0.1f);
         }
-
-        // // At the end, draw the true number that was rolled
-        // DisplayValue(die.value);
     }
 
     private void Exhaust(Die die)
@@ -173,6 +172,18 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
             canvasGroup.blocksRaycasts = true;
 
             Pulse();
+        }
+    }
+
+    private void Bump(Die die)
+    {
+        if (this.die == die)
+        {
+            // Update value
+            DisplayValue(die.value);
+
+            // Show VFX
+            Burst();
         }
     }
 
@@ -290,6 +301,17 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
             GameManager.instance.SelectAction(null);
         }
 
+    }
+
+    // ~~~~~ HELPERS ~~~~~
+
+    private void Burst()
+    {
+        // Play animation
+        burstAnimator.Play("Burst");
+
+        // Play Sound
+        AudioManager.instance.PlaySFX("die_hit");
     }
 
     private void DisplayValue(int value)

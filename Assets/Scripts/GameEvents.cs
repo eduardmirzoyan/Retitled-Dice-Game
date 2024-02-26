@@ -26,10 +26,11 @@ public class GameEvents : MonoBehaviour
     public event Action<Entity, Action, Vector3Int, Room> onActionPerformEnd;
 
     // Dice based
-    public event Action<Die> onDieLoop;
     public event Action<Die> onDieRoll;
     public event Action<Die> onDieExhaust;
     public event Action<Die> onDieReplenish;
+    public event Action<Die> onDieBump;
+    public event Action<Die> onDieLock;
 
     // Visuals
     public event Action<Entity> onEntitySpawn;
@@ -73,7 +74,7 @@ public class GameEvents : MonoBehaviour
     private void Awake()
     {
         // Singleton Logic
-        if (GameEvents.instance != null)
+        if (instance != null)
         {
             Destroy(gameObject);
             return;
@@ -81,6 +82,8 @@ public class GameEvents : MonoBehaviour
 
         instance = this;
     }
+
+    #region Game States
 
     public void TriggerGenerateFloor(Room room)
     {
@@ -132,6 +135,10 @@ public class GameEvents : MonoBehaviour
         onCombatExit?.Invoke();
     }
 
+    #endregion
+
+    #region Actions
+
     public void TriggerOnActionEnable(Action action)
     {
         onActionEnable?.Invoke(action);
@@ -172,15 +179,9 @@ public class GameEvents : MonoBehaviour
         onActionPerformEnd?.Invoke(entity, action, location, room);
     }
 
-    public void TriggerOnEntityRelocate(Entity entity)
-    {
-        onEntityRelocate?.Invoke(entity);
-    }
+    #endregion
 
-    public void TriggerOnDieLoop(Die die)
-    {
-        onDieLoop?.Invoke(die);
-    }
+    #region Dice
 
     public void TriggerOnDieRoll(Die die)
     {
@@ -195,6 +196,25 @@ public class GameEvents : MonoBehaviour
     public void TriggerOnDieReplenish(Die die)
     {
         onDieReplenish?.Invoke(die);
+    }
+
+    public void TriggerOnDieBump(Die die)
+    {
+        onDieBump?.Invoke(die);
+    }
+
+    public void TriggerOnDieLock(Die die)
+    {
+        onDieLock?.Invoke(die);
+    }
+
+    #endregion
+
+    #region Entity
+
+    public void TriggerOnEntityRelocate(Entity entity)
+    {
+        onEntityRelocate?.Invoke(entity);
     }
 
     public void TriggerOnEntityTakeDamage(Entity entity, int damage)
@@ -216,6 +236,13 @@ public class GameEvents : MonoBehaviour
     {
         onEntitySheatheWeapon?.Invoke(entity, weapon);
     }
+
+    public void TriggerOnEntityUseConsumable(Entity entity, Consumable consumable)
+    {
+        onEntityUseConsumable?.Invoke(entity, consumable);
+    }
+
+    #endregion
 
     public void TriggerOnPickupSpawn(PickUpType pickUpType, Vector3Int location)
     {
@@ -257,11 +284,6 @@ public class GameEvents : MonoBehaviour
         onUnequipWeapon?.Invoke(entity, weapon, index);
     }
 
-    public void TriggerOnEntityUseConsumable(Entity entity, Consumable consumable)
-    {
-        onEntityUseConsumable?.Invoke(entity, consumable);
-    }
-
     public void TriggerOnEntityInspect(Entity entity, List<Vector3Int> locations)
     {
         onEntityInspect?.Invoke(entity, locations);
@@ -281,6 +303,8 @@ public class GameEvents : MonoBehaviour
     {
         onEntityKillEntity?.Invoke(killer, weapon, victim);
     }
+
+    #region Merchants
 
     public void TriggerOnOpenShop(Entity entity, Inventory inventory)
     {
@@ -311,4 +335,6 @@ public class GameEvents : MonoBehaviour
     {
         onRemoveBlacksmith?.Invoke(weapon);
     }
+
+    #endregion
 }

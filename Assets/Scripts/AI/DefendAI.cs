@@ -14,7 +14,7 @@ public class DefendAI : AI
     {
         // NOTE: (0, 0, -1) means action will be ignored
         var actionPairSquence = new List<(Action, Vector3Int)>();
-        var possibleActions = entity.GetActions();
+        var possibleActions = entity.AllActions();
         Vector3Int currentPosition = entity.location;
 
         // Find closest pickup

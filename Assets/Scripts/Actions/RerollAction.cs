@@ -19,7 +19,7 @@ public class RerollAction : Action
     public override IEnumerator Perform(Entity entity, Vector3Int targetLocation, List<Vector3Int> threatenedLocations, Room room)
     {
         // Reroll all other action's die
-        foreach (var action in entity.GetActions())
+        foreach (var action in entity.AllActions())
         {
             if (action != this && !action.die.isExhausted)
             {

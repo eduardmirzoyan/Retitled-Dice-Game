@@ -19,7 +19,6 @@ MonoBehaviour:
   baseDamage: 1
   actions:
   - {fileID: 11400000, guid: 31fb65b37415e9042bc579f491dd2fa1, type: 2}
-  - {fileID: 11400000, guid: 82ba9cfee5c446d44bbef7cf8c208fa1, type: 2}
   - {fileID: 11400000, guid: 3d0a5222516c54345861722ba677cba1, type: 2}
   enchantments: []
   enchantmentCap: 3

@@ -11,7 +11,7 @@ public class RandomAI : AI
     public override List<(Action, Vector3Int)> GenerateSequenceOfActions(Entity entity, Room room, Entity targetEntity)
     {
         var actionPairSquence = new List<(Action, Vector3Int)>();
-        var possibleActions = entity.GetActions();
+        var possibleActions = entity.AllActions();
         if (possibleActions.Count < 2) throw new System.Exception("Not enough actions.");
 
         Vector3Int currentPosition = entity.location;
