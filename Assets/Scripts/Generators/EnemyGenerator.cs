@@ -5,15 +5,18 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Generator/Enemy")]
 public class EnemyGenerator : ScriptableObject
 {
+    [Header("Enemies")]
     public List<Entity> possibleEnemies;
     public List<Entity> bosses;
     public List<Entity> merchants; // 0 - shopkeeper, 1 - blacksmith, 2 shaman, etc
+
+    [Header("Neutrals")]
     public Entity barrel;
 
-    public int shopSize;
-
+    [Header("Merchants")]
     public ItemGenerator shopItemGenerator;
     public WeaponGenerator weaponGenerator;
+    public int shopSize;
 
     public Entity GenerateEnemy(int index = -1)
     {
@@ -29,19 +32,28 @@ public class EnemyGenerator : ScriptableObject
 
     public Entity GenerateShopkeeper()
     {
+        // Error check
+        if (shopSize < 4)
+            throw new System.Exception("Shop must be at least 4 slots.");
+
         var copy = merchants[0].Copy();
 
         // Create inventory
         var inventory = ScriptableObject.CreateInstance<Inventory>();
         inventory.Initialize(shopSize);
 
-        // Fill inventory
+        // First two are always healing potions
         inventory.AddItemToEnd(shopItemGenerator.healingPotion);
-        for (int i = 0; i < shopSize - 1; i++)
-        {
-            // Add a random item
+        inventory.AddItemToEnd(shopItemGenerator.healingPotion);
+
+        // Next 2 are random non-healing consumbles
+        inventory.AddItemToEnd(shopItemGenerator.GenerateConsumable());
+        inventory.AddItemToEnd(shopItemGenerator.GenerateConsumable());
+
+        // Fill the rest with randomly generated weapons
+        for (int i = 4; i < shopSize; i++)
             inventory.AddItemToEnd(weaponGenerator.GenerateWeapon());
-        }
+
         // Set inventory
         copy.inventory = inventory;
 

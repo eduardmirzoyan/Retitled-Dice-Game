@@ -101,7 +101,7 @@ public class BlacksmithSlot : ItemSlotUI, IPointerClickHandler
         if (itemUI != null)
         {
             // Debugging
-            print("Item " + itemUI.name + " was removed from slot: " + name);
+            // print("Item " + itemUI.name + " was removed from slot: " + name);
 
             // Disable afterimage
             afterImageIcon.enabled = false;
@@ -114,7 +114,7 @@ public class BlacksmithSlot : ItemSlotUI, IPointerClickHandler
         if (newItemUI != null)
         {
             // Debugging
-            print("Item " + newItemUI.name + " was inserted into slot: " + name);
+            // print("Item " + newItemUI.name + " was inserted into slot: " + name);
 
             var item = newItemUI.GetItem();
 

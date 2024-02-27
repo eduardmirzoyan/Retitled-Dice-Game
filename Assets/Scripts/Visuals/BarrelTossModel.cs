@@ -21,6 +21,9 @@ public class BarrelTossModel : MonoBehaviour
         float elapsed = 0;
         float duration = GameManager.instance.gameSettings.actionDuration;
 
+        // Play sfx
+        AudioManager.instance.PlayFiller();
+
         Vector3 control = (startPoint + endPoint) / 2 + Vector3.up * tossHeight;
         while (elapsed < duration)
         {
@@ -42,5 +45,8 @@ public class BarrelTossModel : MonoBehaviour
 
         // Set to final destination
         transform.position = endPoint;
+
+        // Play sfx
+        AudioManager.instance.PlayFiller();
     }
 }

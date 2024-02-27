@@ -4,12 +4,24 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
+    [Header("Data")]
     [SerializeField] private List<Sound> ostSounds;
     [SerializeField] private List<Sound> sfxSounds;
     [SerializeField] private float fadeTime = 1f;
     private Coroutine coroutine;
 
+    [Header("Debug")]
+    [SerializeField] private string debugName;
+
     private string song;
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            PlaySFX(debugName);
+        }
+    }
 
     public static AudioManager instance;
     private void Awake()
@@ -25,8 +37,11 @@ public class AudioManager : MonoBehaviour
         // Format sounds
         foreach (var sound in ostSounds)
         {
+            if (sound.audioClips == null || sound.audioClips.Count == 0)
+                throw new System.Exception($"OST {sound.name} has no clips associated with it.");
+
             sound.audioSource = gameObject.AddComponent<AudioSource>();
-            sound.audioSource.clip = sound.audioClip;
+            sound.audioSource.clip = sound.audioClips[0];
 
             sound.audioSource.volume = sound.volume;
             sound.audioSource.pitch = sound.pitch;
@@ -37,8 +52,11 @@ public class AudioManager : MonoBehaviour
 
         foreach (var sound in sfxSounds)
         {
+            if (sound.audioClips == null || sound.audioClips.Count == 0)
+                throw new System.Exception($"SFX {sound.name} has no clips associated with it.");
+
             sound.audioSource = gameObject.AddComponent<AudioSource>();
-            sound.audioSource.clip = sound.audioClip;
+            sound.audioSource.clip = sound.audioClips[0];
 
             sound.audioSource.volume = sound.volume;
             sound.audioSource.pitch = sound.pitch;
@@ -126,14 +144,21 @@ public class AudioManager : MonoBehaviour
         else throw new System.Exception("Sound with that name not found: " + name);
     }
 
+    public void PlayFiller()
+    {
+        // Using this function as a placeholder for replacing sfx
+        PlaySFX("filler");
+    }
+
     public void PlaySFX(string name)
     {
         // Get all sounds with name
-        var sounds = sfxSounds.FindAll(sound => sound.name == name);
-        if (sounds.Count > 0)
+        var sound = sfxSounds.Find(sound => sound.name == name);
+        if (sound != null)
         {
-            // Randomly choose one
-            var sound = sounds[Random.Range(0, sounds.Count)];
+            // Choose a random clip
+            var clip = sound.audioClips[Random.Range(0, sound.audioClips.Count)];
+            sound.audioSource.clip = clip;
 
             // Set volume
             sound.audioSource.volume = sound.volume;
@@ -148,12 +173,9 @@ public class AudioManager : MonoBehaviour
     public void StopSFX(string name)
     {
         // Get all sounds with name
-        var sounds = sfxSounds.FindAll(sound => sound.name == name);
-        if (sounds.Count > 0)
+        var sound = sfxSounds.Find(sound => sound.name == name);
+        if (sound != null)
         {
-            // Randomly choose one
-            var sound = sounds[Random.Range(0, sounds.Count)];
-
             // Play sound
             sound.audioSource.Stop();
         }

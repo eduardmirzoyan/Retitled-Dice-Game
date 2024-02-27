@@ -29,7 +29,7 @@ public class KeyPickup : MonoBehaviour
         if (this.location == location)
         {
             // Play sound
-            AudioManager.instance.PlaySFX("key");
+            AudioManager.instance.PlaySFX("gold");
 
             // Spawn effect
             Instantiate(pickupEffect, transform.position, Quaternion.identity);

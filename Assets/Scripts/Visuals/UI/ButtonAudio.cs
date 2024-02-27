@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Button))]
-public class ButtonAudio : MonoBehaviour
+public class ButtonAudio : MonoBehaviour, IPointerEnterHandler
 {
     [SerializeField] private Button button;
 
@@ -17,6 +17,13 @@ public class ButtonAudio : MonoBehaviour
 
     private void PlayClickAudio()
     {
-        AudioManager.instance.PlaySFX("button");
+        AudioManager.instance.PlaySFX("button_click");
+    }
+
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (button.interactable)
+            AudioManager.instance.PlaySFX("button_hover");
     }
 }

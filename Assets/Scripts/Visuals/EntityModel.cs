@@ -179,6 +179,7 @@ public class EntityModel : MonoBehaviour
     {
         Vector3 endPosition = RoomManager.instance.GetLocationCenter(endLocation);
 
+
         // Start particles
         warpGenerateParticles.Play();
 
@@ -190,6 +191,9 @@ public class EntityModel : MonoBehaviour
 
         // Stop particles
         warpGenerateParticles.Stop();
+
+        // Play sound
+        AudioManager.instance.PlaySFX("teleport");
 
         // Move transform
         transform.position = endPosition;

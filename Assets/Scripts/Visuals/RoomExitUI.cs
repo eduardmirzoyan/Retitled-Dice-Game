@@ -54,5 +54,8 @@ public class RoomExitUI : MonoBehaviour
 
         // Unlock door
         animator.Play("Unlock");
+
+        // Play sfx
+        // AudioManager.instance.PlaySFX("unlock_exit");
     }
 }

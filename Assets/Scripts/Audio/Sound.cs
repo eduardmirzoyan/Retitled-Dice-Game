@@ -7,11 +7,11 @@ using UnityEngine.Audio;
 public class Sound
 {
     public string name;
-    public AudioClip audioClip;
-    
+    public List<AudioClip> audioClips;
+
     [Range(0, 1f)]
     public float volume;
-    
+
     [Range(-1f, 1f)]
     public float pitch;
 

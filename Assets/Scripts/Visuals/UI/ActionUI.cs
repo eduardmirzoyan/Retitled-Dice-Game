@@ -96,6 +96,9 @@ public class ActionUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             if (action == null)
             {
                 SetInteractable(entity);
+
+                // Play Sound
+                AudioManager.instance.PlaySFX("die_drop");
                 return;
             }
 
@@ -107,6 +110,9 @@ public class ActionUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
                 canvasGroup.blocksRaycasts = true;
 
                 diceUI.Highlight();
+
+                // Play Sound
+                AudioManager.instance.PlaySFX("die_pick");
             }
             else
             {
@@ -152,6 +158,9 @@ public class ActionUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         var corners = new Vector3[4];
         GetComponent<RectTransform>().GetWorldCorners(corners);
         ActionTooltipUI.instance.Show(action, hotkey.ToString().Replace("Alpha", ""), corners[3]);
+
+        // Play sfx
+        AudioManager.instance.PlayFiller();
     }
 
     public void OnPointerExit(PointerEventData eventData)

@@ -189,7 +189,7 @@
     <Compile Include="Assets\Scripts\Visuals\UI\DieUI.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\CutoutMaskUI.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
-    <Compile Include="Assets\Scripts\Actions\MeleeAction.cs" />
+    <Compile Include="Assets\Scripts\Actions\SlashAction.cs" />
     <Compile Include="Assets\Scripts\Visuals\RoomExitUI.cs" />
     <Compile Include="Assets\Scripts\Enchantments\Weapon\GoldToDamageWE.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\Items\ItemActionsTabUI.cs" />

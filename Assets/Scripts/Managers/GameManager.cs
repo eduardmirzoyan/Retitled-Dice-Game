@@ -192,7 +192,7 @@ public class GameManager : MonoBehaviour
 
                 // Generate a blacksmith
                 var blacksmith = enemyGenerator.GenerateBlacksmith();
-                location = new(14, 13);
+                location = new(13, 13);
                 room.SpawnEntity(blacksmith, location);
 
                 break;
@@ -885,6 +885,9 @@ public class GameManager : MonoBehaviour
 
         // Start routine
         StartCoroutine(consumable.Use(entity));
+
+        // Play sfx
+        AudioManager.instance.PlaySFX("use_consumable");
     }
 
     public void InspectLocation(Vector3Int location)

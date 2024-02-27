@@ -1006,7 +1006,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   header: Value Locked
-  description: This action will ignore the next time it is reroll.
+  description: This action will ignore its next reroll
 --- !u!1001 &8096291847545231986
 PrefabInstance:
   m_ObjectHideFlags: 0

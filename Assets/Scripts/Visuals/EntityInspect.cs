@@ -23,14 +23,14 @@ public class EntityInspect : MonoBehaviour
 
     private void Start()
     {
-        GameEvents.instance.onEntityInspect += InspectLocations;
-        GameEvents.instance.onEntityDespawn += ClearLocations;
+        GameEvents.instance.onEntityInspect += Inspect;
+        GameEvents.instance.onEntityDespawn += Clear;
     }
 
     private void OnDestroy()
     {
-        GameEvents.instance.onEntityInspect -= InspectLocations;
-        GameEvents.instance.onEntityDespawn -= ClearLocations;
+        GameEvents.instance.onEntityInspect -= Inspect;
+        GameEvents.instance.onEntityDespawn -= Clear;
     }
 
     private void LateUpdate()
@@ -61,8 +61,12 @@ public class EntityInspect : MonoBehaviour
         return view.x >= 0 && view.x < 1 && view.y >= 0 && view.y < 1;
     }
 
-    private void InspectLocations(Entity entity, List<Vector3Int> locations)
+    private void Inspect(Entity entity, List<Vector3Int> locations)
     {
+        // Clear first
+        inspectTilemap.ClearAllTiles();
+        selectionTilemap.ClearAllTiles();
+
         if (entity != null)
         {
             // Highlight tile
@@ -76,15 +80,9 @@ public class EntityInspect : MonoBehaviour
                     inspectTilemap.SetTileFlags(location, TileFlags.None);
                 }
         }
-        else
-        {
-            // Clear highlights
-            inspectTilemap.ClearAllTiles();
-            selectionTilemap.ClearAllTiles();
-        }
     }
 
-    private void ClearLocations(Entity entity)
+    private void Clear(Entity entity)
     {
         if (entity.location == selectedLocation)
         {
@@ -92,6 +90,5 @@ public class EntityInspect : MonoBehaviour
             inspectTilemap.ClearAllTiles();
             selectionTilemap.ClearAllTiles();
         }
-
     }
 }

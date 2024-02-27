@@ -394,9 +394,7 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
                 break;
 
             default:
-                // Debug
-                print("ERROR displaying die value: " + value);
-                break;
+                throw new System.Exception($"Unhandled die value: {value}");
         }
     }
 }

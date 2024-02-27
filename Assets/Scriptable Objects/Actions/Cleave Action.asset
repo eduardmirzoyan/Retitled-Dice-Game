@@ -19,7 +19,7 @@ MonoBehaviour:
   color: {r: 0.87058824, g: 0.24313726, b: 0.13725491, a: 1}
   actionSpeed: 0
   actionType: 1
-  pathPrefab: {fileID: 0}
+  pathPrefab: {fileID: 5796882529580813460, guid: ef9f5511c8dd74f41931f219e0d037f5, type: 3}
   die: {fileID: 11400000, guid: 4050fb256a6c4e84fa754220602bbcde, type: 2}
   weapon: {fileID: 0}
   modifiers: []

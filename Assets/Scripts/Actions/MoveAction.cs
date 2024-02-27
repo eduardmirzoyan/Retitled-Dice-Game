@@ -15,13 +15,11 @@ public class MoveAction : Action
             var location = startLocation + direction;
             var range = die.value;
 
-            // Check range
             while (range > 0)
             {
+                // Stop on obstacle
                 if (room.IsWall(location) || room.IsChasam(location) || room.HasEntity(location))
-                {
                     break;
-                }
 
                 targets.Add(location);
 
