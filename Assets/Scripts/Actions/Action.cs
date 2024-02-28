@@ -58,22 +58,22 @@ public abstract class Action : ScriptableObject
 
     public string GetInactiveDescription()
     {
-        return rawInactiveDescription.Replace("{dmg}", $"<color=yellow>{weapon.baseDamage}</color>").Replace("{die}", "<sprite name=\"Die\">");
+        return rawInactiveDescription.Replace("{dmg}", "<sprite name=\"Dmg\">").Replace("{die}", "<sprite name=\"Die\">");
     }
 
     public string GetActiveDescription()
     {
         if (weapon == null)
-            return rawActiveDescription.Replace("{dmg}", $"<color=#{color.ToHexString()}>{bonusDamage}</color>").Replace("{die}", $"<color=#{color.ToHexString()}>{die.value}</color>");
+            return rawInactiveDescription.Replace("{dmg}", $"<color=yellow>{bonusDamage}</color>").Replace("{die}", $"<color=#{color.ToHexString()}>{die.value}</color>");
 
-        return rawActiveDescription.Replace("{dmg}", $"<color=#{color.ToHexString()}>{GetTotalDamage()}</color>").Replace("{die}", $"<color=#{color.ToHexString()}>{die.value}</color>");
+        return rawInactiveDescription.Replace("{dmg}", $"<color=yellow>{GetTotalDamage()}</color>").Replace("{die}", $"<color=#{color.ToHexString()}>{die.value}</color>");
     }
 
     public string GetDynamicName()
     {
         int count = die.maxValue + die.minValue - 2;
         if (count > 0)
-            return $"{name}<color=yellow>+{die.maxValue + die.minValue - 2}</color>";
+            return $"{name}<color=grey>+{die.maxValue + die.minValue - 2}</color>";
 
         return name;
     }

@@ -23,6 +23,7 @@ public class EnemyGenerator : ScriptableObject
         // If no possible enemies return null
         if (possibleEnemies.Count == 0) return null;
 
+        // Get random index
         if (index == -1)
             index = Random.Range(0, possibleEnemies.Count);
 

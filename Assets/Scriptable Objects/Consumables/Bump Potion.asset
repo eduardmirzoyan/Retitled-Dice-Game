@@ -15,4 +15,6 @@ MonoBehaviour:
   name: Bump Potion
   description: +1 to all die values
   sprite: {fileID: -1155550143, guid: 7414a2fd6347e2d4f80434c8f9a704cd, type: 3}
-  value: 0
+  value: 4
+  unusableMessage: 
+  bumpValue: 1

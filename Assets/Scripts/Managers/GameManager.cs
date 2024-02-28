@@ -170,14 +170,29 @@ public class GameManager : MonoBehaviour
             case RoomType.Normal:
 
                 // Spawn enemies
-                int num = Mathf.Min(DataManager.instance.GetRoomNumber(), 3);
-                for (int i = 0; i < num; i++)
+                int num = DataManager.instance.GetRoomNumber();
+                if (num < 3)
                 {
-                    // Generate a random enemy
-                    var enemy = enemyGenerator.GenerateEnemy(i);
+                    for (int i = 0; i < num; i++)
+                    {
+                        // Generate up to first 2 enemies
+                        var enemy = enemyGenerator.GenerateEnemy(i);
 
-                    // Populate the room
-                    room.SpawnEntity(enemy);
+                        // Populate the room
+                        room.SpawnEntity(enemy);
+                    }
+                }
+                else
+                {
+                    // Generate 3 random
+                    for (int i = 0; i < 3; i++)
+                    {
+                        // Generate a random enemy
+                        var enemy = enemyGenerator.GenerateEnemy();
+
+                        // Populate the room
+                        room.SpawnEntity(enemy);
+                    }
                 }
 
                 break;
@@ -448,7 +463,7 @@ public class GameManager : MonoBehaviour
         }
         else if (selectedLocation != Vector3Int.back && location == Vector3Int.back)
         {
-            //print("De-select current location.");
+            // print("De-select current location.");
 
             selectedLocation = Vector3Int.back;
 
@@ -469,7 +484,7 @@ public class GameManager : MonoBehaviour
         }
         else if (selectedLocation == Vector3Int.back && location != Vector3Int.back)
         {
-            //print("Select new location.");
+            // print("Select new location.");
 
             selectedLocation = location;
 
@@ -507,7 +522,7 @@ public class GameManager : MonoBehaviour
             // If same location was selected
             if (selectedLocation == location)
             {
-                //print("Same location, so we toggle off.");
+                // print("Same location, so we toggle off.");
 
                 selectedLocation = Vector3Int.back;
 
@@ -528,7 +543,7 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                //print("Swap locations.");
+                // print("Swap locations.");
 
                 selectedLocation = location;
 

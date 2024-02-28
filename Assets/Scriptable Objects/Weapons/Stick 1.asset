@@ -19,7 +19,9 @@ MonoBehaviour:
   baseDamage: 1
   actions:
   - {fileID: 11400000, guid: 31fb65b37415e9042bc579f491dd2fa1, type: 2}
+  - {fileID: 11400000, guid: 31fb65b37415e9042bc579f491dd2fa1, type: 2}
   enchantments: []
+  enchantmentCap: 3
   attackParticlePrefab: {fileID: 0}
   weaponPrefab: {fileID: 1251787465029900827, guid: 539046e35f645174093ee495a9e64bd4, type: 3}
   entity: {fileID: 0}

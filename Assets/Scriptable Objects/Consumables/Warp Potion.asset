@@ -15,5 +15,5 @@ MonoBehaviour:
   name: Warp Potion
   description: Teleport to a random location
   sprite: {fileID: -162737803, guid: 7414a2fd6347e2d4f80434c8f9a704cd, type: 3}
-  value: 3
+  value: 5
   unusableMessage: No open position

@@ -58,8 +58,15 @@ public class Weapon : Item
     public void IncreaseBaseDamage()
     {
         baseDamage += 1;
+    }
 
-        name += "+";
+    public string GetDynamicName()
+    {
+        string pluses = "";
+        for (int i = 1; i < baseDamage; i++)
+            pluses += "+";
+
+        return $"{name}<color=grey>{pluses}</color>";
     }
 
     public override Item Copy()

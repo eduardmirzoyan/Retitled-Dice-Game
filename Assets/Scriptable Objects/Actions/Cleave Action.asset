@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: Cleave Action
   m_EditorClassIdentifier: 
   name: Cleave
-  rawInactiveDescription: WIP
-  rawActiveDescription: Deal {dmg} damage
+  rawInactiveDescription: 'Move {die}
+
+    Attack {dmg} to sides'
+  rawActiveDescription: Not used.
   icon: {fileID: -1812886706, guid: 91c6e5420840aa74883dcb2d26dae9ea, type: 3}
   color: {r: 0.87058824, g: 0.24313726, b: 0.13725491, a: 1}
   actionSpeed: 0

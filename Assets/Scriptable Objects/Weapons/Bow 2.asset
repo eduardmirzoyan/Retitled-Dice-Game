@@ -15,9 +15,13 @@ MonoBehaviour:
   name: Recurve Bow
   description: It's a bow, but recursive
   sprite: {fileID: 220287764, guid: 20597968d5281954482d5d148d07fa12, type: 3}
-  value: 6
+  value: 7
+  baseDamage: 1
   actions:
+  - {fileID: 11400000, guid: 31fb65b37415e9042bc579f491dd2fa1, type: 2}
   - {fileID: 11400000, guid: 2a261ff5250b99d4d8a68c972398d2b0, type: 2}
-  - {fileID: 11400000, guid: 2a261ff5250b99d4d8a68c972398d2b0, type: 2}
+  enchantments: []
+  enchantmentCap: 3
   attackParticlePrefab: {fileID: 2619012972811128830, guid: 305c791992e7f004cbe3c6b98c2bcc76, type: 3}
   weaponPrefab: {fileID: 9140997069136386509, guid: 8525dab3eaf904b468a12364fa44d58a, type: 3}
+  entity: {fileID: 0}

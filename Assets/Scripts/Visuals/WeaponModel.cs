@@ -62,6 +62,8 @@ public class WeaponModel : MonoBehaviour
         // If this weapon was drawn
         if (this.weapon == weapon)
         {
+            // print("draw");
+
             // Change attack orientation based which direction you are attacking
             // If attacking upward
             if (direction.y > 0)
@@ -109,6 +111,8 @@ public class WeaponModel : MonoBehaviour
     {
         if (this.weapon == weapon)
         {
+            // print("Sheathe");
+
             // Play animation
             animator.Play("Sheathe");
 

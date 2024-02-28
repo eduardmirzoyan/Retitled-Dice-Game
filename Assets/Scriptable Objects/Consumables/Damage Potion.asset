@@ -15,5 +15,6 @@ MonoBehaviour:
   name: Rage Potion
   description: +1 damge this turn
   sprite: {fileID: 1724812388, guid: 7414a2fd6347e2d4f80434c8f9a704cd, type: 3}
-  value: 0
+  value: 6
+  unusableMessage: 
   damageBoost: 1

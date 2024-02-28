@@ -78,6 +78,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spriteTransform: {fileID: 7058491087077335959}
+  spriteRenderer: {fileID: 4935695748052884990}
   tossHeight: 5
   rotationSpeed: 5
 --- !u!1 &4935695748052884988

@@ -6,13 +6,17 @@ public class BarrelTossModel : MonoBehaviour
 {
     [Header("Components")]
     [SerializeField] private Transform spriteTransform;
+    [SerializeField] private SpriteRenderer spriteRenderer;
 
     [Header("Settings")]
     [SerializeField] private float tossHeight;
     [SerializeField] private float rotationSpeed;
 
-    public IEnumerator Toss(Vector3Int startLocation, Vector3Int endLocation)
+    public IEnumerator Toss(Vector3Int startLocation, Vector3Int endLocation, Sprite sprite)
     {
+        // Set sprite
+        spriteRenderer.sprite = sprite;
+
         Vector3 startPoint = RoomManager.instance.GetLocationCenter(startLocation);
         Vector3 endPoint = RoomManager.instance.GetLocationCenter(endLocation);
 

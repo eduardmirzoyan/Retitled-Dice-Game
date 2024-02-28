@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: Slash Action
   m_EditorClassIdentifier: 
   name: Slash
-  rawInactiveDescription: Attack enemies in an area
-  rawActiveDescription: Deal {dmg} damage
+  rawInactiveDescription: 'Attack {dmg} behind
+
+    Move {die}'
+  rawActiveDescription: Not used.
   icon: {fileID: -1875062646, guid: 91c6e5420840aa74883dcb2d26dae9ea, type: 3}
   color: {r: 0.8705883, g: 0.24313727, b: 0.13725491, a: 1}
   actionSpeed: 0

@@ -15,6 +15,6 @@ MonoBehaviour:
   name: Healing Potion
   description: Restores 1 HP
   sprite: {fileID: 368242957, guid: 7414a2fd6347e2d4f80434c8f9a704cd, type: 3}
-  value: 3
+  value: 5
   unusableMessage: Already Full HP
   healAmount: 1

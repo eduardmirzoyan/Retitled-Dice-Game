@@ -17,10 +17,16 @@ public class ItemTooltipUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI itemNameText;
     [SerializeField] private TextMeshProUGUI itemTypeText;
     [SerializeField] private TextMeshProUGUI itemDescriptionText;
-    [SerializeField] private TextMeshProUGUI auxiliaryText;
     [SerializeField] private TextMeshProUGUI instructionsText;
     [SerializeField] private ItemActionsTabUI actionsTabUI;
     [SerializeField] private ItemEnchantmentsTabUI enchantmentsTabUI;
+
+    [Header("Auxiliary Section")]
+    [SerializeField] private GameObject auxiliarySeperator;
+    [SerializeField] private CanvasGroup auxiliaryCanvasGroup;
+    [SerializeField] private TextMeshProUGUI auxiliaryText;
+    [SerializeField] private CanvasGroup priceCanvasGroup;
+    [SerializeField] private TextMeshProUGUI priceText;
 
     [Header("Tab Components")]
     [SerializeField] private GameObject containerObject;
@@ -32,8 +38,6 @@ public class ItemTooltipUI : MonoBehaviour
 
     [Header("Debug")]
     [SerializeField] private VisibilityState state;
-    // [SerializeField] private bool isVisible;
-    // [SerializeField] private bool isTransitioning;
 
     public static ItemTooltipUI instance;
     private void Awake()
@@ -91,10 +95,11 @@ public class ItemTooltipUI : MonoBehaviour
         if (item is Weapon)
         {
             Weapon weapon = item as Weapon;
-            itemNameText.text = weapon.name;
+            itemNameText.text = weapon.GetDynamicName();
             itemTypeText.text = "Weapon";
-            itemDescriptionText.text = $"Base Damage: <color=yellow>{weapon.baseDamage}</color>";
-            auxiliaryText.text = "";
+            itemDescriptionText.text = $"Base Damage [ <sprite name=\"Dmg\"> ]: <color=yellow>{weapon.baseDamage}</color>";
+            auxiliaryCanvasGroup.alpha = 0f;
+            priceCanvasGroup.alpha = 0f;
 
             actionsTabUI.Initialize(weapon);
             enchantmentsTabUI.Initialize(weapon);
@@ -117,6 +122,8 @@ public class ItemTooltipUI : MonoBehaviour
             itemTypeText.text = "Consumable";
             itemDescriptionText.text = item.description;
             auxiliaryText.text = $"[Right Click] to use";
+            auxiliaryCanvasGroup.alpha = 1f;
+            priceCanvasGroup.alpha = 0f;
 
             containerObject.SetActive(false);
         }
@@ -124,8 +131,9 @@ public class ItemTooltipUI : MonoBehaviour
         if (showPrice)
         {
             // Set to show price
-            auxiliaryText.fontSize = 48f;
-            auxiliaryText.text = $"Price: {item.GetValue()}<sprite name=\"Gold\">";
+            priceText.text = $"{item.GetValue()}";
+            auxiliaryCanvasGroup.alpha = 0f;
+            priceCanvasGroup.alpha = 1f;
         }
 
         // Update any layouts

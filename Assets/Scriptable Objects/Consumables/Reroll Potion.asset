@@ -15,4 +15,5 @@ MonoBehaviour:
   name: Reroll Potion
   description: Reroll all of your actions
   sprite: {fileID: 1107076027, guid: 7414a2fd6347e2d4f80434c8f9a704cd, type: 3}
-  value: 0
+  value: 4
+  unusableMessage: 

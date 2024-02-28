@@ -21,7 +21,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 36af11680403a7d479e48f26e9d822e7, type: 3}
+        m_Texture: {fileID: 2800000, guid: b9963862f4da13647b99f19e21d2dfa6, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
@@ -75,7 +75,7 @@ MonoBehaviour:
     m_StrikethroughOffset: 0
     m_StrikethroughThickness: 0
     m_TabWidth: 0
-  spriteSheet: {fileID: 2800000, guid: 36af11680403a7d479e48f26e9d822e7, type: 3}
+  spriteSheet: {fileID: 2800000, guid: b9963862f4da13647b99f19e21d2dfa6, type: 3}
   m_SpriteCharacterTable:
   - m_ElementType: 2
     m_Unicode: 65534
@@ -87,8 +87,8 @@ MonoBehaviour:
     m_Unicode: 65534
     m_GlyphIndex: 1
     m_Scale: 1
-    m_Name: Gold
-    m_HashCode: 2586304
+    m_Name: Dmg
+    m_HashCode: 73134
   m_SpriteGlyphTable:
   - m_Index: 0
     m_Metrics:
@@ -111,7 +111,7 @@ MonoBehaviour:
       m_Height: 16
       m_HorizontalBearingX: 0
       m_HorizontalBearingY: 13
-      m_HorizontalAdvance: 17
+      m_HorizontalAdvance: 15
     m_GlyphRect:
       m_X: 0
       m_Y: 0

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using Unity.VisualScripting;
 
 public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
 {
@@ -216,24 +215,27 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
         // If die is not exhausted
         if (!die.isExhausted)
         {
-            // Update visually
-            canvasGroup.alpha = 0.4f;
-            canvasGroup.blocksRaycasts = false;
+            if (eventData.button == PointerEventData.InputButton.Left)
+            {
+                // Update visually
+                canvasGroup.alpha = 0.4f;
+                canvasGroup.blocksRaycasts = false;
 
-            // Remove from parent
-            rectTransform.SetParent(transform.root);
+                // Remove from parent
+                rectTransform.SetParent(transform.root);
 
-            // Randomize rotation direction
-            rotationDirection = Random.Range(0, 2) == 0 ? 1 : -1;
+                // Randomize rotation direction
+                rotationDirection = Random.Range(0, 2) == 0 ? 1 : -1;
 
-            // Enable flag
-            isBeingDragged = true;
+                // Enable flag
+                isBeingDragged = true;
 
-            // Set cursor to grab
-            ResourceMananger.instance.SetGrabCursor();
+                // Set cursor to grab
+                ResourceMananger.instance.SetGrabCursor();
 
-            // Select this action
-            GameManager.instance.SelectAction(action);
+                // Select this action
+                GameManager.instance.SelectAction(action);
+            }
         }
 
     }
@@ -275,32 +277,31 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
     {
         if (isBeingDragged)
         {
-            if (!die.isExhausted)
+            if (eventData.button == PointerEventData.InputButton.Left)
             {
                 // Update visually
                 canvasGroup.alpha = 1f;
                 canvasGroup.blocksRaycasts = true;
+
+                // Return to parent
+                rectTransform.SetParent(parent);
+
+                // Reset rotation
+                transform.rotation = Quaternion.identity;
+
+                // Reset position
+                transform.localPosition = Vector3.zero;
+
+                // Stop dragging
+                isBeingDragged = false;
+
+                // Reset cursor
+                ResourceMananger.instance.SetDefaultCursor();
+
+                // Deselect action
+                GameManager.instance.SelectAction(null);
             }
-
-            // Return to parent
-            rectTransform.SetParent(parent);
-
-            // Reset rotation
-            transform.rotation = Quaternion.identity;
-
-            // Reset position
-            transform.localPosition = Vector3.zero;
-
-            // Stop dragging
-            isBeingDragged = false;
-
-            // Reset cursor
-            ResourceMananger.instance.SetDefaultCursor();
-
-            // Deselect action
-            GameManager.instance.SelectAction(null);
         }
-
     }
 
     // ~~~~~ HELPERS ~~~~~

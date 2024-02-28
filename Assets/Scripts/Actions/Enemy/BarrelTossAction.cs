@@ -39,7 +39,7 @@ public class BarrelTossAction : Action
     {
         // Handle visuals
         var barrelToss = Instantiate(barrelTossPrefab).GetComponent<BarrelTossModel>();
-        yield return barrelToss.Toss(entity.location, targetLocation);
+        yield return barrelToss.Toss(entity.location, targetLocation, barrel.modelSprite);
         Destroy(barrelToss.gameObject);
 
         // Handle logic after visuals are done

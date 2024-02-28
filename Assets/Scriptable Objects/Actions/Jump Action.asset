@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Jump Action
   m_EditorClassIdentifier: 
   name: Jump
-  rawInactiveDescription: TODO
-  rawActiveDescription: Jump cardinally up to {die} tiles
+  rawInactiveDescription: Jump {die}
+  rawActiveDescription: Not used.
   icon: {fileID: 839385151, guid: 91c6e5420840aa74883dcb2d26dae9ea, type: 3}
   color: {r: 0.3647059, g: 0.7960785, b: 0.22352943, a: 1}
   actionSpeed: 0

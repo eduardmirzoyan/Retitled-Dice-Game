@@ -15,4 +15,5 @@ MonoBehaviour:
   name: Locking Potion
   description: Lock the value of your dice this turn
   sprite: {fileID: -569903679, guid: 7414a2fd6347e2d4f80434c8f9a704cd, type: 3}
-  value: 0
+  value: 3
+  unusableMessage: 

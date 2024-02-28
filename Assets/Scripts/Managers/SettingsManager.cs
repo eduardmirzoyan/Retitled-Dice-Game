@@ -6,11 +6,16 @@ using TMPro;
 
 public class SettingsManager : MonoBehaviour
 {
-
+    [Header("Components")]
     [SerializeField] private AudioMixer audioMixer;
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private TMP_Dropdown resolutionsDropdown;
     [SerializeField] private KeyCode toggleKey = KeyCode.Tab;
+
+    [Header("Settings")]
+    [SerializeField] private bool logChanges;
+
+    [Header("Debug")]
     [SerializeField] private bool isOpen;
 
     private Resolution[] resolutions;
@@ -90,29 +95,38 @@ public class SettingsManager : MonoBehaviour
 
     public void SetMasterVolume(float volume)
     {
+        // Convert linear to log scaling
+        float realVolume = Mathf.Log10(volume) * 25f;
+
         // Set mixer volume 
-        audioMixer.SetFloat("MasterVolume", volume);
+        audioMixer.SetFloat("MasterVolume", realVolume);
 
         // Debug
-        Debug.Log("Master volume set to: " + volume);
+        if (logChanges) Debug.Log("Master volume set to: " + realVolume);
     }
 
     public void SetMusicVolume(float volume)
     {
+        // Convert linear to log scaling
+        float realVolume = Mathf.Log10(volume) * 25f;
+
         // Set mixer volume 
-        audioMixer.SetFloat("MusicVolume", volume);
+        audioMixer.SetFloat("MusicVolume", realVolume);
 
         // Debug
-        Debug.Log("Music volume set to: " + volume);
+        if (logChanges) Debug.Log("Music volume set to: " + realVolume);
     }
 
     public void SetSFXVolume(float volume)
     {
+        // Convert linear to log scaling
+        float realVolume = Mathf.Log10(volume) * 25f;
+
         // Set mixer volume 
-        audioMixer.SetFloat("SFXVolume", volume);
+        audioMixer.SetFloat("SFXVolume", realVolume);
 
         // Debug
-        Debug.Log("SFX volume set to: " + volume);
+        if (logChanges) Debug.Log("SFX volume set to: " + realVolume);
     }
 
     public void SetQuality(int qualityIndex)
@@ -122,7 +136,7 @@ public class SettingsManager : MonoBehaviour
         QualitySettings.SetQualityLevel(qualityIndex);
 
         // Debug
-        Debug.Log("Quality set to: " + qualityIndex);
+        if (logChanges) Debug.Log("Quality set to: " + qualityIndex);
     }
 
     public void SetResolution(int resolutionIndex)
@@ -134,7 +148,7 @@ public class SettingsManager : MonoBehaviour
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
 
         // Debug
-        Debug.Log("Resolution set to: " + resolution.width + " x " + resolution.height);
+        if (logChanges) Debug.Log("Resolution set to: " + resolution.width + " x " + resolution.height);
     }
 
     public void SetFullscreen(bool isFullscreen)
@@ -143,6 +157,6 @@ public class SettingsManager : MonoBehaviour
         Screen.fullScreen = isFullscreen;
 
         // Debug
-        Debug.Log("Fullscreen set to: " + isFullscreen.ToString());
+        if (logChanges) Debug.Log("Fullscreen set to: " + isFullscreen.ToString());
     }
 }

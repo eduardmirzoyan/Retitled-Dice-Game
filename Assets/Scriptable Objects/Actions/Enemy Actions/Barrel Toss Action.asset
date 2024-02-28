@@ -25,4 +25,4 @@ MonoBehaviour:
   modifiers: []
   bonusDamage: 0
   barrelTossPrefab: {fileID: 4935695747435057182, guid: 7595b140d81afee4f9e2cdb0dccccbdc, type: 3}
-  barrel: {fileID: 11400000, guid: e5f8516d08a87814ba5ed198402a03f9, type: 2}
+  barrel: {fileID: 11400000, guid: 3eeb670593715d346b4fe83300e6f4e0, type: 2}

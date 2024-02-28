@@ -120,18 +120,18 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
+        y: 16
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ec13d634913e89d4da44cf7fb26c87d5
-      internalID: -1478451939
+      spriteID: 0da03bcf991c55d4396f93d296b78e00
+      internalID: 662113607
       vertices: []
       indices: 
       edges: []
@@ -140,19 +140,19 @@ TextureImporter:
       name: text_icons_1
       rect:
         serializedVersion: 2
-        x: 16
+        x: 0
         y: 0
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ae4da4c61c8a7b94ab6c3ae68a88affe
-      internalID: -1840190735
+      spriteID: 44135ce31e6865a4e8721c7ee7b7fdf5
+      internalID: -1189564947
       vertices: []
       indices: 
       edges: []
@@ -168,8 +168,8 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      text_icons_0: -1478451939
-      text_icons_1: -1840190735
+      text_icons_0: 662113607
+      text_icons_1: -1189564947
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
