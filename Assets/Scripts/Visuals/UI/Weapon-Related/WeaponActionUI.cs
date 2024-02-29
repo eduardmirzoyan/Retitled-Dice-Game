@@ -28,6 +28,6 @@ public class WeaponActionUI : MonoBehaviour
 
         // Set die label and color
         dieMaxLabel.text = $"{action.die.minValue}-{action.die.maxValue}";
-        dieMaxLabel.color = action.color;
+        dieMaxLabel.color = ResourceMananger.instance.GetDieColor();
     }
 }

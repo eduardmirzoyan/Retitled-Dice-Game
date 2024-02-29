@@ -20,18 +20,10 @@ public class TooltipTriggerUI : MonoBehaviour, IPointerEnterHandler, IPointerExi
     public void OnPointerEnter(PointerEventData eventData)
     {
         TextTooltipUI.instance.Show(header, description);
-        if (TryGetComponent(out Outline outline))
-        {
-            outline.enabled = true;
-        }
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         TextTooltipUI.instance.Hide();
-        if (TryGetComponent(out Outline outline))
-        {
-            outline.enabled = false;
-        }
     }
 }

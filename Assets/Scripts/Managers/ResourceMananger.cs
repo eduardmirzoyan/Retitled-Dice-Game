@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ResourceMananger : MonoBehaviour
@@ -29,17 +30,13 @@ public class ResourceMananger : MonoBehaviour
         if (colorPalette == null)
             throw new System.Exception("Color palette not set!");
 
-        switch (rarity)
+        return rarity switch
         {
-            case EnchantmentRarity.Common:
-                return colorPalette.common;
-            case EnchantmentRarity.Uncommon:
-                return colorPalette.uncommon;
-            case EnchantmentRarity.Rare:
-                return colorPalette.rare;
-            default:
-                throw new System.Exception("Unhandled rarity color!");
-        }
+            EnchantmentRarity.Common => colorPalette.common,
+            EnchantmentRarity.Uncommon => colorPalette.uncommon,
+            EnchantmentRarity.Rare => colorPalette.rare,
+            _ => throw new System.Exception("Unhandled rarity color!"),
+        };
     }
 
     public Color GetColor(ActionType actionType)
@@ -47,17 +44,33 @@ public class ResourceMananger : MonoBehaviour
         if (colorPalette == null)
             throw new System.Exception("Color palette not set!");
 
-        switch (actionType)
+        return actionType switch
         {
-            case ActionType.Attack:
-                return colorPalette.attackAction;
-            case ActionType.Movement:
-                return colorPalette.movementAction;
-            case ActionType.Utility:
-                return colorPalette.utilityAction;
-            default:
-                throw new System.Exception("Unhandled action type color!");
-        }
+            ActionType.Attack => colorPalette.attackAction,
+            ActionType.Movement => colorPalette.movementAction,
+            ActionType.Utility => colorPalette.utilityAction,
+            _ => throw new System.Exception("Unhandled action type color!"),
+        };
+    }
+
+    public Color GetDieColor()
+    {
+        return colorPalette.dieColor;
+    }
+
+    public string GetDieHex()
+    {
+        return $"#{colorPalette.dieColor.ToHexString()}";
+    }
+
+    public Color GetDamageColor()
+    {
+        return colorPalette.damageColor;
+    }
+
+    public string GetDamageHex()
+    {
+        return $"#{colorPalette.damageColor.ToHexString()}";
     }
 
     public void SetGrabCursor()

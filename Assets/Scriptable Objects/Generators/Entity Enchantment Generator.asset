@@ -9,10 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70876e811e27b3b4e93737bd016353fb, type: 3}
-  m_Name: None Entity Enchantment
+  m_Script: {fileID: 11500000, guid: 88d3a22944f8b4f4294c4f830675f913, type: 3}
+  m_Name: Entity Enchantment Generator
   m_EditorClassIdentifier: 
-  name: Nothing
-  description: This enchantment does nothing and is only for testing purposes!
-  rarity: 0
-  entity: {fileID: 0}
+  possibleEnchantments:
+  - {fileID: 11400000, guid: d33995669d6761242a4fb8d294aa78c8, type: 2}

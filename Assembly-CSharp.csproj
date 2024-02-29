@@ -186,6 +186,7 @@
     <Compile Include="Assets\Scripts\Visuals\UI\Inventory\InventorySlotUI.cs" />
     <Compile Include="Assets\Scripts\Managers\CameraManager.cs" />
     <Compile Include="Assets\Scripts\Items\Consumables\LockConsumable.cs" />
+    <Compile Include="Assets\Scripts\Actions\Enemy\SweepMeleeAction.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\DieUI.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\CutoutMaskUI.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
@@ -197,7 +198,11 @@
     <Compile Include="Assets\Scripts\AI\AI.cs" />
     <Compile Include="Assets\Scripts\Actions\MerchantAction.cs" />
     <Compile Include="Assets\Scripts\AI\BoldAI.cs" />
-    <Compile Include="Assets\Scripts\Actions\Enemy\SweepMeleeAction.cs" />
+    <Compile Include="Assets\Scripts\Enchantments\Entity\HealthEntityEnchantment.cs" />
+    <Compile Include="Assets\Scripts\Visuals\UI\EntityEnchantmentSlotUI.cs" />
+    <Compile Include="Assets\Scripts\Visuals\UI\EnchantmentSelectionUI.cs" />
+    <Compile Include="Assets\Scripts\Visuals\UI\EnityEnchantmentUI.cs" />
+    <Compile Include="Assets\Scripts\Generators\EntityEnchantmentGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

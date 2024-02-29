@@ -67,8 +67,10 @@ public class GameEvents : MonoBehaviour
     public event Action<Entity, Weapon, int> onEquipWeapon;
     public event Action<Entity, Weapon, int> onUnequipWeapon;
     public event Action<Entity, Consumable> onEntityUseConsumable;
+    public event Action<Entity, EntityEnchantment> onEntityGainEnchantment;
 
     public event Action<Entity, List<Vector3Int>> onEntityInspect;
+    public event Action<List<EntityEnchantment>> onPresentEnchantments;
 
     public static GameEvents instance;
     private void Awake()
@@ -242,6 +244,11 @@ public class GameEvents : MonoBehaviour
         onEntityUseConsumable?.Invoke(entity, consumable);
     }
 
+    public void TriggerOnEntityGainEnchantment(Entity entity, EntityEnchantment entityEnchantment)
+    {
+        onEntityGainEnchantment?.Invoke(entity, entityEnchantment);
+    }
+
     #endregion
 
     public void TriggerOnPickupSpawn(PickUpType pickUpType, Vector3Int location)
@@ -337,4 +344,9 @@ public class GameEvents : MonoBehaviour
     }
 
     #endregion
+
+    public void TriggerOnPresentEnchantments(List<EntityEnchantment> entityEnchantments)
+    {
+        onPresentEnchantments?.Invoke(entityEnchantments);
+    }
 }

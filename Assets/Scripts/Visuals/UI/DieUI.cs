@@ -41,10 +41,11 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
         // Save parent
         parent = transform.parent;
 
-        // Set pip color based on action
+        // Set pip color
+        Color color = ResourceMananger.instance.GetDieColor();
         foreach (var image in pipImages)
         {
-            image.color = action.color;
+            image.color = color;
         }
 
         // Display image based on current value

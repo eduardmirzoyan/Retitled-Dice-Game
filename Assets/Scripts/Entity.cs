@@ -104,6 +104,18 @@ public class Entity : ScriptableObject
         }
     }
 
+    public void GainEnchantment(EntityEnchantment entityEnchantment)
+    {
+        // Initialize it
+        entityEnchantment.Initialize(this);
+
+        // Keep track
+        enchantments.Add(entityEnchantment);
+
+        // Trigger event
+        GameEvents.instance.TriggerOnEntityGainEnchantment(this, entityEnchantment);
+    }
+
     public List<Action> AllActions()
     {
         List<Action> result = new List<Action>();

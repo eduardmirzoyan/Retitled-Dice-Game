@@ -97,7 +97,8 @@ public class ItemTooltipUI : MonoBehaviour
             Weapon weapon = item as Weapon;
             itemNameText.text = weapon.GetDynamicName();
             itemTypeText.text = "Weapon";
-            itemDescriptionText.text = $"Base Damage [ <sprite name=\"Dmg\"> ]: <color=yellow>{weapon.baseDamage}</color>";
+            string hex = ResourceMananger.instance.GetDamageHex();
+            itemDescriptionText.text = $"Base Damage [ <sprite name=\"Dmg\"> ]: <color={hex}>{weapon.baseDamage}</color>";
             auxiliaryCanvasGroup.alpha = 0f;
             priceCanvasGroup.alpha = 0f;
 

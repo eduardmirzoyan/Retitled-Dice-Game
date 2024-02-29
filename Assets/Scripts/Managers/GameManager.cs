@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Room room;
     [SerializeField] private RoomGenerator roomGenerator;
     [SerializeField] private EnemyGenerator enemyGenerator;
+    [SerializeField] private EntityEnchantmentGenerator enchantmentGenerator;
 
     [Header("Data")]
     [SerializeField] private int roundNumber = 0;
@@ -72,7 +73,8 @@ public class GameManager : MonoBehaviour
         // FOR TESTING
         if (Input.GetKeyDown(KeyCode.L))
         {
-            GameEvents.instance.TriggerOnOpenBlacksmith(room.player);
+            var enchantments = enchantmentGenerator.GenerateEnchantmentSet();
+            GameEvents.instance.TriggerOnPresentEnchantments(enchantments);
         }
     }
 
@@ -903,6 +905,11 @@ public class GameManager : MonoBehaviour
 
         // Play sfx
         AudioManager.instance.PlaySFX("use_consumable");
+    }
+
+    public void PlayerGainEnchantment(EntityEnchantment entityEnchantment)
+    {
+        room.player.GainEnchantment(entityEnchantment);
     }
 
     public void InspectLocation(Vector3Int location)

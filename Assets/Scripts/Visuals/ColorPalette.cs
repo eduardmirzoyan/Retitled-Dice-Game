@@ -14,4 +14,8 @@ public class ColorPalette : ScriptableObject
     public Color common;
     public Color uncommon;
     public Color rare;
+
+    [Header("Stat Types")]
+    public Color dieColor;
+    public Color damageColor;
 }

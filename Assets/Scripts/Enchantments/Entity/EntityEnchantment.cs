@@ -7,6 +7,8 @@ public abstract class EntityEnchantment : ScriptableObject
     [Header("Static Data")]
     public new string name;
     [TextArea(5, 2)] public string description;
+    public Sprite icon;
+    public EnchantmentRarity rarity;
 
     [Header("Dynamic Data")]
     public Entity entity;

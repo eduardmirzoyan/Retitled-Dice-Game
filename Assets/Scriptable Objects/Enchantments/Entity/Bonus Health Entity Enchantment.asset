@@ -9,10 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70876e811e27b3b4e93737bd016353fb, type: 3}
-  m_Name: None Entity Enchantment
+  m_Script: {fileID: 11500000, guid: 58befea6ab1233549bb4903252edb08b, type: 3}
+  m_Name: Bonus Health Entity Enchantment
   m_EditorClassIdentifier: 
-  name: Nothing
-  description: This enchantment does nothing and is only for testing purposes!
+  name: Bonus Health
+  description: +2 Max HP
+  icon: {fileID: 21300000, guid: 779e39b92c811d944bf015bb7bb0c548, type: 3}
   rarity: 0
   entity: {fileID: 0}
+  healthBonus: 2

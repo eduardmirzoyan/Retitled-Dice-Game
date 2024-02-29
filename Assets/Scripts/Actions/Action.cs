@@ -12,8 +12,6 @@ public abstract class Action : ScriptableObject
     public new string name;
     [TextArea(4, 2)]
     public string rawInactiveDescription;
-    [TextArea(4, 2)]
-    [SerializeField] private string rawActiveDescription;
     public Sprite icon;
     public Color color;
     public ActionSpeed actionSpeed;
@@ -63,10 +61,13 @@ public abstract class Action : ScriptableObject
 
     public string GetActiveDescription()
     {
-        if (weapon == null)
-            return rawInactiveDescription.Replace("{dmg}", $"<color=yellow>{bonusDamage}</color>").Replace("{die}", $"<color=#{color.ToHexString()}>{die.value}</color>");
+        string dmgHex = ResourceMananger.instance.GetDamageHex();
+        string dieHex = ResourceMananger.instance.GetDieHex();
 
-        return rawInactiveDescription.Replace("{dmg}", $"<color=yellow>{GetTotalDamage()}</color>").Replace("{die}", $"<color=#{color.ToHexString()}>{die.value}</color>");
+        if (weapon == null)
+            return rawInactiveDescription.Replace("{dmg}", $"<color={dmgHex}>{bonusDamage}</color>").Replace("{die}", $"<color={dieHex}>{die.value}</color>");
+
+        return rawInactiveDescription.Replace("{dmg}", $"<color={dmgHex}>{GetTotalDamage()}</color>").Replace("{die}", $"<color={dieHex}>{die.value}</color>");
     }
 
     public string GetDynamicName()
