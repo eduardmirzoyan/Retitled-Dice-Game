@@ -25,6 +25,11 @@ public class EnityEnchantmentUI : MonoBehaviour, IPointerEnterHandler, IPointerC
     public void OnPointerEnter(PointerEventData eventData)
     {
         shadow.enabled = true;
+
+        // Display tooltip from bottom-left
+        var corners = new Vector3[4];
+        GetComponent<RectTransform>().GetWorldCorners(corners);
+        EntityEnchantmentTooltipUI.instance.Show(entityEnchantment, corners[0]);
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -35,9 +40,9 @@ public class EnityEnchantmentUI : MonoBehaviour, IPointerEnterHandler, IPointerC
         }
     }
 
-
     public void OnPointerExit(PointerEventData eventData)
     {
         shadow.enabled = false;
+        EntityEnchantmentTooltipUI.instance.Hide();
     }
 }

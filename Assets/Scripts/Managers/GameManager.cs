@@ -367,6 +367,9 @@ public class GameManager : MonoBehaviour
         selectedEntity = turnQueue[0];
         turnQueue.RemoveAt(0);
 
+        // Debug
+        if (logGameStates) print("Turn Start: " + selectedEntity.name);
+
         // If the entity is dead, skip
         if (selectedEntity.currentHealth == 0)
         {
@@ -378,9 +381,6 @@ public class GameManager : MonoBehaviour
 
         // Perform any delayed actions stored by this entity
         yield return PerformDelayedAction(selectedEntity);
-
-        // Debug
-        if (logGameStates) print("Turn Start: " + selectedEntity.name);
 
         // Trigger event 
         GameEvents.instance.TriggerOnTurnStart(selectedEntity);
@@ -397,12 +397,17 @@ public class GameManager : MonoBehaviour
             // Then start performing those actions
             yield return PerformTurnAI();
         }
+
+        if (selectedEntity is Player)
+        {
+            // Allow input
+            GameEvents.instance.TriggerOnToggleAllowAction(true);
+            GameEvents.instance.TriggerOnToggleAllowItem(true);
+        }
     }
 
     public void SelectAction(Action action)
     {
-        // if (selectedThreats.Count > 0) return;
-
         // If you already have a selected location
         if (selectedLocation != Vector3Int.back)
         {
@@ -587,6 +592,10 @@ public class GameManager : MonoBehaviour
         // Debug
         if (logEntityActions) print("Player [" + selectedEntity.name + "] used [" + selectedAction.name + "] on location [" + selectedLocation + "]");
 
+        // Prevent input
+        GameEvents.instance.TriggerOnToggleAllowAction(false);
+        GameEvents.instance.TriggerOnToggleAllowItem(false);
+
         // Trigger event
         GameEvents.instance.TriggerOnActionConfirm(selectedEntity, selectedAction, selectedLocation);
 
@@ -687,6 +696,16 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator EndTurn()
     {
+        // Debug
+        if (logGameStates) print("Turn End: " + selectedEntity.name);
+
+        if (selectedEntity is Player)
+        {
+            // Disable all input
+            GameEvents.instance.TriggerOnToggleAllowAction(false);
+            GameEvents.instance.TriggerOnToggleAllowItem(false);
+        }
+
         // Reset selected values
         selectedAction = null;
         selectedLocation = Vector3Int.back;
@@ -697,9 +716,6 @@ public class GameManager : MonoBehaviour
         {
             action.die.Exhaust();
         }
-
-        // Debug
-        if (logGameStates) print("Turn End: " + selectedEntity.name);
 
         // Trigger event
         GameEvents.instance.TriggerOnTurnEnd(selectedEntity);
@@ -826,6 +842,13 @@ public class GameManager : MonoBehaviour
         selectedAction = null;
         selectedLocation = Vector3Int.back;
         selectedThreats.Clear();
+
+        if (entity is Player)
+        {
+            // Prevent input
+            GameEvents.instance.TriggerOnToggleAllowAction(true);
+            GameEvents.instance.TriggerOnToggleAllowItem(true);
+        }
     }
 
     private IEnumerator PerformDelayedAction(Entity entity)

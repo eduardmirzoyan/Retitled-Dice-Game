@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
+public class DieUI : MonoBehaviour, IPointerClickHandler
 {
     [Header("Components")]
     [SerializeField] private CanvasGroup canvasGroup;
@@ -17,13 +17,9 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
     [Header("Data")]
     [SerializeField] private Die die;
     [SerializeField] private Action action;
-    [SerializeField] private float travelRate = 0.1f;
-    [SerializeField] private float spinRate = 3f;
     [SerializeField] private KeyCode shortcut;
 
-    private Transform parent;
     private bool isBeingDragged;
-    private int rotationDirection = 1;
     private Coroutine rollRoutine;
 
     private void Awake()
@@ -37,9 +33,6 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
         this.action = action;
         this.die = action.die;
         this.shortcut = shortcut;
-
-        // Save parent
-        parent = transform.parent;
 
         // Set pip color
         Color color = ResourceMananger.instance.GetDieColor();
@@ -62,7 +55,7 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
         }
 
         // Update name
-        gameObject.name = action.name + " Die UI";
+        gameObject.name = $"{action.name} Die UI";
 
         // Sub to die events
         GameEvents.instance.onTurnStart += StartRolling;
@@ -190,7 +183,7 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
     private void Update()
     {
         // Check if shortcut is selected
-        if (Input.GetKeyDown(shortcut))
+        if (Input.GetKeyDown(shortcut) && canvasGroup.blocksRaycasts)
         {
             // Select this action
             GameManager.instance.SelectAction(action);
@@ -207,100 +200,6 @@ public class DieUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHan
             {
                 // Select this action
                 GameManager.instance.SelectAction(action);
-            }
-        }
-    }
-
-    public void OnBeginDrag(PointerEventData eventData)
-    {
-        // If die is not exhausted
-        if (!die.isExhausted)
-        {
-            if (eventData.button == PointerEventData.InputButton.Left)
-            {
-                // Update visually
-                canvasGroup.alpha = 0.4f;
-                canvasGroup.blocksRaycasts = false;
-
-                // Remove from parent
-                rectTransform.SetParent(transform.root);
-
-                // Randomize rotation direction
-                rotationDirection = Random.Range(0, 2) == 0 ? 1 : -1;
-
-                // Enable flag
-                isBeingDragged = true;
-
-                // Set cursor to grab
-                ResourceMananger.instance.SetGrabCursor();
-
-                // Select this action
-                GameManager.instance.SelectAction(action);
-            }
-        }
-
-    }
-
-    public void OnDrag(PointerEventData eventData)
-    {
-        // Nothing
-    }
-
-    private void FixedUpdate()
-    {
-        if (isBeingDragged)
-        {
-            FollowAndRotate();
-        }
-    }
-
-    private void FollowAndRotate()
-    {
-        // Make Die smoothly travel towards mouse
-        var point = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        point.z = 0;
-
-        // If rate is set to 0, then make it immediate
-        if (travelRate == 0)
-        {
-            transform.position = point;
-        }
-        else
-        {
-            transform.position = Vector3.Lerp(transform.position, point, travelRate);
-        }
-
-        // Rotate Die
-        transform.Rotate(0, 0, rotationDirection * spinRate); //rotates 50 degrees per second around z axis
-    }
-
-    public void OnEndDrag(PointerEventData eventData)
-    {
-        if (isBeingDragged)
-        {
-            if (eventData.button == PointerEventData.InputButton.Left)
-            {
-                // Update visually
-                canvasGroup.alpha = 1f;
-                canvasGroup.blocksRaycasts = true;
-
-                // Return to parent
-                rectTransform.SetParent(parent);
-
-                // Reset rotation
-                transform.rotation = Quaternion.identity;
-
-                // Reset position
-                transform.localPosition = Vector3.zero;
-
-                // Stop dragging
-                isBeingDragged = false;
-
-                // Reset cursor
-                ResourceMananger.instance.SetDefaultCursor();
-
-                // Deselect action
-                GameManager.instance.SelectAction(null);
             }
         }
     }

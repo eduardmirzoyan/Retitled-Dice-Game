@@ -19,6 +19,9 @@ public class BlacksmithUI : MonoBehaviour
     [SerializeField] private Entity customer;
     [SerializeField] private bool isOpen;
 
+    [Header("Debug")]
+    [SerializeField] private bool requestClose;
+
     private void Start()
     {
         // Initialize slot

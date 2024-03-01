@@ -163,7 +163,7 @@ GameObject:
   - component: {fileID: 1916120352438193622}
   - component: {fileID: 6320315224449869345}
   m_Layer: 5
-  m_Name: Enchantment Slot UI
+  m_Name: WEnchantment Slot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

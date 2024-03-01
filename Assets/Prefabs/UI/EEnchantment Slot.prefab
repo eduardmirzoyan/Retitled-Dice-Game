@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 4785927678227912562}
   - component: {fileID: 1403586010843828079}
   - component: {fileID: 1359570567478156713}
-  - component: {fileID: 7560960529460501324}
   m_Layer: 5
   m_Name: Icon
   m_TagString: Untagged
@@ -93,20 +92,6 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
   m_EffectDistance: {x: 3, y: 3}
   m_UseGraphicAlpha: 0
---- !u!114 &7560960529460501324
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1776734082154070258}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b7899428c3eafe04d82b36654adf63b3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  header: To Be Implemented...
-  description: Does nothing, for now...
 --- !u!1 &2885455149434573589
 GameObject:
   m_ObjectHideFlags: 0
@@ -270,7 +255,7 @@ GameObject:
   - component: {fileID: 3827472059655815400}
   - component: {fileID: 2837054184874985561}
   m_Layer: 5
-  m_Name: Entity Enchantment Slot
+  m_Name: EEnchantment Slot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -313,4 +298,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   iconImage: {fileID: 1403586010843828079}
   outline: {fileID: 1359570567478156713}
-  tooltipTrigger: {fileID: 7560960529460501324}
+  tooltipTrigger: {fileID: 0}

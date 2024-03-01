@@ -10,52 +10,71 @@ public class ShopUI : MonoBehaviour
     [SerializeField] private GridLayoutGroup gridLayoutGroup;
     [SerializeField] private GameObject shopSlotPrefab;
 
-    [Header("Dynamic Data")]
-    [SerializeField] private Inventory inventory;
+    [Header("Debug")]
+    [SerializeField] private bool requestClose;
 
+    private List<ShopSlotUI> shopSlots;
+
+    public static ShopUI instance;
     private void Awake()
     {
-        canvasGroup = GetComponentInChildren<CanvasGroup>();
+        // Singleton Logic
+        if (instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        shopSlots = new List<ShopSlotUI>();
+        instance = this;
     }
 
-    private void Start()
+    public IEnumerator Browse(Entity buyer, Inventory shopInventory)
     {
-        GameEvents.instance.onOpenShop += Open;
-    }
+        // Allow moving of items while in shop
+        GameEvents.instance.TriggerOnToggleAllowItem(true);
 
-    private void OnDestroy()
-    {
-        GameEvents.instance.onOpenShop -= Open;
-    }
+        // Reset state
+        requestClose = false;
 
-    public void Open(Entity buyer, Inventory shopInventory)
-    {
         // Allow visibiltiy and interaction
         canvasGroup.alpha = 1f;
         canvasGroup.interactable = true;
         canvasGroup.blocksRaycasts = true;
-
-        // Open new one
-        this.inventory = shopInventory;
 
         for (int i = 0; i < shopInventory.maxSize; i++)
         {
             // Create slot
             var shopSlot = Instantiate(shopSlotPrefab, gridLayoutGroup.transform).GetComponent<ShopSlotUI>();
             shopSlot.Initialize(buyer, shopInventory, i);
+            shopSlots.Add(shopSlot);
         }
 
+        // Update layout
         LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());
-    }
 
-    public void Close()
-    {
+        // Infinitely wait until player closes
+        while (!requestClose)
+            yield return null;
+
+        // Clear ui
+        foreach (var shopSlot in shopSlots)
+        {
+            Destroy(shopSlot.gameObject);
+        }
+        shopSlots.Clear();
+
         // Prevent visibiltiy and interaction
         canvasGroup.alpha = 0f;
         canvasGroup.interactable = false;
         canvasGroup.blocksRaycasts = false;
 
-        // Trigger event
-        GameEvents.instance.TriggerOnCloseShop(inventory);
+        // Disallow items again
+        GameEvents.instance.TriggerOnToggleAllowItem(false);
+    }
+
+    public void Close()
+    {
+        requestClose = true;
     }
 }

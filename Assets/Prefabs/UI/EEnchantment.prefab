@@ -119,7 +119,7 @@ GameObject:
   - component: {fileID: 7030173033455709217}
   - component: {fileID: 7030173033455709216}
   m_Layer: 5
-  m_Name: Entity Enchantment
+  m_Name: EEnchantment
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

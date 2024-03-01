@@ -144,6 +144,10 @@ public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
         // If this item is right clicked
         if (eventData.button == PointerEventData.InputButton.Right && item != null)
         {
+            // Make sure it is not removeable
+            if (preventRemove)
+                return;
+
             // Make sure it is not in a shop
             if (itemSlotUI is ShopSlotUI)
                 return;

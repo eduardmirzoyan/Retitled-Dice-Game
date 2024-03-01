@@ -12,7 +12,7 @@ public class EntityInspect : MonoBehaviour
     [SerializeField] private Tilemap inspectTilemap;
     [SerializeField] private RuleTile highlightedTile;
 
-    [Header("Dynamic Data")]
+    [Header("Debug")]
     [SerializeField] private Vector3Int selectedLocation;
 
     private void Awake()
@@ -35,7 +35,8 @@ public class EntityInspect : MonoBehaviour
 
     private void LateUpdate()
     {
-        HoverTile();
+        if (!PauseManager.instance.IsPaused)
+            HoverTile();
     }
 
     private void HoverTile()

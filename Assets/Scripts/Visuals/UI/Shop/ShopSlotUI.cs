@@ -38,13 +38,11 @@ public class ShopSlotUI : ItemSlotUI
         // Don't allow insertions
         preventInsert = true;
 
-        GameEvents.instance.onCloseShop += Uninitialize;
         GameEvents.instance.onEntityGoldChange += UpdateEligibility;
     }
 
     private void OnDestroy()
     {
-        GameEvents.instance.onCloseShop -= Uninitialize;
         GameEvents.instance.onEntityGoldChange -= UpdateEligibility;
     }
 
@@ -61,14 +59,6 @@ public class ShopSlotUI : ItemSlotUI
             {
                 itemUI.PreventRemove(true);
             }
-        }
-    }
-
-    private void Uninitialize(Inventory inventory)
-    {
-        if (this.inventory == inventory)
-        {
-            Destroy(gameObject);
         }
     }
 
@@ -89,7 +79,8 @@ public class ShopSlotUI : ItemSlotUI
 
     public override void StoreItem(ItemUI itemUI)
     {
-        if (itemUI != null) throw new System.Exception("PROBLEM: A ITEM WAS INSERTED INTO SHOP SLOT?");
+        if (itemUI != null)
+            throw new System.Exception("PROBLEM: A ITEM WAS INSERTED INTO SHOP SLOT?");
 
         // Update data
         afterImageIcon.enabled = false;

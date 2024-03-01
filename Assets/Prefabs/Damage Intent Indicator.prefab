@@ -185,7 +185,7 @@ GameObject:
   m_Layer: 0
   m_Name: Damage Intent Indicator
   m_TagString: Untagged
-  m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -218,3 +218,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageLabel: {fileID: 4192213754302423772}
+  damage: 0

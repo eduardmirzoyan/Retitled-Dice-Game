@@ -11,6 +11,14 @@ public class PauseManager : MonoBehaviour
     [SerializeField] private KeyCode pauseKey = KeyCode.Escape;
     [SerializeField] private bool isPaused;
 
+    public bool IsPaused
+    {
+        get
+        {
+            return isPaused;
+        }
+    }
+
     public static PauseManager instance;
     private void Awake()
     {

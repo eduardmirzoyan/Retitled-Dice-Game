@@ -76,13 +76,13 @@ public class DataManager : MonoBehaviour
 
     public RoomType GetCurrentRoom()
     {
-        return currentRoomType;
+        // return currentRoomType;
         return RoomType.Shop;
     }
 
     public string GetRoomDescription()
     {
-        return "Stage " + stageNumber + " - " + roomNumber;
+        return $"Stage {stageNumber} - {roomNumber}";
     }
 
     public int GetRoomNumber()

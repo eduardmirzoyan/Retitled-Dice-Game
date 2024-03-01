@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -42,15 +43,11 @@ public class ActionUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             diceUI.Pulse();
 
         // Update name
-        gameObject.name = action.name + " Action UI";
+        gameObject.name = $"{action.name} Action UI";
 
         // Sub to events
-        GameEvents.instance.onTurnStart += SetInteractable;
-        GameEvents.instance.onActionPerformEnd += SetInteractable;
+        GameEvents.instance.onToggleAllowAction += ToggleInteraction;
         GameEvents.instance.onActionSelect += SetSelected;
-        GameEvents.instance.onActionPerformStart += SetUninteractable;
-        GameEvents.instance.onTurnEnd += SetUninteractable;
-
         GameEvents.instance.onDieRoll += UpdateLock;
         GameEvents.instance.onDieLock += UpdateLock;
     }
@@ -60,20 +57,15 @@ public class ActionUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         diceUI.Uninitialize();
 
         // Unsub from events
-        GameEvents.instance.onTurnStart -= SetInteractable;
-        GameEvents.instance.onActionPerformEnd -= SetInteractable;
+        GameEvents.instance.onToggleAllowAction -= ToggleInteraction;
         GameEvents.instance.onActionSelect -= SetSelected;
-        GameEvents.instance.onActionPerformStart -= SetUninteractable;
-        GameEvents.instance.onTurnEnd -= SetUninteractable;
-
         GameEvents.instance.onDieRoll -= UpdateLock;
         GameEvents.instance.onDieLock -= UpdateLock;
     }
 
-    private void SetInteractable(Entity entity)
+    private void ToggleInteraction(bool state)
     {
-        // Allow the touching of dice
-        if (entity is Player)
+        if (state)
         {
             canvasGroup.alpha = 1f;
             canvasGroup.interactable = true;
@@ -81,55 +73,7 @@ public class ActionUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
             diceUI.Pulse();
         }
-    }
-
-    private void SetInteractable(Entity entity, Action action, Vector3Int location, Room room)
-    {
-        SetInteractable(entity);
-    }
-
-    private void SetSelected(Entity entity, Action action)
-    {
-        if (entity is Player)
-        {
-            // If un-selected action
-            if (action == null)
-            {
-                SetInteractable(entity);
-
-                // Play Sound
-                AudioManager.instance.PlaySFX("die_drop");
-                return;
-            }
-
-            // If this action was selected
-            if (this.action == action)
-            {
-                canvasGroup.alpha = 1f;
-                canvasGroup.interactable = true;
-                canvasGroup.blocksRaycasts = true;
-
-                diceUI.Highlight();
-
-                // Play Sound
-                AudioManager.instance.PlaySFX("die_pick");
-            }
-            else
-            {
-                canvasGroup.alpha = 1f;
-                canvasGroup.interactable = true;
-                canvasGroup.blocksRaycasts = true;
-
-                diceUI.Idle();
-            }
-        }
-
-    }
-
-    private void SetUninteractable(Entity entity)
-    {
-        // Prevent the touching of dice
-        if (entity is Player)
+        else
         {
             canvasGroup.alpha = 0.6f;
             canvasGroup.interactable = false;
@@ -139,9 +83,37 @@ public class ActionUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         }
     }
 
-    private void SetUninteractable(Entity entity, Action action, Vector3Int location, Room room)
+
+    private void SetSelected(Entity entity, Action action)
     {
-        SetUninteractable(entity);
+        if (entity is Player)
+        {
+            // Make visible
+            canvasGroup.alpha = 1f;
+            canvasGroup.interactable = true;
+            canvasGroup.blocksRaycasts = true;
+
+            // If un-selected action
+            if (action == null)
+            {
+                diceUI.Pulse();
+
+                // Play Sound
+                AudioManager.instance.PlaySFX("die_drop");
+            }
+            // If this action was selected
+            else if (this.action == action)
+            {
+                diceUI.Highlight();
+
+                // Play Sound
+                AudioManager.instance.PlaySFX("die_pick");
+            }
+            else
+            {
+                diceUI.Idle();
+            }
+        }
     }
 
     private void UpdateLock(Die die)
@@ -155,6 +127,8 @@ public class ActionUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public void OnPointerEnter(PointerEventData eventData)
     {
         actionOutline.enabled = true;
+
+        // Display tooltip from bottom-right corner
         var corners = new Vector3[4];
         GetComponent<RectTransform>().GetWorldCorners(corners);
         ActionTooltipUI.instance.Show(action, hotkey.ToString().Replace("Alpha", ""), corners[3]);

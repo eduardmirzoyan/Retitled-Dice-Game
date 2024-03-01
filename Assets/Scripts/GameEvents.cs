@@ -57,8 +57,6 @@ public class GameEvents : MonoBehaviour
     public event System.Action onUnlockExit;
 
     // UI Based
-    public event Action<Entity, Inventory> onOpenShop;
-    public event Action<Inventory> onCloseShop;
     public event Action<Entity> onOpenBlacksmith;
     public event Action<Entity> onCloseBlacksmith;
     public event Action<Weapon> onInsertBlacksmith;
@@ -71,6 +69,9 @@ public class GameEvents : MonoBehaviour
 
     public event Action<Entity, List<Vector3Int>> onEntityInspect;
     public event Action<List<EntityEnchantment>> onPresentEnchantments;
+
+    public event Action<bool> onToggleAllowAction;
+    public event Action<bool> onToggleAllowItem;
 
     public static GameEvents instance;
     private void Awake()
@@ -313,16 +314,6 @@ public class GameEvents : MonoBehaviour
 
     #region Merchants
 
-    public void TriggerOnOpenShop(Entity entity, Inventory inventory)
-    {
-        onOpenShop?.Invoke(entity, inventory);
-    }
-
-    public void TriggerOnCloseShop(Inventory inventory)
-    {
-        onCloseShop?.Invoke(inventory);
-    }
-
     public void TriggerOnOpenBlacksmith(Entity entity)
     {
         onOpenBlacksmith?.Invoke(entity);
@@ -349,4 +340,18 @@ public class GameEvents : MonoBehaviour
     {
         onPresentEnchantments?.Invoke(entityEnchantments);
     }
+
+    #region Input
+
+    public void TriggerOnToggleAllowAction(bool state)
+    {
+        onToggleAllowAction?.Invoke(state);
+    }
+
+    public void TriggerOnToggleAllowItem(bool state)
+    {
+        onToggleAllowItem?.Invoke(state);
+    }
+
+    #endregion
 }

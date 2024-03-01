@@ -25,10 +25,27 @@ public class InventorySlotUI : ItemSlotUI
 
             // Save item
             this.itemUI = itemUI;
+
+            itemUI.PreventRemove(true);
         }
 
         // Update name
         gameObject.name = "Inventory Slot " + index;
+
+        GameEvents.instance.onToggleAllowItem += ToggleInteraction;
+    }
+
+    private void OnDestroy()
+    {
+        GameEvents.instance.onToggleAllowItem -= ToggleInteraction;
+    }
+
+    private void ToggleInteraction(bool allow)
+    {
+        if (itemUI != null)
+        {
+            itemUI.PreventRemove(!allow);
+        }
     }
 
     public override void OnPointerEnter(PointerEventData eventData)

@@ -27,21 +27,15 @@ public class EndTurnUI : MonoBehaviour
         button.interactable = false;
 
         // Sub to events
-        GameEvents.instance.onTurnStart += EnableButton;
-        GameEvents.instance.onActionPerformStart += DisableButton;
-        GameEvents.instance.onActionPerformEnd += EnableButton;
         GameEvents.instance.onActionPerformEnd += Highlight;
-        GameEvents.instance.onTurnEnd += DisableButton;
+        GameEvents.instance.onToggleAllowAction += ToggleButton;
     }
 
     private void OnDestroy()
     {
         // Unsub to events
-        GameEvents.instance.onTurnStart -= EnableButton;
-        GameEvents.instance.onActionPerformStart -= DisableButton;
-        GameEvents.instance.onActionPerformEnd -= EnableButton;
         GameEvents.instance.onActionPerformEnd -= Highlight;
-        GameEvents.instance.onTurnEnd -= DisableButton;
+        GameEvents.instance.onToggleAllowAction -= ToggleButton;
     }
 
     private void Update()
@@ -53,27 +47,14 @@ public class EndTurnUI : MonoBehaviour
         }
     }
 
-    private void EnableButton(Entity entity)
+    private void ToggleButton(bool state)
     {
-        if (entity is Player)
-        {
-            canvasGroup.alpha = 1f;
-            button.interactable = true;
-        }
-    }
+        canvasGroup.alpha = state ? 1f : 0.6f;
+        button.interactable = state;
 
-    private void DisableButton(Entity entity)
-    {
-        if (entity is Player)
-        {
-            canvasGroup.alpha = 0.6f;
-            button.interactable = false;
-
-            // Disable any highlight
+        if (!state)
             outline.enabled = false;
-        }
     }
-
 
     private void Highlight(Entity entity, Action action, Vector3Int vector3Int, Room room)
     {
@@ -81,17 +62,4 @@ public class EndTurnUI : MonoBehaviour
         if (entity is Player)
             outline.enabled = entity.AllActions().All(action => action.die.isExhausted);
     }
-
-
-    private void EnableButton(Entity entity, Action action, Vector3Int vector3Int, Room room)
-    {
-        EnableButton(entity);
-    }
-
-    private void DisableButton(Entity entity, Action action, Vector3Int vector3Int, Room room)
-    {
-        DisableButton(entity);
-    }
-
-
 }

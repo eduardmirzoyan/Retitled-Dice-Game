@@ -11,7 +11,7 @@ public class MerchantAction : Action
 
     public override List<Vector3Int> GetValidLocations(Vector3Int startLocation, Room room)
     {
-        // Target tile directly bellow
+        // Target tile directly below
         return new List<Vector3Int>() { startLocation + Vector3Int.down };
     }
 
@@ -22,26 +22,25 @@ public class MerchantAction : Action
 
     public override IEnumerator Perform(Entity entity, Vector3Int targetLocation, List<Vector3Int> threatenedLocations, Room room)
     {
-        foreach (var location in threatenedLocations)
+        var target = room.GetEntityAtLocation(targetLocation);
+        if (target is Player)
         {
-            // Damage first target found
-            var target = room.GetEntityAtLocation(location);
-            if (target is Player)
+            // Open respective merchant
+            switch (type)
             {
-                // Open respective merchant
-                switch (type)
-                {
-                    case Type.Shop:
-                        GameEvents.instance.TriggerOnOpenShop(target, entity.inventory);
-                        break;
-                    case Type.Blacksmith:
-                        GameEvents.instance.TriggerOnOpenBlacksmith(target);
-                        break;
-                    case Type.Shaman:
-                        // TODO
-                        break;
-                }
-                break;
+                case Type.Shop:
+                    // GameEvents.instance.TriggerOnOpenShop(target, entity.inventory);
+
+                    // Let player browse the shop
+                    yield return ShopUI.instance.Browse(target, entity.inventory);
+
+                    break;
+                case Type.Blacksmith:
+                    GameEvents.instance.TriggerOnOpenBlacksmith(target);
+                    break;
+                case Type.Shaman:
+                    // TODO
+                    break;
             }
         }
 

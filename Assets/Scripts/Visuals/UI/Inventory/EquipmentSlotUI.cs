@@ -26,6 +26,8 @@ public class EquipmentSlotUI : ItemSlotUI
 
             // Save item
             this.itemUI = itemUI;
+
+            itemUI.PreventRemove(true);
         }
 
         // Update name
@@ -40,24 +42,24 @@ public class EquipmentSlotUI : ItemSlotUI
 
         inCombat = false;
 
+        GameEvents.instance.onToggleAllowItem += ToggleInteraction;
         GameEvents.instance.onCombatEnter += EnterCombat;
         GameEvents.instance.onCombatExit += ExitCombat;
-
-        GameEvents.instance.onTurnStart += AllowInteraction;
-        GameEvents.instance.onActionPerformStart += PreventInteraction;
-        GameEvents.instance.onActionPerformEnd += AllowInteraction;
-        GameEvents.instance.onTurnEnd += PreventInteraction;
     }
 
     private void OnDestroy()
     {
+        GameEvents.instance.onToggleAllowItem -= ToggleInteraction;
         GameEvents.instance.onCombatEnter -= EnterCombat;
         GameEvents.instance.onCombatExit -= ExitCombat;
+    }
 
-        GameEvents.instance.onTurnStart -= AllowInteraction;
-        GameEvents.instance.onActionPerformStart -= PreventInteraction;
-        GameEvents.instance.onActionPerformEnd -= AllowInteraction;
-        GameEvents.instance.onTurnEnd -= PreventInteraction;
+    private void ToggleInteraction(bool allow)
+    {
+        if (itemUI != null)
+        {
+            itemUI.PreventRemove(!allow);
+        }
     }
 
     private void EnterCombat()
@@ -68,40 +70,6 @@ public class EquipmentSlotUI : ItemSlotUI
     private void ExitCombat()
     {
         inCombat = false;
-    }
-
-    private void AllowInteraction(Entity entity)
-    {
-        // Allow the touching of dice
-        if (entity is Player)
-        {
-            if (itemUI != null)
-            {
-                itemUI.PreventRemove(false);
-            }
-        }
-    }
-
-    private void AllowInteraction(Entity entity, Action action, Vector3Int location, Room room)
-    {
-        AllowInteraction(entity);
-    }
-
-    private void PreventInteraction(Entity entity)
-    {
-        // Prevent the touching of dice
-        if (entity is Player)
-        {
-            if (itemUI != null)
-            {
-                itemUI.PreventRemove(true);
-            }
-        }
-    }
-
-    private void PreventInteraction(Entity entity, Action action, Vector3Int location, Room room)
-    {
-        PreventInteraction(entity);
     }
 
     public override void OnPointerEnter(PointerEventData eventData)

@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -15,11 +14,10 @@ public class ActionIndicator : MonoBehaviour
 
     [Header("Tiles")]
     [SerializeField] private RuleTile highlightedTile;
-    [SerializeField] private GameObject actionPreviewPrefab;
     [SerializeField] private AnimatedTile intentTile;
-    [SerializeField] private List<Tile> numberTiles;
 
     [Header("Prefabs")]
+    [SerializeField] private GameObject actionPreviewPrefab;
     [SerializeField] private GameObject damageIntentPrefab;
 
     [Header("Settings")]
@@ -77,8 +75,6 @@ public class ActionIndicator : MonoBehaviour
                         {
                             actionResultTilemap.SetTile(location, highlightedTile);
                             actionResultTilemap.SetColor(location, Color.yellow);
-                            actionCountTilemap.SetTile(location, numberTiles[damage - 1]);
-                            actionCountTilemap.SetColor(location, Color.yellow);
                         }
 
                         break;
