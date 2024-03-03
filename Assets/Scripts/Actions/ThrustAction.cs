@@ -5,6 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Actions/Thrust")]
 public class ThrustAction : Action
 {
+    [SerializeField] private GameObject vfxPrefab;
+
     public override List<Vector3Int> GetValidLocations(Vector3Int startLocation, Room room)
     {
         List<Vector3Int> targets = new List<Vector3Int>();
@@ -42,12 +44,15 @@ public class ThrustAction : Action
 
     public override IEnumerator Perform(Entity entity, Vector3Int targetLocation, List<Vector3Int> threatenedLocations, Room room)
     {
-        // ~~~ Move to location ~~~
 
         // Calculate direction
         Vector3Int direction = targetLocation - entity.location;
         direction.Clamp(-Vector3Int.one, Vector3Int.one);
 
+        // Pull out weapon
+        weapon.model.DrawWeapon(entity, direction, weapon);
+
+        // Move to location
         entity.model.MoveSetup();
         while (entity.location != targetLocation)
         {
@@ -72,6 +77,10 @@ public class ThrustAction : Action
             entity.AttackLocation(location, weapon, GetTotalDamage());
 
         // Trigger event
-        GameEvents.instance.TriggerOnEntityUseWeapon(entity, weapon);
+        // GameEvents.instance.TriggerOnEntityUseWeapon(entity, weapon);
+
+        // Attack
+        yield return weapon.model.UseWeapon(vfxPrefab);
+        weapon.model.SheatheWeapon(entity, weapon);
     }
 }

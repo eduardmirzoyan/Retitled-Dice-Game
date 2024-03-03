@@ -5,6 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Actions/Slash")]
 public class SlashAction : Action
 {
+    [SerializeField] private GameObject vfxPrefab;
+
     public override List<Vector3Int> GetValidLocations(Vector3Int startLocation, Room room)
     {
         List<Vector3Int> targets = new List<Vector3Int>();
@@ -42,21 +44,31 @@ public class SlashAction : Action
 
     public override IEnumerator Perform(Entity entity, Vector3Int targetLocation, List<Vector3Int> threatenedLocations, Room room)
     {
+        // Calculate direction
+        Vector3Int direction = targetLocation - entity.location;
+        direction.Clamp(-Vector3Int.one, Vector3Int.one);
+
         // ~~~ Attack targets ~~~
+
+        // Face backwards
+        entity.model.FaceDirection(entity, -direction, weapon);
+        weapon.model.DrawWeapon(entity, -direction, weapon);
+
+        // Delay for dramatic effect
+        yield return new WaitForSeconds(0.25f);
 
         // Attack each location
         foreach (var location in threatenedLocations)
             entity.AttackLocation(location, weapon, GetTotalDamage());
 
         // Trigger event
-        GameEvents.instance.TriggerOnEntityUseWeapon(entity, weapon);
-        yield return null;
+        // GameEvents.instance.TriggerOnEntityUseWeapon(entity, weapon);
+
+        // Handle visuals
+        yield return weapon.model.UseWeapon(vfxPrefab);
+        weapon.model.SheatheWeapon(entity, weapon);
 
         // ~~~ Move to location ~~~
-
-        // Calculate direction
-        Vector3Int direction = targetLocation - entity.location;
-        direction.Clamp(-Vector3Int.one, Vector3Int.one);
 
         entity.model.MoveSetup();
         while (entity.location != targetLocation)
@@ -64,13 +76,12 @@ public class SlashAction : Action
             // Calculate next location
             Vector3Int nextLocation = entity.location + direction;
 
-            // Run animations
+            // Handle visuals
             yield return entity.model.Move(entity.location, nextLocation);
 
             // Updatate data
             entity.Relocate(nextLocation);
         }
         entity.model.MoveCleanup();
-
     }
 }

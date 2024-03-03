@@ -118,8 +118,12 @@ public class RoomManager : MonoBehaviour
 
     public void DespawnEntity(Entity entity)
     {
+        // Create a corpse (if not a barrel)
+        if (entity.name != "Barrel")
+            entity.model.SpawnCorpse();
+
         // Remove from world
-        entity.model.Uninitialize(entity);
+        entity.model.Uninitialize();
         Destroy(entity.model.gameObject);
 
         // Remove reference

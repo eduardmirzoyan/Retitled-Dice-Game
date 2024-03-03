@@ -16,7 +16,6 @@ MonoBehaviour:
   rawInactiveDescription: 'Move {die}
 
     Attack {dmg} forward'
-  rawActiveDescription: Not used.
   icon: {fileID: 849968082, guid: 91c6e5420840aa74883dcb2d26dae9ea, type: 3}
   color: {r: 0.8705883, g: 0.24313727, b: 0.13725491, a: 1}
   actionSpeed: 0
@@ -26,3 +25,4 @@ MonoBehaviour:
   weapon: {fileID: 0}
   modifiers: []
   bonusDamage: 0
+  vfxPrefab: {fileID: 2619012972811128830, guid: 5a5dc67bf95abaf4b8749dfa8920e621, type: 3}

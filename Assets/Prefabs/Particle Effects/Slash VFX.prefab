@@ -116,7 +116,7 @@ GameObject:
   - component: {fileID: 2619012972811128831}
   - component: {fileID: -542102129257768287}
   m_Layer: 0
-  m_Name: Slash Effect
+  m_Name: Slash VFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

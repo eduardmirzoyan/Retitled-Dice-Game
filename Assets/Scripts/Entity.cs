@@ -77,8 +77,6 @@ public class Entity : ScriptableObject
 
     public void EquipWeapon(Weapon weapon, int index)
     {
-        // WORK AROUND
-
         // Set new weapon
         var oldWeapon = this.weapons[index];
         this.weapons[index] = weapon;
@@ -90,7 +88,7 @@ public class Entity : ScriptableObject
             oldWeapon.Uninitialize();
 
             // Trigger event
-            GameEvents.instance.TriggerOnUnequipWeapon(this, this.weapons[index], index);
+            GameEvents.instance.TriggerOnUnequipWeapon(this, oldWeapon, index);
         }
 
         // Check if we have a weapon now

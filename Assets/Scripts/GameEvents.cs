@@ -40,6 +40,7 @@ public class GameEvents : MonoBehaviour
     public event Action<Entity, Vector3, Weapon> onEntityDrawWeapon;
     public event Action<Entity, Weapon> onEntitySheatheWeapon;
     public event Action<Entity, Weapon> onEntityUseWeapon;
+
     public event Action<Action, List<Vector3Int>> onActionThreatenLocations;
     public event Action<Action, List<Vector3Int>> onActionUnthreatenLocations;
 

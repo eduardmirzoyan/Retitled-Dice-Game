@@ -17,6 +17,7 @@ public class Weapon : Item
 
     [Header("Dynamic Data")]
     public Entity entity;
+    public WeaponModel model;
 
     public void Initialize(Entity entity)
     {

@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 [RequireComponent(typeof(DamageFlash))]
@@ -32,8 +31,6 @@ public class EntityModel : MonoBehaviour
     [SerializeField] private float jumpHeight = 1f;
     [SerializeField] private float footstepSfxSpeed = 0.25f;
 
-    private Coroutine coroutine;
-
     private void Awake()
     {
         properLayerSort = GetComponentInChildren<ProperLayerSort>();
@@ -54,51 +51,57 @@ public class EntityModel : MonoBehaviour
 
         // Sub to events
         GameEvents.instance.onEquipWeapon += SpawnWeapon;
-        GameEvents.instance.onEntityDrawWeapon += FaceDirection;
+        GameEvents.instance.onUnequipWeapon += DespawnWeapon;
+        // GameEvents.instance.onEntityDrawWeapon += FaceDirection;
 
         // Set name
         transform.name = $"{entity.name} Renderer";
     }
 
-    private void OnDestroy()
+    public void Uninitialize()
     {
-        // Unsub to events
         GameEvents.instance.onEquipWeapon -= SpawnWeapon;
-        GameEvents.instance.onEntityDrawWeapon -= FaceDirection;
+        GameEvents.instance.onUnequipWeapon -= DespawnWeapon;
+        // GameEvents.instance.onEntityDrawWeapon -= FaceDirection;
     }
 
-    public void Uninitialize(Entity entity)
+    public void SpawnCorpse()
     {
-        if (this.entity != entity)
-            throw new System.Exception("Unknown entity was chosen to despawn.");
-
-        // Play sound
-        AudioManager.instance.PlaySFX("death");
-
         // BANDADE SOLUTION
         Vector2 fromLocation = entity.room.player.location + new Vector3(0.5f, 0.5f, 0);
         Vector2 direction = (Vector2)transform.position - fromLocation;
         direction.Normalize();
 
-        // Spawn corpse FIXME
-        if (entity.name != "Barrel")
-            Instantiate(corpsePrefab, transform.position, Quaternion.identity).GetComponent<CorpseModel>().Initialize(entity, direction);
+        // Spawn corpse
+        Instantiate(corpsePrefab, transform.position, Quaternion.identity).GetComponent<CorpseModel>().Initialize(entity, direction);
+
+        // Play sound
+        AudioManager.instance.PlaySFX("death");
     }
 
     private void SpawnWeapon(Entity entity, Weapon weapon, int index)
     {
         if (this.entity == entity && weapon != null)
         {
-            if (index == 0)
-            {
-                // Create and Initalize weapon
-                Instantiate(weapon.weaponPrefab, mainWeaponHolder).GetComponent<WeaponModel>().Initialize(weapon);
-            }
-            else if (index == 1)
-            {
-                // Create and Initalize weapon
-                Instantiate(weapon.weaponPrefab, offWeaponHolder).GetComponent<WeaponModel>().Initialize(weapon);
-            }
+            // 0 - Mainahnd, 1 - Offhand
+            Transform holder = index == 0 ? mainWeaponHolder : offWeaponHolder;
+
+            // Create and initalize world model
+            var model = Instantiate(weapon.weaponPrefab, holder).GetComponent<WeaponModel>();
+            model.Initialize(weapon);
+            weapon.model = model;
+        }
+    }
+
+    private void DespawnWeapon(Entity entity, Weapon weapon, int _)
+    {
+        if (this.entity == entity && weapon != null)
+        {
+            // Destroy this object
+            Destroy(weapon.model.gameObject);
+
+            // Remove reference
+            weapon.model = null;
         }
     }
 
@@ -232,7 +235,7 @@ public class EntityModel : MonoBehaviour
         }
     }
 
-    private void FaceDirection(Entity entity, Vector3 direction, Weapon weapon)
+    public void FaceDirection(Entity entity, Vector3 direction, Weapon weapon)
     {
         if (this.entity == entity)
         {

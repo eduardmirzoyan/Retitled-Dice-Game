@@ -74,6 +74,7 @@
     <Compile Include="Assets\Scripts\Visuals\UI\Weapon-Related\WeaponEnchantmentTooltipUI.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\Blacksmith\BlacksmithSlot.cs" />
     <Compile Include="Assets\Scripts\Visuals\AttackParticle.cs" />
+    <Compile Include="Assets\Scripts\Visuals\UI\EEnchantment\EntityEnchantmentTooltipUI.cs" />
     <Compile Include="Assets\Scripts\Managers\SettingsManager.cs" />
     <Compile Include="Assets\Scripts\Game Feel\DamageFlash.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\Actions\ActionTooltipUI.cs" />
@@ -202,7 +203,6 @@
     <Compile Include="Assets\Scripts\AI\AI.cs" />
     <Compile Include="Assets\Scripts\Actions\MerchantAction.cs" />
     <Compile Include="Assets\Scripts\AI\BoldAI.cs" />
-    <Compile Include="Assets\Scripts\Visuals\UI\EEnchantment\EntityEnchantmentTooltipUI.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

@@ -483,11 +483,11 @@ public class GameManager : MonoBehaviour
             // Clear
             selectedThreats.Clear();
 
-            if (selectedAction.actionType == ActionType.Attack)
-            {
-                // Sheathe weapon
-                GameEvents.instance.TriggerOnEntitySheatheWeapon(selectedEntity, selectedAction.weapon);
-            }
+            // if (selectedAction.actionType == ActionType.Attack)
+            // {
+            //     // Sheathe weapon
+            //     GameEvents.instance.TriggerOnEntitySheatheWeapon(selectedEntity, selectedAction.weapon);
+            // }
         }
         else if (selectedLocation == Vector3Int.back && location != Vector3Int.back)
         {
@@ -498,15 +498,15 @@ public class GameManager : MonoBehaviour
             // Trigger event
             GameEvents.instance.TriggerOnLocationSelect(selectedEntity, selectedAction, location);
 
-            if (selectedAction.actionType == ActionType.Attack)
-            {
-                // Calculate direction
-                Vector3Int direction = location - selectedEntity.location;
-                direction.Clamp(-Vector3Int.one, Vector3Int.one);
+            // if (selectedAction.actionType == ActionType.Attack)
+            // {
+            //     // Calculate direction
+            //     Vector3Int direction = location - selectedEntity.location;
+            //     direction.Clamp(-Vector3Int.one, Vector3Int.one);
 
-                // Draw weapon
-                GameEvents.instance.TriggerOnEntityDrawWeapon(selectedEntity, direction, selectedAction.weapon);
-            }
+            //     // Draw weapon
+            //     GameEvents.instance.TriggerOnEntityDrawWeapon(selectedEntity, direction, selectedAction.weapon);
+            // }
 
             // Add threatened locations to table
             selectedThreats = selectedAction.GetThreatenedLocations(selectedEntity, location);
@@ -514,15 +514,15 @@ public class GameManager : MonoBehaviour
             // Show threats
             GameEvents.instance.TriggerOnActionThreatenLocation(selectedAction, selectedThreats);
 
-            if (selectedAction.actionType == ActionType.Attack)
-            {
-                // Calculate direction
-                Vector3Int direction = location - selectedEntity.location;
-                direction.Clamp(-Vector3Int.one, Vector3Int.one);
+            // if (selectedAction.actionType == ActionType.Attack)
+            // {
+            //     // Calculate direction
+            //     Vector3Int direction = location - selectedEntity.location;
+            //     direction.Clamp(-Vector3Int.one, Vector3Int.one);
 
-                // Draw weapon
-                GameEvents.instance.TriggerOnEntityDrawWeapon(selectedEntity, direction, selectedAction.weapon);
-            }
+            //     // Draw weapon
+            //     GameEvents.instance.TriggerOnEntityDrawWeapon(selectedEntity, direction, selectedAction.weapon);
+            // }
         }
         else if (selectedLocation != Vector3Int.back && location != Vector3Int.back)
         {
@@ -542,11 +542,11 @@ public class GameManager : MonoBehaviour
                 // Clear
                 selectedThreats.Clear();
 
-                if (selectedAction.actionType == ActionType.Attack)
-                {
-                    // Sheathe weapon
-                    GameEvents.instance.TriggerOnEntitySheatheWeapon(selectedEntity, selectedAction.weapon);
-                }
+                // if (selectedAction.actionType == ActionType.Attack)
+                // {
+                //     // Sheathe weapon
+                //     GameEvents.instance.TriggerOnEntitySheatheWeapon(selectedEntity, selectedAction.weapon);
+                // }
             }
             else
             {
@@ -561,11 +561,11 @@ public class GameManager : MonoBehaviour
                 // Hide threats
                 GameEvents.instance.TriggerOnActionUnthreatenLocation(selectedAction, selectedThreats);
 
-                if (selectedAction.actionType == ActionType.Attack)
-                {
-                    // Sheathe weapon
-                    GameEvents.instance.TriggerOnEntitySheatheWeapon(selectedEntity, selectedAction.weapon);
-                }
+                // if (selectedAction.actionType == ActionType.Attack)
+                // {
+                //     // Sheathe weapon
+                //     GameEvents.instance.TriggerOnEntitySheatheWeapon(selectedEntity, selectedAction.weapon);
+                // }
 
                 // Save new threatened locations 
                 selectedThreats = selectedAction.GetThreatenedLocations(selectedEntity, location);
@@ -573,15 +573,15 @@ public class GameManager : MonoBehaviour
                 // Show threats
                 GameEvents.instance.TriggerOnActionThreatenLocation(selectedAction, selectedThreats);
 
-                if (selectedAction.actionType == ActionType.Attack)
-                {
-                    // Calculate direction
-                    Vector3Int direction = location - selectedEntity.location;
-                    direction.Clamp(-Vector3Int.one, Vector3Int.one);
+                // if (selectedAction.actionType == ActionType.Attack)
+                // {
+                //     // Calculate direction
+                //     Vector3Int direction = location - selectedEntity.location;
+                //     direction.Clamp(-Vector3Int.one, Vector3Int.one);
 
-                    // Draw weapon
-                    GameEvents.instance.TriggerOnEntityDrawWeapon(selectedEntity, direction, selectedAction.weapon);
-                }
+                //     // Draw weapon
+                //     GameEvents.instance.TriggerOnEntityDrawWeapon(selectedEntity, direction, selectedAction.weapon);
+                // }
             }
         }
         else throw new System.Exception("UNHANDLED LOCATION SELECT CASE ENCOUNTER!");

@@ -29,31 +29,19 @@ public class WeaponModel : MonoBehaviour
         transform.name = weapon.name + " Model";
 
         // Sub to events
-        GameEvents.instance.onEntityDrawWeapon += DrawWeapon;
-        GameEvents.instance.onEntityUseWeapon += UseWeapon;
-        GameEvents.instance.onEntitySheatheWeapon += SheatheWeapon;
-        GameEvents.instance.onUnequipWeapon += Despawn;
+        //GameEvents.instance.onEntityDrawWeapon += DrawWeapon;
+        //GameEvents.instance.onEntityUseWeapon += UseWeapon;
+        //GameEvents.instance.onEntitySheatheWeapon += SheatheWeapon;
     }
 
     private void OnDestroy()
     {
-        GameEvents.instance.onEntityDrawWeapon -= DrawWeapon;
-        GameEvents.instance.onEntityUseWeapon -= UseWeapon;
-        GameEvents.instance.onEntitySheatheWeapon -= SheatheWeapon;
-        GameEvents.instance.onUnequipWeapon -= Despawn;
+        //GameEvents.instance.onEntityDrawWeapon -= DrawWeapon;
+        //GameEvents.instance.onEntityUseWeapon -= UseWeapon;
+        //GameEvents.instance.onEntitySheatheWeapon -= SheatheWeapon;
     }
 
-    private void Despawn(Entity entity, Weapon weapon, int index)
-    {
-        // If this weapon was un-equipped
-        if (this.weapon == weapon)
-        {
-            // Destroy this object
-            Destroy(gameObject);
-        }
-    }
-
-    private void DrawWeapon(Entity entity, Vector3 direction, Weapon weapon)
+    public void DrawWeapon(Entity entity, Vector3 direction, Weapon weapon)
     {
         // Holder z = 90, attack up
         // Holder z = 0, attack facing direction
@@ -107,7 +95,20 @@ public class WeaponModel : MonoBehaviour
         }
     }
 
-    private void SheatheWeapon(Entity entity, Weapon weapon)
+    public IEnumerator UseWeapon(GameObject attackVFX)
+    {
+        // Play animation
+        animator.Play("Attack");
+
+        // Spawn particle in the same orientation as the weapon
+        if (attackVFX != null)
+            Instantiate(attackVFX, transform.position + transform.right, transform.rotation);
+
+        // Give small delay
+        yield return new WaitForSeconds(0.25f);
+    }
+
+    public void SheatheWeapon(Entity entity, Weapon weapon)
     {
         if (this.weapon == weapon)
         {
