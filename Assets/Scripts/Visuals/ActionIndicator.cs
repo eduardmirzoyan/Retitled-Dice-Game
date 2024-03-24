@@ -7,10 +7,8 @@ public class ActionIndicator : MonoBehaviour
 {
     [Header("Tilemaps")]
     [SerializeField] private Tilemap actionLocationTilemap;
-    [SerializeField] private Tilemap actionResultTilemap;
-    [SerializeField] private Tilemap actionCountTilemap;
-    [SerializeField] private Tilemap intentIconTilemap;
-    [SerializeField] private Tilemap intentCountTilemap;
+    [SerializeField] private Tilemap actionPreviewTilemap;
+    [SerializeField] private Tilemap intentTilemap;
 
     [Header("Tiles")]
     [SerializeField] private RuleTile highlightedTile;
@@ -73,8 +71,8 @@ public class ActionIndicator : MonoBehaviour
 
                         foreach (var location in locations)
                         {
-                            actionResultTilemap.SetTile(location, highlightedTile);
-                            actionResultTilemap.SetColor(location, Color.yellow);
+                            actionPreviewTilemap.SetTile(location, highlightedTile);
+                            actionPreviewTilemap.SetColor(location, Color.yellow);
                         }
 
                         break;
@@ -92,13 +90,13 @@ public class ActionIndicator : MonoBehaviour
                             else
                             {
                                 // Set icon
-                                intentIconTilemap.SetTile(location, intentTile);
-                                intentIconTilemap.SetColor(location, action.color);
+                                intentTilemap.SetTile(location, intentTile);
+                                intentTilemap.SetColor(location, action.color);
 
                                 // Create indicator
-                                var position = intentIconTilemap.GetCellCenterWorld(location);
-                                var damageIndicator = Instantiate(damageIntentPrefab, position, Quaternion.identity, intentCountTilemap.transform).GetComponent<DamageIntentIndicator>();
-                                damageIndicator.Initialize(damage, action.color);
+                                var position = intentTilemap.GetCellCenterWorld(location);
+                                var damageIndicator = Instantiate(damageIntentPrefab, position, Quaternion.identity, intentTilemap.transform).GetComponent<DamageIntentIndicator>();
+                                damageIndicator.Initialize(damage);
 
                                 // Add to dict
                                 attackIntentTable[location] = damageIndicator;
@@ -120,8 +118,8 @@ public class ActionIndicator : MonoBehaviour
 
                         foreach (var location in locations)
                         {
-                            actionResultTilemap.SetTile(location, highlightedTile);
-                            actionResultTilemap.SetColor(location, Color.yellow);
+                            actionPreviewTilemap.SetTile(location, highlightedTile);
+                            actionPreviewTilemap.SetColor(location, Color.yellow);
                         }
 
                         break;
@@ -141,8 +139,8 @@ public class ActionIndicator : MonoBehaviour
                                 utilityIntentTable[location] = 1;
 
                                 // Set icon
-                                intentIconTilemap.SetTile(location, intentTile);
-                                intentIconTilemap.SetColor(location, action.color);
+                                intentTilemap.SetTile(location, intentTile);
+                                intentTilemap.SetColor(location, action.color);
 
                                 // Check if player is in
                                 CheckPlayerDanger(DataManager.instance.GetPlayer());
@@ -171,8 +169,7 @@ public class ActionIndicator : MonoBehaviour
 
                         foreach (var location in locations)
                         {
-                            actionResultTilemap.SetTile(location, null);
-                            actionCountTilemap.SetTile(location, null);
+                            actionPreviewTilemap.SetTile(location, null);
                         }
 
                         break;
@@ -187,7 +184,7 @@ public class ActionIndicator : MonoBehaviour
                                 if (damage >= indicator.GetValue())
                                 {
                                     // Unmark
-                                    intentIconTilemap.SetTile(location, null);
+                                    intentTilemap.SetTile(location, null);
 
                                     // Destroy object
                                     Destroy(indicator.gameObject);
@@ -220,7 +217,7 @@ public class ActionIndicator : MonoBehaviour
 
                         foreach (var location in locations)
                         {
-                            actionResultTilemap.SetTile(location, null);
+                            actionPreviewTilemap.SetTile(location, null);
                         }
 
                         break;
@@ -235,7 +232,7 @@ public class ActionIndicator : MonoBehaviour
                                 if (count == 1)
                                 {
                                     // Unmark
-                                    intentIconTilemap.SetTile(location, null);
+                                    intentTilemap.SetTile(location, null);
 
                                     // Remove entry
                                     utilityIntentTable.Remove(location);
@@ -318,9 +315,9 @@ public class ActionIndicator : MonoBehaviour
     private void SpawnIndicator(Entity entity, Action action, Vector3Int location)
     {
         // Get target world position
-        var targetWorldLocation = intentIconTilemap.GetCellCenterWorld(location);
+        var targetWorldLocation = intentTilemap.GetCellCenterWorld(location);
         // Instaniate as child
-        var actionPreview = Instantiate(actionPreviewPrefab, targetWorldLocation, Quaternion.identity, intentIconTilemap.transform).GetComponent<ActionPreview>();
+        var actionPreview = Instantiate(actionPreviewPrefab, targetWorldLocation, Quaternion.identity, intentTilemap.transform).GetComponent<ActionPreview>();
         // Initialize
         actionPreview.Initialize(entity, location, action);
     }
@@ -337,10 +334,15 @@ public class ActionIndicator : MonoBehaviour
     private void CheckPlayerDanger(Entity entity)
     {
         // If player is on a threatened tile
-        if (entity is Player && entity.model != null)
+        if (entity is Player)
         {
-            bool inDanger = attackIntentTable.ContainsKey(entity.location);
-            entity.model.SetDangerStatus(inDanger);
+            // bool inDanger = attackIntentTable.ContainsKey(entity.location);
+            // entity.model.SetDangerStatus(inDanger);
+
+            if (attackIntentTable.TryGetValue(entity.location, out DamageIntentIndicator indicator))
+            {
+                indicator.SetHighlightState(true);
+            }
         }
     }
 }

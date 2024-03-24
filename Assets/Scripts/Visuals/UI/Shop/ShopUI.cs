@@ -31,8 +31,8 @@ public class ShopUI : MonoBehaviour
 
     public IEnumerator Browse(Entity buyer, Inventory shopInventory)
     {
-        // Allow moving of items while in shop
-        GameEvents.instance.TriggerOnToggleAllowItem(true);
+        // Allow moving of items while in menu
+        GameEvents.instance.TriggerOnToggleAllowInventory(true);
 
         // Reset state
         requestClose = false;
@@ -42,9 +42,9 @@ public class ShopUI : MonoBehaviour
         canvasGroup.interactable = true;
         canvasGroup.blocksRaycasts = true;
 
+        // Create shop slots
         for (int i = 0; i < shopInventory.maxSize; i++)
         {
-            // Create slot
             var shopSlot = Instantiate(shopSlotPrefab, gridLayoutGroup.transform).GetComponent<ShopSlotUI>();
             shopSlot.Initialize(buyer, shopInventory, i);
             shopSlots.Add(shopSlot);
@@ -57,7 +57,7 @@ public class ShopUI : MonoBehaviour
         while (!requestClose)
             yield return null;
 
-        // Clear ui
+        // Clear slots
         foreach (var shopSlot in shopSlots)
         {
             Destroy(shopSlot.gameObject);
@@ -70,7 +70,7 @@ public class ShopUI : MonoBehaviour
         canvasGroup.blocksRaycasts = false;
 
         // Disallow items again
-        GameEvents.instance.TriggerOnToggleAllowItem(false);
+        GameEvents.instance.TriggerOnToggleAllowInventory(false);
     }
 
     public void Close()

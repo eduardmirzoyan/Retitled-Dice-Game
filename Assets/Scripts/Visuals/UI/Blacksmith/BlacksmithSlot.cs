@@ -23,25 +23,6 @@ public class BlacksmithSlot : ItemSlotUI, IPointerClickHandler
 
         // Update name
         gameObject.name = "Blacksmith Slot";
-
-        // Sub Events
-        GameEvents.instance.onCloseBlacksmith += ClearWeapon;
-    }
-
-    private void OnDestroy()
-    {
-        // Unsub Events
-        GameEvents.instance.onCloseBlacksmith -= ClearWeapon;
-    }
-
-    private void ClearWeapon(Entity entity)
-    {
-        // Remove item
-        if (itemUI != null)
-        {
-            // Remove stored item
-            StoreItem(null);
-        }
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -97,6 +78,9 @@ public class BlacksmithSlot : ItemSlotUI, IPointerClickHandler
 
     public override void StoreItem(ItemUI newItemUI)
     {
+        // Do nothing if the same
+        if (newItemUI == itemUI) return;
+
         // If old item exists
         if (itemUI != null)
         {

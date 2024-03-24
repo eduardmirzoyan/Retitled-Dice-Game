@@ -59,7 +59,7 @@
     <UnityVersion>2021.3.1f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Analyzer Include="C:\Users\eduar\.vscode\extensions\visualstudiotoolsforunity.vstuc-0.9.4\Analyzers\Microsoft.Unity.Analyzers.dll" />
+    <Analyzer Include="C:\Users\eduar\.vscode\extensions\visualstudiotoolsforunity.vstuc-1.0.0\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Managers\GameManager.cs" />
@@ -91,12 +91,11 @@
     <Compile Include="Assets\Scripts\World\KeyPickup.cs" />
     <Compile Include="Assets\Scripts\Enchantments\Weapon\DieBuffWE.cs" />
     <Compile Include="Assets\Scripts\Items\Weapon.cs" />
-    <Compile Include="Assets\Scripts\Visuals\ColorPalette.cs" />
+    <Compile Include="Assets\Scripts\Visuals\Resource Containers\ColorPalette.cs" />
     <Compile Include="Assets\Scripts\Enchantments\Weapon\RangeDamageWE.cs" />
     <Compile Include="Assets\Scripts\Actions\JumpAction.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\TooltipTriggerUI.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\Inventory\EquipmentSlotUI.cs" />
-    <Compile Include="Assets\Scripts\Visuals\ProperLayerSort.cs" />
     <Compile Include="Assets\Scripts\Enchantments\Weapon\WeaponEnchantment.cs" />
     <Compile Include="Assets\Scripts\Enchantments\Weapon\OnConsumableWE.cs" />
     <Compile Include="Assets\Scripts\Enchantments\Weapon\KillGoldWeaponEnchantment.cs" />
@@ -203,6 +202,7 @@
     <Compile Include="Assets\Scripts\AI\AI.cs" />
     <Compile Include="Assets\Scripts\Actions\MerchantAction.cs" />
     <Compile Include="Assets\Scripts\AI\BoldAI.cs" />
+    <Compile Include="Assets\Scripts\Visuals\Resource Containers\TileResourceContainer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

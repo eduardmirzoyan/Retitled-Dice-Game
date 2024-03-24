@@ -12,15 +12,16 @@ public class RoomManager : MonoBehaviour
     [SerializeField] private Transform entityTransform;
 
     [Header("Tiles")]
-    [SerializeField] private Tile floorTile;
-    [SerializeField] private RuleTile wallTile;
-    [SerializeField] private Tile entranceTile;
+    [SerializeField] private TileResourceContainer tileResource;
 
     [Header("Prefabs")]
     [SerializeField] private GameObject floorExitPrefab;
     [SerializeField] private GameObject goldPickupPrefab;
     [SerializeField] private GameObject keyPickupPrefab;
     [SerializeField] private GameObject entityModelPrefab;
+
+    [Header("Debug")]
+    [SerializeField] private Transform exitTransform;
 
     public static RoomManager instance;
     private void Awake()
@@ -69,32 +70,32 @@ public class RoomManager : MonoBehaviour
                 case TileType.Floor:
 
                     // Set tile to floor
-                    floorTilemap.SetTile(tile.location, floorTile);
+                    floorTilemap.SetTile(tile.location, tileResource.floorTile);
 
                     break;
                 case TileType.Wall:
 
                     // Set tile to wall
-                    floorTilemap.SetTile(tile.location, floorTile);
-                    wallsTilemap.SetTile(tile.location, wallTile);
+                    floorTilemap.SetTile(tile.location, tileResource.floorTile);
+                    wallsTilemap.SetTile(tile.location, tileResource.wallTile);
 
                     break;
                 case TileType.Entrance:
 
                     // Set tile to floor
-                    floorTilemap.SetTile(tile.location, floorTile);
+                    floorTilemap.SetTile(tile.location, tileResource.floorTile);
                     // Draw entrance
-                    decorTilemap.SetTile(tile.location, entranceTile);
+                    decorTilemap.SetTile(tile.location, tileResource.entranceTile);
 
                     break;
                 case TileType.Exit:
 
                     // Set tile to floor
-                    floorTilemap.SetTile(tile.location, floorTile);
+                    floorTilemap.SetTile(tile.location, tileResource.floorTile);
 
                     // Create room exit
-                    Instantiate(floorExitPrefab, floorTilemap.GetCellCenterWorld(tile.location), Quaternion.identity, floorTilemap.transform).GetComponent<RoomExitUI>();
-
+                    var exit = Instantiate(floorExitPrefab, floorTilemap.GetCellCenterWorld(tile.location), Quaternion.identity, floorTilemap.transform).GetComponent<RoomExitUI>();
+                    exitTransform = exit.transform;
                     break;
             }
         }
@@ -159,5 +160,10 @@ public class RoomManager : MonoBehaviour
     {
         // Temp convert function
         return floorTilemap.GetCellCenterWorld(location);
+    }
+
+    public Vector3 GetExitPosition()
+    {
+        return exitTransform.position;
     }
 }

@@ -19,7 +19,6 @@ public class GameEvents : MonoBehaviour
     public event Action<Action> onActionDisable;
     public event Action<Action> onActionEnable;
     public event Action<Entity, Action> onActionSelect;
-    public event Action<Entity, Action> onActionDeselect;
     public event Action<Entity, Action, Vector3Int> onLocationSelect;
     public event Action<Entity, Action, Vector3Int> onActionConfirm;
     public event Action<Entity, Action, Vector3Int, Room> onActionPerformStart;
@@ -58,21 +57,17 @@ public class GameEvents : MonoBehaviour
     public event System.Action onUnlockExit;
 
     // UI Based
-    public event Action<Entity> onOpenBlacksmith;
-    public event Action<Entity> onCloseBlacksmith;
     public event Action<Weapon> onInsertBlacksmith;
     public event Action<Weapon> onRemoveBlacksmith;
-    public event Action<ItemUI, ItemSlotUI> onItemInsert;
     public event Action<Entity, Weapon, int> onEquipWeapon;
     public event Action<Entity, Weapon, int> onUnequipWeapon;
     public event Action<Entity, Consumable> onEntityUseConsumable;
     public event Action<Entity, EntityEnchantment> onEntityGainEnchantment;
 
     public event Action<Entity, List<Vector3Int>> onEntityInspect;
-    public event Action<List<EntityEnchantment>> onPresentEnchantments;
 
     public event Action<bool> onToggleAllowAction;
-    public event Action<bool> onToggleAllowItem;
+    public event Action<bool> onToggleAllowInventory;
 
     public static GameEvents instance;
     private void Awake()
@@ -156,11 +151,6 @@ public class GameEvents : MonoBehaviour
     public void TriggerOnActionSelect(Entity entity, Action action)
     {
         onActionSelect?.Invoke(entity, action);
-    }
-
-    public void TriggerOnActionDeselect(Entity entity, Action action)
-    {
-        onActionDeselect?.Invoke(entity, action);
     }
 
     public void TriggerOnLocationSelect(Entity entity, Action action, Vector3Int location)
@@ -278,11 +268,6 @@ public class GameEvents : MonoBehaviour
         onEntityGoldChange?.Invoke(entity, amount);
     }
 
-    public void TriggerOnItemInsert(ItemUI itemUI, ItemSlotUI itemSlotUI)
-    {
-        onItemInsert?.Invoke(itemUI, itemSlotUI);
-    }
-
     public void TriggerOnEquipWeapon(Entity entity, Weapon weapon, int index)
     {
         onEquipWeapon?.Invoke(entity, weapon, index);
@@ -315,16 +300,6 @@ public class GameEvents : MonoBehaviour
 
     #region Merchants
 
-    public void TriggerOnOpenBlacksmith(Entity entity)
-    {
-        onOpenBlacksmith?.Invoke(entity);
-    }
-
-    public void TriggerOnCloseBlacksmith(Entity entity)
-    {
-        onCloseBlacksmith?.Invoke(entity);
-    }
-
     public void TriggerOnInsertBlacksmith(Weapon weapon)
     {
         onInsertBlacksmith?.Invoke(weapon);
@@ -337,11 +312,6 @@ public class GameEvents : MonoBehaviour
 
     #endregion
 
-    public void TriggerOnPresentEnchantments(List<EntityEnchantment> entityEnchantments)
-    {
-        onPresentEnchantments?.Invoke(entityEnchantments);
-    }
-
     #region Input
 
     public void TriggerOnToggleAllowAction(bool state)
@@ -349,9 +319,9 @@ public class GameEvents : MonoBehaviour
         onToggleAllowAction?.Invoke(state);
     }
 
-    public void TriggerOnToggleAllowItem(bool state)
+    public void TriggerOnToggleAllowInventory(bool state)
     {
-        onToggleAllowItem?.Invoke(state);
+        onToggleAllowInventory?.Invoke(state);
     }
 
     #endregion

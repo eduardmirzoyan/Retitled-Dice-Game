@@ -23,25 +23,6 @@ public class ShamanDestinationSlotUI : ItemSlotUI, IPointerClickHandler
 
         // Update name
         gameObject.name = "Destination Slot";
-
-        // Sub Events
-        // GameEvents.instance.onCloseBlacksmith += ClearWeapon;
-    }
-
-    private void OnDestroy()
-    {
-        // Unsub Events
-        GameEvents.instance.onCloseBlacksmith -= ClearWeapon;
-    }
-
-    private void ClearWeapon(Entity entity)
-    {
-        // Remove item
-        if (itemUI != null)
-        {
-            // Remove stored item
-            StoreItem(null);
-        }
     }
 
     public void OnPointerClick(PointerEventData eventData)

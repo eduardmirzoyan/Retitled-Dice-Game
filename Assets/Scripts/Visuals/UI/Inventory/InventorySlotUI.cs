@@ -32,12 +32,12 @@ public class InventorySlotUI : ItemSlotUI
         // Update name
         gameObject.name = "Inventory Slot " + index;
 
-        GameEvents.instance.onToggleAllowItem += ToggleInteraction;
+        GameEvents.instance.onToggleAllowInventory += ToggleInteraction;
     }
 
     private void OnDestroy()
     {
-        GameEvents.instance.onToggleAllowItem -= ToggleInteraction;
+        GameEvents.instance.onToggleAllowInventory -= ToggleInteraction;
     }
 
     private void ToggleInteraction(bool allow)

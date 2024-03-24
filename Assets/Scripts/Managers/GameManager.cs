@@ -74,7 +74,7 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.L))
         {
             var enchantments = enchantmentGenerator.GenerateEnchantmentSet();
-            GameEvents.instance.TriggerOnPresentEnchantments(enchantments);
+            EnchantmentSelectionUI.instance.Open(enchantments);
         }
     }
 
@@ -402,7 +402,7 @@ public class GameManager : MonoBehaviour
         {
             // Allow input
             GameEvents.instance.TriggerOnToggleAllowAction(true);
-            GameEvents.instance.TriggerOnToggleAllowItem(true);
+            GameEvents.instance.TriggerOnToggleAllowInventory(true);
         }
     }
 
@@ -594,7 +594,7 @@ public class GameManager : MonoBehaviour
 
         // Prevent input
         GameEvents.instance.TriggerOnToggleAllowAction(false);
-        GameEvents.instance.TriggerOnToggleAllowItem(false);
+        GameEvents.instance.TriggerOnToggleAllowInventory(false);
 
         // Trigger event
         GameEvents.instance.TriggerOnActionConfirm(selectedEntity, selectedAction, selectedLocation);
@@ -703,7 +703,7 @@ public class GameManager : MonoBehaviour
         {
             // Disable all input
             GameEvents.instance.TriggerOnToggleAllowAction(false);
-            GameEvents.instance.TriggerOnToggleAllowItem(false);
+            GameEvents.instance.TriggerOnToggleAllowInventory(false);
         }
 
         // Reset selected values
@@ -847,7 +847,7 @@ public class GameManager : MonoBehaviour
         {
             // Prevent input
             GameEvents.instance.TriggerOnToggleAllowAction(true);
-            GameEvents.instance.TriggerOnToggleAllowItem(true);
+            GameEvents.instance.TriggerOnToggleAllowInventory(true);
         }
     }
 

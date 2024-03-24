@@ -8,17 +8,30 @@ public class EnchantmentSelectionUI : MonoBehaviour
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private List<EnityEnchantmentUI> enityEnchantments;
 
+    public static EnchantmentSelectionUI instance;
+    private void Awake()
+    {
+        // Singleton Logic
+        if (instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        instance = this;
+    }
+
     private void Start()
     {
-        GameEvents.instance.onPresentEnchantments += Open;
+        GameEvents.instance.onEntityGainEnchantment += Close;
     }
 
     private void OnDestroy()
     {
-        GameEvents.instance.onPresentEnchantments -= Open;
+        GameEvents.instance.onEntityGainEnchantment -= Close;
     }
 
-    private void Open(List<EntityEnchantment> enchantments)
+    public void Open(List<EntityEnchantment> enchantments)
     {
         if (enchantments == null)
             throw new System.Exception($"Input choices was null.");
@@ -36,6 +49,11 @@ public class EnchantmentSelectionUI : MonoBehaviour
         canvasGroup.alpha = 1f;
         canvasGroup.interactable = true;
         canvasGroup.blocksRaycasts = true;
+    }
+
+    public void Close(Entity _, EntityEnchantment __)
+    {
+        Close();
     }
 
     public void Close()

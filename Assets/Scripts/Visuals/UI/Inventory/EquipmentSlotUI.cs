@@ -42,14 +42,14 @@ public class EquipmentSlotUI : ItemSlotUI
 
         inCombat = false;
 
-        GameEvents.instance.onToggleAllowItem += ToggleInteraction;
+        GameEvents.instance.onToggleAllowInventory += ToggleInteraction;
         GameEvents.instance.onCombatEnter += EnterCombat;
         GameEvents.instance.onCombatExit += ExitCombat;
     }
 
     private void OnDestroy()
     {
-        GameEvents.instance.onToggleAllowItem -= ToggleInteraction;
+        GameEvents.instance.onToggleAllowInventory -= ToggleInteraction;
         GameEvents.instance.onCombatEnter -= EnterCombat;
         GameEvents.instance.onCombatExit -= ExitCombat;
     }

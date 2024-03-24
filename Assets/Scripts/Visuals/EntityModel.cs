@@ -18,7 +18,6 @@ public class EntityModel : MonoBehaviour
 
     [Header("QoL")]
     [SerializeField] private DamageFlash damageFlash;
-    [SerializeField] private ProperLayerSort properLayerSort;
 
     [Header("Particles")]
     [SerializeField] private ParticleSystem warpGenerateParticles;
@@ -31,11 +30,6 @@ public class EntityModel : MonoBehaviour
     [SerializeField] private float jumpHeight = 1f;
     [SerializeField] private float footstepSfxSpeed = 0.25f;
 
-    private void Awake()
-    {
-        properLayerSort = GetComponentInChildren<ProperLayerSort>();
-    }
-
     public void Initialize(Entity entity)
     {
         this.entity = entity;
@@ -43,7 +37,6 @@ public class EntityModel : MonoBehaviour
         // Set up model
         modelSpriteRenderer.sprite = entity.modelSprite;
         modelAnimator.runtimeAnimatorController = entity.modelController;
-        properLayerSort.UpdateLayer();
 
         // Spawn weapon models
         SpawnWeapon(entity, entity.weapons[0], 0);
@@ -126,9 +119,6 @@ public class EntityModel : MonoBehaviour
             // Lerp model position
             currentPosition = Vector3.Lerp(startPosition, endPosition, elapsed / duration);
             transform.position = currentPosition;
-
-            // Update layering
-            properLayerSort.UpdateLayer();
 
             // Increment time
             elapsed += Time.deltaTime;

@@ -8,8 +8,9 @@ public class EnityEnchantmentUI : MonoBehaviour, IPointerEnterHandler, IPointerC
 {
     [Header("Components")]
     [SerializeField] private Image iconImage;
-    [SerializeField] private Outline outline;
-    [SerializeField] private Shadow shadow;
+    [SerializeField] private Outline rarityOutline;
+    [SerializeField] private Shadow hoverShadow;
+    [SerializeField] private Outline hoverOutline;
 
     [Header("Debug")]
     [SerializeField] private EntityEnchantment entityEnchantment;
@@ -19,12 +20,13 @@ public class EnityEnchantmentUI : MonoBehaviour, IPointerEnterHandler, IPointerC
         this.entityEnchantment = entityEnchantment;
         iconImage.sprite = entityEnchantment.icon;
         iconImage.enabled = true;
-        outline.effectColor = ResourceMananger.instance.GetColor(entityEnchantment.rarity);
+        rarityOutline.effectColor = ResourceMananger.instance.GetColor(entityEnchantment.rarity);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        shadow.enabled = true;
+        hoverShadow.enabled = true;
+        hoverOutline.enabled = true;
 
         // Display tooltip from bottom-left
         var corners = new Vector3[4];
@@ -42,7 +44,8 @@ public class EnityEnchantmentUI : MonoBehaviour, IPointerEnterHandler, IPointerC
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        shadow.enabled = false;
+        hoverShadow.enabled = false;
+        hoverOutline.enabled = false;
         EntityEnchantmentTooltipUI.instance.Hide();
     }
 }

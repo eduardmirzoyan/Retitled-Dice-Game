@@ -22,6 +22,19 @@ public class BlacksmithUI : MonoBehaviour
     [Header("Debug")]
     [SerializeField] private bool requestClose;
 
+    public static BlacksmithUI instance;
+    private void Awake()
+    {
+        // Singleton Logic
+        if (instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        instance = this;
+    }
+
     private void Start()
     {
         // Initialize slot
@@ -29,34 +42,52 @@ public class BlacksmithUI : MonoBehaviour
 
         weaponUpgradesLayout.gameObject.SetActive(false);
 
-        isOpen = false;
-
-        GameEvents.instance.onOpenBlacksmith += Open;
         GameEvents.instance.onInsertBlacksmith += DisplayWeapon;
         GameEvents.instance.onRemoveBlacksmith += RemoveWeapon;
     }
 
     private void OnDestroy()
     {
-        GameEvents.instance.onOpenBlacksmith -= Open;
         GameEvents.instance.onInsertBlacksmith -= DisplayWeapon;
         GameEvents.instance.onRemoveBlacksmith -= RemoveWeapon;
     }
 
-    public void Open(Entity entity)
+    public IEnumerator Browse(Entity customer)
     {
-        // Make sure it is closed
-        if (!isOpen)
-        {
-            this.customer = entity;
+        // Allow moving of items while in menu
+        GameEvents.instance.TriggerOnToggleAllowInventory(true);
 
-            // Allow visibiltiy and interaction
-            canvasGroup.alpha = 1f;
-            canvasGroup.interactable = true;
-            canvasGroup.blocksRaycasts = true;
+        this.customer = customer;
 
-            isOpen = true;
-        }
+        // Reset state
+        requestClose = false;
+
+        // Allow visibiltiy and interaction
+        canvasGroup.alpha = 1f;
+        canvasGroup.interactable = true;
+        canvasGroup.blocksRaycasts = true;
+
+        // Infinitely wait until player closes
+        while (!requestClose)
+            yield return null;
+
+        // Prevent visibiltiy and interaction
+        canvasGroup.alpha = 0f;
+        canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
+
+        // Remove weapon
+        RemoveWeapon(null);
+
+        this.customer = null;
+
+        // Disallow items again
+        GameEvents.instance.TriggerOnToggleAllowInventory(false);
+    }
+
+    public void Close()
+    {
+        requestClose = true;
     }
 
     private void DisplayWeapon(Weapon weapon)
@@ -85,7 +116,11 @@ public class BlacksmithUI : MonoBehaviour
         // Show texts
         titleObject.SetActive(true);
 
+        // Update instructions
         instructionsLabel.text = "Insert an item to upgrade it.";
+
+        // Remove item from slot
+        // blacksmithSlot.StoreItem(null); // FIXME
 
         // Update Size
         StartCoroutine(DelayedRebuild());
@@ -97,25 +132,5 @@ public class BlacksmithUI : MonoBehaviour
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(transform.GetComponent<RectTransform>());
         LayoutRebuilder.ForceRebuildLayoutImmediate(weaponUpgradesLayout.GetComponent<RectTransform>());
-    }
-
-    public void Close()
-    {
-        // Make sure it is open
-        if (isOpen)
-        {
-            // Prevent visibiltiy and interaction
-            canvasGroup.alpha = 0f;
-            canvasGroup.interactable = false;
-            canvasGroup.blocksRaycasts = false;
-
-            // Remove weapon
-            RemoveWeapon(null);
-
-            // Trigger event
-            GameEvents.instance.TriggerOnCloseBlacksmith(customer);
-
-            isOpen = false;
-        }
     }
 }

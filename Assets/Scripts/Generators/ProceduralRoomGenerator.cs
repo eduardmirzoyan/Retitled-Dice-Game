@@ -55,7 +55,7 @@ public class ProceduralRoomGenerator
                 if (location.x < padding || location.x >= width + padding || location.y < padding || location.y >= height + padding)
                 {
                     // Set to wall
-                    tile.Initialize(location, TileType.Wall, room);
+                    tile.Initialize(location, TileType.Chasam, room); // FIXME
                 }
                 else // Else randomly fill with wall or chasam
                 {

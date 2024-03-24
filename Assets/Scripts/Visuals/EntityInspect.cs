@@ -70,15 +70,14 @@ public class EntityInspect : MonoBehaviour
 
         if (entity != null)
         {
-            // Highlight tile
+            // Highlight entity
             selectionTilemap.SetTile(entity.location, selectionTile);
 
-            // Highlight tiles
+            // Highlight targetted tiles
             if (locations != null)
                 foreach (var location in locations)
                 {
                     inspectTilemap.SetTile(location, highlightedTile);
-                    inspectTilemap.SetTileFlags(location, TileFlags.None);
                 }
         }
     }

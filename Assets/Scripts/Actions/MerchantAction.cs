@@ -29,14 +29,16 @@ public class MerchantAction : Action
             switch (type)
             {
                 case Type.Shop:
-                    // GameEvents.instance.TriggerOnOpenShop(target, entity.inventory);
 
                     // Let player browse the shop
                     yield return ShopUI.instance.Browse(target, entity.inventory);
 
                     break;
                 case Type.Blacksmith:
-                    GameEvents.instance.TriggerOnOpenBlacksmith(target);
+
+                    // Let player browse the shop
+                    yield return BlacksmithUI.instance.Browse(target);
+
                     break;
                 case Type.Shaman:
                     // TODO

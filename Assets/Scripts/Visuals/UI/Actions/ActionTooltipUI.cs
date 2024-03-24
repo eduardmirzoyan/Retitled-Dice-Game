@@ -37,7 +37,7 @@ public class ActionTooltipUI : MonoBehaviour
         actionTypeText.color = action.color;
 
         string hex = ResourceMananger.instance.GetDieHex();
-        actionRangeText.text = $"<sprite name=\"Die\"> = <color={hex}>[{action.die.TrueMin} - {action.die.TrueMax}]</color>";
+        actionRangeText.text = $"<sprite name=\"Die\"> = [{action.die.TrueMin} - {action.die.TrueMax}]";
 
         actionDescriptionText.text = action.GetActiveDescription();
 
