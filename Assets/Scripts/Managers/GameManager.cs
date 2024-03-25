@@ -20,14 +20,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Entity selectedEntity;
     [SerializeField] private Action selectedAction;
     [SerializeField] private Vector3Int selectedLocation;
-    [SerializeField] private List<Vector3Int> selectedThreats;
+    [SerializeField] private List<Vector3Int> selectedTargets;
 
     [Header("Logging")]
     [SerializeField] private bool logGameStates;
     [SerializeField] private bool logEntityActions;
 
-    private List<(Action, Vector3Int)> bestChoiceSequence;
-    private Dictionary<(Entity, Action), List<Vector3Int>> delayedActionsHashtable;
+    private Dictionary<(Entity, Action), List<Vector3Int>> delayedActionsTable;
 
     private Coroutine coroutine;
     public static GameManager instance;
@@ -39,18 +38,14 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-
         instance = this;
 
-        // Initialize lists
-        bestChoiceSequence = new List<(Action, Vector3Int)>();
-        selectedThreats = new List<Vector3Int>();
-        delayedActionsHashtable = new Dictionary<(Entity, Action), List<Vector3Int>>();
-
-        // Initialize values
+        // Initialize fields
+        delayedActionsTable = new Dictionary<(Entity, Action), List<Vector3Int>>();
         selectedEntity = null;
         selectedAction = null;
         selectedLocation = Vector3Int.back;
+        selectedTargets = new List<Vector3Int>();
 
         gameOver = false;
     }
@@ -63,10 +58,9 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        // If right click anywhere
+        // Right click anywhere cancels selected action
         if (Input.GetMouseButtonDown(1) && selectedEntity is Player)
         {
-            // Then cancel it
             SelectAction(null);
         }
 
@@ -391,8 +385,7 @@ public class GameManager : MonoBehaviour
         // Check if the enity has an ai, if so, let them decide their action
         if (selectedEntity.AI != null)
         {
-            // Get best sequence of actions
-            bestChoiceSequence = selectedEntity.AI.GenerateSequenceOfActions(selectedEntity, room, room.player);
+
 
             // Then start performing those actions
             yield return PerformTurnAI();
@@ -478,10 +471,10 @@ public class GameManager : MonoBehaviour
             GameEvents.instance.TriggerOnLocationSelect(selectedEntity, selectedAction, Vector3Int.back);
 
             // Hide threats
-            GameEvents.instance.TriggerOnActionUnthreatenLocation(selectedAction, selectedThreats);
+            GameEvents.instance.TriggerOnActionUnthreatenLocation(selectedAction, selectedTargets);
 
             // Clear
-            selectedThreats.Clear();
+            selectedTargets.Clear();
 
             // if (selectedAction.actionType == ActionType.Attack)
             // {
@@ -509,10 +502,10 @@ public class GameManager : MonoBehaviour
             // }
 
             // Add threatened locations to table
-            selectedThreats = selectedAction.GetThreatenedLocations(selectedEntity, location);
+            selectedTargets = selectedAction.GetThreatenedLocations(selectedEntity, location);
 
             // Show threats
-            GameEvents.instance.TriggerOnActionThreatenLocation(selectedAction, selectedThreats);
+            GameEvents.instance.TriggerOnActionThreatenLocation(selectedAction, selectedTargets);
 
             // if (selectedAction.actionType == ActionType.Attack)
             // {
@@ -537,10 +530,10 @@ public class GameManager : MonoBehaviour
                 GameEvents.instance.TriggerOnLocationSelect(selectedEntity, selectedAction, Vector3Int.back);
 
                 // Hide threats
-                GameEvents.instance.TriggerOnActionUnthreatenLocation(selectedAction, selectedThreats);
+                GameEvents.instance.TriggerOnActionUnthreatenLocation(selectedAction, selectedTargets);
 
                 // Clear
-                selectedThreats.Clear();
+                selectedTargets.Clear();
 
                 // if (selectedAction.actionType == ActionType.Attack)
                 // {
@@ -559,7 +552,7 @@ public class GameManager : MonoBehaviour
                 GameEvents.instance.TriggerOnLocationSelect(selectedEntity, selectedAction, location);
 
                 // Hide threats
-                GameEvents.instance.TriggerOnActionUnthreatenLocation(selectedAction, selectedThreats);
+                GameEvents.instance.TriggerOnActionUnthreatenLocation(selectedAction, selectedTargets);
 
                 // if (selectedAction.actionType == ActionType.Attack)
                 // {
@@ -568,10 +561,10 @@ public class GameManager : MonoBehaviour
                 // }
 
                 // Save new threatened locations 
-                selectedThreats = selectedAction.GetThreatenedLocations(selectedEntity, location);
+                selectedTargets = selectedAction.GetThreatenedLocations(selectedEntity, location);
 
                 // Show threats
-                GameEvents.instance.TriggerOnActionThreatenLocation(selectedAction, selectedThreats);
+                GameEvents.instance.TriggerOnActionThreatenLocation(selectedAction, selectedTargets);
 
                 // if (selectedAction.actionType == ActionType.Attack)
                 // {
@@ -605,13 +598,13 @@ public class GameManager : MonoBehaviour
             case ActionSpeed.Instant:
 
                 // Perform immediately
-                coroutine = StartCoroutine(PerformAction(selectedEntity, selectedAction, selectedLocation, selectedThreats));
+                coroutine = StartCoroutine(PerformAction(selectedEntity, selectedAction, selectedLocation, selectedTargets));
 
                 break;
             case ActionSpeed.Delayed:
 
                 // Save action pair to table
-                delayedActionsHashtable[(selectedEntity, selectedAction)] = new List<Vector3Int>(selectedThreats);
+                delayedActionsTable[(selectedEntity, selectedAction)] = new List<Vector3Int>(selectedTargets);
 
                 // Immediately end turn after
                 coroutine = StartCoroutine(EndTurn());
@@ -622,8 +615,11 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator PerformTurnAI()
     {
-        // Check to see if any AI sequences are chosen
-        if (bestChoiceSequence.Count > 0)
+        // Get best sequence of actions
+        List<(Action, Vector3Int)> bestChoiceSequence = selectedEntity.AI.GenerateSequenceOfActions(selectedEntity, room, room.player);
+
+        // Perform all actions
+        while (bestChoiceSequence.Count > 0)
         {
             // Get best choice, then pop from sequence
             var bestChoicePair = bestChoiceSequence[0];
@@ -648,16 +644,14 @@ public class GameManager : MonoBehaviour
             // Reset values
             selectedAction = null;
             selectedLocation = Vector3Int.back;
-            selectedThreats.Clear();
+            selectedTargets.Clear();
 
-            // Check another action
-            yield return PerformTurnAI();
+            // Skip frame
+            yield return null;
         }
-        else
-        {
-            // End the turn
-            yield return EndTurn();
-        }
+
+        // End turn
+        yield return EndTurn();
     }
 
     private IEnumerator ConfirmActionAI()
@@ -674,13 +668,13 @@ public class GameManager : MonoBehaviour
             case ActionSpeed.Instant:
 
                 // Perform immediately
-                yield return PerformAction(selectedEntity, selectedAction, selectedLocation, selectedThreats);
+                yield return PerformAction(selectedEntity, selectedAction, selectedLocation, selectedTargets);
 
                 break;
             case ActionSpeed.Delayed:
 
                 // Save action pair to table
-                delayedActionsHashtable[(selectedEntity, selectedAction)] = new List<Vector3Int>(selectedThreats);
+                delayedActionsTable[(selectedEntity, selectedAction)] = new List<Vector3Int>(selectedTargets);
 
                 break;
         }
@@ -709,7 +703,7 @@ public class GameManager : MonoBehaviour
         // Reset selected values
         selectedAction = null;
         selectedLocation = Vector3Int.back;
-        selectedThreats.Clear();
+        selectedTargets.Clear();
 
         // Exhaust all die
         foreach (var action in selectedEntity.AllActions())
@@ -841,7 +835,7 @@ public class GameManager : MonoBehaviour
         // Reset selected values
         selectedAction = null;
         selectedLocation = Vector3Int.back;
-        selectedThreats.Clear();
+        selectedTargets.Clear();
 
         if (entity is Player)
         {
@@ -855,7 +849,7 @@ public class GameManager : MonoBehaviour
     {
         // Loop through each pair
         bool done = false;
-        foreach (var entityActionPair in delayedActionsHashtable)
+        foreach (var entityActionPair in delayedActionsTable)
         {
             var action = entityActionPair.Key.Item2;
             var targets = entityActionPair.Value;
@@ -875,7 +869,7 @@ public class GameManager : MonoBehaviour
                 }
 
                 // Remove entry
-                delayedActionsHashtable.Remove(entityActionPair.Key);
+                delayedActionsTable.Remove(entityActionPair.Key);
 
                 // Hide threats
                 GameEvents.instance.TriggerOnActionUnthreatenLocation(action, targets);
@@ -894,7 +888,7 @@ public class GameManager : MonoBehaviour
     public void ClearDelayedActions(Entity entity)
     {
         // Loop through each pair
-        foreach (var entityActionPair in delayedActionsHashtable)
+        foreach (var entityActionPair in delayedActionsTable)
         {
             // Check if action threatens this location
             if (entityActionPair.Key.Item1 == entity)
@@ -904,7 +898,7 @@ public class GameManager : MonoBehaviour
                 var targets = entityActionPair.Value;
 
                 // Remove entry
-                delayedActionsHashtable.Remove(entityActionPair.Key);
+                delayedActionsTable.Remove(entityActionPair.Key);
 
                 // Hide threats
                 GameEvents.instance.TriggerOnActionUnthreatenLocation(action, targets);
@@ -941,16 +935,17 @@ public class GameManager : MonoBehaviour
         Entity entity = room.GetEntityAtLocation(location);
 
         List<Vector3Int> locations = null;
+        Action action = null;
 
         if (entity != null)
         {
             // Loop through each pair
-            foreach (var entityActionPair in delayedActionsHashtable)
+            foreach (var entityActionPair in delayedActionsTable)
             {
                 // Check if action belongs to the entity
                 if (entityActionPair.Key.Item1 == entity)
                 {
-                    // Update targets
+                    action = entityActionPair.Key.Item2;
                     locations = entityActionPair.Value;
 
                     break;
@@ -959,6 +954,6 @@ public class GameManager : MonoBehaviour
         }
 
         // Trigger event
-        GameEvents.instance.TriggerOnEntityInspect(entity, locations);
+        GameEvents.instance.TriggerOnEntityInspect(entity, action, locations);
     }
 }

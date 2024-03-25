@@ -62,8 +62,10 @@ public class EntityInspect : MonoBehaviour
         return view.x >= 0 && view.x < 1 && view.y >= 0 && view.y < 1;
     }
 
-    private void Inspect(Entity entity, List<Vector3Int> locations)
+    private void Inspect(Entity entity, Action action, List<Vector3Int> targetLocations)
     {
+        // TODO USE ACTION
+
         // Clear first
         inspectTilemap.ClearAllTiles();
         selectionTilemap.ClearAllTiles();
@@ -73,12 +75,16 @@ public class EntityInspect : MonoBehaviour
             // Highlight entity
             selectionTilemap.SetTile(entity.location, selectionTile);
 
-            // Highlight targetted tiles
-            if (locations != null)
-                foreach (var location in locations)
+            // Highlight targeted tiles
+            if (targetLocations != null)
+            {
+                foreach (var location in targetLocations)
                 {
                     inspectTilemap.SetTile(location, highlightedTile);
+
+                    // Display damage numbers here
                 }
+            }
         }
     }
 

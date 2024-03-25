@@ -44,7 +44,7 @@ public class EntityInspectUI : MonoBehaviour
         }
     }
 
-    private void InspectEntity(Entity entity, List<Vector3Int> locations)
+    private void InspectEntity(Entity entity, Action _, List<Vector3Int> __)
     {
         // If entity is different, you need to make some changes
         if (this.entity != entity)

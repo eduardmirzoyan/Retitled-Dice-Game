@@ -30,7 +30,6 @@ public abstract class Action : ScriptableObject
     {
         this.weapon = weapon;
 
-        // Init die
         die.Initialize(this);
         modifiers = new List<ModifierTag>();
     }
@@ -39,10 +38,7 @@ public abstract class Action : ScriptableObject
     {
         this.weapon = null;
 
-        // Uninit die
         die.Uninitialize();
-
-        // Remove all modifiers
         modifiers.Clear();
     }
 

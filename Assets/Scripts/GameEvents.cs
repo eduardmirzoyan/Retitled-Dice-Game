@@ -64,7 +64,7 @@ public class GameEvents : MonoBehaviour
     public event Action<Entity, Consumable> onEntityUseConsumable;
     public event Action<Entity, EntityEnchantment> onEntityGainEnchantment;
 
-    public event Action<Entity, List<Vector3Int>> onEntityInspect;
+    public event Action<Entity, Action, List<Vector3Int>> onEntityInspect;
 
     public event Action<bool> onToggleAllowAction;
     public event Action<bool> onToggleAllowInventory;
@@ -278,9 +278,9 @@ public class GameEvents : MonoBehaviour
         onUnequipWeapon?.Invoke(entity, weapon, index);
     }
 
-    public void TriggerOnEntityInspect(Entity entity, List<Vector3Int> locations)
+    public void TriggerOnEntityInspect(Entity entity, Action action, List<Vector3Int> locations)
     {
-        onEntityInspect?.Invoke(entity, locations);
+        onEntityInspect?.Invoke(entity, action, locations);
     }
 
     public void TriggerOnActionThreatenLocation(Action action, List<Vector3Int> locations)

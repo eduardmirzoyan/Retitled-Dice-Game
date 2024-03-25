@@ -17,7 +17,7 @@ MonoBehaviour:
   currentHealth: 3
   gold: 15
   inventory: {fileID: 11400000, guid: b8d64f6ca5474a942ac1360be01b684d, type: 2}
-  modelSprite: {fileID: 609013636, guid: 721bbd13f0ed4ac4280c2ee7e9ff8b65, type: 3}
+  modelSprite: {fileID: 1336532845, guid: 459bc79938a83a84fb09a7290db9f0a1, type: 3}
   modelController: {fileID: 9100000, guid: f4299df67cca73d4ab3ef36e67af0816, type: 2}
   hitEffectPrefab: {fileID: 7270536486772163001, guid: 335c93a61b62ca84e9f26440c7f3ed0e, type: 3}
   AI: {fileID: 0}

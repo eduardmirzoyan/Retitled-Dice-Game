@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Enemy Generator
   m_EditorClassIdentifier: 
   possibleEnemies:
+  - {fileID: 11400000, guid: f2e6bff7fa56b7c4f839a49b81475266, type: 2}
   - {fileID: 11400000, guid: d27bdacd5dbad8c4c9985e62c890d6e7, type: 2}
   - {fileID: 11400000, guid: a91679cd77f261c4a952eec10098d0d6, type: 2}
-  - {fileID: 11400000, guid: f2e6bff7fa56b7c4f839a49b81475266, type: 2}
   - {fileID: 11400000, guid: b41bd06dea416614baecaef682e65c39, type: 2}
   - {fileID: 11400000, guid: 71e69b5f136118542be4155885f7b20e, type: 2}
   bosses:

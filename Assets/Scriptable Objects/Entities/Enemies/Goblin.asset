@@ -17,7 +17,7 @@ MonoBehaviour:
   currentHealth: 2
   gold: 2
   inventory: {fileID: 0}
-  modelSprite: {fileID: -1458138177, guid: 4c771eba37960cb439c9c133f3a44bc4, type: 3}
+  modelSprite: {fileID: -1689273347, guid: 7d59daf34476eb0489fa81c0614dae0c, type: 3}
   modelController: {fileID: 9100000, guid: f094f2d8ff32d664e941cd1f7d3a3217, type: 2}
   hitEffectPrefab: {fileID: 7270536486772163001, guid: 335c93a61b62ca84e9f26440c7f3ed0e, type: 3}
   AI: {fileID: 11400000, guid: c03f1bf904a2a15459539b8e3ee94d35, type: 2}
@@ -29,3 +29,4 @@ MonoBehaviour:
   enchantments: []
   location: {x: 0, y: 0, z: 0}
   room: {fileID: 0}
+  model: {fileID: 0}

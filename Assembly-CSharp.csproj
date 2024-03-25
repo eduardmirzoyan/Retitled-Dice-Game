@@ -97,6 +97,7 @@
     <Compile Include="Assets\Scripts\Visuals\UI\TooltipTriggerUI.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\Inventory\EquipmentSlotUI.cs" />
     <Compile Include="Assets\Scripts\Enchantments\Weapon\WeaponEnchantment.cs" />
+    <Compile Include="Assets\Scripts\Visuals\Resource Containers\TileResourceContainer.cs" />
     <Compile Include="Assets\Scripts\Enchantments\Weapon\OnConsumableWE.cs" />
     <Compile Include="Assets\Scripts\Enchantments\Weapon\KillGoldWeaponEnchantment.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\FeedbackTextUI.cs" />
@@ -202,7 +203,6 @@
     <Compile Include="Assets\Scripts\AI\AI.cs" />
     <Compile Include="Assets\Scripts\Actions\MerchantAction.cs" />
     <Compile Include="Assets\Scripts\AI\BoldAI.cs" />
-    <Compile Include="Assets\Scripts\Visuals\Resource Containers\TileResourceContainer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

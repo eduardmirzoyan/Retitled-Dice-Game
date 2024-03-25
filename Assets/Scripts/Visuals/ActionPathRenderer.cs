@@ -7,14 +7,12 @@ public class ActionPathRenderer : MonoBehaviour
 {
     [Header("Static Data")]
     [SerializeField] private LineRenderer lineRenderer;
-    [SerializeField] private Material unfocusedMaterial;
     [SerializeField] private float speed = 5f;
     [SerializeField] private float arcHeight = 0f;
     [SerializeField] private int numPoints = 50;
     [SerializeField] private bool isAnimated;
 
     [Header("Dynamic Data")]
-    [SerializeField] private Material defaultMaterial;
     [SerializeField] private Entity entity;
     [SerializeField] private Action action;
     [SerializeField] private Vector3Int location;
@@ -23,7 +21,6 @@ public class ActionPathRenderer : MonoBehaviour
     private void Awake()
     {
         lineRenderer = GetComponentInChildren<LineRenderer>();
-        defaultMaterial = lineRenderer.material;
     }
 
     public void Initialize(Entity entity, Action action, Vector3Int location, Vector3 start, Vector3 end, Color color)
