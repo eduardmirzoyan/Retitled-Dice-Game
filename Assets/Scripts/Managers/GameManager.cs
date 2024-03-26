@@ -475,12 +475,6 @@ public class GameManager : MonoBehaviour
 
             // Clear
             selectedTargets.Clear();
-
-            // if (selectedAction.actionType == ActionType.Attack)
-            // {
-            //     // Sheathe weapon
-            //     GameEvents.instance.TriggerOnEntitySheatheWeapon(selectedEntity, selectedAction.weapon);
-            // }
         }
         else if (selectedLocation == Vector3Int.back && location != Vector3Int.back)
         {
@@ -491,31 +485,11 @@ public class GameManager : MonoBehaviour
             // Trigger event
             GameEvents.instance.TriggerOnLocationSelect(selectedEntity, selectedAction, location);
 
-            // if (selectedAction.actionType == ActionType.Attack)
-            // {
-            //     // Calculate direction
-            //     Vector3Int direction = location - selectedEntity.location;
-            //     direction.Clamp(-Vector3Int.one, Vector3Int.one);
-
-            //     // Draw weapon
-            //     GameEvents.instance.TriggerOnEntityDrawWeapon(selectedEntity, direction, selectedAction.weapon);
-            // }
-
             // Add threatened locations to table
             selectedTargets = selectedAction.GetThreatenedLocations(selectedEntity, location);
 
             // Show threats
             GameEvents.instance.TriggerOnActionThreatenLocation(selectedAction, selectedTargets);
-
-            // if (selectedAction.actionType == ActionType.Attack)
-            // {
-            //     // Calculate direction
-            //     Vector3Int direction = location - selectedEntity.location;
-            //     direction.Clamp(-Vector3Int.one, Vector3Int.one);
-
-            //     // Draw weapon
-            //     GameEvents.instance.TriggerOnEntityDrawWeapon(selectedEntity, direction, selectedAction.weapon);
-            // }
         }
         else if (selectedLocation != Vector3Int.back && location != Vector3Int.back)
         {
@@ -534,12 +508,6 @@ public class GameManager : MonoBehaviour
 
                 // Clear
                 selectedTargets.Clear();
-
-                // if (selectedAction.actionType == ActionType.Attack)
-                // {
-                //     // Sheathe weapon
-                //     GameEvents.instance.TriggerOnEntitySheatheWeapon(selectedEntity, selectedAction.weapon);
-                // }
             }
             else
             {
@@ -554,27 +522,11 @@ public class GameManager : MonoBehaviour
                 // Hide threats
                 GameEvents.instance.TriggerOnActionUnthreatenLocation(selectedAction, selectedTargets);
 
-                // if (selectedAction.actionType == ActionType.Attack)
-                // {
-                //     // Sheathe weapon
-                //     GameEvents.instance.TriggerOnEntitySheatheWeapon(selectedEntity, selectedAction.weapon);
-                // }
-
                 // Save new threatened locations 
                 selectedTargets = selectedAction.GetThreatenedLocations(selectedEntity, location);
 
                 // Show threats
                 GameEvents.instance.TriggerOnActionThreatenLocation(selectedAction, selectedTargets);
-
-                // if (selectedAction.actionType == ActionType.Attack)
-                // {
-                //     // Calculate direction
-                //     Vector3Int direction = location - selectedEntity.location;
-                //     direction.Clamp(-Vector3Int.one, Vector3Int.one);
-
-                //     // Draw weapon
-                //     GameEvents.instance.TriggerOnEntityDrawWeapon(selectedEntity, direction, selectedAction.weapon);
-                // }
             }
         }
         else throw new System.Exception("UNHANDLED LOCATION SELECT CASE ENCOUNTER!");
@@ -934,7 +886,7 @@ public class GameManager : MonoBehaviour
         // Get entity at the location
         Entity entity = room.GetEntityAtLocation(location);
 
-        List<Vector3Int> locations = null;
+        List<Vector3Int> locations = new List<Vector3Int>();
         Action action = null;
 
         if (entity != null)

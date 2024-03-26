@@ -10,15 +10,13 @@ public class EquipmentAlertUI : MonoBehaviour
     private void Awake()
     {
         // Singleton Logic
-        if (EquipmentAlertUI.instance != null)
+        if (instance != null)
         {
             Destroy(gameObject);
             return;
         }
 
         instance = this;
-
-        canvasGroup = GetComponentInChildren<CanvasGroup>();
     }
 
     public void Show()

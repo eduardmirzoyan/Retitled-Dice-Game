@@ -6,19 +6,24 @@ using UnityEngine.Tilemaps;
 
 public class EntityInspect : MonoBehaviour
 {
-    [Header("Static Data")]
+    [Header("References")]
     [SerializeField] private Tilemap selectionTilemap;
-    [SerializeField] private AnimatedTile selectionTile;
     [SerializeField] private Tilemap inspectTilemap;
+
+    [Header("Data")]
+    [SerializeField] private AnimatedTile selectionTile;
     [SerializeField] private RuleTile highlightedTile;
+    [SerializeField] private GameObject damageIntentPrefab;
 
     [Header("Debug")]
     [SerializeField] private Vector3Int selectedLocation;
+    [SerializeField] private List<DamageIntentIndicator> indicators;
 
     private void Awake()
     {
         // Set default inspect
         selectedLocation = Vector3Int.zero;
+        indicators = new List<DamageIntentIndicator>();
     }
 
     private void Start()
@@ -33,7 +38,7 @@ public class EntityInspect : MonoBehaviour
         GameEvents.instance.onEntityDespawn -= Clear;
     }
 
-    private void LateUpdate()
+    private void FixedUpdate()
     {
         if (!PauseManager.instance.IsPaused)
             HoverTile();
@@ -64,25 +69,31 @@ public class EntityInspect : MonoBehaviour
 
     private void Inspect(Entity entity, Action action, List<Vector3Int> targetLocations)
     {
-        // TODO USE ACTION
-
         // Clear first
-        inspectTilemap.ClearAllTiles();
-        selectionTilemap.ClearAllTiles();
+        ClearSelection();
 
         if (entity != null)
         {
             // Highlight entity
             selectionTilemap.SetTile(entity.location, selectionTile);
 
-            // Highlight targeted tiles
-            if (targetLocations != null)
+            foreach (var location in targetLocations)
             {
-                foreach (var location in targetLocations)
-                {
-                    inspectTilemap.SetTile(location, highlightedTile);
+                // Outline
+                inspectTilemap.SetTile(location, highlightedTile);
 
-                    // Display damage numbers here
+                // Display damage if atttack
+                if (action.actionType == ActionType.Attack)
+                {
+                    int damage = action.GetTotalDamage();
+
+                    // Spawn indicator
+                    var position = inspectTilemap.GetCellCenterWorld(location);
+                    var damageIndicator = Instantiate(damageIntentPrefab, position, Quaternion.identity, inspectTilemap.transform).GetComponent<DamageIntentIndicator>();
+                    damageIndicator.Initialize(damage);
+
+                    // Store reference
+                    indicators.Add(damageIndicator);
                 }
             }
         }
@@ -92,9 +103,21 @@ public class EntityInspect : MonoBehaviour
     {
         if (entity.location == selectedLocation)
         {
-            // Clear highlights
-            inspectTilemap.ClearAllTiles();
-            selectionTilemap.ClearAllTiles();
+            ClearSelection();
         }
+    }
+
+    private void ClearSelection()
+    {
+        // Clear tiles
+        inspectTilemap.ClearAllTiles();
+        selectionTilemap.ClearAllTiles();
+
+        // Clear indicators
+        foreach (var indicator in indicators)
+        {
+            Destroy(indicator.gameObject);
+        }
+        indicators.Clear();
     }
 }

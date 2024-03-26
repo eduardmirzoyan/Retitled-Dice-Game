@@ -21,12 +21,12 @@ public class ActionIndicator : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private float alpha = 0.25f;
 
-    private Dictionary<Vector3Int, DamageIntentIndicator> attackIntentTable;
+    private Dictionary<Vector3Int, int> attackIntentTable;
     private Dictionary<Vector3Int, int> utilityIntentTable;
 
     private void Awake()
     {
-        attackIntentTable = new Dictionary<Vector3Int, DamageIntentIndicator>();
+        attackIntentTable = new Dictionary<Vector3Int, int>();
         utilityIntentTable = new Dictionary<Vector3Int, int>();
     }
 
@@ -40,7 +40,7 @@ public class ActionIndicator : MonoBehaviour
         GameEvents.instance.onActionThreatenLocations += ThreatenLocations;
         GameEvents.instance.onActionUnthreatenLocations += UnthreatenLocations;
 
-        GameEvents.instance.onEntityRelocate += CheckPlayerDanger;
+        //GameEvents.instance.onEntityRelocate += CheckPlayerDanger;
     }
 
     private void OnDestroy()
@@ -53,7 +53,7 @@ public class ActionIndicator : MonoBehaviour
         GameEvents.instance.onActionThreatenLocations -= ThreatenLocations;
         GameEvents.instance.onActionUnthreatenLocations -= UnthreatenLocations;
 
-        GameEvents.instance.onEntityRelocate -= CheckPlayerDanger;
+        //GameEvents.instance.onEntityRelocate -= CheckPlayerDanger;
     }
 
     private void ThreatenLocations(Action action, List<Vector3Int> locations)
@@ -81,11 +81,12 @@ public class ActionIndicator : MonoBehaviour
                         foreach (var location in locations)
                         {
                             // If value already is marked, then increment count
-                            if (attackIntentTable.TryGetValue(location, out DamageIntentIndicator indicator))
+                            if (attackIntentTable.TryGetValue(location, out int value))
                             {
                                 // Update entry
-                                int value = indicator.GetValue();
-                                indicator.SetValue(value + damage);
+                                // int value = indicator.GetValue();
+                                // indicator.SetValue(value + damage);
+                                attackIntentTable[location] = value + damage;
                             }
                             else
                             {
@@ -93,16 +94,16 @@ public class ActionIndicator : MonoBehaviour
                                 intentTilemap.SetTile(location, intentTile);
                                 intentTilemap.SetColor(location, action.color);
 
-                                // Create indicator
-                                var position = intentTilemap.GetCellCenterWorld(location);
-                                var damageIndicator = Instantiate(damageIntentPrefab, position, Quaternion.identity, intentTilemap.transform).GetComponent<DamageIntentIndicator>();
-                                damageIndicator.Initialize(damage);
+                                // // Create indicator
+                                // var position = intentTilemap.GetCellCenterWorld(location);
+                                // var damageIndicator = Instantiate(damageIntentPrefab, position, Quaternion.identity, intentTilemap.transform).GetComponent<DamageIntentIndicator>();
+                                // damageIndicator.Initialize(damage);
 
                                 // Add to dict
-                                attackIntentTable[location] = damageIndicator;
+                                attackIntentTable[location] = damage;
 
                                 // Check if player is in
-                                CheckPlayerDanger(DataManager.instance.GetPlayer());
+                                // CheckPlayerDanger(DataManager.instance.GetPlayer());
                             }
                         }
 
@@ -143,7 +144,7 @@ public class ActionIndicator : MonoBehaviour
                                 intentTilemap.SetColor(location, action.color);
 
                                 // Check if player is in
-                                CheckPlayerDanger(DataManager.instance.GetPlayer());
+                                //CheckPlayerDanger(DataManager.instance.GetPlayer());
                             }
                         }
 
@@ -178,29 +179,30 @@ public class ActionIndicator : MonoBehaviour
                         foreach (var location in locations)
                         {
                             // If value already is marked, then increment count
-                            if (attackIntentTable.TryGetValue(location, out DamageIntentIndicator indicator))
+                            if (attackIntentTable.TryGetValue(location, out int value))
                             {
                                 // Remove entry
-                                if (damage >= indicator.GetValue())
+                                if (damage >= value)
                                 {
                                     // Unmark
                                     intentTilemap.SetTile(location, null);
 
                                     // Destroy object
-                                    Destroy(indicator.gameObject);
+                                    // Destroy(indicator.gameObject);
 
                                     // Remove entry
                                     attackIntentTable.Remove(location);
 
                                     // Remove player from danger if needed
-                                    CheckPlayerDanger(DataManager.instance.GetPlayer());
+                                    // CheckPlayerDanger(DataManager.instance.GetPlayer());
                                 }
                                 else
                                 {
                                     // Update entry
-                                    var damageIndicator = attackIntentTable[location];
-                                    int value = damageIndicator.GetValue();
-                                    damageIndicator.SetValue(value - damage);
+                                    // var damageIndicator = attackIntentTable[location];
+                                    // int value = damageIndicator.GetValue();
+                                    // damageIndicator.SetValue(value - damage);
+                                    attackIntentTable[location] = value - damage;
                                 }
                             }
                         }
@@ -238,7 +240,7 @@ public class ActionIndicator : MonoBehaviour
                                     utilityIntentTable.Remove(location);
 
                                     // Remove player from danger if needed
-                                    CheckPlayerDanger(DataManager.instance.GetPlayer());
+                                    //CheckPlayerDanger(DataManager.instance.GetPlayer());
                                 }
                                 else
                                 {
@@ -339,10 +341,10 @@ public class ActionIndicator : MonoBehaviour
             // bool inDanger = attackIntentTable.ContainsKey(entity.location);
             // entity.model.SetDangerStatus(inDanger);
 
-            if (attackIntentTable.TryGetValue(entity.location, out DamageIntentIndicator indicator))
-            {
-                indicator.SetHighlightState(true);
-            }
+            // if (attackIntentTable.TryGetValue(entity.location, out DamageIntentIndicator indicator))
+            // {
+            //     indicator.SetHighlightState(true);
+            // }
         }
     }
 }

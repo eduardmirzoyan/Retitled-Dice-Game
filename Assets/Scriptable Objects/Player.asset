@@ -25,7 +25,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 97f8e76a205a1e9469880a4cd5f722e6, type: 2}
   weapons:
   - {fileID: 11400000, guid: 2827279c56ad3044abfd2ff9ab3373fc, type: 2}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: a8a4c558cc25da7439e783278188eced, type: 2}
   enchantments: []
   location: {x: 0, y: 0, z: 0}
   room: {fileID: 0}

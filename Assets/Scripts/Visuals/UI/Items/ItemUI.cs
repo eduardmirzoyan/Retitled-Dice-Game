@@ -13,6 +13,7 @@ public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
     [SerializeField] private Image outlineSprite;
     [SerializeField] private Outline outline;
     [SerializeField] private Material grayMaterial;
+    [SerializeField] private CanvasGroup trashIconGroup;
 
     [Header("Data")]
     [SerializeField] private Item item;
@@ -117,6 +118,11 @@ public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
 
         // Reset position
         this.transform.localPosition = Vector3.zero;
+    }
+
+    public void ShowTrashIcon(bool state)
+    {
+        trashIconGroup.alpha = state ? 1f : 0f;
     }
 
     public void OnPointerEnter(PointerEventData eventData)

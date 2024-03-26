@@ -203,6 +203,8 @@
     <Compile Include="Assets\Scripts\AI\AI.cs" />
     <Compile Include="Assets\Scripts\Actions\MerchantAction.cs" />
     <Compile Include="Assets\Scripts\AI\BoldAI.cs" />
+    <Compile Include="Assets\Scripts\Visuals\UI\Inventory\DropItemUI.cs" />
+    <Compile Include="Assets\Scripts\Visuals\UI\Inventory\DropAlertUI.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
