@@ -8,7 +8,7 @@ public class Room : ScriptableObject
     [Header("Settings")]
     public int width;
     public int height;
-    public int padding;
+    //public int padding;
     public float floorChance;
 
     public RoomTile[,] tiles;
@@ -33,7 +33,7 @@ public class Room : ScriptableObject
         // Save dimensions
         this.width = roomWidth;
         this.height = roomHeight;
-        this.padding = padding;
+        //this.padding = padding;
         this.floorChance = floorChance;
 
         numKeys = 0;
@@ -55,7 +55,7 @@ public class Room : ScriptableObject
     private void GenerateTiles()
     {
         roomGenerator = new ProceduralRoomGenerator();
-        roomGenerator.Initialize(width, height, padding, floorChance);
+        roomGenerator.Initialize(width, height, floorChance);
         tiles = roomGenerator.GenerateEmptyRoom(this);
     }
 
@@ -280,7 +280,9 @@ public class Room : ScriptableObject
 
     public Entity GetEntityAtLocation(Vector3Int location)
     {
-        if (location.x < 0 || location.x >= 2 * padding + width || location.y < 0 || location.y >= 2 * padding + height)
+        // if (location.x < 0 || location.x >= 2 * padding + width || location.y < 0 || location.y >= 2 * padding + height)
+        //     throw new System.Exception("INPUT LOCATION OUT OF BOUNSD: " + location);
+        if (location.x < 0 || location.x >= width || location.y < 0 || location.y >= height)
             throw new System.Exception("INPUT LOCATION OUT OF BOUNSD: " + location);
 
         return tiles[location.x, location.y].containedEntity;
@@ -288,7 +290,7 @@ public class Room : ScriptableObject
 
     public RoomTile TileFromLocation(Vector3Int location)
     {
-        if (!IsInBounds(location))
+        if (IsOutOfBounds(location))
             throw new System.Exception($"Attempted to get out-of-bounds location {location}");
 
         return tiles[location.x, location.y];
@@ -301,8 +303,8 @@ public class Room : ScriptableObject
         // Keep looping until valid point is found
         while (true)
         {
-            int randX = padding + Random.Range(0, width);
-            int randY = padding + Random.Range(0, height);
+            int randX = Random.Range(0, width);
+            int randY = Random.Range(0, height);
             spawnLocation = new Vector3Int(randX, randY);
 
             var tile = tiles[spawnLocation.x, spawnLocation.y];
@@ -323,25 +325,25 @@ public class Room : ScriptableObject
 
         // Check cardinal directions
         var position = location + Vector3Int.up;
-        if (!IsWall(position) && !IsChasam(position) && !HasEntity(position))
+        if (!IsOutOfBounds(position) && !IsWall(position) && !IsChasam(position) && !HasEntity(position))
         {
             neighbors.Add(position);
         }
 
         position = location + Vector3Int.right;
-        if (!IsWall(position) && !IsChasam(position) && !HasEntity(position))
+        if (!IsOutOfBounds(position) && !IsWall(position) && !IsChasam(position) && !HasEntity(position))
         {
             neighbors.Add(position);
         }
 
         position = location + Vector3Int.down;
-        if (!IsWall(position) && !IsChasam(position) && !HasEntity(position))
+        if (!IsOutOfBounds(position) && !IsWall(position) && !IsChasam(position) && !HasEntity(position))
         {
             neighbors.Add(position);
         }
 
         position = location + Vector3Int.left;
-        if (!IsWall(position) && !IsChasam(position) && !HasEntity(position))
+        if (!IsOutOfBounds(position) && !IsWall(position) && !IsChasam(position) && !HasEntity(position))
         {
             neighbors.Add(position);
         }
@@ -349,9 +351,9 @@ public class Room : ScriptableObject
         return neighbors;
     }
 
-    public bool IsInBounds(Vector3Int location)
+    public bool IsOutOfBounds(Vector3Int location)
     {
-        return location.x >= 0 && location.x < tiles.GetLength(0) && location.y >= 0 && location.y < tiles.GetLength(1);
+        return location.x < 0 || location.x >= width || location.y < 0 || location.y >= height;
     }
 
     public bool IsWall(Vector3Int location)

@@ -15,11 +15,9 @@ MonoBehaviour:
   name: Barrel
   maxHealth: 1
   currentHealth: 1
-  level: 1
-  experience: 0
   gold: 1
   inventory: {fileID: 0}
-  modelSprite: {fileID: 21300000, guid: 9ff39f8c9bcec9942ad620f3e1cc8278, type: 3}
+  modelSprite: {fileID: -1488100087, guid: fd983510250d98545ab2c4660e172e31, type: 3}
   modelController: {fileID: 0}
   hitEffectPrefab: {fileID: 7270536486772163001, guid: 335c93a61b62ca84e9f26440c7f3ed0e, type: 3}
   AI: {fileID: 11400000, guid: 40162ae7c10ce35468b095709952f2c3, type: 2}
@@ -27,5 +25,7 @@ MonoBehaviour:
   weapons:
   - {fileID: 0}
   - {fileID: 0}
+  enchantments: []
   location: {x: 0, y: 0, z: 0}
   room: {fileID: 0}
+  model: {fileID: 0}

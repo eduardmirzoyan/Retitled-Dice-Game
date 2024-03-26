@@ -5,13 +5,6 @@ using UnityEngine;
 [CreateAssetMenu]
 public class GameSettings : ScriptableObject
 {
-    [Header("Mechanics")]
-    // TODO
-
-    [Header("Visuals")]
-    public bool useHitFlash = true;
-    public bool useScreenShake = true;
-
     public float diceRollTime = 0.5f;
     public float gameStartBufferTime = 1f;
     public float aiBufferTime = 0.25f;

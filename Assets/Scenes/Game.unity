@@ -6406,7 +6406,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -15307944, guid: 15f736e8782f4cc4aba2f05f35baaa7a, type: 3}
+  m_Sprite: {fileID: -854903398, guid: 873508e45702cbf4495aab3fab49b05f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -25394,7 +25394,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1736043458}
   - component: {fileID: 1736043459}
-  - component: {fileID: 1736043460}
   m_Layer: 0
   m_Name: Camera Holder
   m_TagString: Untagged
@@ -25429,18 +25428,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3001acf225cb99645b90bc4f953cd1d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1736043460
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1736043457}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c2b6028730026c4199ce21618241f3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1756443954

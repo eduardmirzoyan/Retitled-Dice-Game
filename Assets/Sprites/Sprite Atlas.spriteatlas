@@ -44,7 +44,6 @@ SpriteAtlas:
     secondaryTextureSettings: {}
     variantMultiplier: 1
     packables:
-    - {fileID: 2800000, guid: 49185ad67f8f7c345934aa1e16ebd9c5, type: 3}
     - {fileID: 2800000, guid: 20597968d5281954482d5d148d07fa12, type: 3}
     - {fileID: 2800000, guid: 91c6e5420840aa74883dcb2d26dae9ea, type: 3}
     - {fileID: 2800000, guid: b5c912c0498ac714da1e66dba189e4bc, type: 3}
@@ -68,8 +67,6 @@ SpriteAtlas:
   - {fileID: -1551398261, guid: 91c6e5420840aa74883dcb2d26dae9ea, type: 3}
   - {fileID: -179273492, guid: 91c6e5420840aa74883dcb2d26dae9ea, type: 3}
   - {fileID: -1261362177, guid: 91c6e5420840aa74883dcb2d26dae9ea, type: 3}
-  - {fileID: 662113607, guid: 49185ad67f8f7c345934aa1e16ebd9c5, type: 3}
-  - {fileID: -1189564947, guid: 49185ad67f8f7c345934aa1e16ebd9c5, type: 3}
   - {fileID: 168238451, guid: 5fb70627534ce424ca1d38a516f03c15, type: 3}
   - {fileID: 1898577075, guid: 5fb70627534ce424ca1d38a516f03c15, type: 3}
   - {fileID: 426753101, guid: 5fb70627534ce424ca1d38a516f03c15, type: 3}
@@ -162,8 +159,6 @@ SpriteAtlas:
   - action_icons_6
   - action_icons_5
   - action_icons_4
-  - text_icons_0
-  - text_icons_1
   - Pillars_3
   - Pillars_2
   - Pillars_1

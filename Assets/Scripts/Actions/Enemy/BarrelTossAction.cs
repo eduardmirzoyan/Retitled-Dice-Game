@@ -20,7 +20,7 @@ public class BarrelTossAction : Action
             for (int j = -range; j <= range; j++)
             {
                 Vector3Int location = startLocation + new Vector3Int(i, j);
-                if (Room.ManhattanDistance(startLocation, location) <= range && room.IsInBounds(location))
+                if (Room.ManhattanDistance(startLocation, location) <= range && !room.IsOutOfBounds(location))
                     if (!room.IsWall(location) && !room.IsChasam(location) && !room.HasEntity(location))
                         validLocations.Add(location);
 

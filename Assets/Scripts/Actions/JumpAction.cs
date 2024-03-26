@@ -18,15 +18,11 @@ public class JumpAction : Action
             // Check range
             while (range > 0)
             {
-                if (room.IsWall(location))
-                {
+                if (room.IsOutOfBounds(location) || room.IsWall(location))
                     break;
-                }
 
                 if (!room.IsChasam(location) && !room.HasEntity(location))
-                {
                     targets.Add(location);
-                }
 
                 location += direction;
                 range--;

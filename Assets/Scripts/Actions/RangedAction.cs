@@ -18,8 +18,8 @@ public class RangedAction : Action
             // Check range
             while (range > 0)
             {
-                // If we hit a wall
-                if (room.IsWall(location))
+                // If we hit a wall or OoB
+                if (room.IsOutOfBounds(location) || room.IsWall(location))
                 {
                     location -= direction;
                     if (location != startLocation)
@@ -60,6 +60,8 @@ public class RangedAction : Action
         // Logic
         foreach (var location in threatenedLocations)
         {
+            // entity.AttackLocation(location, weapon, GetTotalDamage()); ?
+
             // Damage first target found
             var target = room.GetEntityAtLocation(location);
             if (target != null)

@@ -883,27 +883,32 @@ public class GameManager : MonoBehaviour
 
     public void InspectLocation(Vector3Int location)
     {
-        // Get entity at the location
-        Entity entity = room.GetEntityAtLocation(location);
-
+        Entity entity = null;
         List<Vector3Int> locations = new List<Vector3Int>();
         Action action = null;
 
-        if (entity != null)
+        if (!room.IsOutOfBounds(location))
         {
-            // Loop through each pair
-            foreach (var entityActionPair in delayedActionsTable)
-            {
-                // Check if action belongs to the entity
-                if (entityActionPair.Key.Item1 == entity)
-                {
-                    action = entityActionPair.Key.Item2;
-                    locations = entityActionPair.Value;
+            entity = room.GetEntityAtLocation(location);
 
-                    break;
+            if (entity != null)
+            {
+                // Loop through each pair
+                foreach (var entityActionPair in delayedActionsTable)
+                {
+                    // Check if action belongs to the entity
+                    if (entityActionPair.Key.Item1 == entity)
+                    {
+                        action = entityActionPair.Key.Item2;
+                        locations = entityActionPair.Value;
+
+                        break;
+                    }
                 }
             }
         }
+
+
 
         // Trigger event
         GameEvents.instance.TriggerOnEntityInspect(entity, action, locations);

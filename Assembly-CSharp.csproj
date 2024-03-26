@@ -85,6 +85,7 @@
     <Compile Include="Assets\Scripts\Actions\WarpAction.cs" />
     <Compile Include="Assets\Scripts\Items\Consumables\Consumable.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\EndTurnUI.cs" />
+    <Compile Include="Assets\Scripts\Visuals\UI\Inventory\DropItemUI.cs" />
     <Compile Include="Assets\Scripts\Actions\Boss\SmashAction.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\Items\ItemEnchantmentsTabUI.cs" />
     <Compile Include="Assets\Scripts\Visuals\DamageIntentIndicator.cs" />
@@ -120,6 +121,7 @@
     <Compile Include="Assets\Scripts\Actions\Enemy\FreeMoveAction.cs" />
     <Compile Include="Assets\Scripts\Visuals\BarrelTossModel.cs" />
     <Compile Include="Assets\Scripts\Visuals\ActionIndicator.cs" />
+    <Compile Include="Assets\Scripts\Visuals\UI\Inventory\DropAlertUI.cs" />
     <Compile Include="Assets\Scripts\Generators\RoomGenerator.cs" />
     <Compile Include="Assets\Scripts\Actions\Boss\TossAction.cs" />
     <Compile Include="Assets\Scripts\Audio\AudioManager.cs" />
@@ -139,7 +141,6 @@
     <Compile Include="Assets\Scripts\Actions\MoveAction.cs" />
     <Compile Include="Assets\Scripts\Generators\EntityEnchantmentGenerator.cs" />
     <Compile Include="Assets\Scripts\Die.cs" />
-    <Compile Include="Assets\Scripts\Game Feel\HitFreeze.cs" />
     <Compile Include="Assets\Scripts\Visuals\CorpseModel.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\Blacksmith\WeaponUpgradeUI.cs" />
     <Compile Include="Assets\Scripts\Actions\CleaveAction.cs" />
@@ -203,8 +204,6 @@
     <Compile Include="Assets\Scripts\AI\AI.cs" />
     <Compile Include="Assets\Scripts\Actions\MerchantAction.cs" />
     <Compile Include="Assets\Scripts\AI\BoldAI.cs" />
-    <Compile Include="Assets\Scripts\Visuals\UI\Inventory\DropItemUI.cs" />
-    <Compile Include="Assets\Scripts\Visuals\UI\Inventory\DropAlertUI.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

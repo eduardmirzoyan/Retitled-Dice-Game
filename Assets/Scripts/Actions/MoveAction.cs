@@ -18,7 +18,7 @@ public class MoveAction : Action
             while (range > 0)
             {
                 // Stop on obstacle
-                if (room.IsWall(location) || room.IsChasam(location) || room.HasEntity(location))
+                if (room.IsOutOfBounds(location) || room.IsWall(location) || room.IsChasam(location) || room.HasEntity(location))
                     break;
 
                 targets.Add(location);

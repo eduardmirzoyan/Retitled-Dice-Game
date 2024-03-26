@@ -8,7 +8,6 @@ public class EntityModel : MonoBehaviour
     [Header("Components")]
     [SerializeField] private SpriteRenderer modelSpriteRenderer;
     [SerializeField] private Animator modelAnimator;
-    [SerializeField] private Animator dangerAnimator;
 
     [Header("Offhand Weapon")]
     [SerializeField] private Transform mainWeaponHolder;
@@ -197,31 +196,17 @@ public class EntityModel : MonoBehaviour
         // If this entity took damage
         if (damage > 0)
         {
-            // Display damage flash
-            if (GameManager.instance.gameSettings.useHitFlash)
-                damageFlash.Flash();
-
             // Spawn particle
             if (entity.hitEffectPrefab != null)
             {
                 Instantiate(entity.hitEffectPrefab, transform.position, transform.rotation);
             }
 
-            // Shake screen
-            if (GameManager.instance.gameSettings.useScreenShake)
-                CameraShake.instance.ScreenShake(0.15f);
-        }
-    }
+            // Display damage flash
+            damageFlash.Flash();
 
-    public void SetDangerStatus(bool inDanger)
-    {
-        if (inDanger)
-        {
-            dangerAnimator.Play("Flash");
-        }
-        else
-        {
-            dangerAnimator.Play("Idle");
+            // Shake screen
+            CameraShake.instance.ScreenShake(0.15f);
         }
     }
 

@@ -27,18 +27,6 @@ public class WeaponModel : MonoBehaviour
 
         // Set name
         transform.name = weapon.name + " Model";
-
-        // Sub to events
-        //GameEvents.instance.onEntityDrawWeapon += DrawWeapon;
-        //GameEvents.instance.onEntityUseWeapon += UseWeapon;
-        //GameEvents.instance.onEntitySheatheWeapon += SheatheWeapon;
-    }
-
-    private void OnDestroy()
-    {
-        //GameEvents.instance.onEntityDrawWeapon -= DrawWeapon;
-        //GameEvents.instance.onEntityUseWeapon -= UseWeapon;
-        //GameEvents.instance.onEntitySheatheWeapon -= SheatheWeapon;
     }
 
     public void DrawWeapon(Entity entity, Vector3 direction, Weapon weapon)

@@ -101,7 +101,7 @@ public class RoomManager : MonoBehaviour
         }
 
         // Get center of room
-        Vector3 center = floorTilemap.CellToWorld(new Vector3Int(room.width / 2 + room.padding, room.height / 2 + room.padding, 0));
+        Vector3 center = floorTilemap.CellToWorld(new Vector3Int(room.width / 2, room.height / 2, 0));
         // Set camera to center of room
         CameraManager.instance.SetPosition(center);
     }

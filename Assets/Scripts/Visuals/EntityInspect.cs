@@ -38,7 +38,7 @@ public class EntityInspect : MonoBehaviour
         GameEvents.instance.onEntityDespawn -= Clear;
     }
 
-    private void FixedUpdate()
+    private void LateUpdate()
     {
         if (!PauseManager.instance.IsPaused)
             HoverTile();

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cc281209cb6a41439664d5b415b3757, type: 3}
   m_Name: Game Settings
   m_EditorClassIdentifier: 
-  useHitFlash: 0
+  useHitFlash: 1
   useScreenShake: 1
   diceRollTime: 1
   gameStartBufferTime: 1

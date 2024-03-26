@@ -11,7 +11,10 @@ public class SweepMeleeAction : Action
 
         foreach (var direction in cardinalDirections)
         {
-            targets.Add(startLocation + direction);
+            var location = startLocation + direction;
+            if (!room.IsOutOfBounds(location))
+                targets.Add(startLocation + direction);
+
         }
 
         return targets;

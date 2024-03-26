@@ -18,7 +18,7 @@ public class PiercingRangedAction : Action
             // Check range
             while (range > 0)
             {
-                if (room.IsWall(location))
+                if (room.IsOutOfBounds(location) || room.IsWall(location))
                 {
                     targets.Add(location - direction);
 
@@ -55,9 +55,7 @@ public class PiercingRangedAction : Action
 
             // Check to see if the location is valid
             if (entity.room.IsWall(start))
-            {
                 break;
-            }
 
             result.Add(start);
         }
