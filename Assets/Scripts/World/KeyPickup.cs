@@ -36,7 +36,7 @@ public class KeyPickup : MonoBehaviour
             AudioManager.instance.PlaySFX("gold");
 
             // Spawn effect
-            Instantiate(pickupEffect, transform.position, Quaternion.identity);
+            // Instantiate(pickupEffect, transform.position, Quaternion.identity);
 
             // Destroy key
             Destroy(gameObject);

@@ -29,43 +29,39 @@ public class WeaponModel : MonoBehaviour
         transform.name = weapon.name + " Model";
     }
 
-    public void DrawWeapon(Entity entity, Vector3 direction, Weapon weapon)
+    public void DrawWeapon(Vector3 direction)
     {
         // Holder z = 90, attack up
         // Holder z = 0, attack facing direction
         // Holder z = -90, attack down
 
-        // If this weapon was drawn
-        if (this.weapon == weapon)
+        // print("draw");
+
+        // Change attack orientation based which direction you are attacking
+        // If attacking upward
+        if (direction.y > 0)
         {
-            // print("draw");
-
-            // Change attack orientation based which direction you are attacking
-            // If attacking upward
-            if (direction.y > 0)
-            {
-                transform.localEulerAngles = new Vector3(0, 0, 90);
-            }
-            // If attacking downward
-            else if (direction.y < 0)
-            {
-                transform.localEulerAngles = new Vector3(0, 0, -90);
-            }
-            // Else set to facing direction
-            else
-            {
-                transform.localEulerAngles = new Vector3(0, 0, 0);
-            }
-
-            // Play animation
-            animator.Play("Draw");
-
-            // Move weapon up in sorting
-            spriteRenderer.sortingLayerName = "Weapons";
-
-            // Play sound
-            AudioManager.instance.PlaySFX("draw");
+            transform.localEulerAngles = new Vector3(0, 0, 90);
         }
+        // If attacking downward
+        else if (direction.y < 0)
+        {
+            transform.localEulerAngles = new Vector3(0, 0, -90);
+        }
+        // Else set to facing direction
+        else
+        {
+            transform.localEulerAngles = new Vector3(0, 0, 0);
+        }
+
+        // Play animation
+        animator.Play("Draw");
+
+        // Move weapon up in sorting
+        spriteRenderer.sortingLayerName = "Weapons";
+
+        // Play sound
+        AudioManager.instance.PlaySFX("draw");
     }
 
     private void UseWeapon(Entity entity, Weapon weapon)
@@ -96,20 +92,17 @@ public class WeaponModel : MonoBehaviour
         yield return new WaitForSeconds(0.25f);
     }
 
-    public void SheatheWeapon(Entity entity, Weapon weapon)
+    public void SheatheWeapon()
     {
-        if (this.weapon == weapon)
-        {
-            // print("Sheathe");
+        // print("Sheathe");
 
-            // Play animation
-            animator.Play("Sheathe");
+        // Play animation
+        animator.Play("Sheathe");
 
-            // Move weapon down in sorting
-            spriteRenderer.sortingLayerName = "Entities";
+        // Move weapon down in sorting
+        spriteRenderer.sortingLayerName = "Entities";
 
-            // Reset rotation
-            transform.localEulerAngles = Vector3.zero;
-        }
+        // Reset rotation
+        transform.localEulerAngles = Vector3.zero;
     }
 }

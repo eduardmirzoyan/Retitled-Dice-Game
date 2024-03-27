@@ -405,7 +405,7 @@ MonoBehaviour:
   itemUI: {fileID: 0}
   itemUIPrefab: {fileID: 7123551506706943753, guid: 242cfb1f88527d746a439376e8d52fac, type: 3}
   preventInsert: 0
-  preventRemove: 0
+  buyer: {fileID: 0}
   inventory: {fileID: 0}
   index: 0
 --- !u!222 &6651125155758953418
@@ -512,7 +512,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 3be5eefb9fa439b4d8f1e121e91eaf64, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8ace484374b4b1249ad5f1f0211ef5b0, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

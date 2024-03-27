@@ -39,7 +39,9 @@ public class SlashAction : Action
         Vector3Int direction = targetLocation - entity.location;
         direction.Clamp(-Vector3Int.one, Vector3Int.one);
 
-        return new List<Vector3Int>() { entity.location - direction };
+        Vector3Int location = entity.location - direction;
+
+        return new List<Vector3Int>() { location };
     }
 
     public override IEnumerator Perform(Entity entity, Vector3Int targetLocation, List<Vector3Int> threatenedLocations, Room room)
@@ -51,8 +53,8 @@ public class SlashAction : Action
         // ~~~ Attack targets ~~~
 
         // Face backwards
-        entity.model.FaceDirection(entity, -direction, weapon);
-        weapon.model.DrawWeapon(entity, -direction, weapon);
+        entity.model.FaceDirection(-direction);
+        weapon.model.DrawWeapon(-direction);
 
         // Delay for dramatic effect
         yield return new WaitForSeconds(0.25f);
@@ -66,7 +68,7 @@ public class SlashAction : Action
 
         // Handle visuals
         yield return weapon.model.UseWeapon(vfxPrefab);
-        weapon.model.SheatheWeapon(entity, weapon);
+        weapon.model.SheatheWeapon();
 
         // ~~~ Move to location ~~~
 

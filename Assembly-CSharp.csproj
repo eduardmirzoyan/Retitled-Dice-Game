@@ -88,7 +88,7 @@
     <Compile Include="Assets\Scripts\Visuals\UI\Inventory\DropItemUI.cs" />
     <Compile Include="Assets\Scripts\Actions\Boss\SmashAction.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\Items\ItemEnchantmentsTabUI.cs" />
-    <Compile Include="Assets\Scripts\Visuals\DamageIntentIndicator.cs" />
+    <Compile Include="Assets\Scripts\Visuals\Indicators\DamageIntentIndicator.cs" />
     <Compile Include="Assets\Scripts\World\KeyPickup.cs" />
     <Compile Include="Assets\Scripts\Enchantments\Weapon\DieBuffWE.cs" />
     <Compile Include="Assets\Scripts\Items\Weapon.cs" />
@@ -103,7 +103,7 @@
     <Compile Include="Assets\Scripts\Enchantments\Weapon\KillGoldWeaponEnchantment.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\FeedbackTextUI.cs" />
     <Compile Include="Assets\Scripts\Generators\ItemGenerator.cs" />
-    <Compile Include="Assets\Scripts\Visuals\ActionPreview.cs" />
+    <Compile Include="Assets\Scripts\Visuals\Indicators\ActionPreview.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\TextTooltipUI.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\Actions\ActionsHandlerUI.cs" />
     <Compile Include="Assets\Scripts\Actions\Enemy\CrossMeleeAction.cs" />
@@ -120,7 +120,7 @@
     <Compile Include="Assets\Scripts\Main Menu\MainMenuManager.cs" />
     <Compile Include="Assets\Scripts\Actions\Enemy\FreeMoveAction.cs" />
     <Compile Include="Assets\Scripts\Visuals\BarrelTossModel.cs" />
-    <Compile Include="Assets\Scripts\Visuals\ActionIndicator.cs" />
+    <Compile Include="Assets\Scripts\Visuals\Indicators\ActionIndicator.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\Inventory\DropAlertUI.cs" />
     <Compile Include="Assets\Scripts\Generators\RoomGenerator.cs" />
     <Compile Include="Assets\Scripts\Actions\Boss\TossAction.cs" />
@@ -162,7 +162,7 @@
     <Compile Include="Assets\Scripts\Entity.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\Inventory\InventoryHandlerUI.cs" />
     <Compile Include="Assets\Scripts\Items\Consumables\DamageConsumable.cs" />
-    <Compile Include="Assets\Scripts\Visuals\ActionPathRenderer.cs" />
+    <Compile Include="Assets\Scripts\Visuals\Indicators\ActionPathRenderer.cs" />
     <Compile Include="Assets\Scripts\Actions\Action.cs" />
     <Compile Include="Assets\Scripts\Game Feel\DottedLine.cs" />
     <Compile Include="Assets\Scripts\Main Menu\PauseManager.cs" />
@@ -204,6 +204,7 @@
     <Compile Include="Assets\Scripts\AI\AI.cs" />
     <Compile Include="Assets\Scripts\Actions\MerchantAction.cs" />
     <Compile Include="Assets\Scripts\AI\BoldAI.cs" />
+    <Compile Include="Assets\Scripts\Visuals\Indicators\DirectionIndicator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
@@ -1267,8 +1268,19 @@
       <HintPath>Library\ScriptAssemblies\Unity.VisualScripting.State.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="PrimeTween.Editor">
+      <HintPath>Library\ScriptAssemblies\PrimeTween.Editor.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="PrimeTween.Runtime">
+      <HintPath>Library\ScriptAssemblies\PrimeTween.Runtime.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="PrimeTween.Debug.csproj" />
+    <ProjectReference Include="PrimeTween.Installer.csproj" />
+    <ProjectReference Include="PrimeTween.Demo.csproj" />
   </ItemGroup>
   <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
   <ItemGroup>

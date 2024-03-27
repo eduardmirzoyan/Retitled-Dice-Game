@@ -16,8 +16,6 @@ public class GameEvents : MonoBehaviour
     public event System.Action onCombatExit;
 
     // Action based
-    public event Action<Action> onActionDisable;
-    public event Action<Action> onActionEnable;
     public event Action<Entity, Action> onActionSelect;
     public event Action<Entity, Action, Vector3Int> onLocationSelect;
     public event Action<Entity, Action, Vector3Int> onActionConfirm;
@@ -137,16 +135,6 @@ public class GameEvents : MonoBehaviour
     #endregion
 
     #region Actions
-
-    public void TriggerOnActionEnable(Action action)
-    {
-        onActionEnable?.Invoke(action);
-    }
-
-    public void TriggerOnActionDisable(Action action)
-    {
-        onActionDisable?.Invoke(action);
-    }
 
     public void TriggerOnActionSelect(Entity entity, Action action)
     {

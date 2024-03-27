@@ -191,32 +191,19 @@ public class EntityModel : MonoBehaviour
         transform.position = endPosition;
     }
 
-    public void TakeDamage(Entity entity, int damage)
+    public void TakeDamage(int damage)
     {
-        // If this entity took damage
-        if (damage > 0)
-        {
-            // Spawn particle
-            if (entity.hitEffectPrefab != null)
-            {
-                Instantiate(entity.hitEffectPrefab, transform.position, transform.rotation);
-            }
+        // Display damage flash
+        damageFlash.Flash();
 
-            // Display damage flash
-            damageFlash.Flash();
-
-            // Shake screen
-            CameraShake.instance.ScreenShake(0.15f);
-        }
+        // Shake screen
+        CameraShake.instance.ScreenShake(0.15f);
     }
 
-    public void FaceDirection(Entity entity, Vector3 direction, Weapon weapon)
+    public void FaceDirection(Vector3 direction)
     {
-        if (this.entity == entity)
-        {
-            // Face direction of attack
-            FlipModel(direction);
-        }
+        // Face direction of attack
+        FlipModel(direction);
     }
 
     // ~~~~~ HELPERS ~~~~~

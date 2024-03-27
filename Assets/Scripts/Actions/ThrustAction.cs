@@ -50,7 +50,7 @@ public class ThrustAction : Action
         direction.Clamp(-Vector3Int.one, Vector3Int.one);
 
         // Pull out weapon
-        weapon.model.DrawWeapon(entity, direction, weapon);
+        weapon.model.DrawWeapon(direction);
 
         // Move to location
         entity.model.MoveSetup();
@@ -81,6 +81,6 @@ public class ThrustAction : Action
 
         // Attack
         yield return weapon.model.UseWeapon(vfxPrefab);
-        weapon.model.SheatheWeapon(entity, weapon);
+        weapon.model.SheatheWeapon();
     }
 }

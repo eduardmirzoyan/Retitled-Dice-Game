@@ -31,7 +31,7 @@ public class GoldPickup : MonoBehaviour
             AudioManager.instance.PlaySFX("gold");
 
             // Spawn effect
-            Instantiate(pickupEffect, transform.position, Quaternion.identity);
+            // Instantiate(pickupEffect, transform.position, Quaternion.identity);
 
             // Destroy coin
             Destroy(gameObject);

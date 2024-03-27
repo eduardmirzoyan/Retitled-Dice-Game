@@ -9,13 +9,12 @@ public class Entity : ScriptableObject
     public new string name;
     public int maxHealth;
     public int currentHealth;
-    public int gold = 0;
+    public int gold;
     public Inventory inventory;
 
     [Header("Visuals")]
     public Sprite modelSprite;
     public RuntimeAnimatorController modelController;
-    public GameObject hitEffectPrefab;
 
     [Header("Variable Stats")]
     public AI AI;
@@ -140,7 +139,7 @@ public class Entity : ScriptableObject
 
         // Reduce health until 0
         currentHealth = Mathf.Max(currentHealth - amount, 0);
-        model.TakeDamage(source, amount);
+        model.TakeDamage(amount);
 
         // Trigger event
         GameEvents.instance.TriggerOnEntityTakeDamage(this, amount);

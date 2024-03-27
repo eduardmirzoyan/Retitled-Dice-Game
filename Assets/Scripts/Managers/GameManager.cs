@@ -194,16 +194,17 @@ public class GameManager : MonoBehaviour
                 break;
             case RoomType.Shop:
 
+                Vector3Int center = new Vector3Int(room.width / 2, room.height / 2);
                 // Generate a shopkeeper in hardcoded location
                 var shopkeeper = enemyGenerator.GenerateShopkeeper();
-                Vector3Int location = new(12, 13);
+                Vector3Int location = center;
 
                 // Populate the room
                 room.SpawnEntity(shopkeeper, location);
 
                 // Generate a blacksmith
                 var blacksmith = enemyGenerator.GenerateBlacksmith();
-                location = new(13, 13);
+                location = center - Vector3Int.right;
                 room.SpawnEntity(blacksmith, location);
 
                 break;
@@ -385,8 +386,6 @@ public class GameManager : MonoBehaviour
         // Check if the enity has an ai, if so, let them decide their action
         if (selectedEntity.AI != null)
         {
-
-
             // Then start performing those actions
             yield return PerformTurnAI();
         }
@@ -628,6 +627,15 @@ public class GameManager : MonoBehaviour
                 // Save action pair to table
                 delayedActionsTable[(selectedEntity, selectedAction)] = new List<Vector3Int>(selectedTargets);
 
+                // Draw weapon
+                if (selectedAction.actionType == ActionType.Attack)
+                {
+                    Vector3Int direction = selectedLocation - selectedEntity.location;
+                    direction.Clamp(-Vector3Int.one, Vector3Int.one);
+                    selectedEntity.model.FaceDirection(direction);
+                    selectedEntity.weapons[0].model.DrawWeapon(direction);
+                }
+
                 break;
         }
     }
@@ -827,8 +835,11 @@ public class GameManager : MonoBehaviour
                 GameEvents.instance.TriggerOnActionUnthreatenLocation(action, targets);
 
                 // Sheathe weapon
-                if (action.actionType == ActionType.Attack)
-                    GameEvents.instance.TriggerOnEntitySheatheWeapon(entity, action.weapon);
+                if (action.actionType == ActionType.Attack) // UGLY
+                {
+                    entity.weapons[0].model.SheatheWeapon();
+                }
+
 
                 done = true;
             }
@@ -856,8 +867,8 @@ public class GameManager : MonoBehaviour
                 GameEvents.instance.TriggerOnActionUnthreatenLocation(action, targets);
 
                 // Sheathe weapon
-                if (action.actionType == ActionType.Attack)
-                    GameEvents.instance.TriggerOnEntitySheatheWeapon(entity, action.weapon);
+                if (action.actionType == ActionType.Attack) // UGLY
+                    entity.weapons[0].model.SheatheWeapon();
 
                 // Stop
                 break;
@@ -907,8 +918,6 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
-
-
 
         // Trigger event
         GameEvents.instance.TriggerOnEntityInspect(entity, action, locations);
