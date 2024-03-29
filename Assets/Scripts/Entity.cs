@@ -135,7 +135,7 @@ public class Entity : ScriptableObject
     public void TakeDamageFrom(Entity source, Weapon weapon, int amount)
     {
         // Debug
-        Debug.Log(name + " took " + amount + " damage.");
+        // Debug.Log(name + " took " + amount + " damage.");
 
         // Reduce health until 0
         currentHealth = Mathf.Max(currentHealth - amount, 0);

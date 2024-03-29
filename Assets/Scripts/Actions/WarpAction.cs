@@ -13,7 +13,7 @@ public class WarpAction : Action
         foreach (var direction in cardinalDirections)
         {
             var location = startLocation + (direction * die.value);
-            if (!room.IsWall(location) && !room.IsChasam(location) && !room.HasEntity(location))
+            if (!room.IsObsacle(location) && !room.HasEntity(location))
             {
                 targets.Add(location);
             }
@@ -22,7 +22,7 @@ public class WarpAction : Action
         return targets;
     }
 
-    public override List<Vector3Int> GetThreatenedLocations(Entity entity, Vector3Int targetLocation)
+    public override List<Vector3Int> GetThreatenedLocations(Entity entity, Vector3Int targetLocation, Room room)
     {
         return new List<Vector3Int>() { targetLocation };
     }

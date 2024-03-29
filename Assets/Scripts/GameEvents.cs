@@ -34,10 +34,6 @@ public class GameEvents : MonoBehaviour
     public event Action<Entity> onEntityDespawn;
     public event Action<Entity> onEntityRelocate;
 
-    public event Action<Entity, Vector3, Weapon> onEntityDrawWeapon;
-    public event Action<Entity, Weapon> onEntitySheatheWeapon;
-    public event Action<Entity, Weapon> onEntityUseWeapon;
-
     public event Action<Action, List<Vector3Int>> onActionThreatenLocations;
     public event Action<Action, List<Vector3Int>> onActionUnthreatenLocations;
 
@@ -202,21 +198,6 @@ public class GameEvents : MonoBehaviour
     public void TriggerOnEntityTakeDamage(Entity entity, int damage)
     {
         onEntityTakeDamage?.Invoke(entity, damage);
-    }
-
-    public void TriggerOnEntityUseWeapon(Entity entity, Weapon weapon)
-    {
-        onEntityUseWeapon?.Invoke(entity, weapon);
-    }
-
-    public void TriggerOnEntityDrawWeapon(Entity entity, Vector3 direction, Weapon weapon)
-    {
-        onEntityDrawWeapon?.Invoke(entity, direction, weapon);
-    }
-
-    public void TriggerOnEntitySheatheWeapon(Entity entity, Weapon weapon)
-    {
-        onEntitySheatheWeapon?.Invoke(entity, weapon);
     }
 
     public void TriggerOnEntityUseConsumable(Entity entity, Consumable consumable)

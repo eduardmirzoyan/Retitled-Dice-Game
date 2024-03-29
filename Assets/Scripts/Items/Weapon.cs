@@ -13,7 +13,7 @@ public class Weapon : Item
 
     [Header("Visuals")]
     public GameObject attackParticlePrefab;
-    public GameObject weaponPrefab;
+    public RuntimeAnimatorController controller;
 
     [Header("Dynamic Data")]
     public Entity entity;

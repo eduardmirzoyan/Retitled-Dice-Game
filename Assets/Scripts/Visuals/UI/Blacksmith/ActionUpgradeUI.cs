@@ -50,11 +50,10 @@ public class ActionUpgradeUI : MonoBehaviour
             // Update label
             actionNameText.text = action.GetDynamicName();
             actionRangeText.text = $"Range: <color=yellow>{action.die.minValue} - {action.die.maxValue}</color>";
-            string goldIcon = "<sprite name=\"Gold\">";
-            upgradeCostText.text = $"Cost: {action.UpgradeCost()}{goldIcon}";
+            upgradeCostText.text = $"Cost: {action.UpgradeCost()}";
 
             string cost = affordable ? $"{action.UpgradeCost()}" : $"<color=#{unafforableColor.ToHexString()}>{action.UpgradeCost()}</color>";
-            upgradeCostText.text = $"Cost: {cost}{goldIcon}";
+            upgradeCostText.text = $"Cost: {cost}";
         }
     }
 

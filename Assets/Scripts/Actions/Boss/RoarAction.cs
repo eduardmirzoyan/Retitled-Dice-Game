@@ -12,7 +12,7 @@ public class RoarAction : Action
         return new List<Vector3Int>() { startLocation };
     }
 
-    public override List<Vector3Int> GetThreatenedLocations(Entity entity, Vector3Int targetLocation)
+    public override List<Vector3Int> GetThreatenedLocations(Entity entity, Vector3Int targetLocation, Room room)
     {
         List<Vector3Int> targets = new List<Vector3Int>();
 
@@ -30,17 +30,9 @@ public class RoarAction : Action
     public override IEnumerator Perform(Entity entity, Vector3Int targetLocation, List<Vector3Int> threatenedLocations, Room room)
     {
         foreach (var location in threatenedLocations)
-        {
-            var target = room.GetEntityAtLocation(location);
-            if (target != null)
-            {
-                entity.AttackEntity(target, weapon, GetTotalDamage());
-            }
-        }
+            entity.AttackLocation(location, weapon, GetTotalDamage());
 
-        // Trigger event
-        GameEvents.instance.TriggerOnEntityUseWeapon(entity, weapon);
-
-        yield return null;
+        yield return weapon.model.Attack();
+        yield return weapon.model.Sheathe();
     }
 }

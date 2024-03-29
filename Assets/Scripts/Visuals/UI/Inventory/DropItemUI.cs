@@ -24,6 +24,10 @@ public class DropItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         // If dragging an item in
         if (eventData.pointerDrag != null && eventData.pointerDrag.TryGetComponent(out ItemUI itemUI))
         {
+            // Make sure item is from an inventory
+            if (itemUI.GetSlotUI() is not InventorySlotUI)
+                return;
+
             this.itemUI = itemUI;
             itemUI.ShowTrashIcon(true);
         }
@@ -31,7 +35,7 @@ public class DropItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (eventData.pointerDrag != null && eventData.pointerDrag.TryGetComponent(out ItemUI _))
+        if (eventData.pointerDrag != null && eventData.pointerDrag.TryGetComponent(out ItemUI _) && itemUI != null)
         {
             itemUI.ShowTrashIcon(false);
             itemUI = null;

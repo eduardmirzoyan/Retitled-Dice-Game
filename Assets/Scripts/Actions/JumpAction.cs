@@ -32,24 +32,15 @@ public class JumpAction : Action
         return targets;
     }
 
-    public override List<Vector3Int> GetThreatenedLocations(Entity entity, Vector3Int targetLocation)
+    public override List<Vector3Int> GetThreatenedLocations(Entity entity, Vector3Int targetLocation, Room room)
     {
         return new List<Vector3Int>() { targetLocation };
     }
 
     public override IEnumerator Perform(Entity entity, Vector3Int targetLocation, List<Vector3Int> threatenedLocations, Room room)
     {
-        // Warp to location
-        // yield return entity.Jump(targetLocation);
-
-        // Move
-        // room.MoveEntityTo(this, location);
-
-        // Trigger event
-        // GameEvents.instance.TriggerOnEntityJump(this);
-
         // Wait for animation
-        yield return entity.model.Jump(entity.location, targetLocation); // new WaitForSeconds(GameManager.instance.gameSettings.jumpBufferTime);
+        yield return entity.model.Jump(entity.location, targetLocation);
 
         // Relocate
         entity.Relocate(targetLocation);

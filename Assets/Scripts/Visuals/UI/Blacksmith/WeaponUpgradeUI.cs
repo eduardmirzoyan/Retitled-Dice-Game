@@ -63,9 +63,8 @@ public class WeaponUpgradeUI : MonoBehaviour
             // Update labels
             weaponNameText.text = weapon.GetDynamicName();
             weaponDamageText.text = $"Base Damage: <color=yellow>{weapon.baseDamage}</color>";
-            string goldIcon = "<sprite name=\"Gold\">";
             string cost = affordable ? $"{weapon.UpgradeCost()}" : $"<color=#{unafforableColor.ToHexString()}>{weapon.UpgradeCost()}</color>";
-            upgradeCostText.text = $"Cost: {cost}{goldIcon}";
+            upgradeCostText.text = $"Cost: {cost}";
         }
     }
 

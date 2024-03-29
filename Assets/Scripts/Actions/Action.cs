@@ -46,7 +46,7 @@ public abstract class Action : ScriptableObject
 
     public abstract List<Vector3Int> GetValidLocations(Vector3Int startLocation, Room room);
 
-    public abstract List<Vector3Int> GetThreatenedLocations(Entity entity, Vector3Int targetLocation);
+    public abstract List<Vector3Int> GetThreatenedLocations(Entity entity, Vector3Int targetLocation, Room room);
 
     public abstract IEnumerator Perform(Entity entity, Vector3Int targetLocation, List<Vector3Int> threatenedLocations, Room room);
 

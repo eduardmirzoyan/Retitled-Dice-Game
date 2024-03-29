@@ -16,34 +16,44 @@ public class FireballAction : Action
         {
             var location = startLocation + direction * die.value;
 
-            if (!room.IsWall(location))
-            {
-                targets.Add(location);
-            }
+            if (room.IsObsacle(location))
+                continue;
+
+            targets.Add(location);
         }
 
         return targets;
     }
 
-    public override List<Vector3Int> GetThreatenedLocations(Entity entity, Vector3Int targetLocation)
+    public override List<Vector3Int> GetThreatenedLocations(Entity entity, Vector3Int targetLocation, Room room)
     {
         List<Vector3Int> targets = new List<Vector3Int>() { targetLocation };
 
-        if (useCrossPattern)
+        if (!useCrossPattern)
         {
-            // Form + pattern
+            // Check + pattern
             foreach (var direction in cardinalDirections)
             {
-                targets.Add(targetLocation + direction);
+                Vector3Int newLocation = targetLocation + direction;
+
+                if (room.IsObsacle(newLocation))
+                    continue;
+
+                targets.Add(newLocation);
             }
         }
         else
         {
-            // Form X pattern
-            targets.Add(targetLocation + new Vector3Int(1, 1));
-            targets.Add(targetLocation + new Vector3Int(1, -1));
-            targets.Add(targetLocation + new Vector3Int(-1, 1));
-            targets.Add(targetLocation + new Vector3Int(-1, -1));
+            // Check X pattern
+            foreach (var direction in new Vector3Int[] { new Vector3Int(1, 1), new Vector3Int(-1, 1), new Vector3Int(1, -1), new Vector3Int(-1, -1) })
+            {
+                Vector3Int newLocation = targetLocation + direction;
+
+                if (room.IsObsacle(newLocation))
+                    continue;
+
+                targets.Add(newLocation);
+            }
         }
 
         return targets;
@@ -51,24 +61,16 @@ public class FireballAction : Action
 
     public override IEnumerator Perform(Entity entity, Vector3Int targetLocation, List<Vector3Int> threatenedLocations, Room room)
     {
-        // Logic
+        Vector3Int direction = targetLocation - entity.location;
+        direction.Clamp(-Vector3Int.one, Vector3Int.one);
+
+        entity.model.FaceDirection(direction);
+        yield return weapon.model.Draw(direction);
+
         foreach (var location in threatenedLocations)
-        {
-            // Damage first target found
-            var target = room.GetEntityAtLocation(location);
-            if (target != null)
-            {
-                // Damage location
-                entity.AttackEntity(target, weapon, GetTotalDamage());
+            entity.AttackLocation(location, weapon, GetTotalDamage());
 
-                // Dip
-                break;
-            }
-        }
-
-        // Trigger event
-        GameEvents.instance.TriggerOnEntityUseWeapon(entity, weapon);
-
-        yield return null;
+        yield return weapon.model.Attack();
+        yield return weapon.model.Sheathe();
     }
 }

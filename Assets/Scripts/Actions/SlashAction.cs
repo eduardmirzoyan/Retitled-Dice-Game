@@ -5,8 +5,6 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Actions/Slash")]
 public class SlashAction : Action
 {
-    [SerializeField] private GameObject vfxPrefab;
-
     public override List<Vector3Int> GetValidLocations(Vector3Int startLocation, Room room)
     {
         List<Vector3Int> targets = new List<Vector3Int>();
@@ -20,7 +18,7 @@ public class SlashAction : Action
             while (range > 0)
             {
                 // Stop on obstacle
-                if (room.IsOutOfBounds(location) || room.IsWall(location) || room.IsChasam(location) || room.HasEntity(location))
+                if (room.IsObsacle(location) || room.HasEntity(location))
                     break;
 
                 targets.Add(location);
@@ -33,13 +31,15 @@ public class SlashAction : Action
         return targets;
     }
 
-    public override List<Vector3Int> GetThreatenedLocations(Entity entity, Vector3Int targetLocation)
+    public override List<Vector3Int> GetThreatenedLocations(Entity entity, Vector3Int targetLocation, Room room)
     {
         // Threaten behind self
         Vector3Int direction = targetLocation - entity.location;
         direction.Clamp(-Vector3Int.one, Vector3Int.one);
-
         Vector3Int location = entity.location - direction;
+
+        if (room.IsObsacle(location))
+            return new List<Vector3Int>();
 
         return new List<Vector3Int>() { location };
     }
@@ -54,21 +54,15 @@ public class SlashAction : Action
 
         // Face backwards
         entity.model.FaceDirection(-direction);
-        weapon.model.DrawWeapon(-direction);
-
-        // Delay for dramatic effect
-        yield return new WaitForSeconds(0.25f);
+        yield return weapon.model.Draw(-direction);
 
         // Attack each location
         foreach (var location in threatenedLocations)
             entity.AttackLocation(location, weapon, GetTotalDamage());
 
-        // Trigger event
-        // GameEvents.instance.TriggerOnEntityUseWeapon(entity, weapon);
-
         // Handle visuals
-        yield return weapon.model.UseWeapon(vfxPrefab);
-        weapon.model.SheatheWeapon();
+        yield return weapon.model.Attack();
+        yield return weapon.model.Sheathe();
 
         // ~~~ Move to location ~~~
 

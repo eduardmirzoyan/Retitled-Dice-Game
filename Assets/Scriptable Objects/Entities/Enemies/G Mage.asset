@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c94cd8632690354b999096b2edecee2, type: 3}
+  m_Name: G Mage
+  m_EditorClassIdentifier: 
+  name: Mage
+  maxHealth: 1
+  currentHealth: 1
+  gold: 1
+  inventory: {fileID: 0}
+  modelSprite: {fileID: -1492018022, guid: a6e56c3c87eb7914cae0e69530c7e2ec, type: 3}
+  modelController: {fileID: 9100000, guid: 2f211e47f81efa54b9f131e2347243cf, type: 2}
+  AI: {fileID: 11400000, guid: d4e8490dcf389f84685dacfb35ca8cd8, type: 2}
+  innateActions:
+  - {fileID: 11400000, guid: 5e44504d2bb4578418b8addc4ee14f43, type: 2}
+  weapons:
+  - {fileID: 11400000, guid: a2693280db799f447b5d3c93eb49cca1, type: 2}
+  - {fileID: 0}
+  enchantments: []
+  location: {x: 0, y: 0, z: 0}
+  room: {fileID: 0}
+  model: {fileID: 0}

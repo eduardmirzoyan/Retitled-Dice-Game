@@ -11,7 +11,7 @@ public class RerollAction : Action
         return new List<Vector3Int>() { startLocation };
     }
 
-    public override List<Vector3Int> GetThreatenedLocations(Entity entity, Vector3Int targetLocation)
+    public override List<Vector3Int> GetThreatenedLocations(Entity entity, Vector3Int targetLocation, Room room)
     {
         return new List<Vector3Int>() { targetLocation };
     }

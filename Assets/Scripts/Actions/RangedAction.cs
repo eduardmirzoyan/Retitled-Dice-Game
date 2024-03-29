@@ -50,33 +50,26 @@ public class RangedAction : Action
         return targets;
     }
 
-    public override List<Vector3Int> GetThreatenedLocations(Entity entity, Vector3Int targetLocation)
+    public override List<Vector3Int> GetThreatenedLocations(Entity entity, Vector3Int targetLocation, Room room)
     {
         return new List<Vector3Int>() { targetLocation };
     }
 
     public override IEnumerator Perform(Entity entity, Vector3Int targetLocation, List<Vector3Int> threatenedLocations, Room room)
     {
-        // Logic
+        Vector3Int direction = targetLocation - entity.location;
+        direction.Clamp(-Vector3Int.one, Vector3Int.one);
+
+        // Face forward
+        entity.model.FaceDirection(direction);
+        yield return weapon.model.Draw(direction);
+
+        // Damage tile
         foreach (var location in threatenedLocations)
-        {
-            // entity.AttackLocation(location, weapon, GetTotalDamage()); ?
+            entity.AttackLocation(location, weapon, GetTotalDamage());
 
-            // Damage first target found
-            var target = room.GetEntityAtLocation(location);
-            if (target != null)
-            {
-                // Damage location
-                entity.AttackEntity(target, weapon, GetTotalDamage());
-
-                // Dip
-                break;
-            }
-        }
-
-        // Trigger event
-        GameEvents.instance.TriggerOnEntityUseWeapon(entity, weapon);
-
-        yield return null;
+        // Handle visuals
+        yield return weapon.model.Attack();
+        yield return weapon.model.Sheathe();
     }
 }

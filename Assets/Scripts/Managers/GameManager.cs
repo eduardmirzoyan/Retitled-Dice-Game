@@ -485,7 +485,7 @@ public class GameManager : MonoBehaviour
             GameEvents.instance.TriggerOnLocationSelect(selectedEntity, selectedAction, location);
 
             // Add threatened locations to table
-            selectedTargets = selectedAction.GetThreatenedLocations(selectedEntity, location);
+            selectedTargets = selectedAction.GetThreatenedLocations(selectedEntity, location, room);
 
             // Show threats
             GameEvents.instance.TriggerOnActionThreatenLocation(selectedAction, selectedTargets);
@@ -522,7 +522,7 @@ public class GameManager : MonoBehaviour
                 GameEvents.instance.TriggerOnActionUnthreatenLocation(selectedAction, selectedTargets);
 
                 // Save new threatened locations 
-                selectedTargets = selectedAction.GetThreatenedLocations(selectedEntity, location);
+                selectedTargets = selectedAction.GetThreatenedLocations(selectedEntity, location, room);
 
                 // Show threats
                 GameEvents.instance.TriggerOnActionThreatenLocation(selectedAction, selectedTargets);
@@ -633,7 +633,7 @@ public class GameManager : MonoBehaviour
                     Vector3Int direction = selectedLocation - selectedEntity.location;
                     direction.Clamp(-Vector3Int.one, Vector3Int.one);
                     selectedEntity.model.FaceDirection(direction);
-                    selectedEntity.weapons[0].model.DrawWeapon(direction);
+                    selectedEntity.weapons[0].model.Draw(direction);
                 }
 
                 break;
@@ -786,12 +786,6 @@ public class GameManager : MonoBehaviour
         // Clean up selected tiles, etc
         GameEvents.instance.TriggerOnActionUnthreatenLocation(action, threatenedLocations);
 
-        if (action.actionType == ActionType.Attack)
-        {
-            // Sheathe weapon
-            GameEvents.instance.TriggerOnEntitySheatheWeapon(entity, action.weapon);
-        }
-
         // Reset selected values
         selectedAction = null;
         selectedLocation = Vector3Int.back;
@@ -837,7 +831,7 @@ public class GameManager : MonoBehaviour
                 // Sheathe weapon
                 if (action.actionType == ActionType.Attack) // UGLY
                 {
-                    entity.weapons[0].model.SheatheWeapon();
+                    entity.weapons[0].model.Sheathe();
                 }
 
 
@@ -868,7 +862,7 @@ public class GameManager : MonoBehaviour
 
                 // Sheathe weapon
                 if (action.actionType == ActionType.Attack) // UGLY
-                    entity.weapons[0].model.SheatheWeapon();
+                    entity.weapons[0].model.Sheathe();
 
                 // Stop
                 break;

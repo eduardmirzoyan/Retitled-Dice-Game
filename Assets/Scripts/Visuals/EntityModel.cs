@@ -9,11 +9,11 @@ public class EntityModel : MonoBehaviour
     [SerializeField] private SpriteRenderer modelSpriteRenderer;
     [SerializeField] private Animator modelAnimator;
 
-    [Header("Offhand Weapon")]
-    [SerializeField] private Transform mainWeaponHolder;
-
     [Header("Mainhand Weapon")]
-    [SerializeField] private Transform offWeaponHolder;
+    [SerializeField] private WeaponModel mainhandWeapon;
+
+    [Header("Offhand Weapon")]
+    [SerializeField] private WeaponModel offhandWeapon;
 
     [Header("QoL")]
     [SerializeField] private DamageFlash damageFlash;
@@ -38,13 +38,12 @@ public class EntityModel : MonoBehaviour
         modelAnimator.runtimeAnimatorController = entity.modelController;
 
         // Spawn weapon models
-        SpawnWeapon(entity, entity.weapons[0], 0);
-        SpawnWeapon(entity, entity.weapons[1], 1);
+        SetWeapon(entity, null, 0);
+        SetWeapon(entity, null, 1);
 
         // Sub to events
-        GameEvents.instance.onEquipWeapon += SpawnWeapon;
-        GameEvents.instance.onUnequipWeapon += DespawnWeapon;
-        // GameEvents.instance.onEntityDrawWeapon += FaceDirection;
+        GameEvents.instance.onEquipWeapon += SetWeapon;
+        GameEvents.instance.onUnequipWeapon += SetWeapon;
 
         // Set name
         transform.name = $"{entity.name} Renderer";
@@ -52,9 +51,8 @@ public class EntityModel : MonoBehaviour
 
     public void Uninitialize()
     {
-        GameEvents.instance.onEquipWeapon -= SpawnWeapon;
-        GameEvents.instance.onUnequipWeapon -= DespawnWeapon;
-        // GameEvents.instance.onEntityDrawWeapon -= FaceDirection;
+        GameEvents.instance.onEquipWeapon -= SetWeapon;
+        GameEvents.instance.onUnequipWeapon -= SetWeapon;
     }
 
     public void SpawnCorpse()
@@ -71,29 +69,25 @@ public class EntityModel : MonoBehaviour
         AudioManager.instance.PlaySFX("death");
     }
 
-    private void SpawnWeapon(Entity entity, Weapon weapon, int index)
+    private void SetWeapon(Entity entity, Weapon weapon, int index)
     {
-        if (this.entity == entity && weapon != null)
+        if (this.entity == entity)
         {
-            // 0 - Mainahnd, 1 - Offhand
-            Transform holder = index == 0 ? mainWeaponHolder : offWeaponHolder;
-
-            // Create and initalize world model
-            var model = Instantiate(weapon.weaponPrefab, holder).GetComponent<WeaponModel>();
-            model.Initialize(weapon);
-            weapon.model = model;
-        }
-    }
-
-    private void DespawnWeapon(Entity entity, Weapon weapon, int _)
-    {
-        if (this.entity == entity && weapon != null)
-        {
-            // Destroy this object
-            Destroy(weapon.model.gameObject);
-
-            // Remove reference
-            weapon.model = null;
+            if (index == 0)
+            {
+                if (entity.weapons[index] != null)
+                    mainhandWeapon.Initialize(entity.weapons[index]);
+                else
+                    mainhandWeapon.Uninitialize();
+            }
+            else if (index == 1)
+            {
+                if (entity.weapons[index] != null)
+                    offhandWeapon.Initialize(entity.weapons[index]);
+                else
+                    offhandWeapon.Uninitialize();
+            }
+            else throw new System.Exception($"Unhandled weapon index: {index}");
         }
     }
 
@@ -126,7 +120,6 @@ public class EntityModel : MonoBehaviour
 
         // Cleanup
         transform.position = endPosition;
-
     }
 
     public void MoveCleanup()

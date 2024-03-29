@@ -42,7 +42,7 @@ public class FreeMoveAction : Action
         return validLocations.Distinct().ToList();
     }
 
-    public override List<Vector3Int> GetThreatenedLocations(Entity entity, Vector3Int targetLocation)
+    public override List<Vector3Int> GetThreatenedLocations(Entity entity, Vector3Int targetLocation, Room room)
     {
         return new List<Vector3Int> { targetLocation };
     }

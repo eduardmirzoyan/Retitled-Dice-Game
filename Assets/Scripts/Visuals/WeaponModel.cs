@@ -11,25 +11,32 @@ public class WeaponModel : MonoBehaviour
     [Header("Data")]
     [SerializeField] private Weapon weapon;
 
-    private void Awake()
-    {
-        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        animator = GetComponentInChildren<Animator>();
-    }
+    private float animationLength = 0.5f;
 
     public void Initialize(Weapon weapon)
     {
         this.weapon = weapon;
+        weapon.model = this;
+        transform.name = weapon.name + " Weapon";
 
-        // Update components
+        // Set components
         spriteRenderer.sprite = weapon.sprite;
         spriteRenderer.sortingLayerName = "Entities";
+        animator.runtimeAnimatorController = weapon.controller;
 
-        // Set name
-        transform.name = weapon.name + " Model";
+        animator.Play("Idle");
     }
 
-    public void DrawWeapon(Vector3 direction)
+    public void Uninitialize()
+    {
+        spriteRenderer.sprite = null;
+        animator.runtimeAnimatorController = null;
+
+        weapon = null;
+        transform.name = "Unused Weapon";
+    }
+
+    public IEnumerator Draw(Vector3 direction)
     {
         // Holder z = 90, attack up
         // Holder z = 0, attack facing direction
@@ -62,40 +69,29 @@ public class WeaponModel : MonoBehaviour
 
         // Play sound
         AudioManager.instance.PlaySFX("draw");
+
+        // Wait for animation
+        yield return new WaitForSeconds(animationLength);
     }
 
-    private void UseWeapon(Entity entity, Weapon weapon)
-    {
-        if (this.weapon == weapon)
-        {
-            // Play animation
-            animator.Play("Attack");
-
-            // Spawn particle in the same orientation as the weapon
-            if (weapon.attackParticlePrefab != null)
-            {
-                Instantiate(weapon.attackParticlePrefab, transform.position + transform.right, transform.rotation);
-            }
-        }
-    }
-
-    public IEnumerator UseWeapon(GameObject attackVFX)
+    public IEnumerator Attack()
     {
         // Play animation
         animator.Play("Attack");
 
+        // Play sfx?
+        // TODO
+
         // Spawn particle in the same orientation as the weapon
-        if (attackVFX != null)
-            Instantiate(attackVFX, transform.position + transform.right, transform.rotation);
+        if (weapon.attackParticlePrefab != null)
+            Instantiate(weapon.attackParticlePrefab, transform.position + transform.right, transform.rotation);
 
         // Give small delay
         yield return new WaitForSeconds(0.25f);
     }
 
-    public void SheatheWeapon()
+    public IEnumerator Sheathe()
     {
-        // print("Sheathe");
-
         // Play animation
         animator.Play("Sheathe");
 
@@ -104,5 +100,7 @@ public class WeaponModel : MonoBehaviour
 
         // Reset rotation
         transform.localEulerAngles = Vector3.zero;
+
+        yield return new WaitForSeconds(animationLength);
     }
 }

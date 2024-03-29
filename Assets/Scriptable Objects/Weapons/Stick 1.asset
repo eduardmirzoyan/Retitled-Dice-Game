@@ -23,5 +23,6 @@ MonoBehaviour:
   enchantments: []
   enchantmentCap: 3
   attackParticlePrefab: {fileID: 0}
-  weaponPrefab: {fileID: 1251787465029900827, guid: 539046e35f645174093ee495a9e64bd4, type: 3}
+  controller: {fileID: 9100000, guid: 4eaef54e271684f4eb168fc1cae6e95d, type: 2}
   entity: {fileID: 0}
+  model: {fileID: 0}

@@ -5,8 +5,6 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Actions/Thrust")]
 public class ThrustAction : Action
 {
-    [SerializeField] private GameObject vfxPrefab;
-
     public override List<Vector3Int> GetValidLocations(Vector3Int startLocation, Room room)
     {
         List<Vector3Int> targets = new List<Vector3Int>();
@@ -33,13 +31,18 @@ public class ThrustAction : Action
         return targets;
     }
 
-    public override List<Vector3Int> GetThreatenedLocations(Entity entity, Vector3Int targetLocation)
+    public override List<Vector3Int> GetThreatenedLocations(Entity entity, Vector3Int targetLocation, Room room)
     {
         // Threaten right in front of the target
         Vector3Int direction = targetLocation - entity.location;
         direction.Clamp(-Vector3Int.one, Vector3Int.one);
 
-        return new List<Vector3Int>() { targetLocation + direction };
+        Vector3Int location = targetLocation + direction;
+
+        if (room.IsObsacle(location))
+            return new List<Vector3Int>();
+
+        return new List<Vector3Int>() { location };
     }
 
     public override IEnumerator Perform(Entity entity, Vector3Int targetLocation, List<Vector3Int> threatenedLocations, Room room)
@@ -48,9 +51,6 @@ public class ThrustAction : Action
         // Calculate direction
         Vector3Int direction = targetLocation - entity.location;
         direction.Clamp(-Vector3Int.one, Vector3Int.one);
-
-        // Pull out weapon
-        weapon.model.DrawWeapon(direction);
 
         // Move to location
         entity.model.MoveSetup();
@@ -69,18 +69,15 @@ public class ThrustAction : Action
 
         // ~~~ Attack targets ~~~
 
-        // Pause
-        yield return null;
+        // Pull out weapon
+        yield return weapon.model.Draw(direction);
 
         // Attack each location
         foreach (var location in threatenedLocations)
             entity.AttackLocation(location, weapon, GetTotalDamage());
 
-        // Trigger event
-        // GameEvents.instance.TriggerOnEntityUseWeapon(entity, weapon);
-
         // Attack
-        yield return weapon.model.UseWeapon(vfxPrefab);
-        weapon.model.SheatheWeapon();
+        yield return weapon.model.Attack();
+        yield return weapon.model.Sheathe();
     }
 }

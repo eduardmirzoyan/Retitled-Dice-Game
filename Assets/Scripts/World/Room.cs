@@ -366,6 +366,11 @@ public class Room : ScriptableObject
         return tiles[location.x, location.y].tileType == TileType.Chasam;
     }
 
+    public bool IsObsacle(Vector3Int location)
+    {
+        return IsOutOfBounds(location) || IsWall(location) || IsChasam(location);
+    }
+
     public bool HasEntity(Vector3Int location)
     {
         return tiles[location.x, location.y].containedEntity != null;
