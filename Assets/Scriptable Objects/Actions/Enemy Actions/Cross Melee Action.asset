@@ -14,8 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Cross Melee
   rawInactiveDescription: '?'
-  rawActiveDescription: '?'
-  icon: {fileID: 21300000, guid: 8995a510a41274b47bd9921007e6289e, type: 3}
+  icon: {fileID: 0}
   color: {r: 0.87058824, g: 0.24313726, b: 0.13725491, a: 1}
   actionSpeed: 1
   actionType: 1

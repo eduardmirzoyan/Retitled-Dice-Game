@@ -64,12 +64,12 @@ public class GameManager : MonoBehaviour
             SelectAction(null);
         }
 
-        // FOR TESTING
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            var enchantments = enchantmentGenerator.GenerateEnchantmentSet();
-            EnchantmentSelectionUI.instance.Open(enchantments);
-        }
+        // // FOR TESTING
+        // if (Input.GetKeyDown(KeyCode.L))
+        // {
+        //     var enchantments = enchantmentGenerator.GenerateEnchantmentSet();
+        //     EnchantmentSelectionUI.instance.Open(enchantments);
+        // }
     }
 
     private IEnumerator EnterFloor()
@@ -117,15 +117,21 @@ public class GameManager : MonoBehaviour
         switch (DataManager.instance.GetCurrentRoom())
         {
             case RoomType.Normal:
+                int roomNumber = DataManager.instance.RoomNumber;
+                int stageNumber = DataManager.instance.StageNumber;
 
-                if (DataManager.instance.GetRoomNumber() < 3)
+                if (stageNumber == 1)
                 {
-                    room = roomGenerator.GenerateRoom(RoomSize.Small);
+                    if (roomNumber < 3) // First 2 rooms, tiny
+                        room = roomGenerator.GenerateRoom(RoomSize.Tiny);
+                    else // The rest on stage 1 are small
+                        room = roomGenerator.GenerateRoom(RoomSize.Small);
                 }
                 else
-                {
+                {   // Rest should be medium
                     room = roomGenerator.GenerateRoom(RoomSize.Medium);
                 }
+
 
                 break;
             case RoomType.Shop:
@@ -165,11 +171,13 @@ public class GameManager : MonoBehaviour
         {
             case RoomType.Normal:
 
-                // Spawn enemies
-                int num = DataManager.instance.GetRoomNumber();
-                if (num < 3)
+                int roomNumber = DataManager.instance.RoomNumber;
+                int stageNumber = DataManager.instance.StageNumber;
+
+                // Spawn enemies based on room and stage number
+                if (stageNumber == 1 && roomNumber < 3)
                 {
-                    for (int i = 0; i < num; i++)
+                    for (int i = 0; i < roomNumber; i++)
                     {
                         // Generate up to first 2 enemies
                         var enemy = enemyGenerator.GenerateEnemy(i);
@@ -178,10 +186,26 @@ public class GameManager : MonoBehaviour
                         room.SpawnEntity(enemy);
                     }
                 }
+                else if (stageNumber == 1 && roomNumber >= 3)
+                {
+                    // Generate first 2 enemies
+                    for (int i = 0; i < 2; i++)
+                    {
+                        // Generate a random enemy
+                        var enemy = enemyGenerator.GenerateEnemy(i);
+
+                        // Populate the room
+                        room.SpawnEntity(enemy);
+                    }
+
+                    // One random
+                    var en = enemyGenerator.GenerateEnemy();
+                    room.SpawnEntity(en);
+                }
                 else
                 {
-                    // Generate 3 random
-                    for (int i = 0; i < 3; i++)
+                    // Generate 4 random enemies
+                    for (int i = 0; i < 4; i++)
                     {
                         // Generate a random enemy
                         var enemy = enemyGenerator.GenerateEnemy();
@@ -239,7 +263,7 @@ public class GameManager : MonoBehaviour
             case RoomType.Normal:
 
                 // Create keys based on room number
-                int num = Mathf.Min(DataManager.instance.GetRoomNumber(), 2);
+                int num = Mathf.Min(DataManager.instance.RoomNumber, 2);
                 for (int i = 0; i < num; i++)
                 {
                     // Spawn a barrel
@@ -260,7 +284,7 @@ public class GameManager : MonoBehaviour
             case RoomType.Normal:
 
                 // Create keys based on room number
-                int num = Mathf.Min(DataManager.instance.GetRoomNumber(), 2);
+                int num = Mathf.Min(DataManager.instance.RoomNumber, 2);
                 for (int i = 0; i < num; i++)
                 {
                     // Spawn a key
@@ -281,7 +305,7 @@ public class GameManager : MonoBehaviour
             case RoomType.Normal:
 
                 // Create keys based on room number
-                int num = Mathf.Min(DataManager.instance.GetRoomNumber(), 2);
+                int num = Mathf.Min(DataManager.instance.RoomNumber, 2);
                 for (int i = 0; i < num; i++)
                 {
                     // Spawn a key
@@ -628,12 +652,13 @@ public class GameManager : MonoBehaviour
                 delayedActionsTable[(selectedEntity, selectedAction)] = new List<Vector3Int>(selectedTargets);
 
                 // Draw weapon
-                if (selectedAction.actionType == ActionType.Attack)
+                var mainhandWeapon = selectedEntity.weapons[0];
+                if (selectedAction.actionType == ActionType.Attack && mainhandWeapon != null)
                 {
                     Vector3Int direction = selectedLocation - selectedEntity.location;
                     direction.Clamp(-Vector3Int.one, Vector3Int.one);
                     selectedEntity.model.FaceDirection(direction);
-                    selectedEntity.weapons[0].model.Draw(direction);
+                    yield return mainhandWeapon.model.Draw(direction);
                 }
 
                 break;
@@ -829,11 +854,9 @@ public class GameManager : MonoBehaviour
                 GameEvents.instance.TriggerOnActionUnthreatenLocation(action, targets);
 
                 // Sheathe weapon
-                if (action.actionType == ActionType.Attack) // UGLY
-                {
-                    entity.weapons[0].model.Sheathe();
-                }
-
+                var mainhandWeapon = entity.weapons[0];
+                if (action.actionType == ActionType.Attack && mainhandWeapon != null) // UGLY
+                    yield return mainhandWeapon.model.Sheathe();
 
                 done = true;
             }
@@ -842,7 +865,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void ClearDelayedActions(Entity entity)
+    public void CancelDelayedActions(Entity entity)
     {
         // Loop through each pair
         foreach (var entityActionPair in delayedActionsTable)

@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// Alive from OnLocationSelect and onwards
 public class ActionPathRenderer : MonoBehaviour
 {
     [Header("Static Data")]

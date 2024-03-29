@@ -88,7 +88,7 @@
     <Compile Include="Assets\Scripts\Visuals\UI\Inventory\DropItemUI.cs" />
     <Compile Include="Assets\Scripts\Actions\Boss\SmashAction.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\Items\ItemEnchantmentsTabUI.cs" />
-    <Compile Include="Assets\Scripts\Visuals\Indicators\DamageIntentIndicator.cs" />
+    <Compile Include="Assets\Scripts\Visuals\Indicators\DamageIndicator.cs" />
     <Compile Include="Assets\Scripts\World\KeyPickup.cs" />
     <Compile Include="Assets\Scripts\Visuals\Indicators\DirectionIndicator.cs" />
     <Compile Include="Assets\Scripts\Enchantments\Weapon\DieBuffWE.cs" />
@@ -104,7 +104,7 @@
     <Compile Include="Assets\Scripts\Enchantments\Weapon\KillGoldWeaponEnchantment.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\FeedbackTextUI.cs" />
     <Compile Include="Assets\Scripts\Generators\ItemGenerator.cs" />
-    <Compile Include="Assets\Scripts\Visuals\Indicators\ActionPreview.cs" />
+    <Compile Include="Assets\Scripts\Visuals\Indicators\ActionIndicator.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\TextTooltipUI.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\Actions\ActionsHandlerUI.cs" />
     <Compile Include="Assets\Scripts\Actions\Enemy\CrossMeleeAction.cs" />
@@ -121,7 +121,7 @@
     <Compile Include="Assets\Scripts\Main Menu\MainMenuManager.cs" />
     <Compile Include="Assets\Scripts\Actions\Enemy\FreeMoveAction.cs" />
     <Compile Include="Assets\Scripts\Visuals\BarrelTossModel.cs" />
-    <Compile Include="Assets\Scripts\Visuals\Indicators\ActionIndicator.cs" />
+    <Compile Include="Assets\Scripts\Visuals\Indicators\ActionManager.cs" />
     <Compile Include="Assets\Scripts\Visuals\UI\Inventory\DropAlertUI.cs" />
     <Compile Include="Assets\Scripts\Generators\RoomGenerator.cs" />
     <Compile Include="Assets\Scripts\Actions\Boss\TossAction.cs" />

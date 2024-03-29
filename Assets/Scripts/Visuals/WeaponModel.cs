@@ -65,7 +65,7 @@ public class WeaponModel : MonoBehaviour
         animator.Play("Draw");
 
         // Move weapon up in sorting
-        spriteRenderer.sortingLayerName = "Weapons";
+        // spriteRenderer.sortingLayerName = "Weapons";
 
         // Play sound
         AudioManager.instance.PlaySFX("draw");
@@ -96,7 +96,7 @@ public class WeaponModel : MonoBehaviour
         animator.Play("Sheathe");
 
         // Move weapon down in sorting
-        spriteRenderer.sortingLayerName = "Entities";
+        // spriteRenderer.sortingLayerName = "Entities";
 
         // Reset rotation
         transform.localEulerAngles = Vector3.zero;

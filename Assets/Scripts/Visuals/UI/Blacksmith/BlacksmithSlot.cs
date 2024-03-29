@@ -84,9 +84,6 @@ public class BlacksmithSlot : ItemSlotUI, IPointerClickHandler
         // If old item exists
         if (itemUI != null)
         {
-            // Debugging
-            // print("Item " + itemUI.name + " was removed from slot: " + name);
-
             // Disable afterimage
             afterImageIcon.enabled = false;
 
@@ -97,9 +94,6 @@ public class BlacksmithSlot : ItemSlotUI, IPointerClickHandler
         // If new item exists
         if (newItemUI != null)
         {
-            // Debugging
-            // print("Item " + newItemUI.name + " was inserted into slot: " + name);
-
             var item = newItemUI.GetItem();
 
             // Update afterimage

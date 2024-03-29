@@ -77,7 +77,7 @@ public class BlacksmithUI : MonoBehaviour
         canvasGroup.blocksRaycasts = false;
 
         // Remove weapon
-        RemoveWeapon(null);
+        blacksmithSlot.StoreItem(null);
 
         this.customer = null;
 
@@ -118,9 +118,6 @@ public class BlacksmithUI : MonoBehaviour
 
         // Update instructions
         instructionsLabel.text = "Insert an item to upgrade it.";
-
-        // Remove item from slot
-        // blacksmithSlot.StoreItem(null); // FIXME
 
         // Update Size
         StartCoroutine(DelayedRebuild());

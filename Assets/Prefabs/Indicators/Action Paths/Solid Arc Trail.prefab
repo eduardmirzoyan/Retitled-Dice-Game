@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5796882529580813450}
   - component: {fileID: -8237239068053059302}
   m_Layer: 5
-  m_Name: Dotted Arc Trail
+  m_Name: Solid Arc Trail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -53,7 +53,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e925bd6c994b215408c02dedb5c6b65f, type: 2}
+  - {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -73,7 +73,7 @@ LineRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 938315117
   m_SortingLayer: 1
-  m_SortingOrder: -1
+  m_SortingOrder: 2
   m_Positions:
   - {x: 0, y: 0, z: 0}
   - {x: 1, y: 0, z: 0}
@@ -122,7 +122,7 @@ LineRenderer:
       ctime6: 0
       ctime7: 0
       atime0: 0
-      atime1: 58982
+      atime1: 65535
       atime2: 65535
       atime3: 65535
       atime4: 65535
@@ -131,11 +131,11 @@ LineRenderer:
       atime7: 0
       m_Mode: 0
       m_NumColorKeys: 2
-      m_NumAlphaKeys: 3
+      m_NumAlphaKeys: 2
     numCornerVertices: 50
     numCapVertices: 50
     alignment: 0
-    textureMode: 1
+    textureMode: 0
     shadowBias: 1
     generateLightingData: 0
   m_UseWorldSpace: 1
@@ -153,12 +153,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lineRenderer: {fileID: 0}
-  unfocusedMaterial: {fileID: 2100000, guid: 67e28379066efac4c9fc3a1ce6aa257b, type: 2}
-  speed: 0.5
+  speed: 5
   arcHeight: 3
   numPoints: 50
-  isAnimated: 1
-  defaultMaterial: {fileID: 0}
+  isAnimated: 0
   entity: {fileID: 0}
   action: {fileID: 0}
   location: {x: 0, y: 0, z: 0}

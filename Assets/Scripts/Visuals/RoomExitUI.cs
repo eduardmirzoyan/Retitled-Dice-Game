@@ -7,6 +7,7 @@ public class RoomExitUI : MonoBehaviour
     [Header("Components")]
     [SerializeField] private Animator animator;
     [SerializeField] private SpriteRenderer iconRenderer;
+    [SerializeField] private SpriteRenderer shadowRenderer;
 
     [Header("Data")]
     [SerializeField] private List<Sprite> exitIcons;
@@ -29,6 +30,7 @@ public class RoomExitUI : MonoBehaviour
     {
         // Remove icon while locked
         iconRenderer.sprite = null;
+        shadowRenderer.sprite = iconRenderer.sprite;
 
         // Unlock door
         animator.Play("Lock");
@@ -51,6 +53,8 @@ public class RoomExitUI : MonoBehaviour
             default:
                 throw new System.Exception("UNHANDLED ROOM TYPE!");
         }
+
+        shadowRenderer.sprite = iconRenderer.sprite;
 
         // Unlock door
         animator.Play("Unlock");

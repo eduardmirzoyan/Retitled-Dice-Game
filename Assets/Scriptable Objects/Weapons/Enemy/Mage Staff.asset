@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Mage Staff
   m_EditorClassIdentifier: 
   name: Staff
-  description: ...
+  description: 
   sprite: {fileID: -1129111503, guid: 20597968d5281954482d5d148d07fa12, type: 3}
   value: 0
   baseDamage: 1

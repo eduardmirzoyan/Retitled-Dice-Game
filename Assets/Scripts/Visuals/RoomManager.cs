@@ -7,8 +7,7 @@ public class RoomManager : MonoBehaviour
 {
     [Header("Components")]
     [SerializeField] private Tilemap floorTilemap;
-    [SerializeField] private Tilemap wallsTilemap;
-    [SerializeField] private Tilemap decorTilemap;
+    [SerializeField] private Tilemap wallTilemap;
     [SerializeField] private Transform entityTransform;
 
     [Header("Tiles")]
@@ -64,7 +63,7 @@ public class RoomManager : MonoBehaviour
 
                     // Set tile to empty
                     floorTilemap.SetTile(tile.location, null);
-                    wallsTilemap.SetTile(tile.location, null);
+                    wallTilemap.SetTile(tile.location, null);
 
                     break;
                 case TileType.Floor:
@@ -77,15 +76,15 @@ public class RoomManager : MonoBehaviour
 
                     // Set tile to wall
                     floorTilemap.SetTile(tile.location, tileResource.floorTile);
-                    wallsTilemap.SetTile(tile.location, tileResource.wallTile);
+                    wallTilemap.SetTile(tile.location, tileResource.wallTile);
 
                     break;
                 case TileType.Entrance:
 
                     // Set tile to floor
-                    floorTilemap.SetTile(tile.location, tileResource.floorTile);
+                    floorTilemap.SetTile(tile.location, tileResource.entranceTile);
                     // Draw entrance
-                    decorTilemap.SetTile(tile.location, tileResource.entranceTile);
+                    // decorTilemap.SetTile(tile.location, tileResource.entranceTile);
 
                     break;
                 case TileType.Exit:
@@ -142,14 +141,14 @@ public class RoomManager : MonoBehaviour
             case PickUpType.Gold:
 
                 // Spawn gold coin
-                var gold = Instantiate(goldPickupPrefab, floorTilemap.GetCellCenterWorld(location), Quaternion.identity, decorTilemap.transform).GetComponent<GoldPickup>();
+                var gold = Instantiate(goldPickupPrefab, floorTilemap.GetCellCenterWorld(location), Quaternion.identity, floorTilemap.transform).GetComponent<GoldPickup>();
                 gold.Initialize(location);
 
                 break;
             case PickUpType.Key:
 
                 // Spawn key
-                var key = Instantiate(keyPickupPrefab, floorTilemap.GetCellCenterWorld(location), Quaternion.identity, decorTilemap.transform).GetComponent<KeyPickup>();
+                var key = Instantiate(keyPickupPrefab, floorTilemap.GetCellCenterWorld(location), Quaternion.identity, floorTilemap.transform).GetComponent<KeyPickup>();
                 key.Initialize(location);
 
                 break;

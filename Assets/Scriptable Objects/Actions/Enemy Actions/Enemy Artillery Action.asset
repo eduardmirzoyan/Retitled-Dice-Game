@@ -14,8 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Artillery
   rawInactiveDescription: '?'
-  rawActiveDescription: '?'
-  icon: {fileID: 21300000, guid: 43625f721bf4e654fbed58bfb66d527e, type: 3}
+  icon: {fileID: 0}
   color: {r: 0.8705883, g: 0.24313727, b: 0.13725491, a: 1}
   actionSpeed: 1
   actionType: 1
@@ -24,4 +23,3 @@ MonoBehaviour:
   weapon: {fileID: 0}
   modifiers: []
   bonusDamage: 0
-  radius: 1

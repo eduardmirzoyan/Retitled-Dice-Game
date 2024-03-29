@@ -17,13 +17,13 @@ public class EntityInspect : MonoBehaviour
 
     [Header("Debug")]
     [SerializeField] private Vector3Int selectedLocation;
-    [SerializeField] private List<DamageIntentIndicator> indicators;
+    [SerializeField] private List<DamageIndicator> indicators;
 
     private void Awake()
     {
         // Set default inspect
         selectedLocation = Vector3Int.zero;
-        indicators = new List<DamageIntentIndicator>();
+        indicators = new List<DamageIndicator>();
     }
 
     private void Start()
@@ -89,7 +89,7 @@ public class EntityInspect : MonoBehaviour
 
                     // Spawn indicator
                     var position = inspectTilemap.GetCellCenterWorld(location);
-                    var damageIndicator = Instantiate(damageIntentPrefab, position, Quaternion.identity, inspectTilemap.transform).GetComponent<DamageIntentIndicator>();
+                    var damageIndicator = Instantiate(damageIntentPrefab, position, Quaternion.identity, inspectTilemap.transform).GetComponent<DamageIndicator>();
                     damageIndicator.Initialize(damage);
 
                     // Store reference

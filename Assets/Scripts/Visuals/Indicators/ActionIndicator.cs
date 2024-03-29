@@ -1,338 +1,133 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
+// #FFEB04
 public class ActionIndicator : MonoBehaviour
 {
-    [Header("Tilemaps")]
-    [SerializeField] private Tilemap actionLocationTilemap;
-    [SerializeField] private Tilemap actionPreviewTilemap;
-    [SerializeField] private Tilemap intentTilemap;
+    [Header("Components")]
+    [SerializeField] private SpriteRenderer actionIcon;
+    [SerializeField] private SpriteRenderer shadowIcon;
 
-    [Header("Tiles")]
-    [SerializeField] private RuleTile highlightedTile;
-    [SerializeField] private AnimatedTile intentTile;
+    [Header("Data")]
+    [SerializeField] private Entity entity;
+    [SerializeField] private Action action;
+    [SerializeField] private Vector3Int location;
 
-    [Header("Prefabs")]
-    [SerializeField] private GameObject actionPreviewPrefab;
-    [SerializeField] private GameObject damageIntentPrefab;
-    [SerializeField] private GameObject directionIndicatorPrefab;
+    private bool isHovering;
+    private bool isSelected;
 
-    [Header("Settings")]
-    [SerializeField] private float alpha = 0.25f;
-
-    private Dictionary<Vector3Int, int> attackIntentTable;
-    private Dictionary<Vector3Int, int> utilityIntentTable;
-
-    private List<DamageIntentIndicator> indicators;
-
-    private void Awake()
+    public void Initialize(Entity entity, Vector3Int location, Action action)
     {
-        attackIntentTable = new Dictionary<Vector3Int, int>();
-        utilityIntentTable = new Dictionary<Vector3Int, int>();
-        indicators = new List<DamageIntentIndicator>();
-    }
+        this.entity = entity;
+        this.location = location;
+        this.action = action;
 
-    private void Start()
-    {
-        GameEvents.instance.onActionSelect += OnActionSelect;
-        GameEvents.instance.onLocationSelect += OnLocationSelect;
-        GameEvents.instance.onActionConfirm += OnActionConfirm;
+        // Update action icon
+        actionIcon.enabled = false;
+        shadowIcon.enabled = false;
+        actionIcon.sprite = action.icon;
+        shadowIcon.sprite = action.icon;
 
+        // Set state
+        isHovering = false;
+        isSelected = false;
 
-        GameEvents.instance.onActionThreatenLocations += ThreatenLocations;
-        GameEvents.instance.onActionUnthreatenLocations += UnthreatenLocations;
+        // Sub
+        GameEvents.instance.onActionSelect += UnintializeOnSelect;
+        GameEvents.instance.onActionConfirm += UnintializeOnConfirm;
+        GameEvents.instance.onActionPerformEnd += UnintializeOnEnd;
     }
 
     private void OnDestroy()
     {
-        GameEvents.instance.onActionSelect -= OnActionSelect;
-        GameEvents.instance.onLocationSelect -= OnLocationSelect;
-        GameEvents.instance.onActionConfirm -= OnActionConfirm;
-
-        GameEvents.instance.onActionThreatenLocations -= ThreatenLocations;
-        GameEvents.instance.onActionUnthreatenLocations -= UnthreatenLocations;
+        // Unsub
+        GameEvents.instance.onActionSelect -= UnintializeOnSelect;
+        GameEvents.instance.onActionConfirm -= UnintializeOnConfirm;
+        GameEvents.instance.onActionPerformEnd -= UnintializeOnEnd;
     }
 
-    private void ThreatenLocations(Action action, List<Vector3Int> locations)
+    private void UnintializeOnSelect(Entity entity, Action action)
     {
-        // Parse based on type
-        switch (action.actionType)
+        // If no action was selected, destroy this
+        if (this.entity == entity && action == null)
         {
-            case ActionType.Attack:
-
-                int damage = action.GetTotalDamage();
-
-                switch (action.actionSpeed)
-                {
-                    case ActionSpeed.Instant: // Instant Attack
-
-                        foreach (var location in locations)
-                        {
-                            actionPreviewTilemap.SetTile(location, highlightedTile);
-                            actionPreviewTilemap.SetColor(location, Color.yellow);
-
-                            // Create indicator
-                            var position = intentTilemap.GetCellCenterWorld(location);
-                            var damageIndicator = Instantiate(damageIntentPrefab, position, Quaternion.identity, intentTilemap.transform).GetComponent<DamageIntentIndicator>();
-                            damageIndicator.Initialize(damage);
-                            damageIndicator.SetHighlightState(true);
-                            indicators.Add(damageIndicator);
-                        }
-
-                        break;
-                    case ActionSpeed.Delayed: // Delayed Attack
-
-                        foreach (var location in locations)
-                        {
-                            // If value already is marked, then increment count
-                            if (attackIntentTable.TryGetValue(location, out int value))
-                            {
-                                // Update entry
-                                // int value = indicator.GetValue();
-                                // indicator.SetValue(value + damage);
-                                attackIntentTable[location] = value + damage;
-                            }
-                            else
-                            {
-                                // Set icon
-                                intentTilemap.SetTile(location, intentTile);
-                                intentTilemap.SetColor(location, action.color);
-
-                                // Add to dict
-                                attackIntentTable[location] = damage;
-                            }
-                        }
-
-                        break;
-                }
-
-                break;
-            case ActionType.Utility:
-
-                switch (action.actionSpeed)
-                {
-                    case ActionSpeed.Instant: // Instant Utility
-
-                        foreach (var location in locations)
-                        {
-                            actionPreviewTilemap.SetTile(location, highlightedTile);
-                            actionPreviewTilemap.SetColor(location, Color.yellow);
-                        }
-
-                        break;
-                    case ActionSpeed.Delayed: // Delayed Utility
-
-                        foreach (var location in locations)
-                        {
-                            // If value already is marked, then increment count
-                            if (utilityIntentTable.TryGetValue(location, out int count))
-                            {
-                                // Update entry
-                                utilityIntentTable[location] = count + 1;
-                            }
-                            else
-                            {
-                                // Add to dict
-                                utilityIntentTable[location] = 1;
-
-                                // Set icon
-                                intentTilemap.SetTile(location, intentTile);
-                                intentTilemap.SetColor(location, action.color);
-                            }
-                        }
-
-                        break;
-                }
-
-                break;
+            // Destroy self
+            Destroy(gameObject);
         }
     }
 
-    private void UnthreatenLocations(Action action, List<Vector3Int> locations)
+    private void UnintializeOnConfirm(Entity entity, Action action, Vector3Int location)
     {
-        // Parse based on type
-        switch (action.actionType)
+        // After this action is performed, delete outcome
+        if (this.entity == entity && this.action == action && this.location != location)
         {
-            case ActionType.Attack:
-
-                int damage = action.GetTotalDamage();
-
-                switch (action.actionSpeed)
-                {
-                    case ActionSpeed.Instant: // Instant Attack
-
-                        foreach (var location in locations)
-                        {
-                            actionPreviewTilemap.SetTile(location, null);
-                        }
-
-                        // Clear indicator
-                        foreach (var indicator in indicators)
-                        {
-                            Destroy(indicator.gameObject);
-                        }
-                        indicators.Clear();
-
-                        break;
-                    case ActionSpeed.Delayed: // Delayed Attack
-
-                        foreach (var location in locations)
-                        {
-                            // If value already is marked, then increment count
-                            if (attackIntentTable.TryGetValue(location, out int value))
-                            {
-                                // Remove entry
-                                if (damage >= value)
-                                {
-                                    // Unmark
-                                    intentTilemap.SetTile(location, null);
-
-                                    // Destroy object
-                                    // Destroy(indicator.gameObject);
-
-                                    // Remove entry
-                                    attackIntentTable.Remove(location);
-                                }
-                                else
-                                {
-                                    // Update entry
-                                    // var damageIndicator = attackIntentTable[location];
-                                    // int value = damageIndicator.GetValue();
-                                    // damageIndicator.SetValue(value - damage);
-                                    attackIntentTable[location] = value - damage;
-                                }
-                            }
-                        }
-
-                        break;
-                }
-
-                break;
-            case ActionType.Utility:
-
-                switch (action.actionSpeed)
-                {
-                    case ActionSpeed.Instant: // Instant Utility
-
-                        foreach (var location in locations)
-                        {
-                            actionPreviewTilemap.SetTile(location, null);
-                        }
-
-                        break;
-                    case ActionSpeed.Delayed: // Delayed Utility
-
-                        foreach (var location in locations)
-                        {
-                            // If value already is marked, then increment count
-                            if (utilityIntentTable.TryGetValue(location, out int count))
-                            {
-                                // Remove entry
-                                if (count == 1)
-                                {
-                                    // Unmark
-                                    intentTilemap.SetTile(location, null);
-
-                                    // Remove entry
-                                    utilityIntentTable.Remove(location);
-                                }
-                                else
-                                {
-                                    // Update entry
-                                    utilityIntentTable[location] = count - 1;
-                                }
-                            }
-                        }
-
-                        break;
-                }
-
-                break;
+            // Destroy self
+            Destroy(gameObject);
         }
     }
 
-    private void OnActionSelect(Entity entity, Action action)
+    private void UnintializeOnEnd(Entity entity, Action action, Vector3Int location, Room room)
     {
-        if (entity is Player)
+        // After this action is performed, delete outcome
+        if (this.entity == entity && this.action == action)
         {
-            // Clear tiles first
-            actionLocationTilemap.ClearAllTiles();
+            // Destroy self
+            Destroy(gameObject);
+        }
+    }
 
-            if (action != null) // If action was selected
+    private void OnMouseEnter()
+    {
+        if (isSelected) return;
+
+        // Debug
+        //print("Entered!");
+
+        // Highlight
+        actionIcon.enabled = true;
+        shadowIcon.enabled = true;
+
+        // Select this location
+        GameManager.instance.SelectLocation(location);
+
+        // Update state
+        isHovering = true;
+    }
+
+    private void Update()
+    {
+        if (isHovering)
+        {
+            // Check for left click release
+            if (Input.GetMouseButtonUp(0))
             {
-                // Get a list of all valid locations by this action
-                var validLocations = action.GetValidLocations(entity.location, entity.room);
+                // Debug
+                // print("Dropped!");
 
-                // Display all of the action's valid locations
-                foreach (var location in validLocations)
-                {
-                    // Set tile
-                    actionLocationTilemap.RemoveTileFlags(location, TileFlags.LockColor);
-                    actionLocationTilemap.SetTile(location, highlightedTile);
-                    actionLocationTilemap.SetColor(location, action.color);
+                GameManager.instance.ConfirmAction();
 
-                    // Spawn preview
-                    var targetWorldLocation = intentTilemap.GetCellCenterWorld(location);
-                    var actionPreview = Instantiate(actionPreviewPrefab, targetWorldLocation, Quaternion.identity, intentTilemap.transform).GetComponent<ActionPreview>();
-                    actionPreview.Initialize(entity, location, action);
-                }
+                // Update state
+                isSelected = true;
             }
         }
     }
 
-    private void OnLocationSelect(Entity entity, Action action, Vector3Int location)
+    private void OnMouseExit()
     {
-        if (entity is Player)
-        {
-            foreach (Vector3Int cellPosition in actionLocationTilemap.cellBounds.allPositionsWithin)
-            {
-                actionLocationTilemap.RemoveTileFlags(cellPosition, TileFlags.LockColor);
+        if (isSelected) return;
 
-                if (actionLocationTilemap.HasTile(cellPosition))
-                {
-                    if (location == Vector3Int.back)
-                    {
-                        actionLocationTilemap.SetColor(cellPosition, action.color);
-                    }
-                    else
-                    {
-                        var newColor = action.color;
-                        newColor.a = alpha;
-                        actionLocationTilemap.SetColor(cellPosition, newColor);
-                    }
-                }
-            }
-        }
+        // Debug
+        //print("Exit!");
 
-        // Attempt to draw path
-        if (location != Vector3Int.back && action.pathPrefab != null)
-        {
-            var offset = new Vector3(0.5f, 0.5f, -1);
-            Instantiate(action.pathPrefab, transform).GetComponent<ActionPathRenderer>().Initialize(entity, action, location, entity.location + offset, location + offset, action.color);
-        }
-    }
+        // Un-highlight
+        actionIcon.enabled = false;
+        shadowIcon.enabled = false;
 
-    private void OnActionConfirm(Entity entity, Action action, Vector3Int location)
-    {
-        if (entity is Player)
-        {
-            // Clear tiles first
-            actionLocationTilemap.ClearAllTiles();
-        }
-        else
-        {
-            if (action.actionType == ActionType.Attack)
-            {
-                // Spawn directional indicator
-                Vector3Int direction = location - entity.location;
-                direction.Clamp(-Vector3Int.one, Vector3Int.one);
+        // Select this location
+        GameManager.instance.SelectLocation(Vector3Int.back);
 
-                var worldPosition = intentTilemap.GetCellCenterWorld(entity.location);
-                var indicator = Instantiate(directionIndicatorPrefab, worldPosition, Quaternion.identity, intentTilemap.transform).GetComponent<DirectionIndicator>();
-                indicator.Initialize(entity, direction);
-            }
-        }
+        // Update state
+        isHovering = false;
     }
 }

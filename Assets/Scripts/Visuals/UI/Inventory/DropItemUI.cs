@@ -16,8 +16,11 @@ Declining, returns item to slot
 
 public class DropItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IDropHandler
 {
+    [Header("References")]
+    [SerializeField] private CanvasGroup canvasGroup;
+
     [Header("Debug")]
-    private ItemUI itemUI;
+    [SerializeField] private ItemUI itemUI;
 
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -30,6 +33,9 @@ public class DropItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
             this.itemUI = itemUI;
             itemUI.ShowTrashIcon(true);
+
+            // Visual feedback
+            canvasGroup.alpha = 0.25f;
         }
     }
 
@@ -39,6 +45,9 @@ public class DropItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         {
             itemUI.ShowTrashIcon(false);
             itemUI = null;
+
+            // Visual feedback
+            canvasGroup.alpha = 0f;
         }
     }
 
@@ -52,6 +61,7 @@ public class DropItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             // Reset
             itemUI.ShowTrashIcon(false);
             itemUI = null;
+            canvasGroup.alpha = 0f;
         }
     }
 }

@@ -41,7 +41,7 @@ public class ActionTooltipUI : MonoBehaviour
 
         actionDescriptionText.text = action.GetActiveDescription();
 
-        hotkeyText.text = $"[{hotkey}]";
+        hotkeyText.text = $"[Hotkey: {hotkey}]";
 
         actionModifiersText.text = "";
         foreach (var modifier in action.modifiers)

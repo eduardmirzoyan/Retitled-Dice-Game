@@ -148,7 +148,7 @@ public class Entity : ScriptableObject
         if (currentHealth == 0)
         {
             // Cancel any actions
-            GameManager.instance.ClearDelayedActions(this);
+            GameManager.instance.CancelDelayedActions(this);
 
             // Give gold to killer (usually player)
             source.AddGold(gold);

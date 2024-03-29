@@ -17,6 +17,9 @@ public class DataManager : MonoBehaviour
     [SerializeField] private RoomType currentRoomType;
     [SerializeField] public bool hasEquipmentPrompted;
 
+    public int RoomNumber { get { return roomNumber; } }
+    public int StageNumber { get { return stageNumber; } }
+
     public static DataManager instance;
     private void Awake()
     {
@@ -66,7 +69,8 @@ public class DataManager : MonoBehaviour
         // Boss on Room 7
         else if (roomNumber == maxRooms)
         {
-            currentRoomType = RoomType.Boss;
+            // FIXEME when boss is fixed
+            currentRoomType = RoomType.Normal; // RoomType.Boss;
         }
         else
         {
@@ -83,11 +87,6 @@ public class DataManager : MonoBehaviour
     public string GetRoomDescription()
     {
         return $"Stage {stageNumber} - {roomNumber}";
-    }
-
-    public int GetRoomNumber()
-    {
-        return roomNumber;
     }
 
     public RoomType GetNextRoom()

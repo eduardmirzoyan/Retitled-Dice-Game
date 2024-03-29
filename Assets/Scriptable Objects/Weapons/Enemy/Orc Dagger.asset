@@ -13,16 +13,15 @@ MonoBehaviour:
   m_Name: Orc Dagger
   m_EditorClassIdentifier: 
   name: Dagger
-  description: Best used against the backs of your enemies!
+  description: 
   sprite: {fileID: 1451419977, guid: 20597968d5281954482d5d148d07fa12, type: 3}
-  value: 5
+  value: 0
   baseDamage: 1
   actions:
   - {fileID: 11400000, guid: 0ecc2eaf84b29c94c89b42310b926b82, type: 2}
   enchantments: []
   enchantmentCap: 3
   attackParticlePrefab: {fileID: 2619012972811128830, guid: 7a8a1a3d35ad8cf47a78c6232b350d75, type: 3}
-  weaponPrefab: {fileID: 1251787465029900827, guid: 539046e35f645174093ee495a9e64bd4, type: 3}
   controller: {fileID: 9100000, guid: 10cf38854d67ba142be69e63531fe845, type: 2}
   entity: {fileID: 0}
   model: {fileID: 0}

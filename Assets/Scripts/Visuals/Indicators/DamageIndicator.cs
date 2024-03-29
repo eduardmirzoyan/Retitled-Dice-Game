@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class DamageIntentIndicator : MonoBehaviour
+public class DamageIndicator : MonoBehaviour
 {
     [Header("Components")]
     [SerializeField] private TextMeshPro damageLabel;

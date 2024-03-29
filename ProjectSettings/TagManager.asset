@@ -38,9 +38,6 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: Walls
-    uniqueID: 562273493
-    locked: 0
   - name: Floor
     uniqueID: 720893697
     locked: 0
@@ -49,9 +46,6 @@ TagManager:
     locked: 0
   - name: Entities
     uniqueID: 938315117
-    locked: 0
-  - name: Weapons
-    uniqueID: 1737913669
     locked: 0
   - name: Particles
     uniqueID: 704134753

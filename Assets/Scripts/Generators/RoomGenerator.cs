@@ -29,7 +29,7 @@ public class RoomGenerator : ScriptableObject
     public Room GenerateCustomRoom()
     {
         // Create new room
-        var room = ScriptableObject.CreateInstance<Room>();
+        Room room = CreateInstance<Room>();
 
         // Initialize
         room.Initialize(roomSize.x, roomSize.y, roomPadding, floorChance);
@@ -40,7 +40,7 @@ public class RoomGenerator : ScriptableObject
     public Room GenerateShop()
     {
         // Create new room
-        var room = ScriptableObject.CreateInstance<Room>();
+        Room room = CreateInstance<Room>();
 
         // Initialize with no extra walls or chasams
         room.Initialize(shopSize.x, shopSize.y, roomPadding, 1f);
@@ -51,7 +51,7 @@ public class RoomGenerator : ScriptableObject
     public Room GenerateArena()
     {
         // Create new room
-        var room = ScriptableObject.CreateInstance<Room>();
+        Room room = CreateInstance<Room>();
 
         // Initialize with no extra walls or chasams
         room.Initialize(arenaSize.x, arenaSize.y, roomPadding, arenaFloorChance);
@@ -62,7 +62,7 @@ public class RoomGenerator : ScriptableObject
     public Room GenerateRoom(RoomSize roomSize)
     {
         // Create new room
-        var room = ScriptableObject.CreateInstance<Room>();
+        Room room = CreateInstance<Room>();
 
         switch (roomSize)
         {
@@ -72,19 +72,19 @@ public class RoomGenerator : ScriptableObject
                 break;
             case RoomSize.Small:
                 // Initialize
-                room.Initialize(6, 6, roomPadding, floorChance);
+                room.Initialize(5, 5, roomPadding, floorChance);
                 break;
             case RoomSize.Medium:
                 // Initialize
-                room.Initialize(8, 8, roomPadding, floorChance);
+                room.Initialize(6, 6, roomPadding, floorChance);
                 break;
             case RoomSize.Large:
                 // Initialize
-                room.Initialize(10, 10, roomPadding, floorChance);
+                room.Initialize(7, 7, roomPadding, floorChance);
                 break;
             case RoomSize.Massive:
                 // Initialize
-                room.Initialize(12, 12, roomPadding, floorChance);
+                room.Initialize(8, 8, roomPadding, floorChance);
                 break;
         }
 
