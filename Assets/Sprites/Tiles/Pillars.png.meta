@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 5fb70627534ce424ca1d38a516f03c15
+guid: 12e9ccb7841440b49b359717e70ae5f5
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -130,8 +130,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8d2532fc00ef0d74287dac844d4bdcb4
-      internalID: -1092167290
+      spriteID: 4d985b49eef0ea941add95d216b12993
+      internalID: -126324154
       vertices: []
       indices: 
       edges: []
@@ -151,8 +151,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e9f0005ef3f6acc40826cbfac6c22b32
-      internalID: 426753101
+      spriteID: d2cadfeaa429a204a9dce15775ef0930
+      internalID: 1453102670
       vertices: []
       indices: 
       edges: []
@@ -172,8 +172,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 46b2f604c7ceb42438950d0cc746c472
-      internalID: 1898577075
+      spriteID: fd1e3f55761685440b7c6e5fee6d6142
+      internalID: -1716363158
       vertices: []
       indices: 
       edges: []
@@ -193,8 +193,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fe99483703f02b9409c7ea6e8c7a9ad5
-      internalID: 168238451
+      spriteID: 6c725beea3638b24395854b61e6e43c5
+      internalID: -1322706774
       vertices: []
       indices: 
       edges: []
@@ -214,8 +214,50 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8848c4bae79a097439cec4a682fa45e8
-      internalID: 954343425
+      spriteID: 5b1512786814bab4783a2e3342025547
+      internalID: 481603192
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pillars_5
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 0
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f399aeea307eb62419329dd4e4401cd6
+      internalID: 866875427
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pillars_6
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 0
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1b0c1c00d204f6e47bcf4cb563674109
+      internalID: -2021973299
       vertices: []
       indices: 
       edges: []
@@ -231,11 +273,13 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Pillars_2: 1898577075
-      Pillars_3: 168238451
-      Pillars_4: 954343425
-      Pillars_1: 426753101
-      Pillars_0: -1092167290
+      Pillars_2: -1716363158
+      Pillars_3: -1322706774
+      Pillars_6: -2021973299
+      Pillars_5: 866875427
+      Pillars_4: 481603192
+      Pillars_1: 1453102670
+      Pillars_0: -126324154
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

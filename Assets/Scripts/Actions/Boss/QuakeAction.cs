@@ -15,15 +15,19 @@ public class QuakeAction : Action
 
     public override List<Vector3Int> GetThreatenedLocations(Entity entity, Vector3Int targetLocation, Room room)
     {
-        List<Vector3Int> targets = new List<Vector3Int>();
+        List<Vector3Int> targets = new List<Vector3Int>() { targetLocation };
 
-        targets.Add(targetLocation);
         for (int i = 1; i < radius; i++)
         {
-            targets.Add(targetLocation + new Vector3Int(i, i, 0));
-            targets.Add(targetLocation + new Vector3Int(-i, i, 0));
-            targets.Add(targetLocation + new Vector3Int(i, -i, 0));
-            targets.Add(targetLocation + new Vector3Int(-i, -i, 0));
+            foreach (var direction in new List<Vector3Int>() { new Vector3Int(i, i, 0), new Vector3Int(-i, i, 0), new Vector3Int(i, -i, 0), new Vector3Int(-i, -i, 0) })
+            {
+                var location = targetLocation + direction;
+
+                if (room.IsObsacle(location))
+                    continue;
+
+                targets.Add(location);
+            }
         }
 
         return targets;

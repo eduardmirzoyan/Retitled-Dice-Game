@@ -21,7 +21,8 @@ public class CrossMeleeAction : Action
             for (int i = 1; i < range + 1; i++)
             {
                 var location = entity.location + direction * i;
-                if (entity.room.IsWall(location))
+
+                if (room.IsObsacle(location))
                     break;
 
                 targets.Add(location);

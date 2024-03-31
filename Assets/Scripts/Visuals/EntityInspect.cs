@@ -90,7 +90,17 @@ public class EntityInspect : MonoBehaviour
                     // Spawn indicator
                     var position = inspectTilemap.GetCellCenterWorld(location);
                     var damageIndicator = Instantiate(damageIntentPrefab, position, Quaternion.identity, inspectTilemap.transform).GetComponent<DamageIndicator>();
-                    damageIndicator.Initialize(damage);
+                    damageIndicator.Initialize(damage, action.color);
+
+                    // Store reference
+                    indicators.Add(damageIndicator);
+                }
+                else if (action.actionType == ActionType.Utility)
+                {
+                    // Spawn indicator
+                    var position = inspectTilemap.GetCellCenterWorld(location);
+                    var damageIndicator = Instantiate(damageIntentPrefab, position, Quaternion.identity, inspectTilemap.transform).GetComponent<DamageIndicator>();
+                    damageIndicator.Initialize("$", action.color);
 
                     // Store reference
                     indicators.Add(damageIndicator);

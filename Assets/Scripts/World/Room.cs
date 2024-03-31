@@ -8,7 +8,6 @@ public class Room : ScriptableObject
     [Header("Settings")]
     public int width;
     public int height;
-    //public int padding;
     public float floorChance;
 
     public RoomTile[,] tiles;
@@ -28,12 +27,11 @@ public class Room : ScriptableObject
     public Pathfinder pathfinder;
     public ProceduralRoomGenerator roomGenerator;
 
-    public void Initialize(int roomWidth, int roomHeight, int padding, float floorChance)
+    public void Initialize(int roomWidth, int roomHeight, float floorChance)
     {
         // Save dimensions
         this.width = roomWidth;
         this.height = roomHeight;
-        //this.padding = padding;
         this.floorChance = floorChance;
 
         numKeys = 0;
@@ -183,7 +181,6 @@ public class Room : ScriptableObject
         else if (neutralEntities.Remove(entity))
         {
             // Barrel was removed
-            Debug.Log("Barel was killed :(");
         }
         else
         {
@@ -280,9 +277,8 @@ public class Room : ScriptableObject
 
     public Entity GetEntityAtLocation(Vector3Int location)
     {
-        // if (location.x < 0 || location.x >= 2 * padding + width || location.y < 0 || location.y >= 2 * padding + height)
-        //     throw new System.Exception("INPUT LOCATION OUT OF BOUNSD: " + location);
-        if (location.x < 0 || location.x >= width || location.y < 0 || location.y >= height)
+        // Check bounds
+        if (IsOutOfBounds(location))
             throw new System.Exception("INPUT LOCATION OUT OF BOUNSD: " + location);
 
         return tiles[location.x, location.y].containedEntity;
@@ -415,10 +411,5 @@ public class Room : ScriptableObject
             // Despawn any pickups
             DespawnPickup(entity, tile);
         }
-    }
-
-    public static int ManhattanDistance(Vector3Int a, Vector3Int b)
-    {
-        return Mathf.Abs(a.x - b.x) + Mathf.Abs(a.y - b.y);
     }
 }

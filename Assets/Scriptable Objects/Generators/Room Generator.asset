@@ -13,8 +13,7 @@ MonoBehaviour:
   m_Name: Room Generator
   m_EditorClassIdentifier: 
   roomSize: {x: 12, y: 12}
-  roomPadding: 10
   floorChance: 0.7
   shopSize: {x: 6, y: 6}
-  arenaSize: {x: 10, y: 10}
+  arenaSize: {x: 6, y: 6}
   arenaFloorChance: 0.85

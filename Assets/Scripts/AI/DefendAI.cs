@@ -66,7 +66,7 @@ public class DefendAI : AI
             }
 
             // Check if on nearest pickup
-            if (Room.ManhattanDistance(currentPosition, targetEntity.location) <= 1)
+            if (MathUtil.ManhattanDistance(currentPosition, targetEntity.location) <= 1)
             {
                 // Assume second action is attack
                 var attackAction = possibleActions[1];
@@ -88,7 +88,7 @@ public class DefendAI : AI
         {
             if (tile.containedPickup == pickUpType)
             {
-                var distance = Room.ManhattanDistance(currentLocation, tile.location);
+                var distance = MathUtil.ManhattanDistance(currentLocation, tile.location);
                 if (distance < closest)
                 {
                     closest = distance;

@@ -4,13 +4,16 @@ using UnityEngine;
 
 public class CorpseModel : MonoBehaviour
 {
-    [Header("Static Data")]
+    [Header("References")]
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private Rigidbody2D rigidbody2d;
+
+    [Header("Settings")]
     [SerializeField] private Vector2 randomAngleRange;
     [SerializeField] private Vector2 randomPowerRange;
     [SerializeField] private float lifetimeDuration;
     [SerializeField] private float fadeDuration;
+
 
     private void Awake()
     {

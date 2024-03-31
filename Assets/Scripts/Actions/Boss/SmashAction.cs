@@ -15,10 +15,10 @@ public class SmashAction : Action
         {
             var location = startLocation + direction;
 
-            if (!room.IsWall(location))
-            {
-                targets.Add(location);
-            }
+            if (room.IsObsacle(location))
+                continue;
+
+            targets.Add(location);
         }
 
         return targets;
@@ -36,16 +36,15 @@ public class SmashAction : Action
         Vector3Int startLeft = targetLocation + left;
         Vector3Int startRight = targetLocation + right;
 
-        // targets.Add(startMiddle);
-        // targets.Add(startLeft);
-        // targets.Add(startRight);
-
         for (int i = 0; i < range; i++)
         {
             // Add threats
-            targets.Add(startMiddle);
-            targets.Add(startLeft);
-            targets.Add(startRight);
+            if (!room.IsObsacle(startMiddle))
+                targets.Add(startMiddle);
+            if (!room.IsObsacle(startLeft))
+                targets.Add(startLeft);
+            if (!room.IsObsacle(startRight))
+                targets.Add(startRight);
 
             // Increment
             startMiddle += forward;

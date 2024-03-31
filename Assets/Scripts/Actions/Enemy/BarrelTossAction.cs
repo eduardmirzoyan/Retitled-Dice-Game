@@ -26,9 +26,8 @@ public class BarrelTossAction : Action
                     continue;
 
                 // Throw within distance
-                if (Room.ManhattanDistance(startLocation, location) <= range)
+                if (MathUtil.ManhattanDistance(startLocation, location) <= range)
                     validLocations.Add(location);
-
             }
         }
 

@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c94cd8632690354b999096b2edecee2, type: 3}
+  m_Name: Hobgoblin [Boss]
+  m_EditorClassIdentifier: 
+  name: Hobgoblin
+  maxHealth: 6
+  currentHealth: 6
+  gold: 0
+  inventory: {fileID: 0}
+  modelSprite: {fileID: -819967947, guid: 2713d1f61b5ad0f4c8e44e25fb3bafaa, type: 3}
+  modelController: {fileID: 9100000, guid: dd298b0ac42503640ba1b54bc9a5c5e2, type: 2}
+  AI: {fileID: 11400000, guid: c347e40babffa5546849919e3ceb3b8b, type: 2}
+  innateActions:
+  - {fileID: 11400000, guid: 89e65601c5ed891488123e5ac56b6f73, type: 2}
+  weapons:
+  - {fileID: 11400000, guid: 2885f6d5977fa394298af86dca1e5922, type: 2}
+  - {fileID: 0}
+  enchantments: []
+  location: {x: 0, y: 0, z: 0}
+  room: {fileID: 0}
+  model: {fileID: 0}

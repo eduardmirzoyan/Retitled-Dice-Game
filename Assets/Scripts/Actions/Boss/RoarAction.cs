@@ -20,7 +20,12 @@ public class RoarAction : Action
         {
             for (int j = targetLocation.y - radius; j <= targetLocation.y + radius; j++)
             {
-                targets.Add(new Vector3Int(i, j, 0));
+                var location = new Vector3Int(i, j, 0);
+
+                if (room.IsObsacle(location))
+                    continue;
+
+                targets.Add(location);
             }
         }
 

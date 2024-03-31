@@ -14,8 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Toss
   rawInactiveDescription: 
-  rawActiveDescription: 
-  icon: {fileID: 21300000, guid: ccccafbee6de19a43918433b0415cd5d, type: 3}
+  icon: {fileID: 0}
   color: {r: 0.8705883, g: 0.24313727, b: 0.13725491, a: 1}
   actionSpeed: 1
   actionType: 1

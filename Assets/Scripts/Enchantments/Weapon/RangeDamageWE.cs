@@ -30,7 +30,7 @@ public class RangeDamageWE : WeaponEnchantment
             int count = 0;
             foreach (var enemy in entity.room.allEntities)
             {
-                if (entity != enemy && Room.ManhattanDistance(entity.location, enemy.location) > range)
+                if (entity != enemy && MathUtil.ManhattanDistance(entity.location, enemy.location) > range)
                 {
                     count++;
                 }
@@ -50,7 +50,7 @@ public class RangeDamageWE : WeaponEnchantment
             int count = 0;
             foreach (var enemy in entity.room.allEntities)
             {
-                if (entity != enemy && Room.ManhattanDistance(entity.location, enemy.location) <= range)
+                if (entity != enemy && MathUtil.ManhattanDistance(entity.location, enemy.location) <= range)
                 {
                     count++;
                 }

@@ -70,7 +70,7 @@ public class DataManager : MonoBehaviour
         else if (roomNumber == maxRooms)
         {
             // FIXEME when boss is fixed
-            currentRoomType = RoomType.Normal; // RoomType.Boss;
+            currentRoomType = RoomType.Boss;
         }
         else
         {
@@ -82,6 +82,7 @@ public class DataManager : MonoBehaviour
     {
         return currentRoomType;
         // return RoomType.Shop;
+        // return RoomType.Boss;
     }
 
     public string GetRoomDescription()

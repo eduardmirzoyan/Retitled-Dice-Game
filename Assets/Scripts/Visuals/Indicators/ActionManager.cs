@@ -70,14 +70,16 @@ public class ActionManager : MonoBehaviour
 
                         foreach (var location in locations)
                         {
+                            Color color = Color.yellow;
+
                             actionPreviewTilemap.SetTile(location, highlightedTile);
-                            actionPreviewTilemap.SetColor(location, Color.yellow);
+                            actionPreviewTilemap.SetColor(location, color);
 
                             // Create indicator
                             var position = intentTilemap.GetCellCenterWorld(location);
                             var damageIndicator = Instantiate(damageIntentPrefab, position, Quaternion.identity, intentTilemap.transform).GetComponent<DamageIndicator>();
-                            damageIndicator.Initialize(damage);
-                            damageIndicator.SetHighlightState(true);
+                            damageIndicator.Initialize(damage, color);
+
                             indicators.Add(damageIndicator);
                         }
 
@@ -90,8 +92,6 @@ public class ActionManager : MonoBehaviour
                             if (attackIntentTable.TryGetValue(location, out int value))
                             {
                                 // Update entry
-                                // int value = indicator.GetValue();
-                                // indicator.SetValue(value + damage);
                                 attackIntentTable[location] = value + damage;
                             }
                             else
@@ -189,18 +189,12 @@ public class ActionManager : MonoBehaviour
                                     // Unmark
                                     intentTilemap.SetTile(location, null);
 
-                                    // Destroy object
-                                    // Destroy(indicator.gameObject);
-
                                     // Remove entry
                                     attackIntentTable.Remove(location);
                                 }
                                 else
                                 {
                                     // Update entry
-                                    // var damageIndicator = attackIntentTable[location];
-                                    // int value = damageIndicator.GetValue();
-                                    // damageIndicator.SetValue(value - damage);
                                     attackIntentTable[location] = value - damage;
                                 }
                             }

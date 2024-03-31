@@ -18,19 +18,25 @@ public class PiercingRangedAction : Action
             // Check range
             while (range > 0)
             {
+                // If we hit a wall or OoB
                 if (room.IsOutOfBounds(location) || room.IsWall(location))
                 {
-                    targets.Add(location - direction);
+                    location -= direction;
+                    if (location != startLocation)
+                        targets.Add(location);
+
+                    break;
+                }
+
+                // If we reach end of range
+                if (range == 1)
+                {
+                    targets.Add(location);
                     break;
                 }
 
                 location += direction;
                 range--;
-
-                if (range == 0)
-                {
-                    targets.Add(location);
-                }
             }
         }
 

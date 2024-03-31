@@ -63,13 +63,6 @@ public class GameManager : MonoBehaviour
         {
             SelectAction(null);
         }
-
-        // // FOR TESTING
-        // if (Input.GetKeyDown(KeyCode.L))
-        // {
-        //     var enchantments = enchantmentGenerator.GenerateEnchantmentSet();
-        //     EnchantmentSelectionUI.instance.Open(enchantments);
-        // }
     }
 
     private IEnumerator EnterFloor()
@@ -131,7 +124,6 @@ public class GameManager : MonoBehaviour
                 {   // Rest should be medium
                     room = roomGenerator.GenerateRoom(RoomSize.Medium);
                 }
-
 
                 break;
             case RoomType.Shop:
@@ -833,30 +825,40 @@ public class GameManager : MonoBehaviour
             var action = entityActionPair.Key.Item2;
             var targets = entityActionPair.Value;
 
+            bool foundPlayer = false;
+
             // Check for any matches
             if (entityActionPair.Key.Item1 == entity)
             {
                 foreach (var location in targets)
                 {
+                    // If player is in threat zone, attack
                     if (room.GetEntityAtLocation(location) is Player)
                     {
-                        // Perform the action
-                        yield return PerformAction(entity, action, targets[0], targets);
-
+                        foundPlayer = true;
                         break;
                     }
                 }
 
+                // Logic based on if player is in threat-zone
+                if (foundPlayer)
+                {
+                    // Perform the action
+                    yield return PerformAction(entity, action, targets[0], targets);
+                }
+                else
+                {
+                    // Hide threats
+                    GameEvents.instance.TriggerOnActionUnthreatenLocation(action, targets);
+
+                    // Sheathe weapon
+                    var mainhandWeapon = entity.weapons[0];
+                    if (action.actionType == ActionType.Attack && mainhandWeapon != null) // UGLY
+                        yield return mainhandWeapon.model.Sheathe();
+                }
+
                 // Remove entry
                 delayedActionsTable.Remove(entityActionPair.Key);
-
-                // Hide threats
-                GameEvents.instance.TriggerOnActionUnthreatenLocation(action, targets);
-
-                // Sheathe weapon
-                var mainhandWeapon = entity.weapons[0];
-                if (action.actionType == ActionType.Attack && mainhandWeapon != null) // UGLY
-                    yield return mainhandWeapon.model.Sheathe();
 
                 done = true;
             }
@@ -884,8 +886,8 @@ public class GameManager : MonoBehaviour
                 GameEvents.instance.TriggerOnActionUnthreatenLocation(action, targets);
 
                 // Sheathe weapon
-                if (action.actionType == ActionType.Attack) // UGLY
-                    entity.weapons[0].model.Sheathe();
+                // if (action.actionType == ActionType.Attack && entity.weapons[0] != null) // UGLY
+                //     entity.weapons[0].model.Sheathe();
 
                 // Stop
                 break;

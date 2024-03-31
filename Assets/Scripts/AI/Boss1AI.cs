@@ -59,8 +59,6 @@ public class Boss1AI : AI
             actionPairSquence.Add((meleeAction, meleeLocation));
         }
 
-        Debug.Log(actionPairSquence.Count);
-
         return actionPairSquence;
     }
 

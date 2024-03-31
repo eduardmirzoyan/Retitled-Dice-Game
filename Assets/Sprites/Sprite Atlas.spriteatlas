@@ -46,16 +46,12 @@ SpriteAtlas:
     packables:
     - {fileID: 2800000, guid: 20597968d5281954482d5d148d07fa12, type: 3}
     - {fileID: 2800000, guid: 91c6e5420840aa74883dcb2d26dae9ea, type: 3}
-    - {fileID: 2800000, guid: b5c912c0498ac714da1e66dba189e4bc, type: 3}
     - {fileID: 2800000, guid: 5fb70627534ce424ca1d38a516f03c15, type: 3}
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
-  - {fileID: -424730234, guid: b5c912c0498ac714da1e66dba189e4bc, type: 3}
-  - {fileID: 231776978, guid: b5c912c0498ac714da1e66dba189e4bc, type: 3}
-  - {fileID: 490613030, guid: b5c912c0498ac714da1e66dba189e4bc, type: 3}
   - {fileID: 839385151, guid: 91c6e5420840aa74883dcb2d26dae9ea, type: 3}
   - {fileID: 957429483, guid: 91c6e5420840aa74883dcb2d26dae9ea, type: 3}
   - {fileID: -2126504424, guid: 91c6e5420840aa74883dcb2d26dae9ea, type: 3}
@@ -145,9 +141,6 @@ SpriteAtlas:
   - {fileID: -795122036, guid: 20597968d5281954482d5d148d07fa12, type: 3}
   - {fileID: -1383457564, guid: 20597968d5281954482d5d148d07fa12, type: 3}
   m_PackedSpriteNamesToIndex:
-  - Floor_2
-  - Floor_0
-  - Floor_1
   - action_icons_10
   - action_icons_9
   - action_icons_8

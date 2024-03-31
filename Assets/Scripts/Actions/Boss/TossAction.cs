@@ -22,8 +22,11 @@ public class TossAction : Action
             for (int j = targetLocation.y - radius; j <= targetLocation.y + radius; j++)
             {
                 var location = new Vector3Int(i, j, 0);
-                if (location != targetLocation)
-                    targets.Add(location);
+
+                if (room.IsObsacle(location) || location == targetLocation)
+                    continue;
+
+                targets.Add(location);
             }
         }
 
